@@ -1,0 +1,4 @@
+69:  this_player()->add_property("guest",1);
+42:    snooper->add_property("quiet snoop", 1);
+305:  add_property("guest", 1);
+370:    new_copy->add_property("guest",1);

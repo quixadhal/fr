@@ -1,0 +1,6 @@
+#secure/master.c
+preload ({"/std/race","/std/object","/std/races/standard","/std/room","/global/player","/global/lord","/global/creator","/std/guildroom",0,"/global/thane.c","/global/patron.c","/global/virtual/compiler",})
+call_out_preload 0
+positions (["god":2,])
+password "qeb.woFw7Zv12"
+no_times 0

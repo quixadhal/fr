@@ -1,0 +1,176 @@
+#include "mail.h"
+inherit "/obj/misc/board";
+
+#include "board.h"
+
+void setup() {
+  ::setup();
+  reset_drop();
+  set_get();
+} /* setup() */
+
+/*
+ * Need to redefine this to add all the extra bits and wombles to it.
+ */
+string long(string str, int dark) {
+  int i;
+  mixed *stuff;
+  string ret;
+  mapping news_rc;
+
+  stuff = (mixed *)BOARD_HAND->get_subjects(board_name);
+  ret = "A bulletin board ("+board_name+").\n";
+  ret += sprintf("%#-*s\n\n", this_player()->query_cols(),
+                            "read <note number>\npost <subject>\n"+
+                            "boards\n"+
+                            "store <note number> <file>\neat <note number>\n"+
+                            "reply <note number>\nfollowup <note number>\n"+
+                            "summary [all]\nnext\nprev\nnew\n"+
+                            "board <board name>\n"+
+                            "killfile <board name>");
+  if (!sizeof(stuff))
+    return ret+"The board is completely empty.\n";
+  news_rc = (mapping)this_player()->query_property(NEWS_RC);
+  if (!news_rc)
+    news_rc = ([ ]);
+  for (i=0;i<sizeof(stuff);i++)
+    if (news_rc[board_name] < stuff[i][B_TIME])
+      ret += sprintf("N %2d: %-=*s\n", i+1, (int)this_player()->query_cols()-6,
+             stuff[i][B_SUBJECT]+" ("+
+             capitalize(stuff[i][B_NAME])+" "+the_date(stuff[i][B_TIME])+")");
+    else
+      ret += sprintf("  %2d: %-=*s\n", i+1, (int)this_player()->query_cols()-6,
+             stuff[i][B_SUBJECT]+" ("+
+             capitalize(stuff[i][B_NAME])+" "+the_date(stuff[i][B_TIME])+")");
+  return ret;
+} /* long() */
+
+void init() {
+  ::init();
+  add_action("save_note", "store");
+  add_action("next", "next");
+  add_action("prev", "prev");
+  add_action("new", "new");
+  add_action("board", "b*oard");
+  add_action("list_boards", "boards");
+  add_action("kfile", "killfile");
+} /* init() */
+
+int save_note(string arg) {
+  int which;
+  string file;
+  mixed *stuff;
+
+  if (!arg || (sscanf(arg, "%d %s", which, file) != 2)) {
+    notify_fail("Syntax: store <note number> <file name>\n");
+    return 0;
+  }
+  stuff = (mixed *)BOARD_HAND->get_subjects(board_name);
+  if (which < 1 || which > sizeof(stuff)) {
+    notify_fail("Invalid note number.\n");
+    return 0;
+  }
+  which--; /* 1..n */
+  file += ".note";
+  if (!MASTER_OB->valid_write(file, this_player()->query_name())) {
+    notify_fail("The master object appears and prevents you.\n");
+    return 0;
+  }
+  write_file(file,stuff[which][B_SUBJECT]+"\n\n"+
+             BOARD_HAND->get_message(board_name, which));
+  write("Ok.\n");
+  return 1;
+} /* save_note() */
+
+void set_board_name(string str) { board_name = str; }
+void set_datafile(string str) { board_name = str; }
+
+int next() {
+  int i;
+  string *boards;
+
+  boards = (string *)BOARD_HAND->list_of_boards();
+  if ((i = member_array(board_name, boards)) == -1)
+    i = 0;
+  else
+    i = (i+1)%sizeof(boards);
+  board_name = boards[i];
+  write("Gone to board:"+board_name+".\n");
+  return 1;
+} /* next() */
+
+int prev() {
+  int i;
+  string *boards;
+
+  boards = (string *)BOARD_HAND->list_of_boards();
+  if ((i = member_array(board_name, boards)) == -1)
+    i = 0;
+  else
+    i = (i-1+sizeof(boards))%sizeof(boards);
+  board_name = boards[i];
+  write("Gone to board:"+board_name+".\n");
+  return 1;
+} /* prev() */
+
+int kfile(string arg) {
+  this_player()->add_property("news_kill_"+lower_case(arg),1);
+  return 1;
+} /* kfile() */
+
+int new() {
+  int i;
+  string *boards;
+  mixed *stuff;
+  mixed otherstuff;
+  mapping news_rc;
+
+  boards = (string *)BOARD_HAND->list_of_boards();
+/* start from the begining and search for one with new notes. */
+  news_rc = (mapping)this_player()->query_property(NEWS_RC);
+/* John's mark current board as read hack */
+  otherstuff = (mixed *)BOARD_HAND->get_subjects(board_name);
+  if (sizeof(otherstuff)) {
+    news_rc[board_name] = otherstuff[sizeof(otherstuff)-1][B_TIME];
+    this_player()->add_property(NEWS_RC, news_rc);
+  }
+/* */
+  for (i=0;i<sizeof(boards);i++) {
+    if (!this_player()->query_property("news_kill_"+boards[i])) {
+      stuff = (mixed *)BOARD_HAND->get_subjects(boards[i]);
+      if (!sizeof(stuff))
+        continue;
+      if (stuff[sizeof(stuff)-1][B_TIME] > news_rc[boards[i]]) {
+        board_name = boards[i];
+        write("The "+board_name+" board has new messages.\n");
+        return 1;
+      }
+    }
+  }
+  notify_fail("No boards with new messages.\n");
+  return 0;
+} /* new() */
+
+int board(string str) {
+  int i;
+  string *boards;
+
+  if (!str) {
+    notify_fail("Syntax: board <board name>\n");
+    return 0;
+  }
+  boards = (string *)BOARD_HAND->list_of_boards();
+  if ((i=member_array(str, boards)) == -1) {
+    notify_fail("The board "+str+" does not exist sorry.\n");
+    return 0;
+  }
+  write("Ok.\n");
+  board_name = str;
+  return 1;
+} /* board() */
+
+int list_boards() {
+  write("The current boards are '"+
+        implode((string *)BOARD_HAND->list_of_boards(), "', '")+"'.\n");
+  return 1;
+} /* boards() */

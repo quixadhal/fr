@@ -1,0 +1,17 @@
+Usage : setmin <message>
+        setmout <message>
+
+Set your entry/exit message.  You can only use this command if you have
+completed the quest that gives this ability as a reward.  The commands are
+setmin and setmout.  Setmin sets the message given when you enter a room and
+setmout sets the message printed when you leave.
+
+KEEP YOUR ENTRY/EXIT MESSAGES IN THEME WITH Forgotten Realms!
+
+Examples:
+
+setmin wanders in
+setmout wanders away
+
+See also:
+setmmin, review

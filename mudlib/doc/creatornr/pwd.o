@@ -1,0 +1,4 @@
+#obj/handlers/nroff.c
+nroffed_file ({0,"Usage : pwdPrints your current directory.  All filenames not starting with a ~ or a / willbe taken relative to your current directory.",})
+nroffed_file_name "/doc/creator/pwd"
+modified_time 799665352

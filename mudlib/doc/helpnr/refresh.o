@@ -1,0 +1,4 @@
+#obj/handlers/nroff.c
+nroffed_file ({0,"Syntax: refresh meThis command is one of the options you have when you have run out oflives.  It basicly starts you over again.  You keep several thingsthough.  Any abilities you happened to pick up (like emote or whatever).It resets all your stats, allows you to rearrange them again, resetsyour guild and your skills.  Use this command with care. It basicly restarts your character.NOTE: You will get a pool of 25, which is an average of 13 in all stats       you try to rearrange your stats after a refresh.      So you may be best off not refreshing at all unless you HAVE to refresh.Examples> refresh meDoing refresh.Done.See also  score, skills.",})
+nroffed_file_name "/doc/helpdir/refresh"
+modified_time 794258650

@@ -1,0 +1,8 @@
+inherit "/std/spells/patch.c";
+
+/* find_unique_match() does a find match that ensures the returned 
+   object list contains no duplicates
+   find_one_match() returns only the first matched object
+*/
+mixed find_unique_match(string find,mixed in);
+mixed find_one_match(string find,mixed in);

@@ -1,0 +1,48 @@
+
+  ----  The FR mudlib version 2.1 ----
+(c)opyright Final Realms 1995.
+
+A few steps to get started:
+
+  - Untar the distribution.
+
+  - Compile the driver (mudos), should be some docs about that in the 
+    sourcetree. It's ready and tested for Linux, both a.out and ELF.
+     
+     - You probably only have to cd to mudos/src.19.17 and type 'make'.
+       Ignore the warnings.
+     - move driver and addr_server to the bin directory.
+
+  - Edit mudos/etc/config.fr-release.
+     - port number.
+     - mudlibpath.
+     - binary path.
+     - Address server ip address (set it to yours).
+
+  - Edit mudos/bin/fr-release.info and set LOGDIR correctly.
+
+  - Edit startmud and set BINDIR correctly.
+
+  - cd to mudos/bin and then: startmud fr-release &
+   
+  - Hopefully it will boot.
+
+  - Telnet to the machine with the chosen portnumber.
+ 
+  - Log in as god, password god.
+
+  - Mail mudadm@fr.imaginary.com and tell us who you are and where
+    to find the mud. Nice to know who uses us. So feel free to tell
+    as much as possible about it.
+
+More readme's for this mudlibrelease can be found (and *must* be read)
+in mudlib/doc/frlib.
+
+There will be one or two mailinglists for the users of this lib.
+More info about that will come on the webpages.
+
+Have fun with it.
+For the FR-MUD development team.
+
+  Baldrick, God.
+Baldrick@fr.imaginary.com, Baldrick@fr.hiof.no

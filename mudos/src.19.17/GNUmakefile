@@ -1,0 +1,338 @@
+#################################################
+#    GNUmakefile for the MudOS driver           #
+#################################################
+# Modified for Aurora, Chrisy
+ 
+###########################
+# setup and configuration #
+###########################
+ 
+# Note: this Makefile may need modified depending upon which type of machine
+# you are using to compile the driver.  Be sure to read all of the comments
+# in this file since they may pertain to your particular machine.
+
+# define this to be where you want the compiled files to go
+OBJDIR = obj
+ 
+# Set INSTALL_DIR to the directory where you want to install the executables.
+INSTALL_DIR = ../bin
+ 
+# change this if you wish the driver binary to be named something else
+DRIVER_BIN = driver
+ 
+# uncomment RESOLV if your machine has libresolv.a in /lib or /usr/lib
+#RESOLV=-lresolv
+ 
+# uncomment MALLOC* if you wish to use BSD malloc or Smalloc.
+#   Both of these require the sbrk() system call.  Be sure to read the
+#   comments in the bsdmalloc.c file before deciding on BSDMALLOC.
+#   note: These mallocs may not work correctly on the NeXT or other systems
+#   that don't fully support sbrk().  It is okay not to use either of these
+#   two mallocs in which case you will get system malloc (read the comments
+#   in options.h for choices on malloc statistics and debugging).
+#
+# uncomment this line for BSDmalloc
+# (fast but high overhead)
+#MALLOC=bsdmalloc.c
+# uncomment this line for SMALLOC
+# (slower than bsdmalloc, faster than most system mallocs, least overhead)
+#MALLOC=smalloc.c
+ 
+# uncomment STRFUNCS if your machine is missing memcpy(), memset(), strtol(),
+# strcspn(), and memmove().  (ie Sequent Dynix/3)
+#STRFUNCS=strfuncs.c
+ 
+# uncomment UALARM if your machine is missing ualarm() (e.g. those
+# running Linux, HP, A/UX, EP/IX, Sequent Dynix/3, Ultrix)
+UALARM=ualarm.c
+ 
+# System V Release 4 (386/486)
+#OSFLAGS=-DSVR4
+ 
+# MIPS R3000 running EP/IX Version 1.4.3. Compiler is RISCompiler C 2.11 (cc).
+#OSFLAGS=-I/usr/include/bsd
+ 
+# RS/6000 AIX: use this OSFLAGS line (required).
+#OSFLAGS=-D_BSD
+ 
+# If you don't have strchr() and strrchr(), uncomment following STR line
+#STR=-Dstrchr=index -Dstrrchr=rindex
+ 
+#Enable warnings from the compiler, if wanted.
+#WARN=-Wall
+ 
+# define profiling if you want it
+# note: the gmon.out file will likely be written in the mudlib dir.
+# PROFILE_ON controls whether or not monitoring is active at driver
+# startup.  Comment PROFILE_ON to make profiling not active at startup.
+# Use moncontrol(1) efun to enable profiling and moncontrol(0) to turn
+# it off.
+#PROFILE_ON=-DPROFILE_ON
+# Uncomment this if you want to enable profiling of the driver
+#PROFIL=-pg -DPROFILING $(PROFILE_ON)
+ 
+# define this if you want (compiler) optimization enabled.
+#
+# *WARNING* using high levels of optimization (e.g. -O3) can cause some
+# compilers to produce incorrect code.  If the driver is behaving
+# inexplicably, try using a lower level of optimization (or none).
+#
+# Uncomment one or none of the following optimization lines.
+#
+# -O is usually a safe level of optimization for most compilers
+OPTIMIZE=-O2
+# high optimization for gcc:
+#OPTIMIZE=-O2 -fomit-frame-pointer -fstrength-reduce
+# uncomment below for RS/6000(AIX) xlc compiler only.
+# remove the -Q if xlc complains.
+#OPTIMIZE=-O -Q
+# might need this one with newer versions of AIX (ie 3.2.4)
+#OPTIMIZE=-O -Q -qMAXMEM=16000
+# high optimization for HP-UX 7.x/8.x's cc (don't use with 9.x)
+#OPTIMIZE=+O3 +Obb3000
+# MIPS R3000 running EP/IX Version 1.4.3. Compiler is RISCompiler C 2.11 (cc).
+#OPTIMIZE=-Olimit 1802
+# DEC Ultrix's cc's highest optimization:
+#OPTIMIZE=-O2 -Olimit 5000
+ 
+# MIRE stuff
+# you can ignore this, it's for erik's custom use
+#MIRE=-DMIRE
+#MIRE_C=mire.c
+#MIRELIBS=-ltext libDtype.a libeditor.a libdoppelganger.a -ldsys -lndcommon -lndclient -lorwant
+ 
+# Enable run time debugging
+#DEBUG=-g
+# With extra driver debug code
+#DEBUG=-g -DDEBUG
+# Prevent -DDEBUG from aborting the driver (when in -DDEBUG mode)
+#DEBUG_NON_FATAL=-DDEBUG_NON_FATAL
+# Compile in debug() macro code
+#DEBUG_MACRO=-DDEBUG_MACRO
+ 
+# if you use gcc (including NeXT cc) and have lots of RAM, try uncommenting
+#  this for speedier compiles:
+#PIPE=-pipe
+ 
+# try uncommenting this if you are using gcc and at runtime you see socket
+# errors saying that the "set socket nonblocking" operation is not supported.
+# That error is caused by old-style macros (that gcc doesn't normally grok)
+# used by ioctl on some systems.
+#NEED_OLD_CPP=-traditional-cpp
+
+# May be needed by SunOS for LPC->C support
+#STATIC=-static
+ 
+DEFINES=$(DEBUG) $(DEBUG_MACRO) $(DEBUG_NON_FATAL) $(OSFLAGS) $(MIRE)
+CFLAGS= $(STATIC) $(WARN) $(OPTIMIZE) $(PROFIL) $(STR) $(PIPE) $(DEFINES) \
+	$(NEED_OLD_CPP)
+ 
+# These are the flags used by the LPC->C compiler.  Make any modifications
+# you want here
+CFLAGS2= $(STATIC) $(WARN) $(OPTIMIZE) $(STR) $(PIPE) $(DEFINES) \
+	$(NEED_OLD_CPP)
+ 
+# set CC=cc on a NeXT (or gcc if you have a newer version than the NeXT
+# comes with) and to gcc on other machines (if possible)
+#
+# NOTE: If you are using gcc (especially on a sun4), and the driver gives
+# a runtime error regarding "operation not supported on socket", then
+# try using cc instead (some installations of gcc have an error in one of
+# the system include (.h) files that prevents the socket operation from
+# working correctly).
+ 
+CC=gcc
+#CC=cc
+ 
+# use this for NeXTSTEP 3.1+ (at least)
+CPP=$(CC) -E -traditional-cpp
+# the usual
+#CPP=$(CC) -E
+ 
+# define this to be bison if you have it, and yacc otherwise
+# Note: bison uses the alloca() system call so if your machine doesn't
+# have alloca(), use yacc instead of bison.
+YACC=bison
+YFLAGS = -d -y
+#YACC=yacc
+#YFLAGS = -d
+ 
+# RS/6000 AIX: use this EXTRALIBS line (required).
+#EXTRALIBS=-lbsd
+ 
+# A/UX: may be required for Apple's UNIX (and possibly others).  Try
+# uncommenting this if the make results in link errors seemingly related
+# to yacc (e.g. undefined symbol "yyerror").
+#EXTRALIBS=-ly
+ 
+# HP-UX: use this EXTRALIBS line for HP-UX (required)
+#EXTRALIBS=-lBSD
+ 
+# NetBSD 386: due to export restrictions...you may be missing or
+#  have a crippled crypt package
+#EXTRALIBS=-lcrypt
+ 
+# NeXT: link with MallocDebug if you have a NeXT with NeXTOS 2.1 or later and
+# you wish to search for memory leaks (see /NextDeveloper/Apps/MallocDebug).
+# Note: linking with MallocDebug will cause the virtual size of the
+# driver process to reach appoximately 40MB however the amount of real memory
+# used will remain close to normal.
+#EXTRALIBS=-lMallocDebug -lsys_s
+ 
+# Sequent DYNIX/ptx: use this EXTRALIBS line (required).
+#EXTRALIBS=-lsocket -linet -lnsl -lseq -lmalloc
+ 
+# System V Release 4 (386/486)
+#EXTRALIBS=-lsocket -lnsl
+ 
+# Solaris (SunOS 5.1) 
+#EXTRALIBS=-lnsl -lsocket -lresolv
+ 
+# MIPS R3000 running EP/IX Version 1.4.3. Compiler is RISCompiler C 2.11 (cc).
+#EXTRALIBS=-lbsd
+ 
+# don't change this line.  Define EXTRALIBS before this line if you
+# wish to add any libraries.
+LIBS=-lm $(EXTRALIBS) $(MIRELIBS)
+ 
+# use these lines when enabling the LPC->C option
+#EXTRA_EFUNS=cfuns.c cfuns_main.c cfuns_port.c cfuns_math.c cfuns_sock.c
+#EXTRA_SRC=compile_file.c lpc_compiler.tab.c interface.c
+
+# Aurora code
+AURORA_EFUNS=au_efuns.c
+AURORA_SRC=au_code.c
+
+EFUNS=efuns_main.c efuns_port.c efuns_math.c efuns_matrix.c efuns_sock.c \
+	$(EXTRA_EFUNS) $(AURORA_EFUNS)
+
+SRC=compiler.tab.c lex.c main.c rc.c interpret.c simulate.c file.c object.c \
+  array.c mapping.c comm.c ed.c regexp.c mudlib_stats.c swap.c malloc.c \
+  call_out.c otable.c dumpstat.c stralloc.c hash.c port.c buffer.c crc32.c \
+  replace_program.c parse.c simul_efun.c sprintf.c reclaim.c backend.c \
+  strstr.c socket_efuns.c socket_ctrl.c qsort.c eoperators.c compiler_shared.c \
+  avltree.o socket_err.c md.c uid.c disassembler.c $(MIRE_C) $(EFUNS) \
+  binaries.c functab_tree.c $(UALARM) $(STRFUNCS) $(MALLOC) $(EXTRA_SRC) \
+  $(AURORA_SRC)
+ 
+#################################################
+# the meat of things                            #
+# don't change anything below this section      #
+#################################################
+
+
+VPATH = $(OBJDIR)
+
+OBJ=$(addprefix $(OBJDIR)/,$(subst .c,.o,$(SRC)))
+
+all: $(DRIVER_BIN) addr_server lpc_to_c.h
+
+lpc_to_c.h: efuns.h cfuns.h virtual_architecture.h
+	-cat efuns.h cfuns.h virtual_architecture.h > lpc_to_c.h
+
+$(DRIVER_BIN): $(OBJDIR) $(OBJ)
+	-mv $(DRIVER_BIN) $(DRIVER_BIN).old
+	$(CC) $(CFLAGS) $(OBJ) -o $(DRIVER_BIN) $(LIBS)
+
+depend: $(OBJDIR) opcodes.h efun_protos.h compiler.tab.h cc.h efunctions.h \
+ efun_defs.c
+	-rm Dependencies
+	touch Dependencies
+	for i in *.c; do echo -n $(OBJDIR)/ >> Dependencies; $(CPP) -MM $$i >> Dependencies; done
+
+interpret.o: interpret.c patchlevel.h
+
+compiler.tab.h: compiler.tab.c
+
+lpc_compiler.tab.h: lpc_compiler.tab.c
+
+cc.h: GNUmakefile
+	rm -f cc.h
+	echo "/* this file automatically generated by the GNUmakefile */" > cc.h
+	echo '#define COMPILER "$(CC)"' >> cc.h
+	echo '#define OPTIMIZE "$(OPTIMIZE)"' >> cc.h
+	echo '#define CFLAGS   "$(CFLAGS)"' >> cc.h
+$(OBJDIR)/lex.o: cc.h lex.c compiler.tab.h
+
+addr_server:  $(OBJDIR)/addr_server.o addr_server.h $(OBJDIR)/socket_ctrl.o $(OBJDIR)/port.o
+	$(CC) $(CFLAGS) $(OBJDIR)/addr_server.o $(OBJDIR)/socket_ctrl.o $(RESOLV) -o addr_server $(EXTRALIBS)
+
+$(OBJDIR):
+	mkdir $(OBJDIR)
+
+$(OBJDIR)/%.o: %.c
+	$(CC) -I$(OBJDIR) $(CFLAGS) -o $@ -c $<
+
+lpc_compiler.y: comp_warning lpc_compiler/pre token_defs lpc_compiler/grammar lpc_compiler/post
+	cat comp_warning lpc_compiler/pre token_defs lpc_compiler/grammar lpc_compiler/post > lpc_compiler.y
+
+compiler.y: comp_warning compiler/pre token_defs compiler/grammar compiler/post
+	cat comp_warning compiler/pre token_defs compiler/grammar compiler/post > compiler.y
+
+compiler.tab.c: compiler.y
+	$(YACC) $(YFLAGS) compiler.y
+	-mv y.tab.c compiler.tab.c
+	-mv y.tab.h compiler.tab.h
+
+lpc_compiler.tab.c: lpc_compiler.y
+	$(YACC) $(YFLAGS) lpc_compiler.y
+	-mv y.tab.c lpc_compiler.tab.c
+	-mv y.tab.h lpc_compiler.tab.h
+	sed "s/yy/lpcyy/g" lpc_compiler.tab.c > sed.out
+	mv sed.out lpc_compiler.tab.c
+	sed "s/yy/lpcyy/g" lpc_compiler.tab.h > sed.out
+	mv sed.out lpc_compiler.tab.h
+
+opc.h: efun_defs.c
+
+func_spec.cpp: op_spec.c func_spec.c config.h options.h port.h
+	@$(CPP) $(DEFINES) func_spec.c > func_spec.cpp
+
+$(OBJDIR)/make_func: make_func.tab.c
+	$(CC) $< -o $(OBJDIR)/make_func
+
+make_func.tab.c: make_func.y
+	$(YACC) $(YFLAGS) make_func.y
+	-rm -f make_func.tab.c
+	mv y.tab.c make_func.tab.c
+
+make_malloc: $(OBJDIR)/make_malloc.o
+	$(CC) $(CFLAGS) -Iobj $(OBJDIR)/make_malloc.o -o make_malloc
+
+malloc.c: config.h make_malloc
+	./make_malloc $(MALLOC)
+	touch malloc.c
+	$(CC) $(CFLAGS) -c malloc.c -o $(OBJDIR)/malloc.o
+
+compiler.y: opcodes.h
+
+lpc_compiler.y: opcodes.h
+
+efun_defs.c opcodes.h: malloc.c func_spec.c op_spec.c $(OBJDIR)/make_func config.h \
+	func_spec.cpp
+	$(OBJDIR)/make_func > efun_defs.c
+
+config.h: options.h
+
+tags: $(SRC)
+	ctags $(SRC)
+
+TAGS: $(SRC)
+	etags $(SRC)
+
+install: $(DRIVER_BIN) addr_server
+	install -c $(DRIVER_BIN) $(INSTALL_DIR)/$(DRIVER_BIN)
+	install -c addr_server $(INSTALL_DIR)/addr_server
+
+clean:
+	-rm -rf $(OBJDIR) *.o mon.out gmon.out *.tab.c *.tab.h *.orig *.rej
+	-rm -f efun_defs.c *.ln tags *~ TAGS
+	-rm -f cc.h
+	-rm -f lpc_compiler.y compiler.y
+	-rm -f opcodes.h efunctions.h opc.h efun_protos.h
+	-rm -f make_func make_malloc
+	-rm -f addr_server $(DRIVER_BIN) $(DRIVER_BIN).old
+	-rm -f Dependencies func_spec.cpp
+	-touch Dependencies
+
+include Dependencies	# include dependencies generated by gmake depend

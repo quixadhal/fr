@@ -1,0 +1,4 @@
+#obj/handlers/nroff.c
+nroffed_file ({0,"Your player character is built upon 5 stats:Strength     : Your carrying capacity. Intelligence : Your ability to cast spells.Dexterity    : Your ability to avoid attacks and use thiefly skills.Constitution : Your health and capacity to sustain damage.Wisdom       : Your ability to cast divine magic like healing.You'll start the game with scores varying between 6 and 18. You will notknow just what until you've reached level 5 however. Then you can check themout using the command: ability.At any time during the game you may use the command: rearrange.    See also: ability, rearrange.",})
+nroffed_file_name "/doc/helpdir/stats"
+modified_time 794232260

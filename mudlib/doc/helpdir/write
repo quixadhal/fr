@@ -1,0 +1,10 @@
+Usage : write <text>
+
+Write takes the text provided and writes it back to you.  This is of limited
+use, but can come in handy occasionally.
+
+Examples:
+
+alias whoami write Furball
+
+alias whereami write Discworld III

@@ -1,0 +1,4 @@
+#obj/handlers/nroff.c
+nroffed_file ({0,"Chat is a lfeature that allows you to chat to all that is listening to thechat channel. To start listening you type 'chat on', and to turn it off youtype 'chat on'. To use, type 'chat I really want to tell you all that....'Examples:chat on         ; Turns chat onchat off        ; Turns chat offchat Hi people  ; Let's you say Hi people to all that listens to chat.See also: say, shout, tell",})
+nroffed_file_name "/doc/helpdir/chat"
+modified_time 794246673

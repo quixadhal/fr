@@ -1,0 +1,15 @@
+Usage : setmmin <message>
+        setmmout <message>
+
+These commands allow you to set the message printed when you are moved via
+magical means.  Examples of this are teleporting, being summoned magically, etc.
+You will not get these commands until you perform a quest which grants them as
+a reward.
+
+KEEP YOUR ENTRY/EXIT MESSAGES IN THEME WITH Forgotten Realms!
+
+Examples:
+
+setmmin Appears in a flurry of white feathers flash
+setmmout Fades slowly into a a blue magical dot
+
