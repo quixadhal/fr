@@ -1,3 +1,6 @@
+#ifndef _PLAYER_H
+#define _PLAYER_H
+
 #define NO_POWER "Insufficient Social Points.\n"
 #define NOT_ALLOWED "You do not have that ability yet.\n"
 #define SHOUT_COST 20
@@ -10,7 +13,7 @@
 #define RACE_STD "/std/races/unknown"
 #define NO_POWER "Insufficient Social Points.\n"
 #define MAX_IDLE 900
-#define DEATH_CHAR "/obj/death"
+#define DEATH_CHAR clone_object("/obj/death")
 #define DEATH_SHADOW "/obj/death_shadow"
 #define TIME_BETWEEN_SAVES 450
 #define DRUNK_PROP "next drunk heart beat"
@@ -25,3 +28,6 @@
 #define DEFAULT_TIME 10
 
 #define LANGUAGE_HAND "/obj/handlers/languages"
+
+
+#endif

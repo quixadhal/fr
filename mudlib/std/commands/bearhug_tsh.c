@@ -7,8 +7,10 @@ object my_player, my_hugger, my_item;
 
 void destruct_bearhug_shadow() 
 {
-  if (my_hugger) my_hugger->destruct_bearhug();
-  if (my_item) my_item->dest_me();
+  if (my_hugger) 
+    my_hugger->destruct_bearhug();
+  if (my_item) 
+    my_item->dest_me();
   my_player->remove_static_property("nocast");
   my_player->remove_static_property("noguild");
   destruct(this_object());
@@ -51,18 +53,18 @@ int check_duration()
   h_roll += random(20);
   if ( t_roll > h_roll )
   {
-        tell_object(my_player,
-	  "You break free of "+my_hugger->query_cap_name()+" grasp!\n");
-        tell_room(environment(my_player), my_player->query_cap_name()+
-          " struggles and breaks free of "+my_hugger->query_cap_name()+"!\n",
-          ({ my_hugger, my_player}) );
-	tell_object(my_hugger, my_player->query_cap_name()+
-	  " breaks out of your grip!\n");
-	my_player->remove_static_property("noguild");
-	my_hugger->remove_static_property("nocast");
-	my_player->remove_static_property("nocast");
-	my_hugger->remove_static_property("noguild");
-	return 1;
+    tell_object(my_player,
+      "You break free of "+my_hugger->query_cap_name()+" grasp!\n");
+    tell_room(environment(my_player), my_player->query_cap_name()+
+      " struggles and breaks free of "+my_hugger->query_cap_name()+"!\n",
+      ({ my_hugger, my_player}) );
+    tell_object(my_hugger, my_player->query_cap_name()+
+      " breaks out of your grip!\n");
+    my_player->remove_static_property("noguild");
+    my_hugger->remove_static_property("nocast");
+    my_player->remove_static_property("nocast");
+    my_hugger->remove_static_property("noguild");
+    return 1;
   }
   else return 0;
 }
@@ -71,13 +73,12 @@ varargs mixed move_player(string dir, string dest, mixed message, object
 				followee, mixed enter)
 {
   tell_object(my_player, "You cannot move out of "+my_hugger->query_cap_name()+
-	"'s grip!\n");
+    "'s grip!\n");
   return 0;
 }
   
 int query_hold_spell() { return 1; }
 
-/* Given the next two, we shouldn't need this, but anyway */
 int unarmed_attack(object him, object me)
 {
   tell_object(me, "You cannot attack!\n");
@@ -92,14 +93,14 @@ object* query_weapons_wielded()
 int weapon_attack( object him, object me )
 {
   tell_object(my_player, "You struggle to break free of "+
-	my_hugger->query_cap_name()+"'s grasp.\n");
-  tell_room(environment(my_player), my_player->query_cap_name()+" struggles"+
-	" against "+my_hugger->query_cap_name()+".\n",
-	({ me, him }) );
-  tell_object(my_hugger, my_player->query_cap_name()+" struggles against "+
-	"you.\n");
+    my_hugger->query_cap_name()+"'s grasp.\n");
+  tell_room(environment(my_player), my_player->query_cap_name()+" struggles"
+    " against "+my_hugger->query_cap_name()+".\n",
+    ({ me, him }) );
+  tell_object(my_hugger, my_player->query_cap_name()+" struggles against "
+    "you.\n");
   if ( check_duration() )
-        call_out("destruct_bearhug_shadow",0,0);
+    call_out("destruct_bearhug_shadow",0,0);
   return 0;
 }
 
@@ -115,4 +116,24 @@ int cast()
   tell_object(my_player, "You're hardly in a position to do that.\n");
   return 1;
 
+}
+
+int adjust_hp(int amount, object doer)
+{
+  int thres;
+
+  if ( !doer || doer == my_player || doer == my_hugger || amount >= 0 )
+    return my_player->adjust_hp(amount, doer);
+  thres = 50 + (int)my_hugger->query_level();
+  thres = (thres>75)? 75 : thres;
+  if ( random(100) > thres )
+  {
+    tell_object(my_hugger, "You are grazed by the attack!\n");
+    tell_room(environment(my_player), my_hugger->query_cap_name()+
+      " winces as the attack hits "+my_hugger->query_objective()+" too!\n",
+      my_hugger);
+    my_hugger->adjust_hp(amount/(random(3)+1), doer);
+  }
+
+  return my_player->adjust_hp(amount, doer);
 }

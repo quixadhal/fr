@@ -2,107 +2,108 @@
  * bulk.  It is hard to palmn something big ;)
  */
 #define COST 3
-#define SLIP_LEVEL_MOD 100
-#define LEARN_LEVEL 3
-#define TEACH_LEVEL 15
 
-int slip(string str) {
-  object *obs,
-         *obs2,
-         *fail,
-         *t_p,
-         *g_f,
-         *from;
-  int i, j, ret, skill, g_p;
+int slip(string str, object doer)
+{
+  mixed obs;
+  object *obs2, *fail, *t_p, *g_f, *s_f;
+  object me;
+  int i, j, skill, g_p;
   string s1;
 
-  if (!str) {
-    notify_fail("Syntax: slip <objects> to <objects>\n");
+  me = me ? me : this_player();
+
+  str = me->expand_nickname(str);
+
+  if (!str) 
+  {
+    notify_fail("Syntax: slip <objects> to <object>\n");
     return 0;
   }
   
-  if (sscanf(str, "%s to %s", str, s1) != 2) {
-    notify_fail("Syntax: slip <objects> to <objects>\n");
+  if (sscanf(str, "%s to %s", str, s1) != 2) 
+  {
+    notify_fail("Syntax: slip <objects> to <object>\n");
     return 0;
   }
-  obs = find_match(s1, environment(this_player()));
-  if (!sizeof(obs)) {
+
+  obs = find_match(s1, environment(me));
+  if (!sizeof(obs)) 
+  {
     notify_fail("Slip to who?\n");
     return 0;
   }
 
-  skill = (int)this_player()->query_level()*SLIP_LEVEL_MOD;
-  g_p = (int)this_player()->query_gp();
+  obs = obs[0];
+  skill = (int)me->query_level();
+  g_p = (int)me->query_gp();
 
-  for (i=0;i<sizeof(obs);i++) {
-    t_p = fail = g_f = ({ });
-    obs2 = find_match(str, this_player());
-    for (j=0;j<sizeof(obs2);j++)
-      if (obs2[j]->query_in_use())
-      {
-        this_player()->unhold_ob(obs2[j]);
-        this_player()->unwear_ob(obs2[j]);
-      }
-    for (j=0;j<sizeof(obs2);j++)
-      if (obs2[j]->move(obs[i]))
-        fail += ({ obs2[j] });
-      else if (COST > g_p)
-        g_f += ({ obs2[j] });
-      else {
-        if (skill < random(200)*(1+obs2[j]->query_weight()))
-          t_p += ({ obs2[j] });
-        this_player()->adjust_gp(-COST);
-        g_p -= COST;
-      }
-    if (sizeof(fail))
-      write("You cannot slip "+query_multiple_short(fail)+
-            " to "+obs[i]->query_cap_name()+".\n");
-    if (sizeof(g_f))
-      write("Not enough guild points to slip "+query_multiple_short(g_f)+
-            " to "+obs[i]->query_cap_name()+".\n");
-    fail += g_f;
-    if (sizeof(t_p))
-      tell_room(environment(this_player()),
-          this_player()->query_cap_name()+" tries to slip "+
-          query_multiple_short(t_p)+" to "+obs[i]->query_cap_name()+".\n",
-          ({ this_player(), obs[i] }));
-    if (sizeof(fail) != sizeof(obs2)) {
-      write("You slip "+query_multiple_short(obs2-fail)+
-            " to "+obs[i]->query_cap_name()+".\n");
-      ret += sizeof(obs2 - fail);
-      tell_object(obs[i], this_player()->query_cap_name()+
-                  " slips "+query_multiple_short(obs2-fail)+" to you.\n");
+  t_p = fail = g_f = s_f = ({ });
+  obs2 = find_match(str, me);
+  for (j=0;j<sizeof(obs2);j++)
+  {
+    if (obs2[j]->query_in_use())
+    {
+      me->unhold_ob(obs2[j]);
+      me->unwear_ob(obs2[j]);
+    }
+    if (COST > g_p)
+      g_f += ({ obs2[j] });
+    else if (obs2[j]->move(obs))
+      fail += ({ obs2[j] });
+    else 
+    {
+      if ( obs->query_property("sense_life") ||
+           skill < random(obs2[j]->query_weight())+random(10))
+        s_f += ({ obs2[j] });
+      else
+        t_p += ({ obs2[j] });
+      me->adjust_gp(-COST);
+      g_p -= COST;
     }
   }
 
-  notify_fail("Oh no.\n");
-  if (ret)
-    this_player()->adjust_gp(-ret*COST);
-  return ret;
-}
+  if (sizeof(fail))
+    tell_object(me, "You cannot slip "+query_multiple_short(fail)+
+      " to "+obs->query_cap_name()+".\n");
 
-string help() {
-  return 
-"Syntax: slip <objects> to <objects>\n\n"+
-"This command allows you to slip things to players or containers "+
-"without generating a give message.  The use of this command will "+
-"cost you "+COST+" guild points for every object you slip to someone else."+
-  "  It uses level for "+
-"determineing the skill bonus.\n\n"+
-"Example:\n"+
-"> slip frog to khaos\n"+
-"You slip a frog to Khaos.\n\n"+
-"See also:\n"+
-"  palm\n";
-}
+  if (sizeof(g_f))
+    tell_object(me, "Not enough guild points to slip "+
+      query_multiple_short(g_f)+" to "+obs->query_cap_name()+".\n");
 
-int teach(object ob) {
-  if (this_player()->query_skill("blahblah") < TEACH_LEVEL) {
-    return -1;
+  if (sizeof(t_p)) 
+    tell_object(me, "You slip "+query_multiple_short(t_p)+
+      " to "+obs->query_cap_name()+".\n");
+
+  if (sizeof(s_f))
+  {
+    tell_room(environment(me), me->query_cap_name()+" tries to slip "+
+      query_multiple_short(s_f)+" to "+obs->query_cap_name()+".\n",
+      ({ me, obs }));
+    tell_object(obs, me->query_cap_name()+" slipped you "+
+      query_multiple_short(s_f)+".\n");
+    if ( !interactive(obs) )
+    {
+      tell_room(environment(me), obs->query_cap_name()+" doesn't look "
+        "too grateful.\n", ({ }) );
+      obs->attack_by(me);
+    }
   }
-  if (ob->query_skill("blahblahnotused") < LEARN_LEVEL) {
-    return -2;
-  }
-  ob->add_known_command("slip");
+
   return 1;
+}
+
+string help() 
+{
+  return 
+    "Syntax: slip <objects> to <objects>\n\n"
+    "This command allows you to slip things to players or containers "
+    "without generating a give message.  The use of this command will "
+    "cost you "+COST+" guild points for every object you slip to someone "
+    "else.  It uses level for determining success.\n\n"
+    "Example:\n"
+    "> slip frog to khaos\n"
+    "You slip a frog to Khaos.\n\n"
+    "See also:\n"
+    "  palm\n";
 }

@@ -4,7 +4,15 @@ static string short_d,
        plural_d,
        long_d;
 
-void set_short(string str) { short_d = str; }
+// Changed implode(explode(.. to replace_string but screwed it up
+// anyway - Radix, Wonderflug fixed his drool : Jan 11, 1997
+void set_short(string str)
+{
+   if(stringp(str)) 
+      str = replace_string(str,"\n","");
+  short_d = str;
+   return;
+}
 void set_long(string str) { long_d = str; }
 void set_main_plural(string str) { plural_d = str; }
 

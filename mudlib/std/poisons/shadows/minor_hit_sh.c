@@ -37,9 +37,9 @@ int weapon_attack( object him, object me )
   ret = my_weapon->weapon_attack(him, me);
   if ( ret > 0 )
   {
-    tell_object(me, him->query_cap_name()+" winces in pain from the poison "+
+    tell_object(me, him->query_cap_name()+" winces in pain from the poison "
 	"on your weapon.\n");
-    tell_object(him, "You notice some poison on the weapon and the wound "+
+    tell_object(him, "You notice some poison on the weapon and the wound "
 	"seems to flare\nup and burn intensely for a moment.\n");
     tell_room(environment(me), him->query_cap_name()+" winces in pain as "+
 	him->query_pronoun()+" gets hit.\n", ({ him, me}) );

@@ -12,10 +12,10 @@ void setup()
   set_name("mage");
   set_short("mage");
   set_long(
-   "Mages are the most powerful magic-users on "+
-   "Magisk Jord.  Their power lays in quickness of thought "+
-   "and powerful spells rather than hand to hand fighting "+
-   "ability.  They favor the power of  the Arcane and have "+
+   "Mages are the most powerful magic-users on "
+   "Magisk Jord.  Their power lays in quickness of thought "
+   "and powerful spells rather than hand to hand fighting "
+   "ability.  They favor the power of  the Arcane and have "
    "no desire for the 'barbaric' forms of combat.\n"); 
   reset_get();
 }
@@ -28,7 +28,7 @@ void create()
 int query_advance_cost() { return  500; }
 int query_xp_cost()      { return 2500; }
 int query_dice()         { return 6;    }
-int query_thac0_step()   { return 4;    }
+int query_thac0_step()   { return 2;    }
 string query_main_skill() {return "int";}
 
 int query_legal_race(string race) {
@@ -75,12 +75,18 @@ int query_legal_armour(string type)
     case "necklace":
     case "cape":
     case "slippers":
+    case "leather":
          return 1;
     default:
          return 0;
   }
 }
 
+
+int query_dual_wield_penalty(object me, object w1, object w2)
+{
+  return 50;
+}
 
 
 /*
@@ -94,3 +100,5 @@ int query_see_magic()
   return 1;
 } 
 */
+void on_death(object player, object killer) {
+}

@@ -1,152 +1,113 @@
 /*** Meteor Swarm Spell ***/
 /*** Coded by:  Eerevann Tokani ***/
+/*** Adapted to base spell by Wonderflug ***/
 
 #define SP_NAME "Meteor Swarm"
 #define GP_COST 18
-#define TYPE "fire"
+#define TYPE "missile"
 #define SIZE_OF_DICE 4
-#define save_type "spells"
+#define save_type "stone"
 
-inherit "/std/spells/patch.c";
+inherit "/std/spells/base.c";
 
-/* find_unique_match() does a find match that ensures the returned 
-   object list contains no duplicates
-   find_one_match() returns only the first matched object
-*/
-mixed find_unique_match(string find,mixed in);
-mixed find_one_match(string find,mixed in);
-int ADJ_COST;
+void setup()
+{
+  set_spell_name("Meteor Swarm");
+  set_spell_level(9);
+  set_school("invocation");
 
-mixed spell(string str,int skill, int cast);
+  set_target_type("many");
+  set_range(2);
+  set_line_of_sight_needed(1);
 
-string help() {
-       return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "School: Invocation\n"+
-       "Level: 9th\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Damage Type: "+TYPE+"\n"+
-       "Saving Throw: 1/2\n"+
-       "Description: \n"+
-       "     This spell will envelope your enemies in a fiery shower of "+
-       "meteors which expode upon impact.  The damage is 40-160 points "+
-       "damage.\n\n";
+  set_help_extras(
+    "Damage Type: " TYPE "\n"
+    "Saving Throw: 1/2");
+  set_help_desc("This spell will envelope your enemies in a fiery shower of "
+    "meteors which explode upon impact, hitting every target in the blast "
+    "radius (ie, range).  The damage is 40-160 points damage.");
+
+  set_casting_time(2);
+  set_gp_cost(18);
+  set_rounds(
+    ({
+      ({
+        "4 flaming spheres of molten rock appear in the air before you.\n",
+        "4 flaming balls of molten rock suddenly appear in the air.\n"
+      }),
+      "round2"
+    }) );
 
 }
 
 
-int cast_spell(string str)
+int round2(object caster, mixed target, mixed out_range, int time, int quiet)
 {
-  int skill;
-  mixed ret;
-
-  ret = spell(str, skill, 1);
-  if (stringp(ret))
-  {
-    notify_fail(ret);
-    return 0;
-  }
-  write("You begin to cast "+SP_NAME+".\n");
-  say(this_player()->query_cap_name()+" begins casting an offensive spell.\n",
-	this_player());
-  return 1;
-}
-
-mixed spell(string str, int skill, int cast)
-{
-  mixed ob;
-  if ((int)this_player()->query_spell_effect("offensive"))
-    return "You are already casting an offensive spell.\n";
-  ob = find_unique_match(str, environment(this_player()));
-
-  this_player()->add_spell_effect(2, "offensive", "SP_NAME", this_object(),
-    "hb_spell", ({ skill,ob,cast }));
-  return 1;
-}
-
-int hb_spell(object caster, mixed *params, int time)
-{
- int damage;
- string str;
- int NO_OF_DICE;
- int j;
- int i;
+  int damage;
+  string str;
+  int NO_OF_DICE;
+  int j;
+  int i;
  
- NO_OF_DICE = 40;
+  NO_OF_DICE = 40;
 
-  if ( time == 2 )
-  {
-    tell_object(caster, "4 flaming spheres of molten rock appear in the air before you.\n");
-    tell_room(environment(caster), "4 flaming balls of molten rock form in the air in front of "+
-    caster->query_cap_name()+".\n", caster);
-    return 1;
-  }
   
-  str = (string)caster->query_cap_name();
+  if((i = member_array(caster, target)) != -1)
+    target = delete(target, i, 1);
+  
 
-  /* to remove the caster, if he uses 'all' */
-  if((i = member_array(caster, params[1])) != -1)
-    params[1] = delete(params[1], i, 1);
-  
-  if(!sizeof(params[1])) 
+  if ( !quiet )
   {
-    notify_fail("There is noone here by that name.\n");
-    return 0;
+    tell_room(environment(caster), caster->query_cap_name()+
+      " chants, 'meseious pyros blasious'.\n", caster);
+    tell_object(caster, "You chant, 'meseious pyros blasious'.\n");
   }
 
-   /* Specialists spend only half guild points to cast spells native to their
-    * school, so GP_COST is checked and halved, if necessary.     */
+  if(!sizeof(target)) 
+  {
+    tell_object(caster, "Blasts of molten rock reign down around.. "
+      "nobody.  Everyone got away.\n");
+    tell_room(environment(caster), caster->query_cap_name()+" gestures "
+      "and meteors fall in a massive rain of harmlessness, hitting nobody.\n",
+      caster);
+    return -1;
+  }
   
-  ADJ_COST = GP_COST;
-  
-  if((string)caster->query_guild_name() == "invoker")
-    ADJ_COST = GP_COST/2;
-  
- if (params[2] && (int)caster->adjust_gp(-ADJ_COST)<0)
- {
-  tell_object(caster, "You are currently too "+
-       "mentally drained to cast.\n");
-  return 0;
- }
+  tell_object(caster, "You send the swarm of meteors into a rain of "
+    "death and destruction.\n");
+  tell_room(environment(caster), caster->query_cap_name()+" gestures and "
+    "meteors fall in a rain of death and destruction.\n", caster);
 
-  tell_room(environment(caster), str+" chants, 'meseious pyros blasious'.\n\n"+
-    str+" makes a gesture and the meteors streak toward their targets!\n", ({ caster, params[1] }) );
-  tell_object(caster, "You chant, 'meseious pyros blasious'.\n");
-  
   i = 0;
-  while(i<sizeof(params[1])) {
-  damage = 0;
-    if(params[1][i] &&
-       environment(params[1][i]) == environment(caster))
-    {
-      params[1][i]->attack_by(caster);
+  for ( i=sizeof(target)-1; i>=0; i-- )
+  {
+    tell_object(target[i], "A meteor rains down out of the sky and "
+      "blasts into you!\n");
+    tell_room(environment(target[i]), target[i]->query_cap_name()+
+      " disappears in the explosion of a falling meteor!\n",
+      target[i]);
+    target[i]->attack_by(caster);
+    damage = 0;
+    damage = roll(NO_OF_DICE, SIZE_OF_DICE);
+    damage = wiz_fix_damage(caster,target[i],damage,save_type);
 
-  for ( j=1 ; j<=NO_OF_DICE ; j++)
-    damage = damage + random(SIZE_OF_DICE)+1;
+    if ( (int)target[i]->query_hp() < damage )
+      tell_object(caster, target[i]->query_cap_name()+" is obliterated "
+        "into a pile of ash by your spell!\n");
 
-  damage = params[1][i]->spell_saving_throw(params[1][i],damage,save_type);
+    target[i]->spell_damage(target[i],damage,TYPE,caster);
 
-  params[1][i]->spell_damage(params[1][i],damage,TYPE,caster);
-
-  tell_object(params[1][i], str + " envelopes you in a fiery meteor shower!\n");
-
-      if(params[1][i])
-	i++;
-      else
-	params[1] = delete(params[1], i, 1);
-    } else {
-      params[1] = delete(params[1], i, 1);
-    }
+    if ( !target[i] )
+      target = delete(target, i, 1);
   }
 
-  say(str + " envelopes "+(str = query_multiple_short(params[1]))+
-   " in a fiery meteor shower!\n", ({caster,params[1]}));
-  tell_object(caster, "You envelope " + str + " in a "+
-   " in a fiery meteor shower!\n");
+  tell_object(caster, "You envelop "+query_multiple_short(target)+
+    " in the meteor shower.\n");
 
-   
+  if ( sizeof(out_range) )
+    tell_object(caster, "Alas, "+query_multiple_short(out_range)+
+      " fled to safety.\n");
 
-  return GP_COST;
+  return 0;
 
 }

@@ -3,28 +3,20 @@
  * Blue.
  */
 #include "socket.h"
-#include "inet.h"
 
 /*
  * inetd type means it all runs through ident's bound socket.
  * It does all sort of useful and hairy things this way.
  */
-#define VALID_TYPE ({ "mud", "tcp", "udp", "inetd", "inetd_udp" })
-#define INETD_TYPE 3
-#define INETD_UDP_TYPE 3
+#define VALID_TYPE \
+  ({ "mud", "tcp", "udp", "bin_tcp", "bin_udp", "inetd", "inetd_udp" })
+#define INETD_TYPE 5
+#define INETD_UDP_TYPE 5
 #define CONFIG "/net/config/"
 #define NAMESERVER "/net/nameserver"
 
-#define DEBUG 1
-/*
 #undef DEBUG
-*/
-
-#ifdef DEBUG
-#define TC(STR) tell_object(find_player("tester"), STR)
-#else
 #define TC(STR)
-#endif
 
 /* This is indexed by file descriptor */
 mapping services,
@@ -55,7 +47,7 @@ void connect_inetd() {
                socket_error(my_socket)+".\n");
     return ;
   }
-  NAMESERVER->lookup_service("inetd", MUD_NAME, "finish_lookup");
+  NAMESERVER->lookup_service("inetd", mud_name(), "finish_lookup");
 } /* connect_inetd() */
 
 void finish_lookup(string name, string host, int port) {
@@ -97,7 +89,7 @@ void load_config(string name) {
     while (strlen(lines[i]) && lines[i][0] == ' ')
       lines[i] = lines[i][1..1000];
     if (!strlen(lines[i]) || lines[i][0] == '#') continue;
-    TC("INETD: Checking line "+lines[i]+"\n");
+    TC("Checking line "+lines[i]+"\n");
     if (sscanf(lines[i], "%s %s %s", name, str, file) == 3) {
       if ((type = member_array(str, VALID_TYPE)) == -1)
         continue;
@@ -105,8 +97,8 @@ void load_config(string name) {
         my_valid[name] = file;
         connect_inetd();
       } else {
-        TC("INETD: Looking up "+name+".\n");
-        NAMESERVER->lookup_service(name, MUD_NAME, "found_service",
+        TC("Looking up "+name+".\n");
+        NAMESERVER->lookup_service(name, mud_name(), "found_service",
                                  ({ type, file }));
       }
     } else
@@ -117,7 +109,7 @@ void load_config(string name) {
 void found_service(string name, string host, int port, mixed args) {
   int fd, ret;
 
-  TC("INETD: "+sprintf("found_service called with %O, %O, %O.\n", name, host, port));
+  TC(sprintf("found_service called with %O, %O, %O.\n", name, host, port));
 /* Failed :( */
   if (!port) {
     write_file("/log/INETD", "Failed to find service "+name+".\n");
@@ -194,7 +186,7 @@ void write_fd(int fd, mixed mess) {
       file_name(previous_object()) != services[fd]) {
     event(users(), "inform", "Security violation in /net/inetd.c ("+
                    file_name(previous_object())+" : "+services[fd]+")",
-                   "security");
+                   "cheat");
     return ;
   }
   if (!pointerp(to_go[fd])) {
@@ -222,7 +214,7 @@ void close_fd(int fd) {
       file_name(previous_object()) != services[fd]) {
     event(users(), "inform", "Security violation in /net/inetd.c ("+
                    file_name(previous_object())+" : "+services[fd]+")",
-                   "security");
+                   "cheat");
     return ;
   }
   bing = intp(to_go[fd]) && to_go[fd];
@@ -233,16 +225,12 @@ void close_fd(int fd) {
 } /* close_fd() */
 
 void close_callback(int fd) {
-  string catch_error;
-  TC("INETD: fd:"+fd+" services[fd]:"+services[fd]+"\n");
   if (!services[fd])
     return ;
-  catch_error=catch(services[fd]->close_callback(fd));
-  if (catch_error) {
+  if (catch(services[fd]->close_callback(fd))) {
     if (services[fd] == "waiting")
       my_valid[fd][1]->close_callback(fd);
-    TC("INETD: Error "+fd+sprintf("%O\n", my_valid[fd]));
-    TC("INETD: catch_error:"+catch_error+"\n");
+    TC("Error "+fd+sprintf("%O\n", my_valid[fd]));
   }
   map_delete(services, fd);
   map_delete(my_valid, fd);
@@ -331,26 +319,6 @@ void inetd_read(int fd, string mess) {
       if (sscanf(bits[0], "%s %s", bits[0], mess) == 2)
         bits = ({ bits[0], mess }) + bits[1..1000];
       bits = explode(bits[0], " ")+bits[1..1000];
-/*
-      mess = mess[0..strlen(mess)-2];  /* Strip the \n */
-      mess = bits[0];
-      if (!my_valid[mess]) {
-/* Invalid service... */
-        socket_write(fd, "UNKNOWN SERVICE\n");
-        socket_close(fd);
-        return ;
-      }
-/* Don't need the yes string.
-      socket_write(fd, "YES!\n");
- */
-      services[fd] = my_valid[mess];
-      services[fd]->connected(fd);
-      if (sizeof(bits) > 1) {
-        read_callback(fd, implode(bits[1..1000], "\n"), 0);
-      }
-      return ;
-    default :
-      read_callback(fd, mess, 0);
       return ;
   }
 } /* inetd_read() */
@@ -458,13 +426,13 @@ void finish_inet_open(string name, string host, int port, mixed *args) {
   call_out("close_callback", 5*60*60, new_fd);
   my_valid[new_fd] = ({ args[1], file_name(args[0]), args[2] });
   services[new_fd] = "waiting";
-  TC("INETD: Opening "+new_fd+"\n");
+  TC("Opening "+new_fd+"\n");
 } /* finish_inet_open() */
 
 void finish_datagram_open(string name, string host, int port, mixed *args) {
   int s;
 
-  TC("INETD: "+sprintf("Called datagram with: %O, %O, %O\n", name, host, port));
+  TC(sprintf("Called datagram with: %O, %O, %O\n", name, host, port));
   if (!port) {
     if (args[0])
       args[0]->failed("lookup", name, args[1], host);
@@ -481,7 +449,7 @@ void finish_datagram_open(string name, string host, int port, mixed *args) {
 /* Tarnation... */
     if (args[0])
       args[0]->failed("socket_write", name, args[1], host);
-    TC("INETD: Failed.\n");
+    TC("Failed.\n");
   }
   socket_close(s);
 } /* finish_datagram_open() */

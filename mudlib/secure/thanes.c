@@ -12,8 +12,8 @@ string query_of(string str)
 {
  switch(str)
  {
-  case "bar":
-    return "a domain"; 
+//  case "bar":
+//    return "a domain"; 
   default:
     return 0;
  }

@@ -13,7 +13,7 @@ mixed spell(string str, int cast);
 string help() 
   {
   return
-    "This spell kills the one you use it at, if the victim is powerful enough "+
+    "This spell kills the one you use it at, if the victim is powerful enough "
     "it may survive.\n\n";
   }
  
@@ -70,7 +70,7 @@ mixed spell(string str, int cast)
   say((string)this_player()->query_cap_name() + " shouts: DIE " +
      (string)ob->query_cap_name() + "!\n");
   tell_object(ob, "You feel " + (string)this_player()->query_cap_name() +
-    "'s word attack you.\n\n" +
+    "'s word attack you.\n\n" 
     "The powerword killed you.\n\n");
   ob->do_death();
   return 1;

@@ -3,7 +3,7 @@ inherit "/std/object";
 
 string plant;
 
-set_plant(s)
+set_plant(string s)
 {
    plant = s;
 }

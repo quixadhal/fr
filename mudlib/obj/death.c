@@ -1,116 +1,92 @@
-inherit "std/object";
+// Death, Version 2.0
+// Complete recode of original "Cyric" version, now uses Grimbrand
+// Now uses heart_beat instead of call_out's
+// Radix - January 17, 1996
 
-object person;
+inherit "/std/object.c";
 
-void person_died(string name)
+void person_died(string str);
+void do_chat(string str);
+
+object pl;
+int cnt;
+
+void person_died(string str)
 {
-  object ob;
-
-  person=find_living(name);
-  person->add_property("dead", 1);
-  person->add_property("noregen", 1);
-  call_out("talk", 3);
+   pl = find_living(str);
+   if(!pl) return;
+   pl->set_dead(1);
+   pl->add_timed_property("noregen",1,50);
+   set_heart_beat(1);
 }
 
-void talk()
+void do_chat(string str)
 {
- if(person)
- {
-  tell_object(person,
-"A cold voice fills your mind and starts to speak:\n"+
-"The voice exclaims: Why are you so careless mortal ?\n" +
-"The voice informs you: Bloody corpses like that are not very "+
-"civilized you know.\n");
-  call_out("talk2", 2);
- }
+   tell_object(pl,str+"\n");
+   return;
 }
 
-void talk1()
+heart_beat()
 {
- if(person)
- {
-  tell_object(person,
-"The voice exclaims: Sorry, forgot to introduce myself, I'm Cyric.\n" +
-"Cyric tells you: You really should be more afraid, I'm the God of DEATH.\n");
-  if(this_player()->query_creator())
-    tell_object(person,"Cyric asks you: So you thought yourself to be immune "+
-     "DEATH, oh puny Creator ?\nCyric informs you: Noone escapes ME!\n");
-  call_out("talk2", 5);
- }
-}
+   cnt++;
+   
+   // Damn, the bugger off and quit
+   if(!pl) 
+   {
+      dest_me();
+      return;
+   }
 
-void talk2()
-{
- if(person)
- {
-  tell_object(person,
-"Cyric says: I suppose you'd like to have a chance of getting raised from "+
-"the dead before you're mine forever.\n");
-  call_out("talk3", 5);
- }
-}
-
-void talk3()
-{
- if(person)
- {
-  tell_object(person,
-"Cyric informs you: I so love to watch puny mortals strive to get someone to "+
-"raise them before I take the time to deal with them myself.\n");
-  call_out("talk4", 6);
- }
-}
-
-void talk4()
-{
- if(person)
- {
-  tell_object(person,
-"Cyric says: The worst of luck at playing GHOST mortal!\n");
-  call_out("talk5", 1);
- }
-}
-
-void talk5()
-{
- if(person)
- {
-  tell_object(person, "Cyric cackles with glee.\n");
-  call_out("talk6", 10);
- }
-}
-
-void talk6()
-{
- if(person)
- {
-  tell_object(person,
-   "Cyric says: You'll see me again soon enough mortal. Be seing YOU!\n");
-  person->remove_property("noregen");
-  call_out("talk7", 4);
- }
-}
-
-void talk7()
-{
- if(!person)
- {
-  tell_object(person,"Cyric says: Get along now before I change my mind....\n"+
-   "Cyric waves his scythe dismissively.\n");
-  person->move_to_start();
-  move(environment(person));
-  call_out("talk8", 2);
- }
-}
-
-void talk8()
-{
- int pos;
-
- if(person)
- {
-  tell_object(person,
-   "Cyric flies away, and the stench of Death lifts.\n");
-  remove_call_out("timeout");
- }
+   switch(cnt)
+   {
+   case(2) :
+      do_chat("A razor sharp chill runs up your spine.");
+      break;
+   case(4) : 
+      do_chat("A dark voice booms in your mind, cackling with laughter.");
+      break;
+   case(6) :
+      if(pl->query_creator())
+         do_chat("The voice asks: Foolish immortal, did you think you "
+            "could escape me?");
+      else
+         do_chat("The voice says: Let me introduce myself, I'm "
+            "Grimbrand, Demi-God of Darkness.");
+      break;
+   case(8) :
+      if(pl->query_creator())
+      {
+         do_chat("The voice cackles and fades away.");
+         pl->remove_timed_property("noregen");
+         call_out("dest_me",0);
+         break;
+      }
+      else
+         do_chat("Grimbrand tells you: It looks like you were quite "
+            "foolish today.");
+      break;
+   case(10) :
+      do_chat("Grimbrand cackles with glee upon looking at your "
+         "bloody corpse.");
+      break;
+   case(12) :
+      do_chat("Grimbrand says: I can strike your soul to hell if "
+         "I so choose.");
+      break;
+   case(14) :
+      do_chat("Grimbrand grins wickedly.");
+      break;
+   case(16) :
+      do_chat("Grimbrand exclaims: I'll give you another chance worthless "
+         "mortal!");
+      break;
+   case(18) :
+      do_chat("Grimbrand laughs malicously at you.");
+      break;
+   case(20) :
+      do_chat("The feeling of evilness subsides as his voice disappears.");
+      pl->remove_timed_property("noregen");
+      call_out("dest_me",0);
+      break;
+   }
 }

@@ -27,7 +27,7 @@ attack_by(object ob)
 {
   tell_object(ob, "You kill "+my_player->query_cap_name()+" in "+
     my_player->query_possessive()+" sleep.\n");
-  tell_object(my_player, "You were killed in your sweetest sleep by the "+
+  tell_object(my_player, "You were killed in your sweetest sleep by the "
     "infamous "+ob->query_cap_name()+".\n");
   my_player->do_death();
   return 1;

@@ -5,11 +5,11 @@ void setup()
  set_name("druid");
  set_short("Druid");
  set_long(
-	"Druids are the keepers of nature.  They protect nature and all "+
-	"wildlife, and must be either neutral good or true neutral.  They "+
-	"are very strong spellcasters, having minor talents in healing, "+
-	"and a well balanced array of fighting and combat affecting spells.  "+
-	"Druid spells are cast by going into a trance and becoming one with "+
+	"Druids are the keepers of nature.  They protect nature and all "
+	"wildlife, and must be either neutral good or true neutral.  They "
+	"are very strong spellcasters, having minor talents in healing, "
+	"and a well balanced array of fighting and combat affecting spells.  "
+	"Druid spells are cast by going into a trance and becoming one with "
 	"nature, drawing power from the earth itself.\n");
  reset_get();
 }
@@ -46,6 +46,7 @@ int query_legal_race(string race)
   switch(race)
     { 
     case "drow":
+    case "duergar":
     case "orc":
     case "half-orc":
     case "goblin":

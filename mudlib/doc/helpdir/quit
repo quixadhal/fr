@@ -1,7 +1,8 @@
 Usage : quit
 
 When you are finished playing, this command will save you and you will then
-leave the mud.  You will normally drop all your possesions so it is a good
-idea to go and sell them first.  Some items on the mud will remain with you
-over quits.  Quitting forces you to save so nothing will be lost and you do
-not need to save before quitting.
+leave the mud.  Quitting forces you to save so nothing will be lost and 
+you do not need to save before quitting.
+
+See also:
+save, su, upgrade

@@ -4,7 +4,7 @@
  */
 mapping map_nicknames;
  
-string *query_nicknames() { return map_nicknames+ ({ }); }
+string *query_nicknames() { return keys(map_nicknames) + ({ }); }
 
 void nickname_commands() {
   add_action("delete_nickname", "dn*ickname");
@@ -97,7 +97,7 @@ int nickname(string str) {
     return print_nicknames();
  
   if (sscanf(str,"%s %s",s1,s2)!=2) {
-    if (!map_nicknames[s1]) {
+    if (!map_nicknames[str]) {
       notify_fail("That nickname does not exist.\n");
       return 0;
     }

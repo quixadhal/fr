@@ -21,12 +21,12 @@ mixed find_one_match(string find,mixed in);
 /*** Help file here ***/
 string help() {
    return
-   "\n\n"+
-   "Spell Name: "+SP_NAME+"\n"+
-   "Sphere:  Divination\n"+
-   "Level:  2nd\n"+
-   "Gp Cost: "+GP_COST+"\n"+
-   "Description: \n"+
+   "\n\n"
+   "Spell Name: "+SP_NAME+"\n"
+   "Sphere:  Divination\n"
+   "Level:  2nd\n"
+   "Gp Cost: "+GP_COST+"\n"
+   "Description: \n"
    "   This spell detects the alignment of a player or NPC.\n";
   }
  
@@ -64,7 +64,7 @@ mixed spell(string str, int cast)
   
   write("You call upon the gods to help you detect the alignment of " +
         capitalize(str) + ".\n");
-  say(this_player()->query_cap_name()+" casts some sort of divination "+
+  say(this_player()->query_cap_name()+" casts some sort of divination "
        "magic.\n");
   alignment = ob->query_al();
   switch (alignment)

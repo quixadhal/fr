@@ -1,4 +1,4 @@
-/* Hamlet July 1995.  This is a heavily hacked bulletin board.  
+/* Hamlet July 1995.  This is a heavily hacked collection of scrolls.  
    It's going to look like an NPC and 'tell stories' rather than
    have posts.
  

@@ -21,9 +21,24 @@ void create() {
     seteuid("Root");
     box_info = ({});
     my_groups = ([]);
-    mud_groups = (["gods":({"god"}), "mudlib":({"god"}), "bugs":({"god"}), ]);
+    mud_groups = (["gods":({"baldrick","taniwha","timion","hokemj",
+                        "grimbrand", "radix", "raisa"}),
+          "mudlib":({"baldrick","taniwha","asmodean","hamlet","radix","raskolnikov","anirudh","wonderflug"}),
+          "thanes":({"radix","grimbrand","timion","taniwha",
+                     "khelben", "tek","shaper", "dhark", "rathburn", "baldrick",
+                     "raisa","alansyn","messier", "cailet","santino","arclight","dwimmerlaik" }),
+          "agency":({"vhaeraun"}), // real estate
+          "bugs":({"taniwha","hamlet","radix","fengarance","grimbrand",
+                   "anirudh", "timion","raskolnikov", "baldrick"}),
+          "spells":({"taniwha","falco","wonderflug","caanan","anirudh"})
+         ,"stories":({"krelk","hamlet"})
+         ,"patrons" : ({ })    // Radix 1996
+         ]);
+   // Had to keep seperate from above for safety - Radix
+   catch(mud_groups["patrons"] = "/d/aprior/master"->query_patrons());
 
     file = "";
+
 }
 
 int valid_access(string func) {
@@ -168,7 +183,9 @@ void notify_online(string *who, string from, string sub) {
           str = "    New mail has arrived from $N\n    Subject: $S";
         str = replace_string(str, "$N", capitalize(from));
         str = replace_string(str, "$S", sub);
-        tell_object(ob, wrap(str, (int)ob->getenv("screen")));
+      //tell_object(ob,str);
+   tell_object(ob,wrap(str,(int)ob->query_cols()) );
+        //tell_object(ob, wrap(str, (int)ob->getenv("screen")));
         if(mail=present(POST_ID, ob)) mail->reset_post();
     }
 }
@@ -214,6 +231,12 @@ void mark_read(string who, string id) {
 }
 
 mapping query_mud_groups() { return mud_groups; }
+int query_mailing_list(string which) {
+  if(!which)  return 1;
+  if(mud_groups[which])  return 1;
+
+  return 0;
+}
 
 void flush_files() {
     if(!sizeof(box_info) && !sizeof(my_groups)) rm(file+".o");

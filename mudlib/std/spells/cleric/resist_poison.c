@@ -1,126 +1,79 @@
- 
- 
 /*** Resist Poison Spell ***/
-/*** Blame this spell on Caanan ***/
-inherit "/std/spells/patch.c";
- 
-/* find_unique_match() does a find match that ensures the returned
-   object list contains no duplicates
-   find_one_match() returns only the first matched object
-*/
-mixed find_unique_match(string find,mixed in);
-mixed find_one_match(string find,mixed in);
- 
-#define SP_NAME "Resist Poison"
-#define GP_COST 4
+/*** Created by Eerevann Tokani ***/
+/*** Changed this_player() calls to variable caster for NPC use -Caanan ***/
+/*** ->base spell by Wonderflug ***/
+
 #define TYPE "poison"
  
- 
-string help() {
-       return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "Sphere: Protection\n"+
-       "Level: 2nd\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Description: \n"+
-       "    This spell reduces damage done by Poison based attacks "+
-       "by 50%.  The duration is based upon the casters level.\n\n";
- 
- 
+inherit "/std/spells/base.c";
+
+void setup()
+{
+  set_spell_name("Resist Poison");
+  set_spell_level(2);
+  set_sphere("protection");
+
+  set_target_type("one");
+  set_range(0);
+
+  set_help_desc("This spell reduces damage done by Poison based attacks "
+    "by 50%.  The duration is based upon the casters level.");
+
+  set_gp_cost(4);
+  set_casting_time(1);
+  set_rounds( ({ "round1" }) );
 }
  
-mixed spell(string str, int skill, int cast, object caster);
- 
-int cast_spell(string str, object cast)
-{
-  int skill;
-  mixed ret;
-  object caster;
- 
-  caster = cast ? cast : this_player();
- 
-  str = (string)caster->expand_nickname(str);
- 
-  ret = spell(str, skill, 1, caster);
-  if (stringp(ret))
-  {
-    notify_fail(ret);
-    return 0;
-  }
-  tell_object("You start to cast "+SP_NAME+".\n");
-  tell_room(environment(caster), caster->query_cap_name()+" begins to cast a
-            spell.\n", caster);
-  return 1;
-  }
- 
-mixed spell(string str, int skill, int cast, object caster)
-{
-  mixed ob;
- 
- if ((int)caster->query_spell_effect("defensive"))
-    return "You are already casting an defensive spell.\n";
- ob = find_one_match(str, environment(caster));
- if (sizeof(ob))
-    ob = ob[0];
- else
-    ob = 0;
- 
- caster->add_spell_effect(1, "defensive", SP_NAME,
-         this_object(), "hb_spell", ({ skill,ob,cast }));
-  return 1;
-}
- 
-int hb_spell(object caster, mixed *params)
+int round1(object caster, mixed target, mixed out_range, int time, int quiet)
 {
   int resist_value;
   int level;
  
-  if (!params[1])
-   {
+  if (!target)
+  {
     tell_object(caster,
-       "Your spell failed ... there is no one of that name here.\n");
-    return 0;
-   }
-  if (params[2] && (int)caster->adjust_gp(-GP_COST)<0)
-   {
-     tell_object(caster, "You fail to draw enough energy from "+
-         "your god.\n");
-     return 0;
-   }
- 
-  tell_room(environment(caster), (string)caster->query_cap_name()+
-           " chants, 'amelio bilos'.\n", ({params[1],caster}));
- 
-  if(params[1] == caster)
-   {
-    tell_object(params[1], "You chant, 'amelio bilos'.\n");
-    tell_object(params[1], "You cast "+SP_NAME+" upon yourself.\n");
+      "Your spell failed ... there is no one of that name here.\n");
+    return -1;
+  }
+    
+  if ( !quiet )
+  {
     tell_room(environment(caster), (string)caster->query_cap_name()+
-      " casts a spell upon "+params[1]->query_objective()+"self.\n",params[1]);
-   }
+      " chants, 'bilos rissas cleios'.\n", ({target,caster}));
+    tell_object(caster, "You chant, 'bilos rissas cleios'.\n");
+  }
+    
+  if(target == caster)
+  { 
+    tell_object(target, "You feel resistant to poison attacks.\n");
+    tell_room(environment(caster), (string)caster->query_cap_name()+
+      " seems to look much hardier..\n",target);
+  }
   else
   {
-    tell_object(caster, "You chant, 'amelio bilos'.\n");
- 
-    tell_object(params[1], (string)caster->query_cap_name()+
-                " chants, 'amelio bilos'.\n");
- 
-    tell_object(params[1], "You feel resistant to Poison attacks.\n");
- 
-    tell_object(caster, "You cast "+SP_NAME+" on "+
-    (string)params[1]->query_cap_name() + ".\n");
- 
-    tell_room(environment(caster), (string)caster->query_cap_name()+
-        " casts a spell upon "+params[1]->query_cap_name()+".\n",
-        ({params[1],caster}));
+    tell_object(target, "You feel resistant to Poison attacks.\n");
+    tell_object(caster, "You cast Resist Poison on "+
+      (string)target->query_cap_name() + ".\n");
+    tell_room(environment(caster), (string)target->query_cap_name()+
+      " seems to look much hardier.\n",
+      ({target,caster}));
   }
  
   resist_value = 50;
+  level = (int)caster->query_level();
+
+  switch( caster->query_sphere_power("protection") )
+  {
+    case "minor":
+      resist_value = 40;
+      level -= 5;
+      break;
+    case "major":
+      resist_value = 60;
+      level += 5;
+  }
  
-  params[1]->add_timed_property(TYPE, resist_value,
-        50+((int)caster->query_level()));
- 
-  return GP_COST;
+  target->add_timed_property(TYPE, resist_value, 20*level);
+  
+  return 0;
 }
- 

@@ -27,8 +27,10 @@ int skill_list(string str) {
   bits = ({ });
 
   /* Masking this one, don't need the skilltree yet. */
+  /*
   command("skills");
   return 1;
+  */
  
   if (str) {
     arr = (mixed *)SKILL_OB->query_skills();

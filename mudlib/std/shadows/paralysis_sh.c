@@ -26,7 +26,7 @@ int do_suppress(string str)
 attack_by(object ob) 
 {
   tell_object(ob, "You kill the paralyzed "+my_player->query_cap_name()+".\n");
-  tell_object(my_player, "You were killed while paralyzed by the "+
+  tell_object(my_player, "You were killed while paralyzed by the "
     "infamous "+ob->query_cap_name()+".\n");
   my_player->do_death();
   return 1;

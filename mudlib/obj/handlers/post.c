@@ -1,3 +1,6 @@
+// From Descartes .. who knows when and where...
+// Changed TP->getenv() to TP->query_property, Radix July 1996
+
 #include <ed.h>
 #include <post.h>
 
@@ -33,9 +36,9 @@ string get_header_time(int x);
 
 void create() {
     ::create();
-    set_name("post box");
-    set_aliases(({ "box", "post box", POST_ID }) );
-    set_short("an imaginary post box");
+    set_name("carrier pigeon");
+    set_aliases(({ "pigeon","dead pigeon","carrier pigeon","box", "post box", POST_ID }) );
+   set_short("A dead carrier pigeon");
     set_long("You mail with this.\n");
     fwd_flag = -1;
     box_info = ({});
@@ -48,8 +51,7 @@ void init() {
     int i;
 
     if(this_player() != environment(this_object())) {
-        dest_me();
-        if(this_object()) destruct(this_object());
+      call_out("dest_me",0,0);
         return;
     }
     box_info = ({});
@@ -77,7 +79,7 @@ void start_mail(string str) {
     write("Imaginary Intermud Postal Service (IIPS) 1.0 for the Discworld Mudlib\n");
     write("Descartes of Borg 1993    (type \"?\" for help)\n");
     write("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
-    if(this_player()->getenv("MAIL_NO_HEADERS")) do_mail(0);
+    if(this_player()->query_property("MAIL_NO_HEADERS")) do_mail(0);
     else headers(0);
 }
 
@@ -389,10 +391,17 @@ void handle_delete(string cmd, string arg) {
    string *list;
    int i;
    int start,end;
+   if(!arg || arg == "")
+   {
+      old_handle_delete(cmd,arg);
+      return;
+   }
    list = explode(arg,",");
    switch(sizeof(list))
    {
     case 0:
+      write("Invalid letter number \"?\" for help.\n");
+   break;
    case 1:
       old_handle_delete(cmd,arg);
     break;
@@ -412,7 +421,7 @@ void handle_delete(string cmd, string arg) {
 }
 
 void do_quit(string str) {
-    if(!this_player()->getenv("MAIL_DELETE_PROMPT") || str == "Q")
+    if(!this_player()->query_property("MAIL_DELETE_PROMPT") || str == "Q")
         really_quit(str);
     else if(member_array(1, delete) == -1) really_quit(str);
     else {
@@ -512,7 +521,7 @@ void get_text(string str) {
 
     tmp_post["message"] = str+"\n";
     tmp_post["message"] += (string)POSTAL_D->read_sig(owner);
-    if(!this_player()->getenv("MAIL_NO_CC")) {
+    if(!this_player()->query_property("MAIL_NO_CC")) {
         write("Cc: ");
         input_to("get_cc");
         return;
@@ -655,14 +664,14 @@ string letter_head(mapping this_letter, int ansi) {
     int i, max;
     string ret;
 
-    ret = ctime(this_letter["date"])+" from ";
+  ret = ctime((int)this_letter["date"])+" from ";
     ret += "%^GREEN%^"+capitalize(this_letter["from"])+"%^RESET%^\n";
     ret += "To: ";
     for(i=0, max = sizeof(this_letter["to"]); i<max; i++)
       ret += capitalize(this_letter["to"][i])+" ";
-    if(!sizeof(this_letter["cc"])) ret = wrap(ret);
+    if(!sizeof(this_letter["cc"])) ret = wrap(ret,0);
     else {
-        ret = wrap(ret)+"Cc: ";
+        ret = wrap(ret,0)+"Cc: ";
         for(i=0, max = sizeof(this_letter["cc"]); i<max; i++)
           ret += capitalize(this_letter["cc"][i])+" ";
         ret = wrap(ret);

@@ -6,32 +6,40 @@ void wiz_commands() {
   add_action("do_echo","ec*ho");
   add_action("do_emote_all", "emoteall");
   add_action("do_echo_to", "echoto");
-  add_action("do_inter_creator_tell","intercre*");
-  add_action("do_god_inform", "ginfo");
-  /* Have to add demi and cre here. 
-   * That means the channelsystem.. no problem.
-   * Baldrick.
-   */
   add_action("do_channels", "cre");
-  add_action("do_channels", "cre@");
-  add_action("do_channels", "demi");
-  add_action("do_channels", "demi@");
-} /* wiz_commands() */
+  add_action("do_channels","dwcre");
+  add_action("do_channels","intercre");
+  add_action("do_channels","sport");
+  add_action("do_channels","geek");
+  // Radix was here...
+  if(this_object()->query_lord())
+  {
+     add_action("do_channels","demi");
+     add_action("do_channels","thane");
+    add_action("do_channels", "dwadmin");
+     add_action("do_god_inform", "ginfo");
+     return;
+  }
+  if(this_object()->query_thane())
+     add_action("do_channels","thane");
 
+} /* wiz_commands() */
+void my_mess(string fish, string erk);
 /* to properly columnate word_typed things */
+ /*
 void my_mess(string fish, string erk) {
   if(!interactive()) return;
   printf("%s%-=*s\n", fish, (int)this_player()->query_cols()-strlen(fish), 
           this_object()->fix_string(erk));
-} /* my_mess() */
+} */ /* my_mess() */
 
 int do_god_inform(string mess)
   {
-  if (!this_object()->query_lord())
-    {
-    notify_fail("Forget it!.\n");
-    return 0;
-    }
+   if(!mess) 
+   {
+      notify_fail("Syntax: ginfo <message>\n");
+      return(0);
+   }
   mess = replace(mess, " ", " ");
   event(users(), "god_inform", (string)this_object()->query_cap_name() +
     " [Info]: ", mess); 
@@ -62,6 +70,12 @@ int do_echo_to(string str)
   {
   string who, what;
   object ob;
+   // Radix cause Piper & Taniwha wanted it...
+   if(this_player(1)->query_object_type() == "B")
+   {
+      notify_fail("Echoto is not available to Builders.\n");
+      return(0);
+   }
   if(!str || str == "") {
     notify_fail("Syntax : echoto <player> <text>\n");
     return 0;
@@ -87,6 +101,12 @@ int do_emote_all(string str)
     notify_fail("Syntax : emoteall <string>\n");
     return 0;
   }
+   // Radix cause Piper & Taniwha wanted it...
+   if(this_player(1)->query_object_type() == "B")
+   {
+      notify_fail("Emoteall is not available to Builders.\n");
+      return(0);
+   }
   log_file("ECHOS", ctime(time())+" "+this_player()->query_cap_name()+
                     " Emotealls: "+str+"\n");
   str += "%^RESET%^";

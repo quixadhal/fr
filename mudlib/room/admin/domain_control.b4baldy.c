@@ -10,22 +10,22 @@ void setup() {
   
   set_light(100);
   set_short("Domain room");
-  set_long("You float in the empty wastes of the ethereal plane. "+
-    "In all directions stars twinkle in the black " +
-    "curtain of space, just lying there avaiting your creative hand "+
-    "for being developed.\n" +
-"Available commands:\n"+
-"  list                         : list all domains.\n"+
-"  list <domain>                : list members of a domain.\n"+
-"  create <domain>              : create a domain (you are lord).\n"+
-"  create <domain> <lord>       : create a domain for someone else.\n" +
-"  add <creator> <domain>       : add a creator to a domain you own.\n" +
-"  delete <creator> <domain>    : remove a creator from a domain you own.\n" +
+  set_long("You float in the empty wastes of the ethereal plane. "
+    "In all directions stars twinkle in the black " 
+    "curtain of space, just lying there avaiting your creative hand "
+    "for being developed.\n" 
+"Available commands:\n"
+"  list                         : list all domains.\n"
+"  list <domain>                : list members of a domain.\n"
+"  create <domain>              : create a domain (you are lord).\n"
+"  create <domain> <lord>       : create a domain for someone else.\n" 
+"  add <creator> <domain>       : add a creator to a domain you own.\n" 
+"  delete <creator> <domain>    : remove a creator from a domain you own.\n" 
 "  project <cre> <dom> <proj>   : Set the creators project.\n");
   add_alias("ethereal", "plane");
   add_item("plane", "This plane works as a void of creativity.\n");
   add_alias("curtain", "space");
-  add_item("space", "Space is something that isn't really there. So how can "+
+  add_item("space", "Space is something that isn't really there. So how can "
    "you look at it ?\n");
 add_exit("south",HEAVEN+"admin3","door");
   seteuid("Root");
@@ -84,7 +84,7 @@ int create_domain(string arg) {
   if (this_player() != this_player(1))
     return 0;
   if(!arg) {
-    notify_fail("Usage: create <domain>\n" +
+    notify_fail("Usage: create <domain>\n" 
                 "       create <domain> <lord>\n");
     return 0;
   }

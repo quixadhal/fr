@@ -1,143 +1,104 @@
+#include <player.h>
 /*** Power Word: Stun ***/
 /*** By Wonderflug ***/
 
 #include "tweaks.h"
-
-#define PW_STUN_COST 14
 #define PW_STUN_SHADOW "/std/commands/shadows/stun.c"
 
-#define SP_NAME "Power Word: Stun"
-#define GP_COST PW_STUN_COST
-#define ALREADY_CASTING "cast"
-#define save_type "spells"
+inherit "/std/spells/base.c";
 
-inherit "/std/spells/patch.c";
+/* added "stun_bonus" property for a WISH */
 
-mixed find_unique_match(string find, mixed in);
-
-void make_spell(object caster, object target);
-
-string help() {
-       return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "School: Conjuration\n"+
-       "Level: 7th\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Description: \n"+
-	"  This spell allows you to shout the Stun Power Word.  Everyone "+
-	"in the room with you will be stunned for 1-5 rounds.  During this "+
-	"time, they cannot attack, move, or cast spells, and are more "+
-	"vulnerable to be attacked.\n\n";
-}
-
-int cast_spell(string str, object caster)
+void setup()
 {
-  int cost;
-  int new_count;
-  int duration, level, duration_bon;
-  int i;
-  object target, my_caster;
+  set_spell_name("Power Word: Stun");
+  set_spell_level(7);
+  set_school("conjuration");
 
-  str = (string)this_player()->expand_nickname(str);
+  set_target_type("all");
+  set_range(0);
+  set_line_of_sight_needed(0);
 
-  if (caster)
-	my_caster = caster;
-  else 
-  {
-	my_caster = this_player();
-	str = (string)my_caster->expand_nickname(str);
-  }
+  set_help_desc("This spell allows you to shout the Stun Power Word. "
+    "Everyone in the room with you will be stunned for 1-5 rounds.  During "
+    "this time, they cannot attack, move, or cast spells, and are more "
+    "vulnerable to be attacked.");
 
-
-  if (my_caster->query_timed_property(ALREADY_CASTING))
-  {
-	tell_object(my_caster,"You are already casting a spell.\n");
-	return 1;
-  }
-  if ((int)my_caster->query_gp() < GP_COST )
-  {
-	tell_object(my_caster,"You are too mentally drained to cast "+
-	  "this spell.\n");
-	return 1;
-  }
-
-  level = (int)my_caster->query_level();
-
-  if (interactive(my_caster))
-    if ( (string)my_caster->query_guild_name() == "conjurer" )
-	cost = GP_COST/2;
-    else cost = GP_COST;
-
-  tell_object(my_caster,"You start to cast "+SP_NAME+".\n");
-  tell_room(environment(my_caster), my_caster->query_cap_name()+
-	" begins to cast a spell.\n",
-     	my_caster);
-
-  my_caster->add_timed_property(ALREADY_CASTING,3,1);
-  my_caster->adjust_gp(-cost);
-  call_out("make_spell",3,my_caster,str);
-  return 1;
+  set_gp_cost(14);
+  set_casting_time(1);
+  set_rounds( ({ "round1" }) );
 }
 
-void make_spell( object caster, string str )
+int round1(object caster, mixed target, mixed out_range, int time, int quiet)
 {
   object* ob;
   int i, j;
+int bonus;
+  int resist, theroll;
   object* shadows;
 
-  ob = all_inventory( environment(caster) );
-  if (!sizeof(ob))
+  if (!sizeof(target))
   {
-        tell_object(caster, "There is nobody of that name here.\n");
-        return 1;
+    tell_object(caster, "You shout the power word, but nobody is here "
+      "to hear it.\n");
+    return -1;
   }
-  shadows = allocate(sizeof(ob));
 
+  shadows = allocate(sizeof(target));
+
+  /* No quiet version of this, duh */
   tell_room(environment(caster), caster->query_cap_name()+
-	" shouts: STUN!!\n", caster);
+    " shouts: STUN!!\n", caster);
   tell_object(caster, "You shout: STUN!!\n\n");
 
-/* Noguild, nocast, passed out just to make the shadow simpler. */
-
-  for (i=0;i<sizeof(ob);i++)
+  for (i=0;i<sizeof(target);i++)
   {
-	if ( ob[i] == caster || !living(ob[i]) || ob[i]->query_property("dead"))
-		continue;
-	if ( ob[i]->query_time_spell() )
-	{
-		tell_object(ob[i], "The Power Word destroys your "+
-		  "enchantment!\n");
-		ob[i]->dispell_time_spell();
-		continue;
-	}
-	shadows[i] = clone_object(PW_STUN_SHADOW);
-	j = random(5)+1;
-  	j = wiz_fix_damage(caster, ob[i], j, "magical");
-	if ( j <= 0 || ob[i]->query_hold_spell() || ob[i]->query_pacify_spell())
-	{
-	  tell_room(environment(caster), ob[i]->query_cap_name()+
-	    " resists the effects of the Power Word.\n", ob[i]);
-	  tell_object(ob[i],"You resist the effects of the Power Word.\n");
-	  continue;
-	}
+    if ( target[i] == caster || !living(target[i]) || target[i]->query_dead()
+         || target[i]->query_creator() )
+      continue;
 
-        tell_room(environment(caster), ob[i]->query_cap_name()+" succumbs "+
-          "to the Power Word and falls over unconscious.\n", ob[i]);
-        tell_object(ob[i], "You succumb to Power Word and black out.\n");
+    if ( target[i]->query_time_spell() )
+    {
+      tell_object(target[i], "The Power Word destroys your "
+        "enchantment!\n");
+      target[i]->dispell_time_spell();
+    }
 
-  	ob[i]->add_timed_property("stun_on", 1, j);
-  	ob[i]->add_timed_property("nocast",1, j);
-  	ob[i]->add_timed_property("noguild",1,j);
-  	ob[i]->add_timed_property("passed out",1,j);
+    j = random(5)+1;
+  j = j + caster->query_property("stun_bonus");
 
-  	shadows[i] = clone_object(PW_STUN_SHADOW);
-  	shadows[i]->setup_shadow(ob[i], j); 
-  	ob[i]->add_extra_look(shadows[i]);
+    /* Pass a dummy property, we just want to adjust up from wizard's int */
+    j = wiz_fix_damage(caster, target[i], j, "nothingnonsense");
+    resist = (int)target[i]->query_property("magical");
+    theroll = random(100);
 
-	ob[i]->attack_by(caster);
+    if ( j <= 0 || target[i]->query_hold_spell() || 
+         target[i]->query_pacify_spell() || theroll < resist)
+    {
+      tell_room(environment(caster), target[i]->query_cap_name()+
+        " resists the effects of the Power Word.\n", target[i]);
+      tell_object(target[i],"You resist the effects of the Power Word.\n");
+      continue;
+    }
+
+    tell_room(environment(caster), target[i]->query_cap_name()+" succumbs "
+      "to the Power Word and falls over unconscious.\n", target[i]);
+    tell_object(target[i], "You succumb to Power Word and black out.\n");
+
+    target[i]->add_timed_property("stun_on", 1, j);
+    target[i]->add_timed_property("nocast",1, j);
+    target[i]->add_timed_property("noguild",1, j);
+    target[i]->add_timed_property(PASSED_OUT_PROP,
+      "You are still recovering from the power word, and can't do anything.\n", 
+      j);
+
+    shadows[i] = clone_object(PW_STUN_SHADOW);
+    shadows[i]->setup_shadow(target[i], j); 
+    target[i]->add_extra_look(shadows[i]);
+
+    target[i]->attack_by(caster);
   }
 
-  return GP_COST;
+  return 0;
 }
 

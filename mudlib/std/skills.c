@@ -1,4 +1,4 @@
-/* The skill conroller object....
+/* The skill controller object....
  */
 #include "skills.h"
 #define SKILL_BONUS 0
@@ -24,16 +24,9 @@ void create() {
     "cha" : ({ "H" }),
   ]);
 }
-/*  "str.melee" : ({ "SM", }),
-    "dex.missile.bow" : ({ "DMB", }),
-    "int.spell" : ({ "IS", }),
-    "wis.spell" : ({ "WS", }),
-    "dex.dodge" : ({ "DD" }),
-  ]);
-}*/
 
 mixed *query_reg_skills() { return reg_skills; }
-mixed *query_skills() { return skills; }
+mixed *query_skills_tree() { return skills; }
  
 /* not sure... do we decied that anyone that querys a skill knows
  * what they are talking about? Or just  assmume they dont...
@@ -53,7 +46,8 @@ int register_skill(string skill) {
   return 1;
 }
  
-int add_skill(string skill) {
+int add_skill(string skill) 
+  {
   if (member_array(skill, reg_skills) != -1)
     return 0;
   reg_skills += ({ skill });
@@ -61,7 +55,8 @@ int add_skill(string skill) {
   return 1;
 }
  
-int remove_skill(string skill) {
+int remove_skill(string skill) 
+  {
   int i;
  
   if ((i=member_array(skill, reg_skills)) == -1)
@@ -183,7 +178,7 @@ mixed *del_skill_rec(mixed *arr, string *path) {
   return arr;
 }
 
-string query_skill(string *bits) {
+string query_skill_tree(string *bits) {
   mixed *arr;
   int i;
   string path, s1, s2;

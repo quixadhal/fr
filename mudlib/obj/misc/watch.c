@@ -149,7 +149,7 @@ int do_read() {
   return 1;
 }
 
-set_gmt(arg) {
+set_gmt(string arg){
   if (!arg) {
     notify_fail("You must give a GMT to set to.\n");
     return 0;

@@ -20,7 +20,7 @@ string long(string str, int dark) {
   mapping news_rc;
 
   stuff = (mixed *)BOARD_HAND->get_subjects(board_name);
-  ret = "A bulletin board ("+board_name+").\n";
+  ret = "A collection of scrolls ("+board_name+").\n";
   irp = (int)BOARD_HAND->query_minimum(board_name);
   if (irp)
     ret += "Minimum number of messages left by auto magic deletion is "+irp+
@@ -67,7 +67,7 @@ void init() {
   add_action("save_note", "store", action_pri);
   add_action("next", "next", action_pri);
   add_action("prev", "prev", action_pri);
-  add_action("new", "new", action_pri);
+  add_action("newm", "new", action_pri);
   add_action("board", "b*oard", action_pri);
   add_action("list_boards", "boards", action_pri);
   add_action("kfile", "killfile", action_pri);
@@ -142,7 +142,7 @@ int kfile(string arg) {
   return 1;
 } /* kfile() */
 
-int new() {
+int newm() {
   int i;
   string *boards;
   mixed *stuff;

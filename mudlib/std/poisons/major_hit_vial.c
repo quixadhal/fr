@@ -4,26 +4,27 @@
 
 inherit "/std/item";
 #define MYPOISON "/std/poisons/shadows/major_hit_sh.c"
-#define LEVEL 12
+#define XLEVEL 12
 #define MAXUSES 3
 
 void setup()
 {
   set_name("vial of poison");
   add_alias("vial");
+  add_alias("clear");
   set_short("Vial of Clear Liquid");
-  set_long("\nVial of Clear Liquid\n\n"+
-	"     This is a small vial of poison, made of some extremely hard "+
-	"crystalline substance; lucky it is too, for you shudder to think "+
-	"how quickly you'd be dead if it broke and you spilled any of the "+
-	"deadly poison inside upon you.  The cap has a dropper attached to "+
-	"it so all you have to do is 'annoint' a weapon with the poison.  "+
-	"Even so, only professionals should attempt this and even they "+
-	"should be careful to have both hands free when doing it.  Also, "+
+  set_long("\nVial of Clear Liquid\n\n"
+	"     This is a small vial of poison, made of some extremely hard "
+	"crystalline substance; lucky it is too, for you shudder to think "
+	"how quickly you'd be dead if it broke and you spilled any of the "
+	"deadly poison inside upon you.  The cap has a dropper attached to "
+	"it so all you have to do is 'annoint' a weapon with the poison.  "
+	"Even so, only professionals should attempt this and even they "
+	"should be careful to have both hands free when doing it.  Also, "
 	"agitation makes even the most careful hand careless.\n");
-  set_read_mess("\nGiant Cobra Venom.\n\nExtracted at the expense of "+
-	"several lives from a Giant Cobra's fangs.  A very quick, very "+
-    "painful addition to any wound.\n"+
+  set_read_mess("\nGiant Cobra Venom.\n\nExtracted at the expense of "
+	"several lives from a Giant Cobra's fangs.  A very quick, very "
+    "painful addition to any wound.\n"
     "Strength: Major\n\n");
   set_main_plural("Vials of Liquid");
   set_weight(10);
@@ -46,7 +47,7 @@ int check_guild()
      default:
 	return 0;
   }
-  if ( this_player()->query_level() < LEVEL )
+  if ( this_player()->query_level() < XLEVEL )
 	return 0;
   return 1;
 }
@@ -62,8 +63,8 @@ int do_annoint( string str )
 /* Check to make sure they're an assassin (or valid guild anyway) */
   if ( !check_guild() )
   {
-	tell_object(this_player(), "You really have no idea what you're "+
-	  "doing with the poison. Maybe you should \nleave that kind of "+
+	tell_object(this_player(), "You really have no idea what you're "
+	  "doing with the poison. Maybe you should \nleave that kind of "
 	  "thing to more experienced professionals.\n\n");
 /* They're not, so if they fail a dex check they nick themselves. */
 	if ( (int)this_player()->query_dex() < random(20) )
@@ -87,7 +88,7 @@ int do_annoint( string str )
 
   if ( !sizeof(obs) )
   {
-	tell_object(this_player(), "You can't annoint something you don't "+
+	tell_object(this_player(), "You can't annoint something you don't "
 	  "have!\n");
 	return 1;
   }
@@ -112,11 +113,11 @@ int do_annoint( string str )
   held_obs = this_player()->query_held_ob();
   if (held_obs[0] != 0 || held_obs[1] != 0)
   {
-	tell_object(this_player(), "You don't have 4 hands!  Maybe try "+
+	tell_object(this_player(), "You don't have 4 hands!  Maybe try "
 	  "putting something down before \ntrying to poison your weapons.\n");
 	if ( (int)this_player()->query_dex() < random(30) )
 	{
-	  tell_object(this_player(), "Oops!  Now you've gone and spilled "+
+	  tell_object(this_player(), "Oops!  Now you've gone and spilled "
 		"some on you!.\n");
 	  tell_room(environment(this_player()), this_player()->query_cap_name()+
 		" spills some poison on "+this_player()->query_objective()+
@@ -131,7 +132,7 @@ int do_annoint( string str )
  */
   if ( sizeof(this_player()->query_attacker_list()) )
   {
-	tell_object(this_player(), "Being so agitated as you are, "+
+	tell_object(this_player(), "Being so agitated as you are, "
 	  "you spill the poison all \nover yourself.\n");
 	tell_room(this_player(), this_player()->query_cap_name()+
 	  " fumbles a Vial of Clear Liquid and spills some on "+
@@ -155,7 +156,7 @@ int do_annoint( string str )
  */
   if ( (i = (int)this_object()->query_property("num_annoints")) <= 0 )
   {
-	tell_object(this_player(),"You've used up all the poison in the "+
+	tell_object(this_player(),"You've used up all the poison in the "
 	  "vial.\n");
 	this_object()->dest_me();
   }

@@ -17,12 +17,12 @@
 #define BERSERK_LOCKOUT 10
 
 //Ambush
-#define AMBUSH_LOCKOUT 30
+#define AMBUSH_LOCKOUT 10
 #define AMBUSH_COST -5
 
-#define SLICE_LOCKOUT 250
+#define SLICE_LOCKOUT 150
 #define SLICE_DIV 10
-#define SLICE_COST 5
+#define SLICE_COST 7
 
 
 // Disarm

@@ -23,14 +23,14 @@ blocked=0;
 lifter="";
 set_light(100);
 set_short("castle entry");
-set_long("You stand upon the entrance to the Palace of the Gods, A glowing "+
-"serves as the doorway into the interior of the palace.  You cannot see "+
+set_long("You stand upon the entrance to the Palace of the Gods, A glowing "
+"serves as the doorway into the interior of the palace.  You cannot see "
 "through the portal.  You shiver as you feel the power of the portal.\n");
 add_item("corridor","The only way go north would be to lift the pass the field.\n");
 add_item("portcullis","It glows a fierce red.  It pulsates with power.\n");
 add_exit("south",ROOM+"path1","path");
 add_exit("north",ROOM+"palace1","road");
-modify_exit("north",({"function","go_north","message","N$N walks through the field."+
+modify_exit("north",({"function","go_north","message","N$N walks through the field."
 " The field flares up and engulfs N$N.\n"}));
 
 }
@@ -57,12 +57,12 @@ int do_overload(string str) {
  if (str == "field") {
   say(this_player()->query_cap_name()+" approaches the field.\n");
   if ((string)this_player()->query_guild_ob()=="/std/guilds/priest")  {
-    write("You attempt to overload the field with your immortal power.\n"+
-     "The field shimmers and dissapears, but you feel it pressing against "+
-     "the power limits of inanimate objects to reinstate itelsef.\n"+
+    write("You attempt to overload the field with your immortal power.\n"
+     "The field shimmers and dissapears, but you feel it pressing against "
+     "the power limits of inanimate objects to reinstate itelsef.\n"
      "You keep overloading it.\n");
-    say(this_player()->query_cap_name()+" stares at the field and "+
-"concentrates.\n"+
+    say(this_player()->query_cap_name()+" stares at the field and "
+"concentrates.\n"
  "The field shimmers, then vanishes.\n");
     blocked=1;
     lifter=(string)this_player()->query_cap_name();

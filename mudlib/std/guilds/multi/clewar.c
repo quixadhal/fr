@@ -10,12 +10,12 @@ void setup()
  set_name("cle-war");
  set_short("Cleric-Warrior");
  set_long(
-      "Cleric-Warriors specialize in neighter divine magic nor fighting, "+
-      "but are fairly competent in both.  It is costly for them "+
-      "to advance in levels since they have to learn twice as much "+
-      "as the specialized classes for each level they gain.  They are "+
-      "able to withstand almost as much daage as true fighters, and can "+
-      "use all the armours they can use as well.  They are however restricted "+
+      "Cleric-Warriors specialize in neighter divine magic nor fighting, "
+      "but are fairly competent in both.  It is costly for them "
+      "to advance in levels since they have to learn twice as much "
+      "as the specialized classes for each level they gain.  They are "
+      "able to withstand almost as much daage as true fighters, and can "
+      "use all the armours they can use as well.  They are however restricted "
       "to normal clerical weapons (blunt).\n");
  reset_get();
  set_main_skill("wis");

@@ -26,11 +26,12 @@ void make_container()
       cont = clone_object("/std/shop_con.c");
       cont->set_name("list");
       cont->set_short("list");
-      cont->set_long("\n A list of items available here "+
+      cont->set_long("\n A list of items available here "
          "type \"list\" to get prices.\n");
       cont->move(this_object());
       cont->reset_get();
    }
+   cont->reset_prevent_insert(); // taniwha 1996, correct, so we can restock it. Lock it after
 }
 void reset() {
   object ob;
@@ -41,6 +42,7 @@ void reset() {
     ob->remove_property(NUM_SOLD);
     ob = next_inventory(ob);
   }
+   cont->set_prevent_insert(); // Taniwha 1996, lock it
 }
 
 /* ps 0, means infinite */
@@ -55,8 +57,10 @@ int add_armor(string name, int max_per_reset){
     ob->add_property("armory name", name);
     ob->add_property(MAX_PROP, max_per_reset);
     ob->add_property(TYPE, "armor");
+   cont->set_prevent_insert(); // Taniwha 1996, lock it
     return 1;
   }
+   cont->set_prevent_insert(); // Taniwha 1996, lock it
   return 0;
 }
 
@@ -74,8 +78,10 @@ int add_weapon(string name, int max_per_reset) {
     ob->add_property("armory name", name);
     ob->add_property(MAX_PROP, max_per_reset);
     ob->add_property(TYPE, "weapon");
+   cont->set_prevent_insert(); // Taniwha 1996, lock it
     return 1;
   }
+   cont->set_prevent_insert(); // Taniwha 1996, lock it
   return 0;
 }
 
@@ -90,7 +96,9 @@ int add_object(string where, int max) {
     ob->add_property("armory name", where);
     ob->move(cont);
     return 1;
+   cont->set_prevent_insert(); // Taniwha 1996, lock it
   }
+   cont->set_prevent_insert(); // Taniwha 1996, lock it
   return 0;
 }
 

@@ -1,5 +1,6 @@
+#include "path.h"
 
-inherit "obj/monster";
+inherit BASE;
 int query_kill_xp() { return 0; }
 void setup()
 {
@@ -8,7 +9,7 @@ void setup()
 	set_short("Liche");
    add_alias("liche");
    set_long("You can see nothing but a dark cloak like area with glowing eyes that follow you as you move.\n");
-	set_class("wizard");
+	set_guild("wizard");
 	set_level(15);
 	set_al(200);
    set_str(10);

@@ -2,22 +2,29 @@
  * Added set_thac0 / adjust THAC0 
  * Removed the skilltree from cost until I know what to do with it.
  * Added exponential XP-cost. june '94.
+ * Taniwha 1995 (just), make advance SET thac0 rather than adjust it
+   * fixes transition probs from newbie guild and compensates for any thac0
+   * accidents
  */
 
 inherit "/std/room";
+void clean_up(int flag) { }
 
 #include "skills.h"
 #include "tune.h"
 #include "money.h"
+#include "level_track.h"
 #define my_race_ob this_player()->query_race_ob()
 #define SPELL_TABLE "/table/spell_table.c"
 
 string our_guild,
        guild_path,
        teaching_person,
-       // I have to ask Ducky if its nessesary with spec as an array, not just
-       // a string.
+       parent_guild,
+       /* To have spec as an array, a guild can specialize on more gods
+        */
        *spec;
+ 
 mixed *spells,
       *commands;
 
@@ -25,6 +32,15 @@ void check_spells_commands(string *sk, int lvl);
 int query_specialization(string name);
 int this_guild();
 string rec_cost(mixed *arr,string path,int depth, string g_o);
+int check_before_join()
+{
+   return 1;
+}
+int check_before_join1()
+{
+   return 1;
+}
+
 
 void setup()
   {
@@ -41,14 +57,14 @@ void create() {
 
 void init() {
   ::init();
+   this_object()->add_property("no_undead",1);
   add_action("do_advance", "ad*vance");
-  //add_action("train","tr*ain");
+  add_action("train","train");
   add_action("do_join", "join");
   add_action("do_info", "inf*o");
   add_action("do_cost", "co*st");
-/*
-  add_action("do_specialize", "spe*cialize");
-*/
+//  add_action("do_specialize", "spe*cialize");
+  add_action("do_join", "spe*cialize");
   add_action("do_learn", "learn");
   add_action("do_learn", "pray");
   //add_action("do_leave", "leave");
@@ -71,14 +87,17 @@ int this_guild()
   }
 
 void set_guild(string str) { our_guild = "/std/guilds/"+str; } 
+void set_parent_guild(string str) { parent_guild = "/std/guilds/"+str; } 
+string query_guild() { return our_guild; }
 
-int do_advance() 
+int do_advance_level() 
 {
   string skill;
   string *bits;
   int cost,i,lvl,total_xp,p_val,max_lvl;
   float xp;
   string guild,my_race;
+   if(this_object()->check_before_join2()) return 0;
   
   my_race=(string)my_race_ob->query_name();
 
@@ -152,18 +171,32 @@ int do_advance()
 
   if (cost > p_val)  /* What happens if we can't pay */ 
   {
-     notify_fail("Due to your sad lack of money the guild refuses to train "+
+     notify_fail("Due to your sad lack of money the guild refuses to train "
                  "you.  It would have cost you "+
                  MONEY_HAND->money_value_string(cost)+".\n");
      return 0;
   }
-  this_player()->pay_money(MONEY_HAND->create_money_array(cost));
+// DON"T remove this, player.c blocks the adjust level and they lose the XP and whine mercilessly
+  if(!this_player()->query_registrated())
+   {
+       write("Taniwha tells you: You need to register now, consider your role here, \"describe\" yourself, and ask an immortal to register you.\n");
+      return 0;
+   }
   this_player()->adjust_level(1);
   this_player()->adjust_xp(-total_xp);
+  this_player()->pay_money(MONEY_HAND->create_money_array(cost));
+  catch(LEVEL_HAND->level_advanced(this_player()));
 
   /* Ok, calculate the new (if new) THAC0 here: */
-  if (!(lvl % (int)our_guild->query_thac0_step()) ) 
-     this_player()->adjust_thac0(-1);
+  /* New every level now, this time it uses it to check how many 
+   * slots it will decrease.
+   * Baldrick, aug '95. 
+   */
+   
+  //if (!(lvl % (int)our_guild->query_thac0_step()) ) 
+   //  this_player()->adjust_thac0(-1);
+  //this_player()->adjust_thac0( - (int)our_guild->query_thac0_step());
+   this_player()->set_thac0( 200 - (this_player()->query_level() * (int)our_guild->query_thac0_step()) );
 
   write("You advance to level "+lvl+" for "+ 
         MONEY_HAND->money_value_string(cost)+".\n");
@@ -171,11 +204,23 @@ int do_advance()
       this_player()->query_possessive()+" level.\n");
   this_player()->save();
   return 1;
-} /* do_advance() */
+} /* do_advance_level() */
+
+/* Here we shall make it possible to advance in their proficiencies..
+ * Baldrick may '95.
+ */
+int do_advance(string str)
+  {
+  if (!str)
+    return do_advance_level();
+  /* Here we need smoe really clever bits.. */
+ 
+} /* do_advance.. */
 
 /* Some of the code I planned to use for proficiencies.  Just left some of 
  * it here in case it's of any use to Dank
  * Hmm, not needed yet, Baldrick. 
+ */
 int train(string str) 
   {
   string skill_name, sk, g_o;
@@ -275,9 +320,8 @@ int train(string str)
   say(this_player()->query_cap_name()+" advances "+
       this_player()->query_possessive()+" skills.\n");
   this_player()->reset_all();
-  this_player()->save();
   return 1;
-}*/ /* train()  */
+} /* train()  */
 
 
 int do_join(string str) 
@@ -295,11 +339,15 @@ int do_join(string str)
     return 0;
   }
 
-  if(guild) 
-  {
+  /* Adding a check to find parent guild.. they can join upwards.. */
+  /* Not needed yet.. B.
+  */
+  if(guild)
+    //if (our_guild->query_parent_guild() != guild->query_parent_guild())
+    {
     notify_fail("You cannot join a guild while a member of another.\n");
     return 0;
-  }
+    }
 
   if(!our_guild->query_legal_race(race))
   {
@@ -317,14 +365,13 @@ int do_join(string str)
 
   switch((string)our_guild->query_main_skill())
     {
+   case "cha":
+      mainskill = this_player()->query_cha();
     case "str":
       mainskill = this_player()->query_str();
       break;
     case "dex":
       mainskill = this_player()->query_dex();
-      break;
-    case "cha":
-      mainskill = this_player()->query_cha();
       break;
     case "con":
       mainskill = this_player()->query_con();
@@ -336,10 +383,6 @@ int do_join(string str)
       mainskill = this_player()->query_wis();
       break;
     }
-/*
-  write ("DEBUG:" + (string)our_guild->query_name() 
-         + (string)our_guild->query_main_skill());
-*/
 
   if (mainskill<13)
     {
@@ -347,8 +390,12 @@ int do_join(string str)
                 " utilizes your skills better.\n");
     return 0;
     } 
+   if(!this_object()->check_before_join()) return 0;
 
-  write("You will only ever get to join one guild.  Are you sure? ");
+  if (guild)
+    write("You will only ever specialize yourself once. Are you sure? ");
+   else
+    write("You will only ever get to join one guild.  Are you sure? ");
   input_to("join2");
   return 1;
 } /* do_join() */
@@ -398,7 +445,8 @@ int join2(string str)
     check_spells_commands(skills[i+SKILL_NAM..i+SKILL_NAM],
                           skills[i+SKILL_LVL]);
   }
-  this_player()->adjust_level(1);
+// Taniwha 14/09/1995. Not needed, they get to L5 before they join now
+  //this_player()->adjust_level(1);
   this_player()->reset_spheres();
   this_player()->reset_spellarray();
   this_player()->add_spheres(our_guild->query_legal_spheres());
@@ -616,7 +664,7 @@ void add_command(string name, string *path, int lvl) {
 
 int query_specialization(string name)
 { 
-  if(member_array(name,spec) != -1);
+  if(member_array(name,spec) != -1)
     return 1;
   return 0;
 }

@@ -1,134 +1,158 @@
+
+/*****************************************************************************
+*									     *	
+*                Hold person shadow. Touched by Khelben for let a            *                     
+*                   saving throw every round every round	     	     *
+*									     *
+******************************************************************************/
+
 #include "tweaks.h"
 
-object my_player;
+object target;
+object caster;
+int basetarget,basecaster;
 
-void destruct_hold_person_shadow() 
-{
-  destruct(this_object());
-}
-
-void setup_shadow(object ob) 
+void setup_shadow(object ob, object him) 
 {
   shadow(ob,1);
-  my_player = ob;
+  target = ob;
+  caster = him;
+  basecaster = him->query_level()+him->query_wis(); 
+      if( caster->query_guild_name() == "Cyrcia" )
+         basecaster = basecaster + 10;
+  if ( target->query_int() > target->query_wis() )
+     basetarget = target->query_level()+target->query_int();
+  else
+     basetarget = target->query_level()+target->query_wis();  
 }
 
 int check_duration()
 {
-    if ( my_player->query_property("dead") )
-    {
-      my_player->remove_extra_look(this_object());
-      return 1;
-    }
-  if ( !(my_player->query_timed_property("hold_person_on")) )
+  if ( target->query_dead() )
   {
-        tell_object(my_player,
-          "The invisible bonds surrounding you disappear and you can "+
-          "move again.\n");
-        tell_room(environment(my_player), my_player->query_cap_name()+
-          " breaks out of the hold spell.\n",
-          my_player);
-        my_player->remove_extra_look(this_object());
-	return 1;
+    target->remove_extra_look(this_object());   
+    call_out("dispell_me",0);   // I touched this for dispell the shadow
+                                // when the player dies. If you know any reason            
+   				// for not to do it erase the line.
+    return 1;
   }
+  if ( !(target->query_timed_property("hold_person_on")) )
+    return 1;
   else return 0;
 }
 
 move( mixed dest, mixed messout, mixed messin )
 {
   if ( check_duration() )
-	call_out("destruct_hold_person_shadow",0,0);
-  return my_player->move(dest, messout, messin );
+    call_out("dispell_me",0,0);
+  return target->move(dest, messout, messin );
 }
 
 varargs mixed move_player(string dir, string dest, mixed message, object
-				followee, mixed enter)
+                                followee, mixed enter)
 {
-  if ( random((int)my_player->query_str()) < 20 )
+   int resist;
+// Changed to use "mental" rather than physical strength
+   if(target->query_int() > target->query_wis()) resist = target->query_int();
+   else resist = target->query_wis();
+   if( random(resist) < random(40)+6)
   {
-  	tell_object(my_player, "You cannot escape the bonds holding you.\n");
-  	if ( check_duration() )
-          call_out("destruct_hold_person_shadow",0,0);
-	return 0;
+    tell_object(target, "You cannot escape the mental bonds holding you.\n");
+    if ( !target || check_duration() )
+      call_out("dispell_me",0,0);
+    return 0;
   }
-  tell_room(environment(my_player),my_player->query_cap_name()+" struggles "+
-	"against the invisible bonds holding "+my_player->query_objective()+
-	" and manages \nto stagger away!\n", my_player);
-  tell_object(my_player, "You manage to stagger away, straining against your "+
-	"bonds.\n");
-  if ( check_duration() )
-        call_out("destruct_hold_person_shadow",0,0);
+  tell_room(environment(target),target->query_cap_name()+" struggles "
+    "against the invisible bonds holding "+target->query_objective()+
+    " and musters the mental strength \nto stagger away!\n", target);
+  tell_object(target, "You manage to stagger away, mentally straining against your "
+    "bonds.\n");
+  if ( !target || check_duration() )
+   {
+   call_out("dispell_me",0,0);
+   return 0;
+   }
 
-  return my_player->move_player(dir, dest, message, followee, enter);
+  return target->move_player(dir, dest, message, followee, enter);
 }
   
 int query_hold_spell() { return 1; }
 
-/* Given the next two, we shouldn't need this, but anyway */
-int unarmed_attack(object him, object me)
-{
-  tell_object(me, "You are held and cannot attack!\n");
-  if ( check_duration() )
-        call_out("destruct_hold_person_shadow",0,0);
-  return 0;
-}
 
 object* query_weapons_wielded()
 {
   if ( check_duration() )
-        call_out("destruct_hold_person_shadow",0,0);
+    call_out("dispell_me",0,0);
   return ({ this_object() });
 }
 
 int weapon_attack( object him, object me )
 {
+  int x;
+   
+  if ( basetarget > basecaster)   
+  {				     // target is more powerfull than caster
+     if ( random(150) < basetarget)  // so if he has level 40 and int 14 he
+        call_out("dispell_me",0);    // has a 43.2 % of possibilities for
+                                     // free every round.
+  }
+  else if (random(200) < basetarget )  //caster more powerfull than target  
+     call_out("dispell_me",0);         // with int 14 we have per round:
+     				       //  level 20: 17 %
+      				       //  level 30: 22 %
+     				       //  level 40: 27 %
+     
   tell_object(me, "You are held and cannot attack!\n");
-  tell_room(environment(me), me->query_cap_name()+" struggles against "+
-	"invisible bonds.\n", me);
+  tell_room(environment(me), me->query_cap_name()+" struggles against "
+    "invisible bonds.\n", me);
   if ( check_duration() )
-        call_out("destruct_hold_person_shadow",0,0);
+    call_out("dispell_me",0,0);
   return 0;
 }
 
 attack_ob(object ob) 
 {
-  tell_object(my_player, "You are held in invisible bonds, and cannot "+
-	"attack anything.\n");
-  tell_room(environment(my_player), my_player->query_cap_name()+
-	" struggles against invisible bonds.\n", my_player);
+  tell_object(target, "You are held in invisible bonds, and cannot "
+    "attack anything.\n");
+  tell_room(environment(target), target->query_cap_name()+
+    " struggles against invisible bonds.\n", target);
   if ( check_duration() )
-  	call_out("destruct_hold_person_shadow",0,0);
+    call_out("dispell_me",0,0);
   return 0;
 }
 
 int cast() 
 {
-  tell_object(my_player, "You cannot cast spells while you are held.\n");
-  tell_room(environment(my_player), my_player->query_cap_name()+
-        " struggles against invisible bonds.\n", my_player);
+  tell_object(target, "You cannot cast spells while you are held.\n");
+  tell_room(environment(target), target->query_cap_name()+
+    " struggles against invisible bonds.\n", target);
   if (check_duration())
-	call_out("destruct_hold_person_shadow",0,0);
+    call_out("dispell_me",0,0);
   return 1;
 }
 
-/* for the player's desc. */
+// for the player's desc. 
 string extra_look()
 {
   return "Is struggling against invisible bonds.\n";
 }
 
-/* for an eventual dispel magic spell */
+// for an eventual dispel magic spell 
 void dispell_me()
 {
-  
-  tell_object(my_player,
-	"You can move again as the bonds holding you are destroyed.\n");
-  tell_room(environment(my_player), my_player->query_cap_name()+
-	" collapses in a heap as the bonds holding "+
-	my_player->query_objective()+" are destroyed.\n",
-	my_player);
-  my_player->remove_timed_property("noguild");
-  my_player->remove_timed_property("nocast");
-  my_player->remove_extra_look(this_object());
+  tell_object(target,
+    "You can move again as the bonds holding you are destroyed.\n");
+  tell_room(environment(target), target->query_cap_name()+
+    " collapses in a heap as the bonds holding "+
+    target->query_objective()+" are destroyed.\n",
+    target);
+  target->remove_timed_property("noguild");
+  target->remove_timed_property("nocast");
+  target->remove_extra_look(this_object());
   destruct(this_object());
 }
+
+
+
+
+

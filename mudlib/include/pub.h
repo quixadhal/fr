@@ -9,3 +9,10 @@
 #define DR_INTOX  4
 #define DR_DRMESS 5
 #define DR_OTHMES 6
+
+#define AVG_CHA 11
+#define CHA_AD 5
+
+#define GOOD_RACES ({ "elf","dwarf","halfling","half-elf" })
+#define NEUTRAL_RACES ({ "human","gnome","lizard-men" })
+#define EVIL_RACES ({ "orc","drow","duergar","half-orc","goblin" })

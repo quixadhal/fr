@@ -1,77 +1,72 @@
-
-#include "tweaks.h"
 /*** Thorn Hedge ***/
 /*** Created by Taniwha ***/
+/*** -> base spell, Wonderflug ***/
  
+#include "tweaks.h"
 
-#define SP_NAME "Thorn Hedge"
-#define SPELLTYPE "offensive/defensive"      
-#define TYPE "magical"
-#define SIZE_OF_DICE 4
-#define save_type "spells"
-#define GP THEDGE_GP
-#define LEVEL THEDGE_LEVEL
-#define LOCKOUT THEDGE_LOCKOUT
+inherit "/std/spells/base.c";
 
-object room;
-int hb;
+void setup()
+{
+  set_spell_name("Thorn Hedge");
+  set_spell_level(THEDGE_LEVELX);
+  set_sphere("plant");
 
-string help() {
-       return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "Level: "+LEVEL+"\n"+
-       "Gp Cost: "+GP+"\n"+
-     "Sphere: Plant\n"+
-       "Damage Type: Physical\n"+
-       "Saving Throw: Level Dexterity\n"+
-       "Description: \n"+
-       "    This spell will create a hedge of thorns in a room."+
-       "Anyone in the room will take damage if they don't make the saving "+
-       "throw, and extra damage if they are attacking the caster. "+
-       "The spell lasts 1 round /level +3 , "+
-       "until it is dispelled, or until the caster dies or leaves the game. "
-       "Also note the caster gets a 10* bonus save, not total immunity. "+
-       "\n";
+  set_target_type("none");
+  set_range(0);
+ 
+  set_help_extras(
+    "Damage Type: Physical\n"
+    "Saving Throw: Level Dexterity");
+  set_help_desc("This spell will create a hedge of thorns in a room."
+    "Anyone in the room will take damage if they don't make the saving "
+    "throw, and extra damage if they are attacking the caster. "
+    "The spell lasts 1 round /level +3 , until it is dispelled, or until "
+    "the caster dies or leaves the game. Also note the caster gets a 10* "
+    "bonus save, not total immunity.");
+
+  set_gp_cost(THEDGE_GP);
+  set_casting_time(2);
+  set_rounds(
+    ({
+      ({
+        "Small seedlike pinpoints of light scatter over the area at your "
+          "bidding.\n",
+        "Small seedlike pinpoints of light appear and scatter over the area.\n"
+      }),
+      "round2"
+    }) );
 }
 
-
-int cast_spell(string str)
+int round2(object caster, mixed target, mixed out_range, int time, int quiet)
 {
-  
-  room = ETP;  
-  if((TP->query_hb_diff(hb) < LOCKOUT) || (TP->query_level()< LEVEL) )
+  object ob;
+
+  if ( caster->query_property("thorn_hedge_cast") )
   {
-       tell_object(TP,"You just can't muster the concentration to cast yet.\n");
-       return 0;
+    tell_object(caster, "Your spell fizzles for some reason.\n");
+    tell_room(environment(caster), "The light-seeds fall to the ground "
+      "and disperse harmlessly.\n", ({ }) );
+    return -1;
   }
-  hb = TP->query_hb_counter();
-  write("You start to cast "+SP_NAME+".\n");
-  if( TP->adjust_gp(-GP)<0)
-  { 
-       tell_object(TP, "You are too mentally drained to cast.\n");
-       return 0;
-   }
-   say((string)TP->query_cap_name()+
-      " chants, \"Deus Topiary\".\nVines start to grow from the ground.
-", ({ TP }));
+ 
+  if ( !quiet )
+  {
+    tell_object(caster, "You chant, 'Deus Topiary'.\n");
+    tell_room(environment(caster), caster->query_cap_name()+
+      " chants, 'Deus Topiary'.\n.", ({ caster }) );
+  }
 
-   call_out("make_spell",4,TP);   
-   return 1;
+  ob = clone_object(SPELLS+"thorns.c");
+  ob->move(environment(caster));
+  ob->set_spell(caster, 3+(int)caster->query_level());
+
+  caster->add_timed_property("thorn_hedge_cast", 1, THEDGE_LOCKOUT);
+
+  tell_room(environment(caster),
+    "Wherever the light-seeds land, vines suddenly grow "
+    "at incredible speed, \nforming a dense thorn covered hedge!\n",
+    ({ }) );
+
+  return 0;
 }
-int cast(string str)
-{
-   return(cast_spell(str));
-}
-
-void make_spell(mixed tp)
-{
-   object ob;
-   ob = clone_object(SPELLS+"thorns.c");
-   ob->move(room);
-   ob->set_spell(tp,3+(int)tp->query_level());
-   tell_room(room,"Vines grow from the ground at incredible speed, forming a dense thorn covered hedge!\n",({ }) );
-}
-
-
-

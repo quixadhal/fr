@@ -5,18 +5,18 @@ void setup()
 {
         set_short("Dwarfen Storeroom.");
 
-        set_long("This is a long disused storeroom with various bit of "+
-                "equipment etc scattered arround. Among the debris you "+
-                "notice a small sack which is bulging. There are various "+
-                "metal items but even you have trouble seeing what is actually under "+
-                "all the dust. You hear the currying off feet...damned  "+
+        set_long("This is a long disused storeroom with various bit of "
+                "equipment etc scattered arround. Among the debris you "
+                "notice a small sack which is bulging. There are various "
+                "metal items but even you have trouble seeing what is actually under "
+                "all the dust. You hear the currying off feet...damned  "
                 "those rats.\n");
                                                        
         set_light(80); 
 
         add_item("Sack", "This is a small but strong sack.\n");
 
-        add_item("Metal", "This is generally rusted but you can make out a "+
+        add_item("Metal", "This is generally rusted but you can make out a "
                 "Small axe. The rest of the items are too hidden.\n");
 
         add_item("Debris", "This is dirty and smelly, p'haps leave it alone?.\n");

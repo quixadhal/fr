@@ -1,4 +1,3 @@
-#include <standard.h>
 #include "udp.h"
 /*
  * Support.  Do we support this protocol?
@@ -53,5 +52,3 @@ void send_support_q(string host, mixed port, string cmd, string param) {
 void create() {
   seteuid(getuid());
 } /* create() */
-
-void dest_me() { destruct(TO); }

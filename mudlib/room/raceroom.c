@@ -4,35 +4,36 @@ inherit "std/room";
 setup() 
 {
   string human, halfelf, elf, halfling, orc, halforc, lizardman;
-  string gnome, dwarf, goblin, drow;
+  string gnome, dwarf, goblin, drow,duergar;
 
 // added by Radix for "no new" players from the site.
 // REAL ugly but works  (:   2-20-95
-   clone_object("/room/start/nonew")->move(this_object());
-// following added by Radix the raceroom fixer
+   //clone_object("/room/start/nonew")->move(this_object());
+// following added by Radix the ra//ceroom fixer
 // disallow all combat in here, should anyhow   4-7-95
 
-  set_light(60);
+   add_property("no_undead",1);
+  set_light(75);
   set_short("The Hall of Creation");
   set_long(
-"Your immaterial form has found it's way to the Hall of Creation.  Here, you "+
-"will determine in part what you will become by selecting your race.  You "+
-"immediately notice several large statues supporting the high-arched ceiling "+
-"here.  Depicted herein are all the races: Drow, Dwarf, Elf, Half-Elf, Gnome, "+
-"Goblin, Halfling, Human, Lizard-Man, Orc, and Half-Orc.\n\n"+
-"You think that if you examined a statue, you might find out more about what "+
-"that Race represents.\n\n"+
-"When you have chosen your race after careful research (For you will only be "+
-"allowed to choose -once-!) you must type:\n"+
-"\n"+
+"Your immaterial form has found it's way to the Hall of Creation.  Here, you "
+"will determine in part what you will become by selecting your race.  You "
+"immediately notice several large statues supporting the high-arched ceiling "
+"here.  Depicted herein are all the races: Drow, Duergar, Dwarf, Elf, Half-Elf, Gnome, "
+"Goblin, Halfling, Human, Lizard-Man, Orc, and Half-Orc.\n\n"
+"You think that if you examined a statue, you might find out more about what "
+"that Race represents.\n\n"
+"When you have chosen your race after careful research (For you will only be "
+"allowed to choose -once-!) you must type:\n"
+"\n"
 "become <race>       For Example: become human\n\n");
-add_item("statue","The statues are beautifully carved of solid granite, each "+
-"one respresenting a race that you might choose to become.  If you would like "+
-"to learn more about a particular race, you must examine one specifically, "+
+add_item("statue","The statues are beautifully carved of solid granite, each "
+"one respresenting a race that you might choose to become.  If you would like "
+"to learn more about a particular race, you must examine one specifically, "
 "For example: exa human    -or-   exa drow.\n");
-add_item("hall","The Hall of Creation is where all new mortals begin the "+
+add_item("hall","The Hall of Creation is where all new mortals begin the "
 	"shaping of their lives.\n");
-add_item("ceiling","The arched ceiling is painted with portraits of all the "+
+add_item("ceiling","The arched ceiling is painted with portraits of all the "
 	"ruling dieties and Gods.\n");
 
   human = read_file(PATH+"human");
@@ -46,6 +47,7 @@ add_item("ceiling","The arched ceiling is painted with portraits of all the "+
   orc= read_file(PATH+"orc");
   goblin = read_file(PATH+"goblin");
   lizardman = read_file(PATH+"lizard-man");
+   duergar = read_file(PATH+"duergar");
 
   add_item("human", human);
   add_item("half-elf", halfelf);
@@ -58,9 +60,11 @@ add_item("ceiling","The arched ceiling is painted with portraits of all the "+
   add_item("orc", orc);
   add_item("goblin", goblin);
   add_item("lizard-man", lizardman);
+  add_item("duergar",duergar);
 }
 
 int no_kill(string str) { return 1; }
+
 void init()
 {
   ::init();
@@ -84,78 +88,89 @@ int do_become(string str)
 {
  object me;
  string race;
+   string robj;
  string startplace;
  int i;
  
  me = this_player();
  str = lower_case(str);
- if (str != "") i = str[0];
  
  /* The players should be able to pick a race only once.
   * Fixed by Baldrick, dec '94
   */
 
- if ((string)me->query_race_ob() != "/std/races/unknown")
+ /* Just for betatesting, you have to be "registrated" to be able to get
+  * out of this room.
+  * Baldrick, sept '95
+  */
+
+/*
+  if (!me->query_registrated())
+    {
+    notify_fail("You have to be registrated, ask a Thane or higher for it.\n");
+    return 0;
+    }
+*/
+
+   robj = (string)me->query_race_ob();
+   if( !( robj == "/std/races/unknown" || robj == "std/races/unknown" ) )
+   if ((string)me->query_race_ob() != "std/races/unknown")
    {
-   startplace = "/room/start/" + me->query_race();
+   if(me->query_level() < 5)
+      startplace = "/room/start/" + me->query_race();
+   else startplace = "/d/ss/swamp/sw2.c"; // Taniwha 1995, higher level players NOT to newbie zones
    me->move(startplace);
    notify_fail("Already chosen one before, moving you to your home.\n");
    return 0;
    } /* in (me */
 
- if (i == 'h')
- {
-  i = str[1];
-  if (i == 'u') race = "human";
-  if (i == 'a')
-  {
-   i = str[5];
-   if (i == 'e') race = "half-elf";
-   if (i == 'o') race = "half-orc";
-   if (i == 'i') race = "halfling";
-  }
- }
- else if (i == 'e') race = "elf";
- else if (i == 'o') race = "orc";
- else if (i == 'l') race = "lizard-man";
- else if (i == 'd')
- {
-   i = str[1];
-   if (i == 'w') race = "dwarf";
-   if (i == 'r') race = "drow";
-   //if (i == 'u') race = "duck";
- }
- else if (i == 'g')
- {
-   i = str[1];
-   if (i == 'o') race = "goblin";
-   if (i == 'n') race = "gnome";
+   switch(str)
+   {
+   case "human":
+   case "half-orc":
+   case "half-elf":
+   case "halfling":
+   case "dwarf":
+   case "drow":
+   case "duergar":
+   case "elf":
+   case "orc":
+   case "lizard-man":
+   case "gnome":
+   case "goblin":
+      race = str;
+   break;
+   default:
+      return 0;
+   break;
  }
  if(race)
  {
-   say(this_player()->query_cap_name()+" enters the "+race+" statue and "+
+   say(this_player()->query_cap_name()+" enters the "+race+" statue and "
     "disappears.\nA new "+race+" statue suddenly appears.\n", this_player());
    me->set_race_ob("/std/races/"+race);
-   write("You feel a strange sensation, and suddenly you wake up in your "+
-         "childhood home.\nYou seem to remember you stuffed away some "+
-         "equipment somewhere in case you should choose to leave, but "+
+   write("You feel a strange sensation, and suddenly you wake up in your "
+         "childhood home.\nYou seem to remember you stuffed away some "
+         "equipment somewhere in case you should choose to leave, but "
          "where ?\n");
    startplace = "/room/start/" + race;
    // me->move("/room/start/"+race);
    me->move(startplace);
    startplace->add_equipment();
-   if(race == "half-elf")
+   switch(race)
    {
-     me->add_language("human");
-     me->add_language("elf");
+      case "half-elf":
+         me->add_language("human");
+         me->add_language("elf");
+      break;
+      case "half-orc":
+         me->add_language("human");
+         me->add_language("orc");
+      break;
+      default:
+         me->add_language(race);
+      break;
    }
-   else if(race == "half-orc")
-   {
-     me->add_language("orc");
-     me->add_language("human");
-   }
-   else
-     me->add_language(race);
    return 1;
  }
  notify_fail("No such race, try again.\n");

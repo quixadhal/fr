@@ -56,6 +56,8 @@ void log_error(string file, string message)
       log_file(name, message);
   } else if (name == "dom") {
       write_file("/d/"+get_dom_name(file)+"/error-log", message);
+} else if (name == "root") {
+write_file("/log/root.log",message);
   } else if (name != "root") {
       write_file("/w/"+name+"/error-log", message);
   }

@@ -6,6 +6,8 @@ inherit "/std/basic/move";
 
 static int weight;
 int value;
+int resale_value; /* Hamlet */
+int stolen_modifier; /* Hamlet */
 
 create() {
 }
@@ -23,18 +25,24 @@ int exp(int x, int y) {
   return ret;
 }
 
+// fixed these so there are no negative weights... Anirudh
 void adjust_weight(int w) {
+  if (weight+w < 0) w = -weight;
   if (environment())
     environment()->add_weight(w);
   weight += w;
 }
 
 void set_weight(int w) {
+  if (w < 0) w = 0;
   if (environment())
     environment()->add_weight(w-weight);
   weight = w;
 }
-int query_weight() { return weight; }
+int query_weight() {
+  if (weight < 0) weight = 0;
+  return weight;
+}
 
 varargs int adjust_money(mixed amt, string type) {
   int i;
@@ -75,6 +83,11 @@ move(mixed dest, mixed messout, mixed messin) {
   int i;
   object from;
 
+   if(!dest)
+   {
+// Taniwha 1995, maybe log this ?
+      return 0;
+   }
   from = environment();
   if (!dest->add_weight(weight))
     return MOVE_TOO_HEAVY;
@@ -84,6 +97,7 @@ move(mixed dest, mixed messout, mixed messin) {
       from->add_weight(-weight);
       from->adjust_light(-query_light());
     }
+      if(environment())
     environment()->adjust_light(query_light());
   } else
     dest->add_weight(-weight);
@@ -91,11 +105,18 @@ move(mixed dest, mixed messout, mixed messin) {
 }
 
 void dest_me() {
+   object ob;
+   object *olist;
+   int i;
   if (environment()) {
     environment()->add_weight(-weight);
     set_light(0);
   }
-  all_inventory(this_object())->dest_me();
+   olist = all_inventory(this_object());
+   for(i = 0; i < sizeof(olist); i++)
+   {
+      if(olist[i]) olist[i]->dest_me();
+   }
   ::dest_me();
 }
 
@@ -105,3 +126,27 @@ mixed *query_init_data() {
       ({ "weight", weight, "set_weight/p/",
          "value", value, "set_value/p/" });
 } /* query_init_data() */
+
+/* resale value functions by Hamlet, August 1995 */
+/* These are the price a shop will offer for an object. */
+
+void set_resale_value(int i) { resale_value = i; }
+int adjust_resale_value(int i) { return( resale_value += i); }
+int query_resale_value() { return resale_value; }
+
+void prevent_resale() {  resale_value = -1;  }
+void allow_resale() {  resale_value = 0;  }
+
+/* These are for how much the shop will offer for the item if it has
+   been stolen. -- Hamlet
+*/
+
+int set_stolen_modifier(int i) {
+  if(i > 100)   i = 100;
+  if(i < -1)    i = -1;
+
+  stolen_modifier = i;
+  return i;
+}
+int query_stolen_modifier() { return stolen_modifier; }
+void no_sell_if_stolen() { stolen_modifier = -1; }

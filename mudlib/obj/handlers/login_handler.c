@@ -1,5 +1,10 @@
 // 24 Sept 1993 Chrisy -
 //    Changed all vairables "function" to funct". MAkes MudOS hiccup :)
+/* And now I'm messing with this..
+ * how stupid can I be? I will add a thingie that only let immortals enter
+ * the last three slots.
+ * Baldrick, jan '95
+ */
 
 inherit "std/object";
 
@@ -14,8 +19,6 @@ mixed *functions;
 mixed *objects;
 static string *players_on;
 static int number_players;
-int immortal_lockout;
-string *allowed_immorts;
 
 
 void create() {
@@ -23,8 +26,6 @@ void create() {
   functions = ({ });
   seteuid("Room");
   objects = ({ });
-  immortal_lockout=0;
-  allowed_immorts=({ });
   restore_object(SAVE_NAME,1);
   players_on = ({ });
   number_players = 0;
@@ -159,55 +160,3 @@ int player_logout(string player) {
 string *query_players_on() { return players_on; }
 
 
-
-/* immortal lockout thingy for OMIQS ...
-   I hope this doesn't screw up anybody elses plans ...
-   Sojan
-*/
-
-void enable_immort_lockout()
-{
-  if(!"/secure/master"->high_programmer(geteuid(previous_object()))) return;
-  immortal_lockout=1;
-  catch(save_object(SAVE_NAME, 1));
-  write("Immortal Lockout enabled, please remember to disable once you have finished.\n");
-  return;
-}
-
-void disable_immort_lockout()
-{
-  if(!"/secure/master"->high_programmer(geteuid(previous_object()))) return;
-  immortal_lockout=0;
-  catch(save_object(SAVE_NAME, 1));
-  write("Immortal lockout disabled.\n");
-  return;
-}
-
-int query_immort_lockout(string name)
-{
-  if(member_array(name, allowed_immorts)>-1) return 0;
-  return immortal_lockout;
-}
-
-void add_allowed_immort(string name)
-{
-  if(!"/secure/master"->high_programmer(geteuid(previous_object()))) return;
-  allowed_immorts+= ({ name, });
-  catch(save_object(SAVE_NAME, 1));
-  return;
-}
-
-int trai(string ele, string name)
-{
-  return ele!=name;
-}
-
-void remove_allowed_immort(string name)
-{
-  string *bing;
-  if(!"/secure/master"->high_programmer(geteuid(previous_object()))) return;
-  bing=filter_array(allowed_immorts, "trai", this_object(), name);
-  allowed_immorts=bing;
-  catch(save_object(SAVE_NAME, 1));
-  return;
-}

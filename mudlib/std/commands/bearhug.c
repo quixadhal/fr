@@ -1,8 +1,11 @@
 /*** Bearhug ***/
 /*** By Wonderflug ***/
 
+inherit "/std/spells/patch.c";
+object check_melee_protector(object, object);
+
 #define BEARHUG_GP_ROUND 2
-#define BEARHUG_LOCKOUT 50
+#define BEARHUG_LOCKOUT 20
 #define BEARHUG_GRAB_GP 4
 
 #define BEARHUG_HUGGER_SHADOW "/std/commands/bearhug_hsh.c"
@@ -11,20 +14,20 @@
 
 string help()
 {
-  return "\nSyntax:  bearhug <target>\n"+
-	"Cost: "+BEARHUG_GRAB_GP+" GP to start, "+
-	BEARHUG_GP_ROUND+" GP per round\n\n"+
-	"     Bearhug lets you grab an opponent into your arms and try "+
-	"to squeeze them to death.  While in the bearhug, neither you nor "+
-	"your opponent may attack or move, and your opponent will take a "+
-	"small amount of damage.  The bearhugs lasts until you either run "+
-	"out of GP, 'release' the opponent, or your opponent breaks free. "+
-	"Stronger and more dextrous opponents will stand a better chance "+
-	"of breaking free.  Only humanoid creatures can be caught in a "+
-	"bearhug.\nNote: Chances are a lot of npc's that SHOULD be human "+
-	"are not right now.  Post on your guild board and/or mail me about "+
-	"these and we'll try to get them fixed."
-	"\n\n";
+  return "\nSyntax:  bearhug <target>\n"
+    "Cost: "+BEARHUG_GRAB_GP+" GP to start, "+
+    BEARHUG_GP_ROUND+" GP per round\n\n"
+    "     Bearhug lets you grab an opponent into your arms and try "
+    "to squeeze them to death.  While in the bearhug, neither you nor "
+    "your opponent may attack or move, and your opponent will take a "
+    "small amount of damage.  The bearhugs lasts until you either run "
+    "out of GP, 'release' the opponent, or your opponent breaks free. "
+    "Stronger and more dextrous opponents will stand a better chance "
+    "of breaking free.  Only humanoid creatures can be caught in a "
+    "bearhug.\nNote: Chances are a lot of npc's that SHOULD be human "
+    "are not right now.  Post on your guild board and/or mail me about "
+    "these and we'll try to get them fixed."
+    "\n\n";
 }
 
 int bearhug(string str, object doer)
@@ -38,30 +41,44 @@ int bearhug(string str, object doer)
 
   hugger = doer ? doer : this_player();
 
+  str = hugger->expand_nickname(str);
+
   if (!str)
   {
-	tell_object(hugger,"Syntax: bearhug <target>\n");
-	return 1;
+    tell_object(hugger,"Syntax: bearhug <target>\n");
+    return 1;
+  }
+  if(interactive(hugger) && member_array(hugger->query_guild_name(),({"fighter","ranger"})) == -1 )
+  {
+    tell_object(hugger, "Oops! You really don't know what you're doing, "
+      "and may as well forget it.\n");
+    hugger->remove_known_command("bearhug");
+    return 1;
   }
   if ( hugger->query_property("flipped") )
   {
-	tell_object(hugger, "You lack the patience to sit and bearhug "+
-	  "someone in your berserked rage.\n");
-	return 1;
+    tell_object(hugger, "You lack the patience to sit and bearhug "
+      "someone in your berserked rage.\n");
+    return 1;
+  }
+  if ( hugger->query_property("bearhug_done") )
+  {
+    tell_object(hugger, "Your arms are tired from bearhugging already.\n");
+    return 1;
   }
 
   /* Make sure they're not holding anything */
   if ((int)hugger->query_gp() < BEARHUG_GP_ROUND )
   {
-	tell_object(hugger,"You don't have the energy to bearhug anything "+
-	  "right now.\n");
-	return 1;
+    tell_object(hugger,"You don't have the energy to bearhug anything "
+      "right now.\n");
+    return 1;
   }
   ob = (object*)hugger->query_held_ob();
   if (sizeof(ob) && ( ob[0] || ob[1] ))
   {
-	tell_object(hugger,"How can you grab anyone with your hands full?\n");
-	return 1;
+    tell_object(hugger,"How can you grab anyone with your hands full?\n");
+    return 1;
   }
 
   /* Find the target */
@@ -69,45 +86,47 @@ int bearhug(string str, object doer)
 
   if (!(sizeof(ob)))
   {
-        tell_object(hugger,"Your target is not here.\n");
-        return 1;
+    tell_object(hugger,"Your target is not here.\n");
+    return 1;
   }
   target = ob[0];
-
+  target = check_melee_protector( target, hugger );
   if (target->query_time_spell() || target->query_hold_spell() )
   {
-	tell_object(hugger, "You cannot bearhug "+target->query_cap_name()+
-	  " right now.\n");
-	return 1;
+    tell_object(hugger, "You cannot bearhug "+target->query_cap_name()+
+      " right now.\n");
+    return 1;
   }
 
   hugger->adjust_gp(-BEARHUG_GRAB_GP);
+  hugger->add_timed_property("bearhug_done", 1, BEARHUG_LOCKOUT);
 
   /* Check the race of the target.  Non-humanoid = non-huggable */
   switch( (string)target->query_race() )
   {
-	case "human":
-	case "orc":
-	case "half-elf":
-	case "half-orc":
-	case "elf":
-	case "goblin":
-	case "drow":
-	case "halfling":
-	case "lizard-man":
-	case "dwarf":
-	case "gnome":
-		break;
-	default:
-	  tell_object(hugger, "You try quite unsuccessfully to bearhug "+
-		target->query_cap_name()+".\n");
-	  tell_room(environment(hugger), hugger->query_cap_name()+
-		" tries to grab "+target->query_cap_name()+" and is "+
-		"quite unsuccessful.\n", ({hugger, target}));
-	  tell_object(target, hugger->query_cap_name()+
-		" foolishly tries to bearhug you.\n");
-	  target->attack_ob(hugger);
-	  return 1;
+    case "duergar":
+    case "human":
+    case "orc":
+    case "half-elf":
+    case "half-orc":
+    case "elf":
+    case "goblin":
+    case "drow":
+    case "halfling":
+    case "lizard-man":
+    case "dwarf":
+    case "gnome":
+      break;
+    default:
+      tell_object(hugger, "You try quite unsuccessfully to bearhug "+
+        target->query_cap_name()+".\n");
+      tell_room(environment(hugger), hugger->query_cap_name()+
+        " tries to grab "+target->query_cap_name()+" and is "
+        "quite unsuccessful.\n", ({hugger, target}));
+      tell_object(target, hugger->query_cap_name()+
+        " foolishly tries to bearhug you.\n");
+      target->attack_ob(hugger);
+      return 1;
   }
 
   /* Make a hit roll.  hugger->query_thac0 vs. target->query_total_ac
@@ -115,26 +134,27 @@ int bearhug(string str, object doer)
    * maybe a little easy.
    */
 
-  if ( random(20) < (int)hugger->query_thac0() - (int)target->query_total_ac() )
+  if ( random(200) < 
+       (int)hugger->query_thac0() - (int)target->query_total_ac() )
   {
-	tell_room(environment(hugger), hugger->query_cap_name()+
-	  " tries to grab "+target->query_cap_name()+" but misses.\n",
-	  ({ hugger, target }) );
-	tell_object(hugger, "You try to grab "+target->query_cap_name()+
-	  " but miss.\n");
-	tell_object(target, hugger->query_cap_name()+" tries to grab you "+
-	  "but you dodge out of the way.\n");
-	target->attack_ob(hugger);
-	return 1;
+    tell_room(environment(hugger), hugger->query_cap_name()+
+      " tries to grab "+target->query_cap_name()+" but misses.\n",
+      ({ hugger, target }) );
+    tell_object(hugger, "You try to grab "+target->query_cap_name()+
+      " but miss.\n");
+    tell_object(target, hugger->query_cap_name()+" tries to grab you "
+      "but you dodge out of the way.\n");
+    target->attack_ob(hugger);
+    return 1;
   }
   /* Success */
-  tell_object(hugger,"You grab "+target->query_cap_name()+" into a "+
-	"deathly grip.\n");
-  tell_object(target,hugger->query_cap_name()+" grabs you and starts "+
-	"squeezing the life out of you!\n");
+  tell_object(hugger,"You grab "+target->query_cap_name()+" into a "
+    "deathly grip.\n");
+  tell_object(target,hugger->query_cap_name()+" grabs you and starts "
+    "squeezing the life out of you!\n");
   tell_room(environment(hugger), hugger->query_cap_name()+" grabs "+
-	target->query_cap_name()+" into a huge bearhug!\n",
-	({ hugger, target }) );
+    target->query_cap_name()+" into a huge bearhug!\n",
+    ({ hugger, target }) );
 
   /* Now clone the shadows and return. */
   h_obj = clone_object(BEARHUG_HUGGER_OBJECT);

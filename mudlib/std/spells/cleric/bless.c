@@ -1,149 +1,105 @@
 /*** Bless Spell ***/
-inherit "/std/spells/patch.c";
-
-/* find_unique_match() does a find match that ensures the returned 
-   object list contains no duplicates
-   find_one_match() returns only the first matched object
-*/
-mixed find_unique_match(string find,mixed in);
-mixed find_one_match(string find,mixed in);
-int cleric_fix_damage(object caster,object victim,int damage,string save);
-object caster;
 /*** Created by Eerevann Tokani ***/
+/*** Cleanup by Wonderflug ***/
 
+inherit "/std/spells/base.c";
 
-#define SP_NAME "Bless"
-#define GP_COST 2
+void setup()
+{
+  set_spell_name("Bless");
+  set_sphere("all");
+  set_spell_level(1);
 
-object shadow;
+  set_target_type("one");
+  set_range(0);
+  set_line_of_sight_needed(0);
 
-string help() {
-		 return
-       "\n\n"+
-		 "Spell Name: "+SP_NAME+"\n"+
-       "Sphere: All\n"+
-		 "Level: 1st\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-		 "Description: \n"+
-       "    This spell grants the target a +1 to hit in battle for "+
-       "a limited duration.\n\n";
+  set_help_desc("This spell grants the target a +1 to hit in battle for "
+    "a limited duration.");
 
+  set_gp_cost(2);
+  set_casting_time(1);
+  set_rounds( ({ "round1" }) );
 }
 
-mixed spell(string str, int skill, int cast);
-
-int cast_spell(string str,object cast)
-{
-  int skill;
-  mixed ret;
-
-  caster = cast ? cast : this_player();
-
-  str = (string)caster->expand_nickname(str);
-
-  if ( wrong_alignment(caster) )
-    return punish_align(caster);
-  ret = spell(str, skill, 1);
-  if (stringp(ret))
-  {
-	 notify_fail(ret);
-    return 0;
-  }
-  tell_object(caster,"You start to cast "+SP_NAME+".\n");
-  tell_room(environment(caster),caster->query_cap_name()+" begins to cast a spell.\n",
-	  caster);
-  return 1;
-  }
-
-mixed spell(string str, int skill, int cast)
-{
-  mixed ob;
-
-  if ((int)caster->query_spell_effect("spell"))
-    return "You are already casting an spell.\n";
-  ob = find_one_match(str, environment(caster));
-  if (sizeof(ob))
-    ob = ob[0];
-  else
-    ob = 0;
-
-  caster->add_spell_effect(1, "spell", SP_NAME,
-    this_object(), "hb_spell", ({ skill,ob,cast }));
-  return 1;
-}
-
-int hb_spell(object caster, mixed *params)
+int round1(object caster, mixed target, mixed out_range, int time, int quiet)
 {
   int resist_value;
   int level;
 
-  if (!params[1])
+  if ( wrong_alignment(caster) )
   {
-	 tell_object(caster,
-      "Your spell failed ... there is no one of that name here.\n");
+    punish_align(caster);
     return 0;
+  }
+
+  if (!target)
+  {
+    tell_object(caster,
+      "Your spell failed ... there is no one of that name here.\n");
+    return -1;
   }
  
-  if (params[1]->query_blessed())
+  if (target->query_property("bless_on"))
   {
-	 tell_object(caster,
+    tell_object(caster,
       "The target is already under the effects of a Bless.\n");
-    return 0;
+    return -1;
   }
 
-  if (params[2] && (int)caster->adjust_gp(-GP_COST)<0)
+  if ( !quiet )
   {
-	 tell_object(caster, "You fail to draw enough energy from "+
-     "your god.\n");
-    return 0;
+    tell_room(environment(caster),(string)caster->query_cap_name()+
+      " chants, 'bleiso umanos'.\n", ({target,caster}));
+    tell_object(target, "You chant, 'bleiso umanos'.\n");
   }
-    
-  tell_room(environment(caster),(string)caster->query_cap_name()+
-	" chants, 'bleiso umanos'.\n", ({params[1],caster}));
-    
-  if(params[1] == caster)
-	{
-    tell_object(params[1], "You chant, 'bleiso umanos'.\n");
-	 tell_object(params[1], "You "+SP_NAME+" yourself.\n");
-	 tell_room(environment(caster),(string)caster->query_cap_name()+
-      " casts a spell upon "+params[1]->query_objective()+"self.\n",params[1]);
-   }
+
+  if(target == caster)
+  {
+    tell_object(caster, "You cast Bless upon yourself.\n");
+    tell_room(environment(caster),(string)caster->query_cap_name()+
+      " casts a spell upon "+caster->query_objective()+"self.\n",caster);
+  }
   else
   {
-	tell_object(caster, "You chant, 'bleiso umanos'.\n");
+    tell_object(target, (string)caster->query_cap_name()+
+      " kneels over you and Blesses you.\n");
    
-	tell_object(params[1], (string)caster->query_cap_name() +
-    " chants, 'bleiso umanos'.\n");
+    tell_object(caster, "You kneel over "+
+      (string)target->query_cap_name() + " and bless "+
+      target->query_objective()+".\n");
    
-	tell_object(params[1], (string)caster->query_cap_name()+
-    " kneels over you and Blesses you.\n");
-   
-	tell_object(caster, "You kneel over "+
-    (string)params[1]->query_cap_name() + " Blessing "+
-    params[1]->query_objective()+".\n");
-   
-	tell_room(environment(caster),(string)caster->query_cap_name()+
-    " kneels over "+params[1]->query_cap_name()+" chanting softly.\n",
-		 ({params[1],caster}) );
+    tell_room(environment(caster),(string)caster->query_cap_name()+
+      " kneels over "+target->query_cap_name()+" chanting softly.\n",
+      ({target,caster}) );
   }
 
-  
-  shadow = clone_object("/std/spells/cleric/bless_sh.c");
-  shadow->setshadow(params[1]);
+  switch ( caster->query_sphere_power("all") )
+  {
+    case "minor": 
+      level = 5; 
+      break;
+    case "major": 
+      level = 15; 
+      break; 
+    default: 
+      level = 10;
+  }
 
-  params[1]->adjust_tmp_tohit_bon(1);  
+  target->adjust_tmp_tohit_bon(level);
+  target->add_static_property("bless_on", 1);
 
-  level = (int)caster->query_level();
-  call_out("wear_off",100+(level*10),params[1]);
-  return GP_COST;
+  call_out("wear_off",100+((int)caster->query_level()*10),target, level);
+  return 0;
 }
 
-void wear_off(object target)
+void wear_off(object target, int level)
 {
   if(target)
   {
-   target->adjust_tmp_tohit_bon(-1);
-   target->destruct_bless_shadow();
-   tell_object(target, "Your "+SP_NAME+" wears off.\n");
+    target->adjust_tmp_tohit_bon(-level);
+    target->destruct_bless_shadow();
+    target->remove_static_property("bless_on");
+    tell_object(target, "Your blessing wears off.\n");
   }
 }

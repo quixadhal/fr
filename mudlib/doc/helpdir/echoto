@@ -1,4 +1,5 @@
 Usage : echoto <player> <text>
+Restricted to immortal Patrons and above only.
 
 The echoto command takes the text you provide and passes it to the player that
 you specify.  The text appears on the screen with no indication who it came

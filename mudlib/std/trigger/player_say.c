@@ -1,6 +1,8 @@
 void event_person_say(object ob, string start, string mess, string lang) {
   mixed *bit;
   int i;
+  // Taniwha 1995, is wibbling
+   if(!ob || !interactive(ob)) return;
 
   bit = (mixed *)this_object()->query_actions("player_say");
   for (i=0;i<sizeof(bit);i+=2)

@@ -30,6 +30,8 @@ void create() {
   guild_commands = ({ });
   ::create();
 }
+int query_channel() { return 1; }
+
 
 string help() { return read_file("/doc/helpdir/guilds"); }
 
@@ -207,4 +209,9 @@ void new_levels(int lvl, object ob)
 
 int query_level(object ob) {
   return level;
+}
+
+int query_dual_wield_penalty(object me, object w1, object w2)
+{
+  return 50;
 }

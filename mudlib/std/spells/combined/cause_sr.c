@@ -15,16 +15,16 @@ mixed find_one_match(string find, mixed in);
  /*** help file ***/
 string help() {
        return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "Sphere: Healing (reversed)\n"+
-       "Level: 4th\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Damage Type: "+TYPE+"\n"+
-       "Saving Throw: None\n"+
-       "Description: \n"+
-       "    This spell will do 2-16 + 1 points of damage to an enemy of your "+
-       "choice.  The spell, once cast, requires the caster to touch the "+
+       "\n\n"
+       "Spell Name: "+SP_NAME+"\n"
+       "Sphere: Healing (reversed)\n"
+       "Level: 4th\n"
+       "Gp Cost: "+GP_COST+"\n"
+       "Damage Type: "+TYPE+"\n"
+       "Saving Throw: None\n"
+       "Description: \n"
+       "    This spell will do 2-16 + 1 points of damage to an enemy of your "
+       "choice.  The spell, once cast, requires the caster to touch the "
        "target.  If the touch misses, the spell's energy is wasted.\n\n";
        
 
@@ -101,7 +101,7 @@ int hb_spell(object attacker, mixed *params)
    /*** DEDUCTS THE GP COST OF THE SPELL, IF NOT ENOUGH, SPELL FAILS ***/
   if (params[2] && (int)previous_object()->adjust_gp(-GP_COST)<0)
   {
-    tell_object(previous_object(), "You fail to draw enough power from "+
+    tell_object(previous_object(), "You fail to draw enough power from "
        "your god.\n");
     return 0;
   }
@@ -148,7 +148,7 @@ int hb_spell(object attacker, mixed *params)
    
     /*** TELLS ROOM THE EFFECTS OF THE SPELL BUT NOT CASTER OR TARGET ***/
    say((string)previous_object()->query_cap_name()+
-    " casts a spell and touches "+params[1]->query_cap_name()+" causing "+
+    " casts a spell and touches "+params[1]->query_cap_name()+" causing "
     "several cuts.\n",
        ({params[1],previous_object()}) );
     } //end if

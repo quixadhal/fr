@@ -1,7 +1,7 @@
 inherit "/std/races/standard";
 
 void setup() {
-  set_long("Wizards are the ones who work to create areas in a domain, but "+
+  set_long("Wizards are the ones who work to create areas in a domain, but "
            "that has no operational area yet.\n");
    set_name("wizard");
 }

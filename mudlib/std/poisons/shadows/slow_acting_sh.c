@@ -46,11 +46,11 @@ int weapon_attack( object him, object me )
   ret = my_weapon->weapon_attack(him, me);
   if ( ret > 0 )
   {
-    tell_object(me, him->query_cap_name()+"'s wound turns green from the "+
+    tell_object(me, him->query_cap_name()+"'s wound turns green from the "
 	"poison on your weapon.\n");
-    tell_object(him, "You notice some poison on the weapon and the wound "+
+    tell_object(him, "You notice some poison on the weapon and the wound "
 	"seems to turn a \nhorrid shade of green..\n");
-    tell_room(environment(me), him->query_cap_name()+"'s wound turns a "+
+    tell_room(environment(me), him->query_cap_name()+"'s wound turns a "
 	"sickly shade of green.\n", ({ him, me}) );
 
     do_poison_effect( him, me );

@@ -6,27 +6,74 @@ inherit "std/basic/cute_look";
 #define C_CLOSED 1
 #define C_TRANS 2
 #define C_OPAQUE 1
+#define BASE_WEIGHT_REDUCTION 30
 
+static int weight_reduction;
 static int max_weight, loc_weight;
 static int prevent_insert;
 
 void create() {
+  weight_reduction = BASE_WEIGHT_REDUCTION;
   object::create();
 } /* create() */
 
+void fix_my_loc_weight();
 void set_max_weight(int arg) { max_weight = arg; }
 int query_max_weight() { return max_weight; }
 int query_loc_weight() { return loc_weight; }
+void set_weight_reduction(int arg) { weight_reduction = arg; }
+
+int query_weight() {
+  int temp;
+  if(living(this_object()))
+    temp = this_object()->query_loc_weight();
+  else
+    temp = this_object()->query_loc_weight()*weight_reduction/100;
+  temp += ::query_weight();
+  if(temp > 0) return temp;
+  else return 0;
+}
 
 int add_weight(int n) {
-  int old, new;
 
   if (::add_weight(n)) return 1;
   if (!max_weight) return 1;
   if (n + loc_weight > max_weight) return 0;
   loc_weight += n;
+  if(environment()) environment()->fix_my_loc_weight();
   return 1;
 } /* add_weight() */
+
+/* Oct 1995 -- Hamlet
+   This is damn sloppy.  Zillions of things are bugging encumbrance,
+   particularly money.  So I'm going to have money call this fcn every
+   time something is transacted.  Should fix encumbrance, clearing up
+   problems with ANYTHING that might be bugging it.  But boy it's stupid
+   to have to do this.  Someone should figure out how to fix the real
+   problems.  But not now.  No time.
+*/
+void fix_my_loc_weight() {
+  object *stuff;
+  int i;
+
+  stuff = all_inventory(this_object());
+  loc_weight = 0;
+
+  for(i=0;i<sizeof(stuff);i++)
+    if(!add_weight(stuff[i]->query_weight())) {
+// Let's be nice to the player and TELL them when they drop something :)
+// Anirudh
+      tell_object(this_object(),"You can't hold on to everything "
+        "you are trying to carry, you drop "+stuff[i]->
+         query_name()+"\n");
+      stuff[i]->move(environment(this_object()));
+    }
+}  
+
+void fix_my_loc_weight_later() {
+  call_out("fix_my_loc_weight",2);
+  return;
+}
 
 int transfer_all_to(object dest) {
   object *ob;

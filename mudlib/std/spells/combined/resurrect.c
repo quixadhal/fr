@@ -18,14 +18,14 @@ mixed find_one_match(string find,mixed in);
 /*** Help file here ***/
 string help() {
    return
-   "\n\n"+
-   "Spell Name: "+SP_NAME+"\n"+
-   "Sphere:  Necromantic\n"+
-   "Level:  7th\n"+
-   "Gp Cost: "+GP_COST+"\n"+
-   "Description: \n"+
-   "  This spell ressurects someone after they have died.  It does not remove "+
-   "one of your lives, unlike "+
+   "\n\n"
+   "Spell Name: "+SP_NAME+"\n"
+   "Sphere:  Necromantic\n"
+   "Level:  7th\n"
+   "Gp Cost: "+GP_COST+"\n"
+   "Description: \n"
+   "  This spell ressurects someone after they have died.  It does not remove "
+   "one of your lives, unlike "
    "raise, and turns you back from being a ghost.\n\n";
 }
 
@@ -62,14 +62,14 @@ mixed spell(string str, int cast) {
   if (cast && (int)this_player()->adjust_gp(-GP_COST) < 0)
     return "Too low on power.\n";
   write("You call upon the gods to ressurect "+(string)ob->query_cap_name()+
-    " from " + (string)ob->query_possessive() + " immaterial state by "+
+    " from " + (string)ob->query_possessive() + " immaterial state by "
     "hitting "+ob->query_pronoun()+" with a lightning bolt..\n");
   tell_object(ob, (string)this_player()->query_cap_name() +
-    " summons the gods for you, and incidently hits you with a lightning "+
+    " summons the gods for you, and incidently hits you with a lightning "
     "bolt.  It doesn't seem to hurt.\n");
-  say((string)this_player()->query_cap_name() + " stares intently into space, "+
-    "you hear a vage rumbling in the distance, suddenly a lightning bolt "+
-    "sears through the sky and hits "+ob->query_cap_name()+" ressurecting "+
+  say((string)this_player()->query_cap_name() + " stares intently into space, "
+    "you hear a vage rumbling in the distance, suddenly a lightning bolt "
+    "sears through the sky and hits "+ob->query_cap_name()+" ressurecting "
     " them from the dead.\n", ob);
   ob->remove_ghost();
   ob->adjust_max_deaths(1);

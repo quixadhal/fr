@@ -2,11 +2,13 @@
 #define BARD "/std/guilds/rogues/assassin"
 #define WIZARD "/std/guilds/wizards/general_mage"
 #define THIEF "/std/guilds/rogues/thief"
-#define CLERIC "/std/guilds/priests/tempus"
+#define CLERIC "/std/guilds/cleric.c"
 #define FIGHTER "/std/guilds/warriors/fighter"
 
+inherit "/std/room";
 // Newbie guild, Free and it bases your throws on the guild that approximates
 // your stats
+int clean_up_room(int flag) { return 1; }
 object find_guild(object player);
 int calc_xp(object guild, int lvl);
 
@@ -15,7 +17,8 @@ int calc_xp(object guild, int lvl);
  * take a guess at what guild they may end up in and use that for XP calcs
 */
 
-inherit "/std/room";
+object board;
+
 
 #define my_race_ob this_player()->query_race_ob()
 
@@ -26,24 +29,39 @@ void setup()
   set_long("Its a guild room.\n");
 }
 
+void reset() {
+  if(!board) {
+    board = clone_object("/obj/misc/board");
+    board->set_datafile("playerinfo");
+    board->move(this_object());
+  }
+   ::reset();
+}
+
+void dest_me() {
+  if(board)
+    board->dest_me();
+  ::dest_me();
+}
+
 int do_info(string str)
 {
     write(
-    "Welcome to your guild.\n You can advance here for free "+
-    "once you obtain the required experience at each level.\n"+
-    "Once you reach level 5 you will have to find your way "+
-    "out into the big wide world and join another guild "+
-    "to advance further.\n"+
-    "Advance to level 1 requires no XP, but you may wish "+
-    "to consider using the \"rearrange\" command first. "+
-    "Your stats rolls here are influenced by your current "+
-    "stats based on a best guess of which guild they would "+
-    "be suited for in later life.\n"+
-    "Note that there is no long term advantage in the stats "+
-    "rolls gained here, after time they will tend to approach "+
-    "the average for your final guild.\n"+
-    "Not all the guilds outside here will be easy "+
-    "to find, however most of the basic guilds are "+
+    "Welcome to your guild.\n You can advance here for free "
+    "once you obtain the required experience at each level.\n"
+    "Once you reach level 5 you will have to find your way "
+    "out into the big wide world and join another guild "
+    "to advance further.\n"
+    "Advance to level 1 requires no XP, but you may wish "
+    "to consider using the \"rearrange\" command first. "
+    "Your stats rolls here are influenced by your current "
+    "stats based on a best guess of which guild they would "
+    "be suited for in later life.\n"
+    "Note that there is no long term advantage in the stats "
+    "rolls gained here, after time they will tend to approach "
+    "the average for your final guild.\n"
+    "Not all the guilds outside here will be easy "
+    "to find, however most of the basic guilds are "
     "represented in Daggerford and Banefall.\n"
     );
     return 1;
@@ -57,7 +75,7 @@ int do_cost(string str)
     switch(lvl)
     {
     case 0:
-        write("It will cost you nothing to advance to level 1.\n"+
+        write("It will cost you nothing to advance to level 1.\n"
         "You may want to read the \"info\" first however.\n");
         return 1;
     break;
@@ -66,7 +84,7 @@ int do_cost(string str)
         write("It will cost you "+total_xp+" XP to advance here.\n");
    break;
    default:
-       write("You can advance no further here, time to find your "+
+       write("You can advance no further here, time to find your "
        "way out into the wide world adventurer.\n");
    break;
    }
@@ -77,6 +95,7 @@ int do_cost(string str)
 
 void init() {
   ::init();
+   this_object()->add_property("no_undead",1);
   add_action("do_advance", "ad*vance");
   add_action("do_info", "inf*o");
   add_action("do_cost", "co*st");
@@ -179,7 +198,7 @@ int do_advance()
     }
   break;
   default:
-     write("You can advance no further here, time to find your "+
+     write("You can advance no further here, time to find your "
     "way out into the wide world adventurer.\n");
     return 1;
   break;
@@ -196,8 +215,3 @@ int do_advance()
   guild = 0;
   return 1;
 } /* do_advance() */
-
-
-
-
-

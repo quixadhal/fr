@@ -1,87 +1,179 @@
+
+/*  Adapted from the original Berserk command, coded by Timion.
+ *  Marauder, 11/14/95/
+ */
 #include "tweaks.h"
 #define LOCK_PROP "flipped"
 void attack_all(object ob);
+int allow_attack(object who, object me);
+
 
 int go_berserk(string str,object x)
 {
    object me; 
    int BONUS, i;
-   int BOVINES;
+   int ACBONUS;
+   int COUNT;
    int TIME;
-
    if(x) me = x;
    else me = this_player();
-   if(me->query_property(LOCK_PROP))
+
+   COUNT = me->query_property(LOCK_PROP);
+   if(me->query_gp() <= 1)
    {
-     tell_object(me,"You are already Berserk!\n");
-     return 1;
+    tell_object(me,"You are too tired to go berserk.\n");
+    return 1;
    }
-   if(me->query_gp()<=1)
+   switch(COUNT)
    {
-     tell_object(me,"You are too tired to go berserk.\n");
-     return 1;
-   }
-   BONUS=((int)me->query_level()/3)+2;
-   TIME=1+(int)(me->query_gp())/2;
-   me->set_gp(0);
-   me->adjust_tmp_damage_bon(BONUS);
-   me->adjust_tmp_tohit_bon(BONUS/4);
-   me->adjust_tmp_ac_bon(-4);
-   me->add_timed_property(LOCK_PROP,1,TIME);	
-   attack_all(me);	
-   return 1;
- 
+   case 0:
+       BONUS=((int)me->query_level()/3)+1;
+    ACBONUS = (BONUS - ((me->query_dex())/3));
+    me->adjust_tmp_ac_bon(-(me->query_tmp_ac_bon()));
+    me->adjust_tmp_damage_bon(-(me->query_tmp_damage_bon()));
+    me->adjust_tmp_tohit_bon(-(me->query_tmp_tohit_bon()));
+      me->adjust_tmp_damage_bon(BONUS);
+      me->adjust_tmp_tohit_bon(BONUS*2);
+      me->adjust_tmp_ac_bon(-ACBONUS);
+if(me->query_gp() >= 25)
+  {
+   me->adjust_gp(-25);
+   TIME = 25;
+  }
+else {
+  TIME = me->query_gp();
+   me->adjust_gp(-TIME);
+ }
+      me->add_timed_property(LOCK_PROP,1,TIME);
+      attack_all(me);
+   break;
+   case 1:
+   if((me->query_gp()) >= 50)
+   {
+       BONUS=((int)me->query_level()/2)+2;
+    ACBONUS = (BONUS - ((me->query_dex())/2));
+    me->adjust_tmp_ac_bon(-(me->query_tmp_ac_bon()));
+    me->adjust_tmp_damage_bon(-(me->query_tmp_damage_bon()));
+    me->adjust_tmp_tohit_bon(-(me->query_tmp_tohit_bon()));
+       me->adjust_gp(-50);
+       me->adjust_tmp_damage_bon(BONUS);
+       me->adjust_tmp_tohit_bon((int)BONUS*2);
+       me->adjust_tmp_ac_bon(-ACBONUS);
+       me->add_timed_property(LOCK_PROP,2,40);
+    }
+    else tell_object(me,"you are too tired to get more annoyed.\n");
+    break;
+    case 2:
+    if((me->query_gp()) >= 100)
+    {
+        BONUS=((int)me->query_level()/1.75)+5;
+     ACBONUS = (BONUS - (me->query_dex()) );
+    me->adjust_tmp_ac_bon(-(me->query_tmp_ac_bon()));
+    me->adjust_tmp_damage_bon(-(me->query_tmp_damage_bon()));
+    me->adjust_tmp_tohit_bon(-(me->query_tmp_tohit_bon()));
+        me->adjust_gp(-100);
+        me->adjust_tmp_damage_bon(BONUS);
+        me->adjust_tmp_tohit_bon(BONUS*2);
+        me->adjust_tmp_ac_bon(-ACBONUS);
+        me->add_timed_property(LOCK_PROP,3,100);
+     write("\nYou completely lose control, and attack even your friends."
+      "\n\n");
+     tell_room(environment(me),"\n"+me->query_cap_name()+" totally "+
+      "loses control.  %^BOLD%^%^RED%^You'd better leave fast.%^RESET%^"
+      "\n\n",me);
+    }
+    else tell_object(me,"You lack the stamina to get more enraged.\n");
+    break;
+    default:
+        tell_object(me,"You are frothing at the mouth already, and can't get "
+         "wilder.\n");
+    break;
+    }
+    return 1;
 }
- 
+int allow_attack(object who, object me)
+{
+     if(who == me) return 0;
+//     tell_object(me,"checking "+(string)who->query_cap_name()+" ");
+     if(!who->query_alive() ) return 0;
+//     tell_object(me,"alive ");
+     if((int)me->query_property(LOCK_PROP) == 0 ) return 0;
+//     tell_object(me,"I'm berserked ");
+    if(who->query_property("no_guild")) return 1;
+     if(who->query_pacify_spell()) return 0;
+//     tell_object(me,"not pacified ");
+     if(who->query_invis()) return 0;
+//     tell_object(me,"not invis ");
+     if( (int)who->query_hide_shadow() > ((int)me->query_level()/2 + (int)me->query_int()) ) return 0;
+//     tell_object(me,"and not hidden, kill it ");
+     if((int)me->query_property(LOCK_PROP) == 3 ) return 1;
+// If you are frothing, even the people you protect get it.
+     if(who->query_protector() == me) return 0;
+//     tell_object(me,"not being protected ");
+     return 1;
+}
+
 attack_all(object ob)
 {
- object *cows;
- int x;
+  object *cows;
+  object *guards;
+  int y;
+  int x;
+  int COUNT;
+
+   if(!ob) return;
+
+   ob->set_wimpy(0);
+
+   if((int)environment(ob)->query_property("noguild")) return;
+   if((ob->query_dead())) return;
  
- ob->set_wimpy(0);
+   cows=all_inventory(environment(ob));
  
- if(ob->query_gp()) { ob->set_gp(0); }
- cows=all_inventory(environment(ob));
- if(!(int)environment(ob)->query_property("noguild"))
- if(!(ob->query_property("dead")))
- 
- for(x=0; x<sizeof(cows); x++)
- {
-    if(!(cows[x]->query_property("dead")))
-    if (!cows[x]->query_invis())
-    if ( (int)cows[x]->query_hide_shadow() < (int)ob->query_level()/2 + (int)ob->query_int() )
-    {
-      ob->attack_ob(cows[x]);
+   for(x=0; x <sizeof(cows); x++)
+   {
+        if(allow_attack(cows[x],ob)) ob->attack_ob(cows[x]);
+   }
+   COUNT = ob->query_property(LOCK_PROP);
+   if(ob->query_attacker_list())
+   {
+       switch(COUNT)
+       {
+       default:
+            end_berserk(ob);
+            return;
+       break;
+       case 1:
+            tell_room(environment(ob),ob->query_cap_name()+" hacks and flails "
+            "about in an incredible rage.\n",ob);
+            tell_object(ob,"You go berserk, hacking and flailing at everything "
+            "that moves.\n");
+        break;
+        case 2:
+            tell_room(environment(ob),ob->query_cap_name()+" attacks "
+            "everything in a red rage, doing incredible damage.\n",ob);
+            tell_object(ob,"You are in a red rage, and do massive damage to "
+            "those around you.\n");
+        break;
+        case 3:
+            tell_room(environment(ob),ob->query_cap_name()+" is foaming at the "
+            "mouth in an unstoppable Berserker rage.\n",ob);
+            tell_object(ob,"You wreak havok on everything in your path, as the "
+            "rage overcomes you.\n");
+        break;
+        }
     }
- }
-
- if(ob->query_attacker_list())
- {
-    tell_room(environment(ob),ob->query_cap_name()+" screams in Berserk rage!\n");
- }
-
-  if(!ob->query_property(LOCK_PROP)) end_berserk(ob);
-  else call_out("attack_all",5,ob);
+    call_out("attack_all",5,ob);
 }
  
 end_berserk(object ob)
 {
-   object me;
-    int BONUS;
-   me = ob;
+    tell_object(ob,"You become exhausted and are no longer berserk.\n");
 
-    tell_object(me,"You become exhausted and are no longer berserk.\n");
-    BONUS=((int)me->query_level()/3)+2;
-    ob->adjust_tmp_ac_bon(4);
-    if((int)ob->query_con() > 2) ob->adjust_tmp_con(-2);
-    ob->adjust_tmp_damage_bon(-(BONUS));
-    ob->adjust_tmp_tohit_bon(-(BONUS/3));
-}
- 
- 
-reset_berserk()
-{
- this_object()->remove_timed_property(LOCK_PROP);
- return 1;
+    ob->adjust_tmp_ac_bon(-(ob->query_tmp_ac_bon()));
+    ob->adjust_tmp_damage_bon(-(ob->query_tmp_damage_bon()));
+    ob->adjust_tmp_tohit_bon(-(ob->query_tmp_tohit_bon()));
+    if((int)ob->query_con() > 1) ob->adjust_tmp_con(-1);
+    ob->remove_timed_property(LOCK_PROP);
 }
  

@@ -21,16 +21,16 @@ mixed spell(string str,int skill, int cast);
 
 string help() {
        return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "School: Invocation\n"+
-       "Level: 9th\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Damage Type: "+TYPE+"\n"+
-       "Saving Throw: 1/2\n"+
-       "Description: \n"+
-       "     This spell will envelope your enemies in a fiery shower of "+
-       "meteors which expode upon impact.  The damage is 40-160 points "+
+       "\n\n"
+       "Spell Name: "+SP_NAME+"\n"
+       "School: Invocation\n"
+       "Level: 9th\n"
+       "Gp Cost: "+GP_COST+"\n"
+       "Damage Type: "+TYPE+"\n"
+       "Saving Throw: 1/2\n"
+       "Description: \n"
+       "     This spell will envelope your enemies in a fiery shower of "
+       "meteors which expode upon impact.  The damage is 40-160 points "
        "damage.\n\n";
 
 }
@@ -98,7 +98,7 @@ int hb_spell(object attacker, mixed *params)
   
  if (params[2] && (int)previous_object()->adjust_gp(-ADJ_COST)<0)
  {
-  tell_object(previous_object(), "You are currently too "+
+  tell_object(previous_object(), "You are currently too "
        "mentally drained to cast.\n");
   return 0;
  }
@@ -133,7 +133,7 @@ int hb_spell(object attacker, mixed *params)
 
   say(str + " envelopes "+(str = query_multiple_short(params[1]))+
    " in a fiery meteor shower!\n", ({previous_object(),params[1]}));
-  tell_object(previous_object(), "You envelope " + str + " in a "+
+  tell_object(previous_object(), "You envelope " + str + " in a "
    " in a fiery meteor shower!\n");
 
    

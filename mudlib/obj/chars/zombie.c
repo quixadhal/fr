@@ -1,5 +1,5 @@
-
-inherit "obj/monster";
+#include "path.h"
+inherit BASE;
 int query_kill_xp() { return 0; }
 void setup()
 {
@@ -9,7 +9,7 @@ void setup()
 set_long("Nothing more than an animate corpse, this fiend has returned to "+
        "life to visit woe on the living.\n");
    add_alias("zombie");
-	set_class("fighter");
+	set_guild("fighter");
   set_race_ob("/std/races/undead");
 	set_level(10);
 	set_al(50);

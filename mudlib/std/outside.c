@@ -1,6 +1,7 @@
 //#define TESTING 1
 #include "weather.h"
 inherit "/std/room";
+inherit "/std/basic/extra_look";
 
 /* ok this is the out side room standard, It includes weather and
  * all that jazz
@@ -29,10 +30,15 @@ string query_dark_long() { return dark_long; }
 
 void set_night_long(string s) { night_long = s; }
 string query_night_long() { return night_long; }
+mixed *query_init_data()
+{
+   return extra_look::query_init_data()+room::query_init_data();
+}
 
 void create() {
    dark_long = "It is dark.\n";
-  ::create();
+  room::create();
+  extra_look::create();
   add_property("location", "outside");
 } /* create() */
 
@@ -47,6 +53,7 @@ string long(string str, int dark) {
 int i;
 string s, ret;
 
+   ret = "";
   if ((int)WEATHER->query_day(this_object()) != current_day)
   {
     if (light_change)
@@ -60,7 +67,7 @@ string s, ret;
     {
     /* night... */
       ret = "It's night.\n";
-      s = (string)WEATHER->query_moon_string(this_object());
+          s = (string) WEATHER->query_moon_string(this_object());
       if (!s)
       {
          ret =  "It is night and the moon is not up.\n";
@@ -106,11 +113,8 @@ string s, ret;
       ret += s;
     if (pointerp(co_ord))
       ret += (string)WEATHER->weather_string(this_object())+".\n";
-    if (!exit_string)
-      s = query_dirs_string();
-    else
-      s = exit_string;
-    ret += s + "\n";
+   if(!exit_string) query_dirs_string();
+   ret+= exit_string+"\n";
 /* Return the long + the contents of the room. */
     return ret+query_contents("");
   }

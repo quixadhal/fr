@@ -1,3 +1,12 @@
+/* Skills.c
+ * Something different from the usual DW skills.c
+ * the basic ideas are the same, but hopefully a bit smarter and faster..
+ * also more in the style we want FR to work.
+ * It will not include ways to teach/learn yet.. the code may be there
+ * but will be commented out.
+ * Baldrick, May'95.
+ */
+
 /*
  * sigh, this will be interesting wont it?
  * quick summary of routines
@@ -10,10 +19,9 @@
  * teach_skill(objct *,string) - Used to teach skills to other people.
  * skill_commands()            - all the skill add_actioned commands.
  */
-/* alternative method of doing skills...
- */
  
 #include "skills.h"
+inherit "/std/skills.c";
 #include "tune.h"
 
 int calc_bonus(int lvl, string skill);
@@ -28,7 +36,7 @@ static mapping bonus_cache,
                teach_offer;
 
 void skill_commands() {
-  add_action("do_learn", "le*arn");
+  // add_action("do_learn", "le*arn");
 } /* skill_command() */
  
 mixed *query_skills() { return skills; }
@@ -36,6 +44,7 @@ void set_skills(mixed *bing) { skills = bing; }
 int calc_level(string *path);
 
 void create() {
+  ::create();
   bonus_cache = ([ ]);
   level_cache = ([ ]);
   teach_offer = ([ ]);
@@ -50,7 +59,8 @@ mapping query_level_cache() { return level_cache; }
  * checks.  It returns the skill + all its bonsues for stats/whatever.
  *  It first checks to see if the skill is in it's cache. 
  */
-int query_skill_bonus(string skill) {
+int query_skill_bonus(string skill) 
+  {
   string *path;
   object guild,
          race;
@@ -64,7 +74,7 @@ int query_skill_bonus(string skill) {
     skill = skill[1..strlen(skill)];
   if (bonus_cache[skill])
     return bonus_cache[skill]; 
-  path = (string *)SKILL_OB->query_skill_path(skill);
+  path = (string *)query_skill_path(skill);
   if (!path)
     return 0;
   if(level_cache[skill])
@@ -85,7 +95,8 @@ int query_skill_bonus(string skill) {
  * can use/teach/whatever a skill.
  * This also uses a cache.
  */ 
-mixed query_skill(string skill) {
+mixed query_skill(string skill) 
+  {
   string *path;
 
   if (level_cache[skill])
@@ -94,13 +105,14 @@ mixed query_skill(string skill) {
     skills = ({ });
   if (skill[0] == '.')
     skill = skill[1..strlen(skill)];
-  path = (string *)SKILL_OB->query_skill_path(skill);
+  path = (string *)query_skill_path(skill);
   if (!path)
     return 0;
   return (level_cache[skill] = calc_level(path));
 } /* query_skill() */
  
-int add_skill_level(string skill, int lvl, int exp) {
+int add_skill_level(string skill, int lvl, int exp) 
+  {
   string *path;
  
   if (!skills)
@@ -108,17 +120,18 @@ int add_skill_level(string skill, int lvl, int exp) {
   if (!lvl)
     return 0;
   delta = 0;
-  path = (string *)SKILL_OB->query_skill_path(skill);
+  path = (string *)query_skill_path(skill);
   if (!path)
     return 0;
   bonus_cache = ([ ]);
   level_cache = ([ ]);
   skills = recursive_skill_add(skills, path, 0, lvl, exp,
-                                SKILL_OB->query_skills());
+                                query_skills_tree());
   return 1;
 } /* add_skill_level() */
- 
-int calc_level(string *path) {
+
+int calc_level(string *path) 
+  {
   mixed cur;
   int i, j;
   int lvl;
@@ -135,7 +148,8 @@ int calc_level(string *path) {
   return lvl;
 } /* calc_level() */
 
-mixed add_to_all(mixed skil, int lvl) {
+mixed add_to_all(mixed skil, int lvl) 
+  {
   int i;
 
   if (!sizeof(skil))
@@ -148,7 +162,8 @@ mixed add_to_all(mixed skil, int lvl) {
 } /* add_to_all() */
  
 mixed recursive_skill_add(mixed skil, string *path, int avr, int lvl, int exp,
-                          mixed standard) {
+                          mixed standard) 
+  {
   int i, j, tmp;
   mixed bit;
 
@@ -188,7 +203,7 @@ int calc_bonus(int lvl, string skill) {
   int bonus, stat, i;
   string stat_bonus;
 
-  stat_bonus = (string)SKILL_OB->query_skill_stat(skill);
+  stat_bonus = (string)query_skill_stat(skill);
   for (i = strlen(stat_bonus); i--; ) {
     switch(stat_bonus[i]) {
       case 'C' : stat = (int)this_object()->query_con();
@@ -221,6 +236,10 @@ int query_skill_successful(string str, int mod) {
   return (query_skill_bonus(str) + mod >= random(200));
 } /* query_skill_successful */
 
+/* This should dissapear.. easy to abuse and very complicated.
+ * Baldrick.
+ */
+
 int teach_skill(object *obs, string str) {
   int num, lvl, my_lvl;
   object *ok, *cannot, *too_little, *too_low;
@@ -239,7 +258,7 @@ int teach_skill(object *obs, string str) {
   }
 /* Make sure its a valid skill */
   bits = explode(implode(explode(skill, " "), "."), ".");
-  if (!(skill = (string)SKILL_OB->query_skill(bits)))
+  if (!(skill = (string)query_skill_tree(bits)))
     return 0;
 /*
  * We don't do the teaching here.  Figure out how much xp it will cost
@@ -258,7 +277,7 @@ int teach_skill(object *obs, string str) {
       continue;
     }
     cost = DEFAULT_COST;
-    cost *= (int)SKILL_OB->query_skill_cost(skill);
+    cost *= (int)query_skill_cost(skill);
     cost *= STD_COST/5;
     total = 0;
     for (j=0;j<num;j++) {
@@ -276,9 +295,9 @@ int teach_skill(object *obs, string str) {
       continue;
     }
     if (obs[i] != this_object()) {
-      tell_object(obs[i], this_object()->query_cap_name()+" offers to teach "+
+      tell_object(obs[i], this_object()->query_cap_name()+" offers to teach "
                           "you "+num+" level"+(num>1?"s":"")+" of "+skill+
-                          " for "+total+" xp.\nUse 'learn' to learn the "+
+                          " for "+total+" xp.\nUse 'learn' to learn the "
                           "skill.\n");
       ok += ({ obs[i] });
     } else
@@ -290,11 +309,11 @@ int teach_skill(object *obs, string str) {
     write("You are too low a level to teach "+query_multiple_short(cannot)+
           " "+num+" levels of "+skill+".\n");
   if (sizeof(too_low))
-    write(capitalize(query_multiple_short(too_low))+" is not high enough "+
+    write(capitalize(query_multiple_short(too_low))+" is not high enough "
           "level in the outer skills to learn "+num+" levels of "+skill+".\n");
 /*
   if (sizeof(too_little))
-    write(capitalize(query_multiple_short(too_little))+" does not have "+
+    write(capitalize(query_multiple_short(too_little))+" does not have "
           "enough xp to learn "+num+" levels of "+skill+".\n");
  */
   if (sizeof(ok))
@@ -315,7 +334,7 @@ int do_learn(string str) {
   string skill, *bits;
   mixed *bing;
 
-  notify_fail("Syntax: learn <skill> from <person>\nIf they have to have "+
+  notify_fail("Syntax: learn <skill> from <person>\nIf they have to have "
               "offered to teach you to use this.\n");
   if (!str)
     return 0;
@@ -327,7 +346,7 @@ int do_learn(string str) {
     return 0;
   }
   bits = explode(implode(explode(skill, " "), "."), ".");
-  if (!(skill = (string)SKILL_OB->query_skill(bits))) {
+  if (!(skill = (string)query_skill_tree(bits))) {
     notify_fail("The skill '"+implode(bits, ".")+"' is invalid.\n");
     return 0;
   }
@@ -367,7 +386,7 @@ int do_learn(string str) {
     teach_offer = m_delete(teach_offer, obs[i]);
   }
   if (sizeof(not_offer))
-    write(capitalize(query_multiple_short(not_offer))+" is not offering to "+
+    write(capitalize(query_multiple_short(not_offer))+" is not offering to "
           "teach you "+skill+" at your current level in it.\n");
   if (sizeof(no_xp))
     write("You do not have enough xp to learn "+skill+" from "+

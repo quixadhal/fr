@@ -21,3 +21,9 @@
 #define READ_MASK 1
 #define WRITE_MASK 2
 #define GRANT_MASK 4
+
+ // Command positions
+#define CREATOR_CMD 1
+#define LORD_CMD 2
+#define HIGH_LORD_CMD 3
+#define GOD_CMD 4

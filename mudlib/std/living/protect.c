@@ -21,7 +21,7 @@ void combat_commands()
 void add_protecting(object ob)
   {
   protecting += ({ ob, });  
-  ob->add_protector(this_player());
+  ob->add_protector(this_object());
   return;
 } /* void add */
 
@@ -34,7 +34,7 @@ void add_protector(object ob)
 void remove_protecting(object ob)
   {
   protecting -= ({ ob, });
-  ob->remove_protecor(this_player());
+  ob->remove_protecor(this_object());
   return;
 }   
 
@@ -44,10 +44,8 @@ void remove_protector(object ob)
   return;
 } /* remove protector */
 
-void query_protector()
-  { 
-  return protector;
-}
+object *query_protector() { return protector; }
+
 
 int do_protect(string str) 
   {
@@ -65,13 +63,13 @@ int do_protect(string str)
     }
 //dk added member_array to this next line:
   if (member_array(this_object(), obs))
-//dk I changed this next line from this_player() to this_object():
+//dk I changed this next line from this_object() to this_object():
     obs -= ({ this_object() });
   ok = ({ });
   for (i=0; i<sizeof(obs); i++)
     {
     /* adding the lucky guy */
-    if (member_array(obs[i], query_protecting) == -1))
+    if (member_array(obs[i], query_protector()) == -1)
       {
       add_protecting( obs[i] ); 
       ok += ({ obs[i] });

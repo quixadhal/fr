@@ -3,7 +3,8 @@ int cond,
     lowest_cond;
 
 void create() {
-  max_cond = 1;
+   cond = 100;
+  max_cond = 100;
 }
 
 /* this should be masked by the object */

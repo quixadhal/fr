@@ -102,20 +102,22 @@ mixed *calc_change(int amt, mixed *values) {
   int i, num;
 
   retval = ({ });
-  for (i=sizeof(values)-2;i>=0;i-=2)
-    if (amt > values[i+1]) {
+  for (i=sizeof(values)-2;i>=0;i-=2) {
+    if (amt >= values[i+1]) {
       num = amt/values[i+1];
       amt = amt%values[i+1];
       retval += ({ values[i], num });
       if (!amt)
         return retval;
     }
+  }
   return ({ });
 }
 
 mixed make_payment(string type, int amt, object ob) {
   mixed *m_array, retval;
   int i, j, total_amt, no;
+  int k,l;
 
   m_array = (mixed *)ob->query_money_array();
   if ((i=member_array(type,m_array)) != -1)
@@ -138,6 +140,7 @@ mixed make_payment(string type, int amt, object ob) {
         if (no > m_array[j+1])
           no = m_array[j+1];
         amt -= no*values[i+1];
+      if(no)
         retval += ({ values[i], no });
         if (!amt)
           return ({ retval, ({ }) });
@@ -148,8 +151,10 @@ mixed make_payment(string type, int amt, object ob) {
  * start from the bottom work up until we find a coin that is more than
  * we need.... subtract that, calculate_change.
  */
-  for (i=0;i<sizeof(values);i+=2)
-    if (member_array(values[i], m_array) != -1)
+  for (i=0;i<sizeof(values);i+=2) {
+    k=member_array(values[i],m_array);
+    l=member_array(values[i],retval);
+    if(k!=-1 && m_array[k+1]>0 && (l==-1 || retval[l+1] < m_array[k+1])) {
       if (values[i+1] >= amt) {
         if ((j=member_array(values[i], retval)) == -1)
           retval += ({ values[i], 1 });
@@ -158,5 +163,7 @@ mixed make_payment(string type, int amt, object ob) {
         amt = values[i+1] - amt;
         return ({ retval, calc_change(amt, values) });
       }
+    }
+  }
   return 0;
 }

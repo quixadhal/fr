@@ -1,3 +1,5 @@
+#define MAXALIAS 100
+#define MAXALIASLEN 100
 /* Wheeeu.. thought I never would have to touch this one..
  * Trying to remove the players possibility to use ; in aliases..
  * Will get rid of some bugabusing..
@@ -21,13 +23,14 @@ mixed *compile_alias(string str)
   mixed *ifargs;
 
   /* Quick hack.. Baldrick. */
-  if (!this_player()->query_creator())
+  //if (!this_player()->query_creator())
+   if(0)
   {
     frog = explode(str,";");
     if (sizeof(frog) > 1)
     {
         tell_object(this_player(),"\";\" not allowed in alias's\n");
-        return 1;
+        return ({ });
     }
   }
   else
@@ -297,10 +300,16 @@ static int alias(string str, int bing)
   }
   /* Add by Baldrick, we don't want long aliases.. 
    * May '95 
+   * Taniwha 09/95 checked for too many as well.
    */
   if(! this_player()->query_creator())
   {
-    if(strlen(s2) > 50)
+      if(sizeof(aliases) > MAXALIAS )
+      {
+         write("Too many alias's.\n");
+         return 1;
+      }
+    if(strlen(s2) > MAXALIASLEN)
     {
         tell_object(this_player(),"Alias too long.\n");
         return 1;
@@ -308,12 +317,19 @@ static int alias(string str, int bing)
   }
   if (!aliases[s1]) {
     if (!sizeof(boos = compile_alias(s2)))
-      return notify_fail("Well, that's not legal anymore.\n");
+     {
+      notify_fail("Well, that's not legal anymore.\n");
+     return 0;
+    }
     aliases[s1] = boos;
     write("Added alias '"+s1+"'.\n");
   } else {
     if (!sizeof(boos = compile_alias(s2)))
-      return notify_fail("Well, that's not legal anymore.\n");
+    {
+      notify_fail("Well, that's not legal anymore.\n");
+     return 0;
+    }
+    aliases[s1] = boos;
     write("Changed alias '"+s1+"'.\n");
   }
   return 1;
@@ -333,7 +349,7 @@ static int unalias(string str) {
     return 0;
   }
   aliases = m_delete(aliases, str);
-  write("Removes the aliase "+str+".\n");
+  write("Removes the alias "+str+".\n");
   return 1;
 }
 

@@ -63,17 +63,30 @@
    misunderstandings. After a short discussion most things are settled.
 
 5  USE A TEST-CHARACTER FOR TESTING.  You're allowed to have ONE character
-   besides your creator-character for testing things.  Use it for this 
-   purpose and for adventuring.  When used for adventuring, the above rules
-   for player interference still counts.  When you test new items, ALWAYS
-   do this on your test character, and not on players.
+   besides your creator-character for testing things, named 
+   "Test<yourname>" or something similar, to alert all that it is not an 
+   ordinary player.  Use it for this purpose only.  Your test-character can
+   be helpful by letting you test new items, observe how an npc or room 
+   "reacts" when a pc enters, or to adventure in an under-construction 
+   area that is NOT in play. Never ask a player to test or look at an item, 
+   area, or npc for you.
 
-   Reason for this rule:  When a player gets hurt due to your actions you
-   will not be allowed to reinstate him, and if he gains more benefits than
-   you meant to give you'll not be allowed to remove it again.  We need to
-   have a common policy in how to rule what should be done in such instances,
-   so to keep confusion to a minimum, only lords are allowed to compensate.
+   A test character's contact with rooms/code that are in play should be 
+   extremely rare, if at all.  Your test character is to be used to 
+   allow you to sufficiently problemshoot your code - it is not designed 
+   for you to use it to participate in the realms as a player or to 
+   solve quests.   
 
+   Reason for this rule:  Test Characters allow you a method to evaluate 
+   your code without endangering or effecting players.  If a player gets 
+   hurt due to your actions you will not be allowed to reimburse him, 
+   and if he gains more benefits than you meant to give you'll not be 
+   allowed to readjust it.  In order to maintain fairness, only lords are 
+   permitted to compensate.  And, again to keep the mud fair, test-characters
+   who don't have to "earn" their levels, armours, etc. must not interact in 
+   the player world.
+
+   
 6  NEVER MAKE THINGS THAT KILLS PLAYERS WITHOUT PROPER WARNING.  If you make
    a very powerful monster or a room that is likely to kill a player, let
    them be warned somehow before they're dead.
@@ -106,4 +119,3 @@
    Reason for this rule:  You mire the debug logs with errors due to bad id's.
    Also several commands can get corrupted by this.  'who', 'finger' and 
    'people' are examples of commands that always gets ruined.
-

@@ -2,9 +2,13 @@
  * playernames.
  * Baldrick, oct '95
  */
+/* Tweaked Sept 1995 -- Hamlet
+   Trying to fix NO_NEW and add NO_GUEST
+*/
 
 #include "access.h"
 #include "mail.h"
+#define POSTAL_D "/obj/handlers/postal_d"
 
 static string *names;
 static string def;
@@ -16,45 +20,88 @@ mapping suspended, banished;
 int query_access(string *address, string ident);
 
 void create() {
-  names = ({ "god", "/global/lord",
-             "root", "/global/player",
+  names = ({ "root", "/global/player",
              "failsafe", "/global/failsafe",
-             "old", "/global/player.old" });
+             "old", "/global/player.old",
+	     "god", "/global/god"
+            });
   def = "/global/player";
   seteuid("Root");
   access = ([ ]);
   suspended = ([ ]);
   banished = ([ ]);
   restore_object(file_name(this_object()),1);
-  move_object(this_object(), "/room/void");  /* Make it unclonable... */
+  move_object("/room/void");  /* Make it unclonable... */
 } /* create() */
 
-int check_access(object ob, int new) 
+int check_access(object ob, int existing)
   {
   switch (query_access(explode(query_ip_number(ob), "."), 
-                       query_ident(ob))) {
-    case NO_NEW:
-      if (new)
-        write("Your site banned for new players.\n");
-      return !new;
-    case NO_ACCESS:
-      write("Your site is banned to all players.\n");
-      return 0;
-    case ACCESS:
-    default:
-      return 1;
+                       ob->query_ident())) {
+     case NO_NEW :
+       if (!existing) {
+         write("Site banned for new players.\n");
+         return NO_NEW;
+       }
+       else
+         return ACCESS;
+     case NO_ACCESS :
+       write("Site banned for all players.\n");
+       return NO_ACCESS;
+     case NO_GUEST :
+       if(ob->query_name() == "guest") {
+         write("Site banned for guests.\n");
+         return NO_GUEST;
+       }
+       else
+         return ACCESS;
+     case NO_IMMORTS :
+       if(ob->query_creator()) {
+         write("Site banned for immortals.\n");
+         return NO_IMMORTS;
+       }
+       else
+          return ACCESS;
+     case NO_PLAYERS :
+       if(!ob->query_creator()) {
+         write("Site banned for players.\n");
+        return NO_PLAYERS;
+       }
+       else
+         return ACCESS;
+     case ACCESS :
+       return ACCESS;
+     default :
+       return DEFAULT;
   }
 } /* check_access() */
 
-string query_player_ob(string name) 
+/* The flag skips the initial check for query_creator().  This is
+   needed for the first call to the fcn, when restore_object() hasn't
+   been called yet.  Only purpose of this first call is to determine
+   whether the person is banished, so security isn't really an issue.
+   Check for query_creator() needs skipped so I can install immortal
+   slots, which have to decide whether let person in according to whether
+   this fcn returns "global/player" or not.  flag should not be passed in
+   any subsequent calls to the function. -- Hamlet
+*/
+varargs string query_player_ob(string name, int flag)
   {
   int i;
+       int existing;
+       int reason;
 
-  if (MAIL_TRACK->query_list(name)) 
+  if (POSTAL_D->query_mailing_list(name))
     {
     write("Name is a mailing list.\n");
     return 0;
     }
+
+  if(member_array(name,get_dir("/d/")) != -1) {
+    write("Name is a domain.\n");
+    return 0;
+  }
+
   i = member_array(name, names);
   if (i != -1) 
     {
@@ -71,23 +118,40 @@ string query_player_ob(string name)
     return 0;
     }
   suspended = m_delete(suspended, name);
+  /*
   if ("secure/master"->query_lord(name)) 
     {
     return "global/lord";
     }
-  if (!check_access(previous_object(), 0))
-    return 0;
-  /* make sure there is a save-file */
-  if(file_size("/players/" + name[0..0] + "/" + name + ".o") < 1)
-    return def;
+  */
+   if(file_size("/players/" + name[0..0] + "/" + name + ".o") < 1)
+     existing = 0;
+   else
+     existing = 1;
+   reason = check_access(previous_object(), existing);
+   if(reason != ACCESS)
+     return "";
   /* I hope this is the right place to put this code in.
-   * Baldrick, sept '93 */
-  if ("/secure/thanes"->query_of(name))
-    return "global/thane";
-  if ("/secure/patrons"->query_patronage(name))
-    return "global/patron";
-  if (previous_object()->query_creator(name))
-    return "global/creator";
+   * Baldrick, sept '93 
+   * Added more files, oct '95. 
+   * First, a check if the player is a creator..
+   * to be sure it isn't a new player using a non-existing .o
+   */
+    if(previous_object()->query_creator() ||flag)
+    {
+    if ("/secure/gods"->query_boo(name))
+      return "global/god";
+    if ("/secure/lords"->query_boo(name))
+      return "global/lord";
+    if ("/secure/mudlibber"->query_boo(name))
+      return "global/lord";
+    if ("/secure/thanes"->query_of(name))
+      return "global/thane";
+    if ("/secure/patrons"->query_patronage(name))
+      return "global/patron";
+    if(previous_object()->query_creator()) /* Will actually need this now. */
+     return "global/creator";
+  }
   return def;
 } /* query_player_ob() */
 
@@ -201,7 +265,10 @@ int unsuspend_person(string str)
     return 0;
   suspended = m_delete(suspended, str);
   save_object(file_name(this_object()),1);
-  write_file("/log/SUSPEND", str+" unsuspended.\n");
+  // Radix...
+   write_file("/log/SUSPEND", str+" unsuspended by "+
+      this_player()->query_name()+".\n");
+// write_file("/log/SUSPEND", str+" unsuspended.\n");
   return 1;
 } /* unsuspend_person() */
 

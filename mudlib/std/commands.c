@@ -33,7 +33,11 @@ string *query_command_names()
   return m_values(commands);
 }
 
+// Taniwha 1995. Trying to bombproof this
 mixed *query_command(string str)
   {
-  return commands[str]+({ });
+   mixed * m;
+   if(commands)
+   m = commands[str];
+   return m;
 }

@@ -6,9 +6,9 @@ reset (arg) {
   if (arg) return;
 
   set_short("The weather room");
-  set_long("The weather control center for the entire mud. On the floor should\n"+
-           "be the controller itself, scattered around the room are hundred of impresive\n"+
-           "flashing lights, dials and levers. You get the feeling however that they dont\n"+
+  set_long("The weather control center for the entire mud. On the floor should\n"
+           "be the controller itself, scattered around the room are hundred of impresive\n"
+           "flashing lights, dials and levers. You get the feeling however that they dont\n"
            "actually do anything.\n");
 
   set_light(100);
@@ -16,18 +16,18 @@ reset (arg) {
   add_property("inside");
   add_exit("ducky","w/ducky/workroom");
   add_exit("tavern","/d/ss/daggerford/ladyluck");
-  add_item("lights","What did I say? there are lots of them and they are insesantly\n"+
+  add_item("lights","What did I say? there are lots of them and they are insesantly\n"
            "flashing.\n");
-  add_item("dials","Large dials with all sort of things on them. One you can see says\n"+
+  add_item("dials","Large dials with all sort of things on them. One you can see says\n"
            "'Colour of spring', it is currently pointing at purple.\n");
   add_item("levers",
-           "The levers are large multicolour protuberances which are scattered around the\n"+
+           "The levers are large multicolour protuberances which are scattered around the\n"
            "room in random profusion.\n");
   leverarr = ({ ({ "blue",
-       "The rooms spins and a small bit of printed paper falls from the\n"+
+       "The rooms spins and a small bit of printed paper falls from the\n"
        "Weather controller saying:\n#query_rain" }),
                 ({ "white",
-       "The ground heaves in a major convulsion and a mound of paper falls onto\n"+
+       "The ground heaves in a major convulsion and a mound of paper falls onto\n"
        "You from the ceiling saying:\n#query_cloud" }) });
        
 }

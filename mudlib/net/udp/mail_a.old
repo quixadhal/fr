@@ -1,0 +1,22 @@
+#include <udp.h>
+
+void create() {
+  seteuid(getuid());
+} /* create() */
+
+void incoming_request(mapping info) { 
+    string str; 
+ 
+    if (file_name(previous_object()) != NAMESERVER_CD)
+      return; 
+    write_file("/log/udp/incoming_confirm", info["NAME"]+"\n");
+    if (info["RESEND"])
+      str = (string)REMOTEPOST_D->resend_post(info["NAME"]); 
+    else if (!(str = (string)REMOTEPOST_D->next_post(info["NAME"]))) 
+      str = (string)REMOTEPOST_D->postal_check(info["NAME"]); 
+    if (!str)
+      return; 
+    NAMESERVER_CD->send_udp(info["HOSTADDRESS"], info["PORTUDP"], 
+      sprintf("@@@%s||NAME:%s||PORTUDP:%d%s@@@\n", UDP_MAIL_Q, 
+      mud_name(), NAMESERVER_CD->query_my_port(), str)); 
+} /* incoming_request() */

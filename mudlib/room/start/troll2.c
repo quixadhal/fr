@@ -5,12 +5,12 @@ void setup()
 {
         set_short("Troll Pit");
 
-        set_long("This is a large pit where you see many bits which "+
-                "the previous occupants perthaps thought of with some value. "+
-                "From the bits of _total_ rubbish you wonder if you would "+
+        set_long("This is a large pit where you see many bits which "
+                "the previous occupants perthaps thought of with some value. "
+                "From the bits of _total_ rubbish you wonder if you would "
                 "find something of use if you dug deeper.\n");
                                                        
-        set_light(80); 
+        add_property("no_undead",1); set_light(80); 
 
         add_item("Pit", "This is a dirty great stinking pit for christ's sake.\n");
 
@@ -20,5 +20,4 @@ void setup()
         add_alias("rubbish", "Rubbish");
 
         add_exit("south", PATH+"troll", "door");
-   add_property("no_undead",1);
 }

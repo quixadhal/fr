@@ -29,3 +29,14 @@ string get_ed_buffer_save_file_name(string file) {
         this_player()->query_name() + "-" + file + "\"\n");
   return "/w/.dead_ed_files/" + this_player()->query_name() + "-" + file;
 } /* get_ed_buffer_save_file_name() */
+
+// fix for new driver, Radix (thanks to Donky@Phoenix)
+string get_save_file_name(string file) {
+  string *file_ar;
+
+  file_ar = explode(file,"/") - ({ "" });
+  file = file_ar[sizeof(file_ar)-1];
+  write("File saved in \"/w/.dead_ed_files/" +
+        this_player()->query_name() + "-" + file + "\"\n");
+  return "/w/.dead_ed_files/" + this_player()->query_name() + "-" + file;
+}

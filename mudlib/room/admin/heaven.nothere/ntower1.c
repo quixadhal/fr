@@ -9,13 +9,13 @@ shield_it(SHIELD,"/d/ss/daggerford/ladyluck");
 }
 
 void setup() {
-set_long("This the base of the Tower of Neutrality.  There "+
-"is a door to "+
-"the north and a stairway leads upwards.  The door to the north shifts"+
-" into a new form each time you look at it.  Even you can feel"+
-" the power"+
-" that radiates from the area beyond.  It is as if a purity"+
-" of magic makes"+
+set_long("This the base of the Tower of Neutrality.  There "
+"is a door to "
+"the north and a stairway leads upwards.  The door to the north shifts"
+" into a new form each time you look at it.  Even you can feel"
+" the power"
+" that radiates from the area beyond.  It is as if a purity"
+" of magic makes"
 " up the entire door.  You hesitate to follow that path.\n");
 set_short("base of Tower of Neutrality");
 add_exit("north","/w/devoe/workroom.c","door");

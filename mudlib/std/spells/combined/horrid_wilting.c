@@ -16,16 +16,16 @@ mixed spell(string str,int skill, int cast);
 
 string help() {
        return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "School: Alteration and Necromancy\n"+
-       "Level: 8th\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Damage Type: "+TYPE+"\n"+
-       "Saving Throw: 1/2\n"+
-       "Description: \n"+
-       "     This spell will evaporate all the moisture from the bodies "+
-       "of your enemies.  The damage is equal to the casters level times "+
+       "\n\n"
+       "Spell Name: "+SP_NAME+"\n"
+       "School: Alteration and Necromancy\n"
+       "Level: 8th\n"
+       "Gp Cost: "+GP_COST+"\n"
+       "Damage Type: "+TYPE+"\n"
+       "Saving Throw: 1/2\n"
+       "Description: \n"
+       "     This spell will evaporate all the moisture from the bodies "
+       "of your enemies.  The damage is equal to the casters level times "
        "8.  A 16th level Wizard could do 16-128 points of damage.\n\n";
 
 }
@@ -97,7 +97,7 @@ int hb_spell(object attacker, mixed *params)
   
  if (params[2] && (int)previous_object()->adjust_gp(-ADJ_COST)<0)
  {
-  tell_object(previous_object(), "You are currently too "+
+  tell_object(previous_object(), "You are currently too "
        "mentally drained to cast.\n");
   return 0;
  }
@@ -119,7 +119,7 @@ int hb_spell(object attacker, mixed *params)
 
   params[1][i]->spell_damage(params[1][i],damage,TYPE);
 
-  tell_object(params[1][i], str +" finishes a spell as you can feel "+
+  tell_object(params[1][i], str +" finishes a spell as you can feel "
      "the moisture from you body evaporating!\n");
 
       if(params[1][i])

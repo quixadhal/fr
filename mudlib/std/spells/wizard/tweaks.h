@@ -1,10 +1,7 @@
 #define SPELLS "/std/spells/wizard/"
-#define SPELLS "/std/spells/wizard/"
-#define ETO environment(this_object())
 #define ETP environment(this_player())
-#define TP this_player()
-#define TO this_object();
 
+#define STILLCASTING "stillcasting"
 // Stinking cloud
 #define STINK_LEVEL 2
 #define STINK_GP 4
@@ -38,8 +35,8 @@
 #define SP_AR_DURATION_BASE 200
 #define SPIRIT_ARMOUR_GP_COST 6
 #define SP_AR_DURATION_LEVEL_MULT 20
-#define SPIRIT_ARMOUR_BASE 3
-#define SPIRIT_ARMOUR_LEVEL_MOD 5
+#define SPIRIT_ARMOUR_BASE 30
+#define SPIRIT_ARMOUR_LEVEL_MOD 2
 
 #define WRAITHFORM_GP_COST 20
 #define WRAITH_PROPERTY "wraithform_on"
@@ -71,6 +68,5 @@
 #define PACIFY_SHADOW "/std/spells/wizard/pacify_sh.c"
 
 #define MIRROR_SHADOW "/std/spells/wizard/mirror_sh.c"
-#define MIRROR_IMAGES_PER_LEVEL 5
-#define MIRROR_DESTROY_ALL_BASE 35
-#define MIRROR_GP 10
+#define MIRROR_IMAGES_PER_LEVEL 3
+#define MIRROR_GP 8

@@ -37,12 +37,8 @@ void create() {
 
 /* This frees some memory.
  * Baldrick aug '94
+ * Taniwha, moved it to /w/common
  */
-void reset()
-  {
-  reclaim_objects();
-  // ::reset();
-} /* reset */
 
 /*
  * This function is called every time a player connects.
@@ -62,6 +58,7 @@ object connect() {
 
 int high_programmer(string str) {
   if (str == ROOT) return 1;
+  if(str == "god") return 1;
   if (str == "Admin") return 1;
   return ((positions[str] == HIGH_LORD) || (HighLords[str]));
 } /* high_programmer() */
@@ -82,14 +79,14 @@ int query_player_high_lord(string str) {
   return high_programmer(str) && "/secure/login"->test_user(str);
 } /* query_player_high_lord() */
 
-string high_programmers() {
+string *high_programmers() {
   return filter_array(keys(positions), "query_player_high_lord", this_object())+
          keys(HIGHLords);
 } /* high_programmers() */
 
 int check_permission(string euid, string *path, int mask);
 
-valid_load(path, euid, func) { return 1; }
+valid_load(string path, mixed euid, string func) {return 1;}
 
 string get_root_uid() { return ROOT; }
 string get_bb_uid() { return "Room"; }
@@ -101,7 +98,6 @@ string *define_include_dirs() {
 int valid_trace() { return 1; }
 
 void shut(int min) {
-  "/obj/handlers/login_handler"->disable_immort_lockout();
   "/obj/shut"->shut(min);
 } /* shut() */
 
@@ -109,23 +105,22 @@ void remove_checked_master(string name) {
   map_delete(checked_master, name);
 } /* remove_checked_master() */
 
-mapping query_checked_master() { return checked_master; }
+// Wonderflug 96, Secure this baby.
+mapping query_checked_master() { return checked_master + ([ ]); }
 
 #include "/secure/master/permission.c"
 #include "/secure/master/crash.c"
 trace();
 #include "/secure/master/create_dom_creator.c"
 #include "/secure/master/creator_file.c"
+#include "/secure/master/create_me.c"
 #include "/secure/master/dest_env.c"
 #include "/secure/master/ed_stuff.c"
 #include "/secure/master/logging.c"
+#include "/secure/master/retire.c"
 #include "/secure/master/parse_command.c"
 #include "/secure/master/preload.c"
-/* Bing */
-/* Bing */
 #include "/secure/master/query_pl_level.c"
-/* Bing */
-#include "/secure/master/retire.c"
 #include "/secure/master/simul_efun.c"
 #include "/secure/master/snoop.c"
 #include "/secure/master/valid_exec.c"

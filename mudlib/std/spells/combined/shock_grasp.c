@@ -22,16 +22,16 @@ int ADJ_COST;
  /*** help file ***/
 string help() {
        return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "School: Alteration\n"+
-       "Level: 1st\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Damage Type: "+TYPE+"\n"+
-       "Saving Throw: None\n"+
-       "Description: \n"+
-       "    When cast the casters hands become electrically charged.  The "+
-       "caster then touches the target for damage.  The damage done is "+
+       "\n\n"
+       "Spell Name: "+SP_NAME+"\n"
+       "School: Alteration\n"
+       "Level: 1st\n"
+       "Gp Cost: "+GP_COST+"\n"
+       "Damage Type: "+TYPE+"\n"
+       "Saving Throw: None\n"
+       "Description: \n"
+       "    When cast the casters hands become electrically charged.  The "
+       "caster then touches the target for damage.  The damage done is "
        "1d8 + 1 point per level of the caster.\n";
        
 

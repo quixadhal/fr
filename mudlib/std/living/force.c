@@ -113,6 +113,7 @@ int do_force_on_me  (string str) {
     return 0;
   }
   command(str);
+   if(forcer)
   event(users(), "inform", forcer->query_cap_name()+" forces "+
                  this_object()->query_name()+" to "+str, "force");
   log_file("FORCE", " (succeeded)\n");

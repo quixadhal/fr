@@ -15,10 +15,10 @@ void setup()
  set_name("cleric");
  set_short("cleric");
  set_long(
-         "Clerics are the normal priests on Magisk Jord.  They need not be "+
-         "bound to a special god/goddess, but usually are.  Clerics have "+
-         "the power to turn undead creatures and are especially good at "+
-         "healing wounds and protection.  They are also competent fighters, "+
+         "Clerics are the normal priests on Magisk Jord.  They need not be "
+         "bound to a special god/goddess, but usually are.  Clerics have "
+         "the power to turn undead creatures and are especially good at "
+         "healing wounds and protection.  They are also competent fighters, "
          "and are quite susceptible to pain.\n");
  reset_get();
 }
@@ -69,3 +69,15 @@ int query_dice()         { return 8; }
 int query_advance_cost() { return  500; }
 int query_xp_cost()      { return 1500; }
 int query_thac0_step()   { return 3; }
+
+int query_dual_wield_penalty(object me, object w1, object w2)
+{
+  int bon;
+
+  bon = 50 - (int)me->query_level()/3;
+  bon = (bon<30 ? 30 : bon);
+
+  return bon;
+}
+void on_death(object player, object killer) {
+}

@@ -22,19 +22,19 @@ int ADJ_COST;
  /*** help file ***/
 string help() {
        return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "School: Necromancy\n"+
-       "Level: 3rd\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Damage Type: "+TYPE+"\n"+
-       "Saving Throw: None\n"+
-       "Description: \n"+
-       "    This spell allows the caster to drain hit points from a target"+
-       "and transfer them to himself.  The caster gets one half the "+
-       "hit points drained transfer to him.  The caster may not exceed his "+
-       "normal maximum of hit points.  The damage done is 1d6 "+
-       "for each 2 levels of the caster with a maximum of 6d6 at 12th "+
+       "\n\n"
+       "Spell Name: "+SP_NAME+"\n"
+       "School: Necromancy\n"
+       "Level: 3rd\n"
+       "Gp Cost: "+GP_COST+"\n"
+       "Damage Type: "+TYPE+"\n"
+       "Saving Throw: None\n"
+       "Description: \n"
+       "    This spell allows the caster to drain hit points from a target"
+       "and transfer them to himself.  The caster gets one half the "
+       "hit points drained transfer to him.  The caster may not exceed his "
+       "normal maximum of hit points.  The damage done is 1d6 "
+       "for each 2 levels of the caster with a maximum of 6d6 at 12th "
        "level.  Undead creatures are not affected by this spell.\n";
        
 
@@ -167,7 +167,7 @@ int hb_spell(object attacker, mixed *params)
    
     /*** TELLS ROOM THE EFFECTS OF THE SPELL BUT NOT CASTER OR TARGET ***/
    say((string)previous_object()->query_cap_name()+
-    " finishes a spell and touches "+params[1]->query_cap_name()+" as "+
+    " finishes a spell and touches "+params[1]->query_cap_name()+" as "
     " lifeforce seems to pass between the two.\n",
        ({params[1],previous_object()}) );
   }

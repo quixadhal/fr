@@ -20,14 +20,14 @@ void remove_bit(object ob) {
 }
 
 void do_update() {
-  mixed *new;
+  mixed *neww;
   int i;
 
-  new = unique_array(bits, "do_decay");
-  if ((i = member_array(1, new)) == -1) {
+  neww = unique_array(bits, "do_decay");
+  if ((i = member_array(1, neww)) == -1) {
     bits = ({ });
     return ;
   }
-  bits = new[i+1];
+  bits = neww[i+1];
   call_out("do_update", TIME_OUT);
 }

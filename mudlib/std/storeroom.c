@@ -1,11 +1,12 @@
 inherit "/std/room";
+#define MAXITEMS 40
 
 mapping room_cont;
-int max_num;
+int max_num=4;
 
 void create() {
   room_cont = ([ ]);
-  max_num = 8;
+  max_num = 5;
   ::create();
   call_out("test_cont",0);
 }
@@ -13,12 +14,10 @@ void create() {
 int query_max_num() { return max_num; }
 void set_max_num(int i) { max_num = i; }
 
-int query_storeroom() { return 1; }
-
-
 void add_thing(object ob) {
   string shr;
   int value;
+   object *list;
 
   if (!ob || environment(ob) != this_object())
     return ;
@@ -35,11 +34,13 @@ void add_thing(object ob) {
       call_out("do_dest", 0, ob);
     else
       room_cont[shr][value] += ({ ob });
+   list = all_inventory(this_object());
+   if(sizeof(list) > MAXITEMS) call_out("do_dest",0,list[0]);
   return ;
 }
 
 void do_dest(object ob) {
-  if (ob && environment(ob) == this_object())
+  if (ob && !interactive(ob) && environment(ob) == this_object())
     ob->dest_me();
 }
 
@@ -77,8 +78,10 @@ void remove_thing(object ob) {
     room_cont[sh][val] = delete(arr, i, 1);
 }
 
-void event_enter(object ob) {
+int test_add(object ob,  int flag)
+{
   call_out("add_thing", 0, ob);
+   return ::test_add(ob,flag);
 }
 
 void event_exit(object ob) {

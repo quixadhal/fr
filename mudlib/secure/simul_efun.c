@@ -89,6 +89,8 @@ varargs mapping filter_mapping(mapping map, string func, mixed ob, mixed extra)
   return ret;
 } /* filter_mapping() */
 
+// Added by Taniwha 1995 efun one didn't
+// #include "/secure/simul_efun/pluralize.c"
 // added by Baldrick. Dummy for missing efun in new driver.
 // Maybe we should remove it again ? not sure, we have a fix (aragorn)
 #include "/secure/simul_efun/log_file.c"
@@ -123,15 +125,30 @@ varargs mapping filter_mapping(mapping map, string func, mixed ob, mixed extra)
 #include "/secure/simul_efun/base_name.c"
 #include "/secure/simul_efun/arrange_string.c"
 #include "/secure/simul_efun/format_page.c"
+
+#include "/secure/simul_efun/pretty_time.c"
 #include "/secure/simul_efun/wrap.c"
+
+// Radix's simul's 
+#include "/secure/simul_efun/users.c"
+#include "/secure/simul_efun/files_obj.c"
+#include "/secure/simul_efun/resist_damage.c"
+
 #include "/secure/simul_efun/uniq_array.c"
 #include "/secure/simul_efun/exclude_array.c"
 #include "/secure/simul_efun/atoi.c"
 
-
 // Addedd 8 Nov 93 Chrisy for Driver upgrade to 0.9.18.9
 #include "/secure/simul_efun/mudos.c"
+// Taniwha 1995, we can use a checked version
+#include "/secure/simul_efun/member_array.c"
 
 /* Added feb '95, Baldrick. */
 #include "/secure/simul_efun/log_attack.c"
+#include "/secure/simul_efun/file_length.c"
 
+/* Hamlet patch */
+#include "/secure/simul_efun/exec.c"
+
+/* Raskolnikov's simul_efuns */
+#include "/secure/simul_efun/children.c"

@@ -1,7 +1,3 @@
-/* this is the creator player object. 
- * Baldrick.
- */
-
 inherit "/global/wiz_file_comm";
 
 #define NO_SWAP
@@ -21,8 +17,8 @@ static mapping ospells;
 /* I wonder if I don't use static in these definitions, will it be saved in
  * player.o ? Baldrick. 
  * Yup, I'll learn.. :=)*/
-
-enable_wizard();
+nomask int query_lord() { return 0; } // Taniwha 1995
+nomask int query_demi() { return 0; } // Taniwha 1995
 
 int look_me(string str) {
   if (!str && environment())
@@ -76,13 +72,14 @@ void swap_entryexit() {
 #endif
 
 
-void move_player_to_start(string bong, int new_pl) {
+void move_player_to_start(string bong, int new_pl, int going_invis) {
   string temp;
 
   if(!sscanf(file_name(previous_object()), "/secure/login#%s", temp))
     return 0;
   cat("doc/CREATORNEWS");
-  ::move_player_to_start(bong, new_pl);
+  ::move_player_to_start(bong, new_pl, going_invis);
+
   if(query_invis())
     tell_object(this_object(), "===> You are currently INVISIBLE! <===\n");
   swap_entryexit();
@@ -93,21 +90,24 @@ void move_player_to_start(string bong, int new_pl) {
   add_action("invisible", "invis");
   load_login();
    /* Added by Asmodean cause Aragorn taught him how :) */
+   /* Taking it out, doesn't work.  Wonderflug dec 95
    enable_wizard();
+    */
+  enable_wizard();
 }
 
-void load_login() 
-{
-   string f, g;
-   int i;
-   while (f=read_file("/w/"+name+"/.login", i)) 
-   {
-      if (sscanf(f, "%s\n", g) == 1)
-         command(g);
-      i++;
-   }
-}
 
+
+void load_login(){
+string *strs;
+int n;
+if(read_file("/w/"+name+"/.login")){
+strs=explode(read_file("/w/"+name+"/.login"),"\n");
+for(n=0;n<sizeof(strs);n++)
+command(strs[n]);
+
+}
+}
 string short(int dark) {
   if (query_invis())
     if(!this_player() || this_player()->query_creator())
@@ -154,7 +154,12 @@ int query_creator_playing() { return 0; }
 
 string query_gtitle() 
 { 
-  return "the Builder"; 
+/*
+  if (query_female())
+    return "the Builderess"; 
+   else
+*/
+    return "the Builder"; 
 }
 
 string query_object_type() {

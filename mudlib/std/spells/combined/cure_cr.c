@@ -15,14 +15,14 @@ mixed find_one_match(string find, mixed in);
  /*** help file ***/
 string help() {
        return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "Sphere: Healing\n"+
-       "Level: 5th\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Damage Type: "+TYPE+"\n"+
-       "Saving Throw: None\n"+
-       "Description: \n"+
+       "\n\n"
+       "Spell Name: "+SP_NAME+"\n"
+       "Sphere: Healing\n"
+       "Level: 5th\n"
+       "Gp Cost: "+GP_COST+"\n"
+       "Damage Type: "+TYPE+"\n"
+       "Saving Throw: None\n"
+       "Description: \n"
        "    This spell will cure 3-24 + 2 points of damage of any target.\n\n";
        
 
@@ -94,7 +94,7 @@ int hb_spell(object attacker, mixed *params)
    /*** DEDUCTS THE GP COST OF THE SPELL, IF NOT ENOUGH, SPELL FAILS ***/
   if (params[2] && (int)previous_object()->adjust_gp(-GP_COST)<0)
   {
-    tell_object(previous_object(), "You fail to draw enough power from "+
+    tell_object(previous_object(), "You fail to draw enough power from "
        "your god.\n");
     return 0;
   }
@@ -110,7 +110,7 @@ int hb_spell(object attacker, mixed *params)
     tell_object(params[1], "You chant, 'magius criusis curis'.\n");
     tell_object(params[1], "You cure some of your grevious wounds.\n");
     say((string)previous_object()->query_cap_name()+
-     " cures some of "+this_player()->query_possessive()+" grevious"+
+     " cures some of "+this_player()->query_possessive()+" grevious"
      " wounds.\n");
    }
   else

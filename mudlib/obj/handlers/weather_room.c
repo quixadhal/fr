@@ -2,7 +2,8 @@ inherit "std/room";
 
 mixed leverarr;
 
-reset (arg) {
+reset (int arg) 
+  {
   if (arg) return;
 
   set_short("The weather room");
@@ -14,7 +15,6 @@ reset (arg) {
   set_light(1);
   seteuid("baldrick");
   add_property("inside");
-  add_exit("common","/w/common");
   add_item("lights","What did I say? there are lots of them and they are insesantly\n"+
            "flashing.\n");
   add_item("dials","Large dials with all sort of things on them. One you can see says\n"+

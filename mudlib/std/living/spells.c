@@ -1,5 +1,7 @@
 #include "spells.h"
 void do_call_out_effect(mixed *params);
+static int spell_hp;
+#define SP_DIV 5
 
 static mixed *effects;
 
@@ -13,6 +15,10 @@ mixed query_effects() { return effects; }
 int add_spell_effect(int no_rnds, string type, string name, object callee,
                      string func, mixed params) {
   int i,j;
+  if ( type == "spell" )
+   spell_hp = this_object()->query_hp();
+  else
+   spell_hp = -1;
 
   if ((i=member_array(type, effects)) != -1)
     if ((j=member_array(name, effects[i+1])) == -1)
@@ -63,13 +69,24 @@ int do_spell_effects(object attacker) {
   int i, j;
 
   this_object()->remove_property("casting");
-  for (i=0;i<sizeof(effects);i+=2)
-    for (j=0;j<sizeof(effects[i+1]);j+=2) {
-   do_call_out_effect( ({effects[i+1][j+1],attacker}) );
-//    call_out("do_call_out_effect", 1, ({ effects[i+1][j+1], attacker }));
-      if (!--effects[i+1][j+1][SP_NO_RNDS]) {
-        effects[i+1] = delete(effects[i+1], j, 2);
-        j -= 2;
+  for ( i=sizeof(effects)-2; i>=0; i-=2)
+    for ( j=sizeof(effects[i+1])-2; j>=0; j-=2) 
+    {
+      if( (spell_hp - (int)this_object()->query_hp()) > 
+            ((int)this_object()->query_max_hp()/SP_DIV) )
+      {
+        tell_room(environment(this_object()),
+          (string)this_object()->query_cap_name()+
+          " winces, and loses concentration !\n",({this_object()}));
+        tell_object(this_object(),"You flinch under the assault, "
+         "and lose your concentration!\n");
+        effects[i+1] = delete(effects[i+1],j,2);
+      }
+      else
+      {
+        do_call_out_effect( ({effects[i+1][j+1],attacker}) );
+        if (!--effects[i+1][j+1][SP_NO_RNDS]) 
+          effects[i+1] = delete(effects[i+1], j, 2);
       }
     }
     return 0;
@@ -78,7 +95,7 @@ int do_spell_effects(object attacker) {
 void do_call_out_effect(mixed *params) {
   this_object()->adjust_xp(call_other(params[0][SP_OBJECT],
              params[0][SP_FUNC],
-            this_object(),
+             this_object(),
 //           params[1],
              params[0][SP_PARAM],
              params[0][SP_NO_RNDS]));

@@ -1,14 +1,14 @@
-#define NAME 0
-#define C_NAME 1
+#define NAMEX 0
+#define C_NAMEX 1
 #define STRING 2
-#define GENDER 3
+#define GENDERX 3
 #define IP_NUMBER 4
-#define IP_NAME 5
+#define IP_NAMEX 5
 #define TYPE 6
 #define AGE 7
 #define GUILD 8
 #define RACE 9
-#define LEVEL 10
+#define LEVELX 10
 #define TERMINAL 11
 #define ROWS 12
 #define COLS 13
@@ -47,7 +47,7 @@
           "K", \
           "/", \
         })
-#define DE_NAMES ({ \
+#define DE_NAMEXS ({ \
           "Name", \
           "Name", \
           "", \
@@ -74,15 +74,15 @@
 
 /* This is the default people listing thingy. */
 #define P_DEFAULT ({ \
-          NAME, 12, \
+          NAMEX, 12, \
           TYPE|CENTER, 4, \
           STRING, " ", \
-          GENDER|CENTER, 6, \
+          GENDERX|CENTER, 6, \
           STRING, " ", \
           GUILD|CENTER, 10, \
           STRING, " ", \
           RACE|CENTER, 10, \
-          LEVEL|RIGHT, 5, \
+          LEVELX|RIGHT, 5, \
           STRING, "  ", \
           ALIGNMENT, 10, \
           PLAYERSETALIGNMENT, 10, \
@@ -91,12 +91,12 @@
 #define QP_DEFAULT ({ \
           AGE|RIGHT, 4, \
           STRING, " ", \
-          NAME, 25, \
+          NAMEX, 25, \
 	  RACE, 10, \
 	  GUILDOB, 35, \
         })
 #define T_DEFAULT ({ \
-          NAME, 12, \
+          NAMEX, 12, \
           ROWS|CENTER, 5, \
           STRING, " ", \
           COLS|CENTER, 5, \
@@ -104,14 +104,14 @@
           TERMINAL|CENTER, 20, \
         })
 #define N_DEFAULT ({ \
-          NAME, 12, \
+          NAMEX, 12, \
           STRING, " ", \
           IP_NUMBER, 16, \
           STRING, " ", \
-          IP_NAME, 30, \
+          IP_NAMEX, 30, \
         })
 #define D_DEFAULT ({ \
-          NAME, 12, \
+          NAMEX, 12, \
           STRING, " ", \
           CUR_DIR, 25, \
           STRING, " ", \
@@ -123,7 +123,7 @@ string *de_names,
        *var_names;
 
 void create() {
-  de_names = DE_NAMES;
+  de_names = DE_NAMEXS;
   abbrev = ABBREV;
   var_names = ({ 
       "dirs",
@@ -141,16 +141,21 @@ object *get_people(string str)
   string s1;
 
   ob = users();
-  cr = (int)previous_object()->query_creator();
-  god = (int)previous_object()->query_god();
+  cr = (int)this_player()->query_creator();
+  god = (int)this_player()->query_god();
   for (i=0; i < sizeof(ob); i++) 
   {
+      /*  Removed... Radix
+          users() doesn't return invis 2 obs if this_player != lord
+          and below allowed thieves to hide completely
+          July 1996
     if ((ob[i]->query_hidden() && !god) || (ob[i]->query_invis() && !cr)
        || (((int)ob[i]->query_invis() > 1) && !god)) 
     {
       ob = delete(ob, i--, 1);
       continue;
     }
+      */
     if (str)
       if(sscanf(ob[i]->query_name(),str+"%s", s1) != 1)
         ob = delete(ob, i--, 1);
@@ -242,29 +247,34 @@ void print_entrys(object *obs, mixed *format) {
 /* Ignore width for this one... */
           str += format[j+1];
           break;
-        case C_NAME :
+        case C_NAMEX :
           str += sprintf(form+"s",
                          obs[i]->query_cap_name());
           break;
-        case GENDER :
+        case GENDERX :
           str += sprintf(form+"s",
                          obs[i]->query_gender_string());
           break;
-        case NAME :
+        case NAMEX :
           str += sprintf(form+"s",
                          (obs[i]->query_in_editor()?"*":"")+
                          obs[i]->query_name());
           break;
         case GUILD :
-          str += sprintf(form+"s",
-                         ((g=(object)obs[i]->query_guild_ob())?
-                          g->query_name():"No guild"));
+           if(obs[i]->query_guild_ob()) {
+             if( (file_size(obs[i]->query_guild_ob()) > 0) || (file_size(obs[i]->query_guild_ob()+".c") >0) )
+               str += sprintf(form+"s",obs[i]->query_guild_ob()->query_name());
+             else
+               str += sprintf(form+"s","Unknown");
+           }
+           else
+             str += sprintf(form+"s","No guild");
           break;
         case RACE :
 	  str += sprintf(form+"s",
 			 obs[i]->query_race());
           break; 
-        case LEVEL :
+        case LEVELX :
           str += sprintf(form+"d",
                          obs[i]->query_level());
           break;
@@ -284,7 +294,7 @@ void print_entrys(object *obs, mixed *format) {
           str += sprintf(form+"s",
                          query_ip_number(obs[i]));
           break;
-        case IP_NAME :
+        case IP_NAMEX :
           str += sprintf(form+"s",
                          query_ip_name(obs[i]));
           break;
@@ -334,7 +344,8 @@ void print_entrys(object *obs, mixed *format) {
                           obs[i]->query_current_path():"No dir"));
           break;
         case GUILDOB :
-	  str += sprintf(form+"s", (obs[i]->query_guild_ob()));
+          str += sprintf(form+"s", (obs[i]->query_guild_ob())?
+                             obs[i]->query_guild_ob():"None");
 	  break;
         case ALIGNMENT :
           str += sprintf(form+"s", (obs[i]->query_align_name()));
@@ -344,7 +355,7 @@ void print_entrys(object *obs, mixed *format) {
           break;
       }
     } /* for j... */
-    printf("%s\n", str);
+    printf("%s\n",str);
   } /* for i... */
 } /* print_entrys() */
 
@@ -525,7 +536,7 @@ int set_var(string str) {
   bing = create_review(type);
   if (!bing)
     return 1;
-  previous_object()->add_property(name+" list", bing);
+  this_player()->add_property(name+" list", bing);
   write("Ok, set var "+name+" to "+type+".\n");
   return 1;
 } /* set_var() */

@@ -12,12 +12,12 @@ void setup()
   set_name("wraith crown");
   add_alias("crown");
   set_short("Armas' Crown");
-  set_long("\nArmas' Crown\n\n"+
-        "     A simple ring of beaten gold, with small gems inset into it. "+
-        "Runes are inscribed on the inner rim, glowing faintly with a cold "+
-        "blue light.  As you look closer at them, they seem to be pulsing "+
+  set_long("\nArmas' Crown\n\n"
+        "     A simple ring of beaten gold, with small gems inset into it. "
+        "Runes are inscribed on the inner rim, glowing faintly with a cold "
+        "blue light.  As you look closer at them, they seem to be pulsing "
         "softly.  It seems incredibly heavy.\n\n");
-  set_base_armour("helm");
+  set_base_armour("slippers");
   set_weight(150);
   set_value(5000);
 }
@@ -35,6 +35,7 @@ int check_guild()
 {
   switch( this_player()->query_guild_name() )
   {
+      case "bard":
       case "wizthief":
      case "wizard":
      case "drow_wizard":
@@ -60,12 +61,12 @@ int do_look(string str)
   switch( check_guild() )
   {
         case 1:
-          write("\nYou read the magical runes... \n\n"+
+          write("\nYou read the magical runes... \n\n"
             "'Wear me and open your mind to absorb my power.'\n");
           return 1;
         case -1:
-          write("\nYou try to read the magical runes, but they swirl and "+
-            "weave before your eyes.  Deciphering them seems to be beyond "+
+          write("\nYou try to read the magical runes, but they swirl and "
+            "weave before your eyes.  Deciphering them seems to be beyond "
             "your meager ability.\n");
         default:
           write("\nYou cannot read the magical runes.\n");
@@ -86,10 +87,10 @@ int do_open( string str )
   {
 	if ( !(this_player()->query_spell("wraithform")) )
         this_player()->add_spell("wraithform","wraithform",20);
-        write("\nYou open your mind to Armas' Crown and you feel a.. "+
-          "presence.. enter you.  You scramble for control over it, and "+
-          "force it to the back of your mind.  You feel you can leash it "+
-          "there and keep control over it.. and even let it take control of "+
+        write("\nYou open your mind to Armas' Crown and you feel a.. "
+          "presence.. enter you.  You scramble for control over it, and "
+          "force it to the back of your mind.  You feel you can leash it "
+          "there and keep control over it.. and even let it take control of "
           "your body for a time if you wish.....\n\n");
         write("The crown seems to have faded away.\n");
         this_object()->dest_me();

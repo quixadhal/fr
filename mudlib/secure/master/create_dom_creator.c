@@ -76,6 +76,9 @@ int create_creator(string name) {
   file = read_file("/std/creator/workroom.c");
   write_file("/w/"+name+"/workroom.c", "#define CREATOR \""+name+"\"\n");
   write_file("/w/"+name+"/workroom.c", file);
+  file = read_file("/std/creator/workroom2.c");
+  write_file("/w/"+name+"/workroom2.c","#define CREATOR \""+name+"\"\n");
+  write_file("/w/"+name+"/workroom2.c",file);
   log_file("PROMOTIONS", name+" promoted to creator by "+
            geteuid(previous_object())+"\n");
   write("Creator "+name+" promoted.\n");

@@ -53,13 +53,33 @@ mixed query_spellist()
 	case 3..4:
 	case 1..2:
       if(!this_player()->query_spell("bless"))
-         list += ({"bless",});
+         list += ({"bless"});
     if (!this_player()->query_spell("curse"))
-      list += ({ "curse", });
+      list += ({ "curse" });
 	break;
 	  }
     } /* if ALL SPHERE */
 
+  if (this_player()->query_sphere("bard"))
+    {
+     switch(level)
+      {
+	case 14..1000:
+         if(!this_player()->query_spell("inaudibility"));
+               list += ({"inaudibility"});
+	case 11..13:
+	case 9..10:
+	case 7..8:
+      if(!this_player()->query_spell("sobriety"))
+         list += ({"sobriety"});
+	case 5..6:
+    if (!this_player()->query_spell("intoxicate"))
+      list += ({ "intoxicate" });
+	case 3..4:
+	case 1..2:
+	break;
+	  }
+    } /* if ALL SPHERE */
 
   if (this_player()->query_sphere("animal"))
     {
@@ -174,7 +194,12 @@ mixed query_spellist()
     switch(level)
       {
       case 14..1000:
-      case 11..13:
+         if(!this_player()->query_spell("restore"))
+            list+=({"restore",});
+      case 12..13:
+         if(!this_player()->query_spell("holy storm"))
+            list += ({"holy storm"});
+      case 11:
 	 if (!this_player()->query_spell("heal"))
 	   list += ({"heal",});
       case 9..10:
@@ -205,6 +230,8 @@ mixed query_spellist()
      switch(level)
       {
 	case 14..1000:
+         if(!this_player()->query_spell("energy drain"))
+            list+=({"energy drain",});
 	  if(!this_player()->query_spell("resurrect"))
 	    list += ({"resurrect",});
 	case 11..13:
@@ -227,11 +254,15 @@ mixed query_spellist()
      switch(level)
       {
 	case 14..1000:
+            if(!this_player()->query_spell("holy_word"))
+               list +=({"holy_word",});
 	case 11..13:
 	case 9..10:
 	case 7..8:
 	case 5..6:
 	case 3..4:
+         if(!this_player()->query_spell("sanctuary"))
+           list +=({"sanctuary",});
 	  if(!this_player()->query_spell("resist cold"))
 	    list += ({"resist cold",});
       if (!this_player()->query_spell("resist fire"))
@@ -257,6 +288,8 @@ mixed query_spellist()
 	case 7..8:
 	case 5..6:
 	case 3..4:
+  if ( !this_player()->query_spell("darkness"))
+    list += ({ "darkness", });
 	case 1..2:
 	break;
 	  }
@@ -399,7 +432,8 @@ mixed query_spellist()
 	  if(!this_player()->query_spell("shocking grasp"))
 	    list += ({"shocking grasp",});
 	  if(!this_player()->query_spell("light"))
-	    list += ({"light",});
+	    list += ({"light"});
+         if(!this_player()->query_spell("darkness")) list += ({"darkness"});
 
 	 break;
 	  }
@@ -446,6 +480,24 @@ mixed query_spellist()
 	break;
 	  }
     } /* if enchantment */
+  if (this_player()->query_sphere("aphelic"))
+    {
+     switch(level)
+      {
+	case 18..1000:
+	case 16..17:
+	case 14..15:
+	case 12..13:
+	case 9..11:
+	case 7..8:
+	case 5..6:
+	case 3..4:
+         if(!this_player()->query_spell("form illusion"))
+            list += ({"form illusion",});
+	case 1..2:
+	break;
+	  }
+    } /* if aphelic */
 
   if (this_player()->query_sphere("illusion"))
     {
@@ -577,6 +629,23 @@ mixed query_spellist()
      }
   }  /*** TEST SPHERE, for testing spells...doh! ***/
 
+   if(this_player()->query_guild_name()=="Grimbrand")
+   {
+      switch(level)
+      {
+         case 14..1000:
+            if(!this_player()->query_spell("holy prayer"))
+               list+=({"holy prayer",});
+         case 11..13:
+         case 9..10:
+         case 7..8:
+         case 5..6:
+         case 3..4:
+         case 1..2:
+         default:
+            break;
+      }
+   }
 /*** RANGER SPHERE ***/
 /*** Rangers gets priest spells at level 8 ***/
 /*** Spheres include, plant and animal spheres ONLY ***/
@@ -584,9 +653,17 @@ mixed query_spellist()
     {
      switch(level)
       {
-	case 12..1000:
-	case 10..11:
-	case 8..9:
+	case 14..1000:
+            if(!this_player()->query_spell("enchant staff"))
+               list+=({"enchant staff",});
+	case 11..13:
+            if(!this_player()->query_spell("barkskin"))
+               list+=({"barkskin",});
+            if(!this_player()->query_spell("thornfoot"))
+               list+=({"thornfoot",});
+            if(!this_player()->query_spell("know alignment"))
+               list+=({"know alignment",});
+	default:
 	break;
 	  }
     } /* if RANGER */
@@ -599,7 +676,10 @@ mixed query_spellist()
     {
      switch(level)
       {
-	case 15..1000:
+        case 20..1000:
+         if (!this_player()->query_spell("symbol transformation"))
+            list += ({ "symbol transformation", });
+	case 15..19:
   if (!this_player()->query_spell("prayer"))
     list += ({ "prayer", });
 	case 13..14:
@@ -622,7 +702,10 @@ mixed query_spellist()
     {
      switch(level)
       {
-	case 15..1000:
+        case 20..1000:
+         if (!this_player()->query_spell("symbol transformation"))
+            list += ({ "symbol transformation", });
+	case 15..19:
   if (!this_player()->query_spell("chant"))
     list += ({ "chant", });
 	case 13..14:
@@ -654,8 +737,15 @@ string query_spellfilename(string spell)
 
 /*** Cleric Spell Listing, also Ranger and Paladin ****/
 
+   case "sobriety": return "sobriety";
+   case "intoxicate": return "intoxicate";
+   case "holy_word":
+       return ("holy_word");
+   case "sanctuary":
+       return ("sanctuary");
     case "symbol transformation":
       return ("sym_spell");
+      case "holy storm": return "holy_stm";
    case "pacify":
       return ("pacify");
      case "shooting stars":
@@ -664,6 +754,8 @@ string query_spellfilename(string spell)
 	  return ("thedge");
 	case "neutralise poison":
 	  return ("neutralise_poison");
+      case "animate dead":
+         return ("animate_dead");  // wizards and clerics share the same filename.
       case "cure light wounds":
 	  return ("cure_lt");
       case "cure serious wounds":
@@ -676,14 +768,20 @@ string query_spellfilename(string spell)
 	  return ("cause_sr");
       case "cause critical wounds":
 	  return ("cause_cr");
+      case "energy drain":
+         return ("energy_drain");
       case "heal":
 	  return ("heal");
+      case "holy prayer":
+         return ("holy_prayer");
       case "flamestrike":
 	  return ("flamestrike");
       case "light":          /** both wizard and cleric may use the ***/
 	  return ("light");  /** same filename for the same spell ***/
       case "raise dead":
 	  return ("raise_dead");
+      case "restore":
+         return ("restore");
       case "resurrect":
 	  return ("resurrect");
       case "detect magic":
@@ -696,6 +794,8 @@ string query_spellfilename(string spell)
       return ("resist_poison");
       case "resist cold":
 	  return("resist_cold");
+  case "darkness":
+    return ("darkness");
       case "bless":
        return ("bless");
     case "curse":
@@ -775,6 +875,11 @@ string query_spellfilename(string spell)
      return ("sp_armour");
    case("delude"):
       return("dcloud");
+   case("form illusion"):
+      return("forming");
+   case "inaudibility": return "inaud";
+   case "invisibility": return "invis";
+   case "read magic": return "read magic";
 
 /*** TEST SPHERE DATA ***/
 
@@ -784,6 +889,11 @@ string query_spellfilename(string spell)
 	 return ("typetest");
       case "test":
 	 return ("test");
+      case "barkskin": return "barkskin";
+      case "thornfoot": return "thornfoot";
+      case "sticks to snakes": return "sticks_snakes";
+   case "call lightning": return "call_lightning";
+   case "enchant staff": return "enchant_staff";
       }
     } /* if (spell) */
   return 0;

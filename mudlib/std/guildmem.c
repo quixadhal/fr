@@ -95,7 +95,7 @@ int do_advance()
 
   if (cost > p_val)  /* What happens if we can't pay */ 
   {
-     notify_fail("Due to your sad lack of money the guild refuses to train "+
+     notify_fail("Due to your sad lack of money the guild refuses to train "
                  "you.  It would have cost you "+
                  MONEY_HAND->money_value_string(cost)+".\n");
      return 0;
@@ -194,7 +194,7 @@ write("You are now a member of the "+our_guild->query_cap_name()+"'s guild.\n");
   say(this_player()->query_cap_name()+" joins the "+our_guild->query_name()+
           " guild.\n");
   event(this_object(), "guild_join");
-  event(users(), "inform", this_player()->query_cap_name()+" is now a member "+
+  event(users(), "inform", this_player()->query_cap_name()+" is now a member "
             "of "+our_guild->query_name(), "join");
 
   skills = (mixed *)this_player()->query_skills();
@@ -323,14 +323,14 @@ int do_specialize(string name)
   string path;
   if((string)this_player()->query_guild_ob() != our_guild) 
   {
-    notify_fail("You can't specialize in this guild since you're not a "+
+    notify_fail("You can't specialize in this guild since you're not a "
                 "member.\n");
     return 0;
   }
 
   if((int)this_player()->query_level() != 1)
   {
-    notify_fail("You can't specialize after you've already advanced in "+
+    notify_fail("You can't specialize after you've already advanced in "
                 "level.\n");
     return 0;
   }
@@ -338,7 +338,7 @@ int do_specialize(string name)
   if (query_specialization(name))
   {
     path = "/std/race"->query_guild_path(name);
-    tell_room(this_player(), this_player()->query_cap_name()+" specialices "+
+    tell_room(this_player(), this_player()->query_cap_name()+" specialices "
       "and becomes a "+name+".\n", this_player());
     write("You're accepted as a "+name+" specialist.  CONGRATULATIONS!!!\n");
     this_player()->set_guild_ob(path); 

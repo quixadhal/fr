@@ -72,6 +72,11 @@ void check_door(mixed bing) {
       return ;
     }
   frog = (mixed)bing[2]->query_door(bing[0]);
+  /* this piece of code bugs MudOS v21+ so I have to do a check.
+   * Baldrick, sept '95
+   */
+  if ((!sizeof(bing[0]) && !bing[0]) || (!sizeof(bing[1]) && !bing[1]) )
+    return;
   if (!frog)
     bing[0]->modify_exit(bing[1], ({ "undoor", 0 }));
   else
@@ -92,4 +97,20 @@ mixed *query_exit_type(string type, string dir) {
   if (!exit_types[type])
     return exit_types["standard"] + ({ s });
   return exit_types[type] + ({ s });
+}
+
+/* Hamlet.  Colors for the exit string. */
+string exit_string_color(string which) {
+  int i;
+  string exit_color = "%^BOLD%^%^CYAN%^";
+  string *allowed_colors = ({"red","%^RED%^","yellow","%^YELLOW%^",
+                             "green","%^GREEN%^","cyan","%^CYAN%^",
+                             "blue","%^BLUE%^","magenta","%^MAGENTA%^",
+                             "white","%^WHITE%^","orange","%^ORANGE%^"
+                           });
+  if((i = member_array(which,allowed_colors)) == -1)
+    return exit_color;
+  if(i%2 == 0)  i++;
+  exit_color = "%^BOLD%^"+allowed_colors[i];
+  return exit_color;
 }

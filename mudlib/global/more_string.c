@@ -4,8 +4,8 @@ static int fsize,
 static string last_search="", *the_bit, finish_func, more_bit, stat_line;
 static object finish_ob;
 
-#define ROWS ((int)this_player()->query_rows())
-#define COLS (int)this_player()->query_cols()
+#define ROWS ((int)this_object()->query_rows())
+#define COLS (int)this_object()->query_cols()
 
 void string_display_file() {
   int i;
@@ -52,7 +52,7 @@ void more_string_status_line() {
          break;
     }
   }
-  write(s);
+  tell_object(this_object(), s);
   return;
 }
 

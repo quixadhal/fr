@@ -9,7 +9,9 @@ mapping being_written;
 
 void setup() {
   set_name("board");
-  set_short("bulletin board");
+  set_short("collection of scrolls");
+   add_alias("scroll");
+   add_alias("scrolls");
   add_adjective("boards");
   reset_drop();
   board_name = "fish";
@@ -50,7 +52,7 @@ string long(string str, int dark) {
   mapping news_rc;
 
   stuff = (mixed *)BOARD_HAND->get_subjects(board_name);
-  ret = "A bulletin board ("+board_name+").\n";
+  ret = "A collection of scrolls ("+board_name+").\n";
   ret += sprintf("%#-*s\n\n", this_player()->query_cols(),
                             "read <note number>\npost <subject>\n"+
                             "store <note number> <file>\neat <note number>\n"+
@@ -84,7 +86,7 @@ void init() {
   add_action("save_note", "store");
   add_action("next", "next");
   add_action("prev", "prev");
-  add_action("new", "new");
+add_action("newm", "new");
   add_action("board", "board");
   add_action("kfile", "killfile");
   add_action("summary","summary");
@@ -306,7 +308,7 @@ int kfile(string arg) {
   return 1;
 }
 
-int new() {
+int newm() {
   int i;
   string *boards;
   mixed *stuff;
@@ -328,6 +330,7 @@ int new() {
       stuff = (mixed *)BOARD_HAND->get_subjects(boards[i]);
       if (!sizeof(stuff))
         continue;
+	  if(sizeof(stuff)-1 >= 0 && B_TIME >= 0)
       if (stuff[sizeof(stuff)-1][B_TIME] > news_rc[boards[i]]) {
         board_name = boards[i];
         write("The "+board_name+" board has new messages.\n");

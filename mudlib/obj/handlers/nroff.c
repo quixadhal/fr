@@ -178,7 +178,7 @@ int create_nroff(string in_file, string out_file) {
   if (!text)
     return 0;
   bits = explode("#\n"+text, "\n.");
-  bits[0] = bits[0][1..1000];
+  bits[0] = bits[0][1..strlen(bits[0])-1];
   nroffed_file = ({ 0 });
   if (strlen(bits[0]))
     add_string(bits[0]);

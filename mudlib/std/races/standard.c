@@ -1,10 +1,20 @@
 /* the standard race... */
+/* Verkho - added the race_size func */
 inherit "/std/object";
 #include "light_defs.inc"
+#include "race_weights.h"
 
 
 static int min_light_limit;
 static int max_light_limit;
+
+int race_size;
+
+// Dummy for now, allows death curses etc.
+// taniwha 1996
+void on_death(object player,object killer)
+{
+}
 
 int set_light_limits(int lower, int upper) {
   //if ((lower<LIGHT_BOUNDS_LOW) || (upper>LIGHT_BOUNDS_HIGH)) return 0;
@@ -21,6 +31,9 @@ int query_light_limitl() {
   return min_light_limit;
 }
 
+
+void set_race_size(int i) { race_size = i; }
+int query_race_size() { return race_size; }
 
 mixed *bits;
 /* The amazing 'bits' array :
@@ -48,9 +61,10 @@ void add_bit(string name, string alias, mixed *varr)
 }
 
 void create() {
-   set_long("The standard boring race.  Get a new one soon, this one is "+
+   set_long("The standard boring race.  Get a new one soon, this one is "
             "pretty sad.\n");
    reset_get();
+   race_size = 4; // This is used as a standard 'human' size
    bits = ({
       "head", "", ({ 0, 40, 0, 
          "left ear", "right ear", "left eye", "right eye", "nose", "scalp",
@@ -214,4 +228,48 @@ query_possible_bits(string s)
 }
 int query_max_level(string guild){
 return 100;
+}
+
+void start_player(object ob) {
+  string p_race;
+ if(ob)
+  p_race = ob->query_race();
+ else return;
+  switch(p_race) {
+    case "elf":
+    case "drow":
+      ob->set_weight(ELF_WEIGHT);
+      break;
+    case "dwarf":
+    case "duergar":
+      ob->set_weight(DWARF_WEIGHT);
+      break;
+    case "gnome":
+      ob->set_weight(GNOME_WEIGHT);
+      break;
+    case "halfling":
+      ob->set_weight(HALFLING_WEIGHT);
+      break;
+    case "orc":
+      ob->set_weight(ORC_WEIGHT);
+      break;
+    case "goblin":
+      ob->set_weight(GOBLIN_WEIGHT);
+      break;
+    case "lizard-man":
+      ob->set_weight(LIZARD_MAN_WEIGHT);
+      break;
+    case "half-elf":
+      ob->set_weight(HALF_ELF_WEIGHT);
+      break;
+    case "half-orc":
+      ob->set_weight(HALF_ORC_WEIGHT);
+      break;
+    case "human":
+      ob->set_weight(HUMAN_WEIGHT);
+      break;
+    default:
+      ob->set_weight(1700);
+      break;
+    }
 }

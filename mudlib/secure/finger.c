@@ -9,6 +9,8 @@ int last_log_on, time_on, creator, start_time;
 string email, real_name, home_dir, last_on_from;
 mapping aliases;
 string guild_ob;
+string ident;
+string last_pos;
 
 string make_string(mixed *al) {
   string str;
@@ -41,12 +43,13 @@ string domain_finger(string name) {
 
   master = "/d/"+name+"/master";
   ret = "The domain of "+name+".\n";
-  ret += "The lord of this domain is "+master->query_dom_lord()+".\n";
+  ret += "The Thane of this domain is "+master->query_dom_lord()+".\n";
   ret += "The current members of this domains are "+
          implode((string *)master->query_members(), ", ")+".\n";
   if (master->query_info())
     ret += (string)master->query_info();
-  ret += "It hasn't been idle.\n";
+  else
+    ret += "It hasn't been idle.\n";
   return ret;
 } /* domain_finger() */
 
@@ -56,8 +59,9 @@ string finger_info(string name) {
   mapping mail_stat;
   int i;
 
-  if ((ob = find_player(name)))
-    ob->save_me();
+  // Wonderflug, at popular request, foiling the finger-detectors
+  //if ((ob = find_player(name)))
+    //ob->save_me();
   if (nick)
     name = nick;
   seteuid("Root");
@@ -75,17 +79,32 @@ string finger_info(string name) {
   home_dir = 0;
   guild_ob  = 0;
   last_on_from = 0;
+  ident = 0;
   start_time = 0;
   aliases = ([ ]);
+   last_pos = 0;
 restore_object("/players/"+name[0..0]+"/"+name,1);
-  retval =  sprintf("%35-s%35-s\n", "Login name : "+name, "Real name : "+
-                            (real_name?real_name:"???"));
+  if(real_name) {
+    if(real_name[0] == ':') {
+      if("/secure/master"->valid_read("/players/"+name[0..0]+"/"+name,
+                                      geteuid(this_player(1))))
+         retval = sprintf("%35-s%35-s\n", "Login name : "+name, "Real name : "+
+                          real_name);
+      else
+         retval = sprintf("%35-s%35-s\n", "Login name : "+name,
+                                          "Real name : ???");
+    }
+  }
+
+  if(!retval)
+    retval =  sprintf("%35-s%35-s\n", "Login name : "+name, "Real name : "+
+                              (real_name?real_name:"???"));
   if (birth_day)
      retval += sprintf("%35-s", "Birthday : " + birth_day);
   if (email)
     if (email[0] == ':') {
       if ("/secure/master"->valid_read("/players/"+name[0..0]+"/"+name,
-                                   geteuid(previous_object())))
+                                   geteuid(this_player(1))))
         retval += "Email : "+email+"\n";
     } else
       retval += "Email : "+email+"\n";
@@ -93,8 +112,12 @@ restore_object("/players/"+name[0..0]+"/"+name,1);
     retval += "\n";
   if (home_dir)
     retval += sprintf("%35-s", "Home directory : "+home_dir);
-   if (guild_ob && previous_object()->query_creator())
-    retval += "Is a member of the "+guild_ob->query_name()+" guild.\n";
+   if (guild_ob && this_player(1)->query_creator()) {
+      if( (file_size(guild_ob) > 0) || (file_size(guild_ob+".c") > 0) )
+        retval += "Is a member of the "+guild_ob->query_name()+" guild.\n";
+     else
+        retval += "Is a member of a guild that does not exist.\n";
+     }
   else if (home_dir)
     retval += "\n";
   if(where)
@@ -105,7 +128,8 @@ restore_object("/players/"+name[0..0]+"/"+name,1);
     for (i=0;i<sizeof(bing);i++)
      if (file_size("/d/"+bing[i]) == -2)
         if ((string)("/d/"+bing[i]+"/master")->query_dom_lord() == name) {
-          retval += "Is a lord of the "+bing[i]+" domain.\n";
+          retval += "Is the Thane of the "+capitalize(bing[i])+
+                    " domain.\n";
         } else if (!("/d/"+bing[i]+"/master")->query_member(name)) {
           bing = delete(bing, i, 1);
           i--;
@@ -124,7 +148,9 @@ restore_object("/players/"+name[0..0]+"/"+name,1);
   if (time_on > 3600)
     retval += sprintf("%d hours, ", (time_on/3600)%24);
   retval += sprintf("%d minutes and %d seconds old.\n", (time_on/60)%60, time_on%60);
-  if ((ob=find_living(name)))
+  if ((ob=find_living(name)) && (function_exists("is_player",ob)) &&
+// Radix...
+      (!ob->query_creator() || !ob->query_invis()))
     retval += "On since "+ctime(last_log_on)+"\n";
 /*
   else if (ob->query_hidden())
@@ -156,15 +182,21 @@ restore_object("/players/"+name[0..0]+"/"+name,1);
     retval += "Last logged on "+ctime(last_log_on)+"\n";
  */
   }
-  if (ob)
+  if (ob && (!ob->query_creator() || !ob->query_invis()))
     if (interactive(ob))
       retval += "Idle for "+(query_idle(ob)/60)+" minutes and "+
                             (query_idle(ob)%60)+" seconds.\n";
-    else
+    else if(function_exists("is_player",ob))
       retval += "Net dead.\n";
-  if ("/secure/master"->query_lord(previous_object()->query_name()) &&
+   if ("/secure/master"->query_lord(this_player(1)->query_name()) &&
+       ident)
+      retval += ident + "@";
+  if ("/secure/master"->query_lord(this_player(1)->query_name()) &&
       last_on_from)
     retval += last_on_from+"\n";
+  if ("/secure/master"->query_lord(this_player(1)->query_name()) &&
+      last_pos)
+    retval += "Last position: "+last_pos+"\n";
   // retval += (string)MAILER->finger_mail(name);
   mail_stat = (mapping)"/obj/handlers/postal_d"->mail_status(name);
   if (!mail_stat["total"]) {

@@ -1,0 +1,7 @@
+#std/vaults/vault_obj.c
+map_prop ([])
+timed_prop ([])
+labels ({})
+create_me "ludoc"
+auto_load ({})
+savefile "/std/vaults/vault_room_save"

@@ -21,16 +21,16 @@ mixed spell(string str,int skill, int cast);
 
 string help() {
        return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "School: Invocation\n"+
-       "Level: 2nd\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Damage Type: "+TYPE+"\n"+
-       "Saving Throw: 1/2\n"+
-       "Description: \n"+
-       "     This spell will pelt a group of your enemies with several "+
-       "snowballs.  The damage is 1-3 points per level of the caster up "+
+       "\n\n"
+       "Spell Name: "+SP_NAME+"\n"
+       "School: Invocation\n"
+       "Level: 2nd\n"
+       "Gp Cost: "+GP_COST+"\n"
+       "Damage Type: "+TYPE+"\n"
+       "Saving Throw: 1/2\n"
+       "Description: \n"
+       "     This spell will pelt a group of your enemies with several "
+       "snowballs.  The damage is 1-3 points per level of the caster up "
        "to 8th level.\n\n";
 
 }
@@ -103,7 +103,7 @@ int hb_spell(object attacker, mixed *params)
   
  if (params[2] && (int)previous_object()->adjust_gp(-ADJ_COST)<0)
  {
-  tell_object(previous_object(), "You are currently too "+
+  tell_object(previous_object(), "You are currently too "
        "mentally drained to cast.\n");
   return 0;
  }
@@ -138,7 +138,7 @@ int hb_spell(object attacker, mixed *params)
 
   say(str + " envelopes "+(str = query_multiple_short(params[1]))+
    " in a swarm of snowballs.\n", ({previous_object(),params[1]}));
-  tell_object(previous_object(), "You envelope " + str + " in a snowball "+
+  tell_object(previous_object(), "You envelope " + str + " in a snowball "
    "swarm!\n");
 
    

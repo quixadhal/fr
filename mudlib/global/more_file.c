@@ -17,24 +17,28 @@ static string fname,
               stat_line,
               last_search;
 
-#define ROWS  ((int)this_player()->query_rows()-2) 
+#define ROWS  ((int)this_player()->query_rows()-4) 
 
 void display_file() {
+  string scrn;
   botl = topl + ROWS;
   if (botl > fsize) botl = fsize;
-  cat(fname,topl,ROWS);
+// Radix
+// cat(fname,topl,ROWS);
+  scrn = read_file(fname,topl,ROWS);
+  if(scrn)
+     tell_object(this_object(),sprintf("%s",scrn));
 } /* display_file() */
 
 void get_next_filename() {
   string str;
 
   fname = filenames[0];
-/*
-  write(fname + " : ");
-/*
-  fsize = file_size(fname)/10;
-*/
-  fsize = file_length(fname);
+  // Fix by Wonderflug, 96.  Check file_size > 0 to filter dirs out
+  // cause this crashes file_length.
+  fsize = 0;
+   // if(file_size(fname) > 0)
+    fsize = file_length(fname);
   if (fsize == 0) {
     write("Empty file.\n");
     if(sizeof(filenames) > 1) {
@@ -94,7 +98,7 @@ void get_next_filename() {
       s2 = NROFF_HAND->cat_file("/tmp/nroffed_file");
       rm("/tmp/nroffed_file.o");
       if (s2) {
-        this_object()->more_string(s2, fname);
+    this_object()->more_string(s2, fname);
         fsize = ROWS-4;
         return ;
       }
@@ -164,7 +168,7 @@ void status_line() {
          break;
     }
   }
-  write(s);
+  tell_object(this_object(), s);
   return;
   write(fname+" From "+topl+" to "+botl+" of "+fsize+"  ("+
        ((botl*100)/fsize)+"%)"+" - h for help. ");
@@ -209,6 +213,11 @@ void next_page(string str) {
     set_mark("'");
     if (s1=="")
       s1 = last_search;
+   if(!s1 || s1 = "")
+   {
+      write("Sorry, not found.\n");
+      return ;
+   }
     do {
       i = j;
       j = i+900;

@@ -4,9 +4,9 @@ void setup()
 {
   set_name("tempus");
   set_short("priest of Tempus");
-  set_long("The Priests of Tempus are considered to be very warlike and "+
-          "chaotic.  What these priests lack of spells they gain back from "+
-          "being better fighters than most clerics.  Priests of Tempus can "+
+  set_long("The Priests of Tempus are considered to be very warlike and "
+          "chaotic.  What these priests lack of spells they gain back from "
+          "being better fighters than most clerics.  Priests of Tempus can "
           "wear all kinds of armor and wield any meelee weapons.\n");
   reset_get();
   add_command("judge", 1);

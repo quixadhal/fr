@@ -1,3 +1,9 @@
-There should only be two files a room will inherit.  These are:-
-/std/room    - For inside rooms.
-/std/outside - For outside rooms.
+ALL rooms must inherit one of these in the MUD:
+
+/std/room      - For inside rooms.
+/std/outside   - For outside rooms.
+/std/pub       - for pubs/taverns
+/std/shop      - for shops/smithies
+/std/bank      - for a bank
+/std/raiseroom - for Temple raiserooms
+/std/guildroom - for Guilds

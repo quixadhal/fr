@@ -30,7 +30,10 @@ void regen_after_death() {
   dest = (object)previous_object()->query_property("start location");
   if (!dest)
     return ;
-  ob = setup();
+   // Radix was .. this looked horrid .. not sure what to put
+   // to get driver back up online
+//ob = setup();
+   ob = this_object();
   dest->add_monster(previous_object(), ob);
   call_out("do_move", 10, ({ ob, dest }) );
 }

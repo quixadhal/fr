@@ -7,7 +7,10 @@ inherit "/std/living/wear.c";
 inherit "/std/living/combat.c";
 
 private static int worn_ac;
-
+mixed *stats()
+{
+   return hold::stats();
+}
 void create()
   {
   hold::create();
@@ -22,7 +25,7 @@ void create()
 
 int query_equip_ac()
   {
-  return (query_worn_ac() + query_held_ac());
+   return this_object()->query_worn_ac() + this_object()->query_held_ac();
 }
 
 // do_equip() by Aragorn
@@ -49,6 +52,7 @@ int do_equip(string str)
    {
    object *obs, *holds, *wears;
    int i, j;
+   int size;
 
    // Assum going to tell us something about the autoequip
    if (str && stringp(str)) {
@@ -73,13 +77,22 @@ int do_equip(string str)
    // Split into holdables and wearables.
    for(i=0;i<sizeof(obs);i++)
       {
+      if(!interactive(this_object()) && obs[i]->
+        query_static_property("pc_gave_npc")) continue;
       if ( (obs[i]->query_holdable()) && !obs[i]->query_in_use() )
+             {
+               if(!obs[i])  continue;  /* Hamlet */
          holds += ({ obs[i] });
+         }
         /* Items can be both not_holdable & not_wearable, so we have to 
          * check both. 
          */
+            if(!obs[i])  continue;   /* Hamlet */
       if ( (obs[i]->query_wearable()) && !obs[i]->query_in_use() )
+         {
+            if(!obs[i])  continue;   /* Hamlet */
         wears += ({ obs[i] });
+          }
       }
 
    // First of all, take care of holdables.
@@ -158,10 +171,12 @@ int do_equip(string str)
       wears -= warms;
 
       // First of all, we burn through the loop of wearable armour
-      for(j=0;j<sizeof(warms);j++) this_object()->wear_ob(warms[j]);
+      for(j=0;j<sizeof(warms);j++) 
+        this_object()->wear_ob(warms[j]);
 
       // Then anything without ac.
-      for(j=0;j<sizeof(wears);j++) this_object()->wear_ob(wears[j]);
+      for(j=0;j<sizeof(wears);j++) 
+        this_object()->wear_ob(wears[j]);
 
       // End of line here as well.
       // No more objects to wear or no more slots free.

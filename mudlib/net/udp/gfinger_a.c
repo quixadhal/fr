@@ -1,11 +1,7 @@
-#include <standard.h>
 #include "udp.h"
 /*
  * They answered our finger request.  Nice of them.
  */
-
-STDOB
-
 void incoming_request(mapping info) {
   object ob;
 

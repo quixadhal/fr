@@ -104,7 +104,7 @@ object make_corpse()
   tell_room(environment(),this_object()->query_cap_name()+" drops everything, and "+
     this_object()->query_possessive()+" armor eerily hops off "+this_object()->query_possessive()+
     " body and falls to the floor.\n", this_object());
-  tell_object(this_object(),"You drop everything, and your armor eerily hops"+
+  tell_object(this_object(),"You drop everything, and your armor eerily hops"
     " off your body and falls to the floor.\n");
   for (i=0; i<2; i++)
     if (ob=(object)this_object()->query_held_ob(i)) {

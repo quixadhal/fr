@@ -36,6 +36,12 @@ string short() {
   return "Ghost of "+my_player->short();
 }
 
+string query_short() {
+  if ( !my_player)
+    return "Death shadow";
+  return "Ghost of "+my_player->query_short();
+}
+
 void dest_death_shadow() {
   destruct(this_object());
 }

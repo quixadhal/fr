@@ -1,26 +1,23 @@
 #define MASTER "/secure/master"
 #define PEOPLER "/obj/handlers/peopler"
-#define MESSAGE "/obj/handlers/message"
+#define traceprefix(x)
+#define trace(x)
+
+#define C_NAME 0
+#define C_DATA 1
+#define C_OBJ 2
+#define C_FUNC 3
 
 varargs object *wiz_present(string str, object onobj, int nogoout);
 string desc_object(mixed o);
 string desc_f_object(object o);
 
 static void wiz_commands() {
-  add_action("shutdown_game", "shutdown");
-  add_action("local_cmds", "loca*lcmd");
-  /*add_action("do_trace", "trace");
-  add_action("set_traceprefix", "traceprefix");*/
   add_action("do_gauge", "ga*uge");
-  add_action("do_author", "author");
-  add_action("do_domain", "domain");
-  add_action("do_status", "status");
-  add_action("do_malloc", "malloc");
-  add_action("do_fds", "fds");
-  add_action("do_sockets", "sockets");
-  add_action("do_set", "set");
   /* Added by Jada aug '94, blame him if it won't work */
   add_action("do_title", "title");
+  /* Adds for new commandsystem.. */
+  add_action("comm_info","comi*nfo");
 } /* wiz_commands() */
      
 /*
@@ -31,23 +28,8 @@ static void wiz_commands() {
 */
  
 static void app_commands() {
-  add_action("do_people","pe*ople");
-  add_action("quick_people", "qp*eople");
-  add_action("do_dirs", "di*rs");
-  add_action("do_netstat", "ne*tstat");
-  add_action("do_snoopers", "snoope*rs");
   add_action("do_snoop", "snoop");
-/*  add_action("grim_snoop", "qsnoop");   Added on 16 March 93 by Grimbrand */
   add_action("grim_snoop", "qsnoop");  /* Added on 16 March by Grimbrand */
-  add_action("do_terms", "terms");
-  add_action("do_uptime", "uptime");
-add_action("cmd_mail","mail");
-  /* I wonder if this might be the right place for these ??? */
-  add_action("do_setmin","setmin");     /* Moved from player.c at Baldricks */
-  add_action("do_setmout","setmout");   /* request. The routines are moved  */
-  add_action("do_setmmin","setmmin");   /* to /obj/handlers/message .       */
-  add_action("do_setmmout","setmmout"); /* Added by Slinger 7 oct 93        */
-
 } /* app_commands() */
  
 /* These commands go to ALL players. Note that master.c
@@ -57,53 +39,6 @@ add_action("cmd_mail","mail");
  
 static void all_commands() {
 } /* all_commands() */
-
-int do_setmin(string str) {
-  return (int)MESSAGE->setmin(str);
-}
-
-int do_setmout(string str) {
-   return (int)MESSAGE->setmout(str);
-}
-
-int do_setmmin(string str) {
-   return (int)MESSAGE->setmmin(str);
-}
-
-int do_setmmout(string str) {
-   return (int)MESSAGE->setmmout(str);
-}
-int do_people(string str) {
-  return (int)PEOPLER->do_people(str);
-} /* do_people() */
-
-int quick_people(string str) {
-  return (int)PEOPLER->do_qpeople(str);
-} /* do_people() */
-
-int do_terms(string str) {
-  return (int)PEOPLER->do_terms(str);
-} /* do_people() */
-
-int do_netstat(string str) {
-  return (int)PEOPLER->do_netstat(str);
-} /* do_people() */
-
-int do_snoopers(string str) {
-  object *obs;
-  int i;
-
-  obs = (object *)PEOPLER->get_people(str);
-  obs = filter_array(obs, "check_snoop", this_object());
-  if (!sizeof(obs)) {
-    notify_fail("No one is being snooped by anyone.\n");
-    return 0;
-  }
-  for (i=0;i<sizeof(obs);i++)
-    write(obs[i]->query_cap_name()+" is snooping "+
-          obs[i]->query_snoopee()->query_cap_name()+".\n");
-  return 1;
-} /* do_snoopers() */
 
 int check_snoop(object ob) {
   if((object)ob->query_snoopee())
@@ -180,96 +115,11 @@ if(!this_player()->query_god() && targ->query_lord()) {
   write("Ok, snooping "+str+".\n");
   return 1;
 } /* do_snoop() */   
-static int do_dirs(string str) {
-  return (int)PEOPLER->do_dirs(str);
-} /* do_dirs() */
-
-static do_set(string str) {
-  return (int)PEOPLER->set_var(str);
-} /* do_set() */
 
 int review() {
   PEOPLER->review();
   return 1;
 } /* review() */
-
-static int shutdown_game(string arg) {
-  int tim;
-  string str;
-
-  if (this_player(1) != this_object()) return 0;
-  if (!arg) {
-    write("Argument required.\n");
-    return 1;
-  }
-  str = (string)this_player()->query_name()+" at "+ctime(time());
-  log_file("GAME_LOG", "Game shutdown by ");
-  log_file("GAME_LOG", str);
-/*
-  log_file("GAME_LOG", ctime(time()));
- */
-  log_file("GAME_LOG", " for\n");
-  log_file("GAME_LOG", arg);
-  log_file("GAME_LOG", "\n\n");
-  write("Ok... shutting down game... \n");
-  sscanf(arg, "%d %s", tim, arg);
-  if (tim < 10 && !MASTER->query_lord(geteuid(this_object())))
-    tim = 10;
-  if (str[0..2] == "now" && MASTER->query_lord(geteuid(this_object())))
-    tim = 0;
-  if (!tim)
-    "/obj/shut"->end_it_all();
-  else
-    "/obj/shut"->shut(tim);
-  return 1;
-} /* shutdown_game() */
- 
-static int local_cmds(string str) {
-  this_object()->more_string("Currently Defined Commands:\n"+
-    sprintf("%#*-s\n", (int)this_player()->query_cols(),
-    implode(actions_defined(), "\n")));
-  return 1;
-} /* local_cmds() */
- 
-/*int set_traceprefix(string str) {
-  if (this_player(1) != this_object()) return 0;
-  if (!str)
-    write("Ok, trace prefix cleared.\n");
-  else
-    write("Ok trace prefix set to "+str+"\n");
-  traceprefix(str);
-  return 1;
-} */ /* traceprefix() */
-
-/*int do_trace(string arg) {
-  string *args;
-  int i, j, trace_arg;
-  if (this_player(1) != this_object()) return 0;
-  notify_fail("Usage: trace <off|call|call_other|return|args|exec|heart_beat|" +
-    "apply|obj_name|number>\n");
-  if (!arg) return 0;
-
-  args = explode(arg, " "); 
-
-  if (!sizeof(args)) return 0;
-
-  for (i=0;i<sizeof(args);i++)
-    if ((j=member_array(args[i], ({ "off", "call", "call_other", "return",
-                                    "args", "exec", "heart_beat", "apply",
-                                     }))) != -1)
-      if (!j) {
-        trace(0);
-        write("Trace off.\n");
-        return 1;
-      } else
-        trace_arg |= ({ 0, 1, 2, 4, 8, 16, 32, 64, 128 })[j];
-    else
-      if (sscanf(args[i], "%d", j))
-        trace_arg |= j;
-  trace(trace_arg|128);
-  write("Trace level : "+trace_arg+"\n");
-  return 1;
-} *//* do_trace() */
 
 static int do_gauge(string str) {
   int eval_cost;
@@ -320,83 +170,6 @@ string string_stats(mapping map) {
   return str;
 } /* print_stats() */
 
-int do_domain(string str) {
-  mapping bit;
-
-  if (str)
-    bit = ([ str: domain_stats(str) ]);
-  else
-    bit = domain_stats();
-  this_object()->more_string(string_stats(bit));
-  return 1;
-} /* do_author() */
-
-int do_author(string str) {
-  mapping bit;
-
-  if (str)
-    bit = ([ str: author_stats(str) ]);
-  else
-    bit = author_stats();
-  this_object()->more_string(string_stats(bit));
-  return 1;
-} /* do_author() */
-
-int do_malloc(string str) {
-  malloc_status();
-  return 1;
-} /* do_malloc() */
-
-int do_status(string str) {
-  if (str)
-    mud_status(1);
-  else
-    mud_status();
-  return 1;
-} /* do_status() */
-
-int do_fds() {
-  dump_file_descriptors();
-  return 1;
-} /* do_fds() */
-
-int do_sockets() {
-  dump_socket_status();
-  return 1;
-} /* do_sockets() */
-
-int do_uptime() {
-  int tim, num;
-  string *bits;
-
-  write("Up for ");
-  tim = uptime();
-  bits = ({ });
-  if (tim > 60*60*24)
-    bits += ({ (num=tim/(60*60*24))+" day"+(num==1?"":"s") });
-  if (tim > 60*60 && tim%(60*60*24))
-    bits += ({ (num=(tim/(60*60))%24)+" hour"+(num==1?"":"s") });
-  if (tim > 60 && tim%(60*60))
-    bits += ({ (num=(tim/60)%60)+" minute"+(num==1?"":"s") });
-  if (tim%60)
-    bits += ({ (num=tim%60)+" second"+(num==1?"":"s") });
-  if (sizeof(bits) > 1)
-    write(implode(bits[0..sizeof(bits)-2], ", ")+" and "+
-          bits[sizeof(bits)-1]+".\nMore useless info "+
-          query_load_average()+".\n");
-  return 1;
-} /* do_uptime() */
-
-int cmd_mail(string str)
-  {
-  object ob;
-
-  ob = new("/obj/handlers/post.c");
-  ob->move(this_player());
-  ob->start_mail(str);
-  return 1;
-}
-
 int do_title(string str) 
   {
   string title;
@@ -419,3 +192,64 @@ int do_title(string str)
      this_player()->set_title(str);
     return 1;
 }
+
+static string do_find_comm(string func, object ob) {
+  string s, ping;
+  object fish;
+  s = "";
+  if(ping = function_exists(func, ob))
+      s += " found in " + ping;
+    else
+      s += " not found";
+  fish = ob;
+  while(fish = shadow(fish, 0))
+    if(function_exists(func, fish))
+      s += " shadowed by " + file_name(fish);
+  s += ".\n";
+  return s;
+} /* do_find_comm() */
+
+/*** By Dyraen@Rod 
+ */
+int comm_info(string str) {
+object on;
+string *comms, xtra, s1, s2;
+int i;
+ 
+  if (str) {
+    sscanf(str,"%s %s",s1,s2);
+    if (s2) {
+      s2 = this_player()->expand_nickname(s2);
+      on = find_player(s2);
+      str = s1;
+    }
+  }
+  if (on)
+    comms = on->query_commands();
+  else
+    comms = commands();
+
+  write("Searching "+sizeof(comms)+" commands..\n");
+
+  if (!str || str == "0")
+    for(i=0;i<sizeof(comms);i++) {
+    // See below, wonderflug
+      //if ((string)comms[i][C_NAME..C_NAME] == "") comms[i][C_NAME..C_NAME] = "*";
+      xtra = do_find_comm((string)comms[i][C_FUNC],(object)comms[i][C_OBJ]);
+      write(i+". "+comms[i][C_NAME]+"["+comms[i][C_DATA]+"] "+
+            file_name((object)comms[i][C_OBJ])+"->"+comms[i][C_FUNC]+"()"+
+            xtra);
+    }
+  else for(i=0;i<sizeof(comms);i++) {
+  //We don't match '*', and besides this buggers it somehow.
+  // Wonderflug
+    //if ((string)comms[i][C_NAME] == "") (string)comms[i][C_NAME..C_NAME] = "*";
+    if (str ==(string) comms[i][C_NAME]) {
+      xtra = do_find_comm((string)comms[i][C_FUNC],(object)comms[i][C_OBJ]);
+      write(comms[i][C_NAME]+"["+comms[i][C_DATA]+"] "+
+            file_name((object)comms[i][C_OBJ])+"->"+comms[i][C_FUNC]+"()"+
+            xtra);
+    }
+  }
+  return 1;
+} 

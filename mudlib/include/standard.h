@@ -5,13 +5,6 @@
 #ifndef __STD_HEADER__
 #define __STD_HEADER__
 
-#ifndef MUD_NAME
-#define MUD_NAME mud_name()
-#endif
-
-#ifndef VERSION
-#define VERSION version()
-#endif
 
 #define TP           this_player()
 #define NAME         (string)TP->query_name()
@@ -26,11 +19,11 @@
 #define ENV(XXX)     environment(XXX)
 #define LC(XXX)      lower_case(XXX)
 #define CAP(XXX)     capitalize(XXX)
-#define DEAD         query_property("dead")
-#define DN           dir_name(TO)
-#define FTO(x)       "@@"+x+":"+file_name(this_object())+"@@"
+#define DEAD         query_dead()
+#define ETO        environment(this_object())
 
 #define SETEUID seteuid((string)"/secure/master"->creator_file(file_name(TO)))
 #define STDOB void create() { SETEUID; } void dest_me() { destruct(TO); }
 
+// #pragma save_binary
 #endif

@@ -1,163 +1,129 @@
+#include "/std/spells/wizard/tweaks.h"
+
 /*** Detect Magic Spell ***/
-inherit "/std/spells/patch.c";
-
-/* find_unique_match() does a find match that ensures the returned
-   object list contains no duplicates
-   find_one_match() returns only the first matched object
-*/
-mixed find_unique_match(string find,mixed in);
-mixed find_one_match(string find,mixed in);
-int cleric_fix_damage(object caster,object victim,int damage,string save);
-object caster;
 /*** Created by Eerevann Tokani ***/
-/*** Heavilly modded  Taniwha   ***/
-
+/* fixed for NPC's / wands Taniwha */
+/* Adapted to base spell, wonderflug 95 */
+/* further screw by Taniwha, colour added + time remaining */
 #define SP_NAME "Detect Magic"
 #define GP_COST 2
-#define SPELLTYPE "misc"
-
-int ADJ_COST;
-
-string help() {
-         return
-         "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "Sphere: Cleric Divination\n"+
-       "Level: 1st\n"+
-         "Gp Cost: "+GP_COST+"\n"+
-       "Description: \n"+
-       "    This spell is used to determine whether something or someone "+
-       " is magical or not."+
-      "\n";
-
-
-}
-
-mixed spell(string str, int skill, int cast);
-
-int cast_spell(string str,object cast)
+inherit "/std/spells/base.c";
+void setup()
 {
-  int skill;
-  mixed ret;
-
-  caster = cast ? cast : this_player();
-
-  if ( wrong_alignment(caster) )
-    return punish_align(caster);
-
-  ret = spell(str, skill, 1);
-  if (stringp(ret))
+  set_spell_name("Detect Magic");
+  set_sphere("cleric divination");
+  set_spell_level(1);
+  set_target_type("item");
+  set_range(0);
+  set_line_of_sight_needed(0);
+  set_help_desc("This spell is used to determine whether an item is "
+    "magical or not.  The brightness of a magical item also gives the "
+    "caster an idea of its power.  This spell must be cast upon an item "
+    "or an npc (in which case it will give some idea of its magical auras) "
+    "to work properly.");
+  set_casting_time(1);
+  set_gp_cost(1);
+  set_rounds( ({ "round1" }) );
+}
+string powerp(int level,object ob,string str,string show)
+{
+  string temp;
+  temp ="";
+  if(!(int)ob->query_property(str)) return ("No sign of "+show+"\n");
+  switch((int)ob->query_property(str))
   {
-     notify_fail(ret);
-    return 0;
+    case -399..-1:
+      temp = "Black with flashes of "+show+" ";
+    break;
+    case 1..10:
+      temp = "Pale sparkles of "+show+" ";
+    break;
+    case 11..30:
+      temp = "Faint flashing "+show+" ";
+    break;
+    case 31..50:
+      temp = "A steady glowing "+show+" ";
+    break;
+    case 51..80:
+      temp = "Glowing bands of "+show+" ";
+    break;
+    case 81..99:
+      temp = "Solid sheets of "+show+" ";
+    break;
+    case 100..399:
+      temp = "A pulsating power sphere in "+show+" ";
+    break;
+    default:
+      temp = "A scrambled mess of "+show+" ";
+   break;
   }
-  tell_object(caster,"You start to cast "+SP_NAME+".\n");
-  tell_room(environment(caster),caster->query_cap_name()+" begins to cast a spell.\n",
-      ({caster}));
-  return 1;
-  }
-
-mixed spell(string str, int skill, int cast)
-{
-   object *olist;
-   object ob;
-
-  if ((int)caster->query_spell_effect(SPELLTYPE))
-    return "You are already casting an "+SPELLTYPE+" spell.\n";
-   olist = find_match(str,environment(caster));
-   if(sizeof(olist)) ob = olist[0];
-
-  caster->add_spell_effect(1, SPELLTYPE, SP_NAME,
-    this_object(), "hb_spell", ({ skill,ob,cast }));
-  return 1;
-}
-string powerp(object ob,string str,string show)
-{
-    if(!(int)ob->query_property(str)) return ("No sign of "+show+"\n");
-    switch((int)ob->query_property(str))
-    {
-        case -100..-1:
-           return("Black with flashes of "+show+"\n");
-        break;
-        case 1..10:
-           return("Pale sparkles of "+show+"\n");
-        break;
-        case 11..30:
-           return("Faint flashing "+show+"\n");
-        break;
-        case 31..50:
-          return("A steady glowing "+show+"\n");
-       case 51..80:
-          return("Glowing bands of "+show+"\n");
-       case 81..99:
-          return("Solid sheets of "+show+"\n");
-       case 100..199:
-          return("A pulsating power sphere in "+show+"\n");
-       default:
-          return("A scrambled mess of "+show+"\n");
-       }
-}
-int hb_spell(object caster, mixed *params)
-{
-/*** variables, dependant upon spell ***/
-object ob;
-
-   ob = params[1];
-
-  if (!params[1])
+  if(level > 15) switch((int)ob->query_time_remaining(str))
   {
-     tell_object(caster,
-     "Your spell failed ... the item isn't here.\n");
-    return 0;
+    case 0:
+        temp += "and it's permanent.";
+    break;
+    case 1..10:
+        temp += "showing signs of immenent failure.";
+    break;
+    case 11..100:
+        temp += "which looks a bit unstable.";
+    break;
+    case 101..500:
+        temp += "which looks fairly stable.";
+    break;
+    case 501..2000:
+        temp += "showing no sign of weakening soon.";
+    break;
+    default:
+        temp + "and it looks solid for a goodly long time.";
+    break;
+    }
+    return temp+".\n";
+}
+int round1(object caster, mixed target, mixed out_range, int time, int quiet)
+{
+  string es;
+  int level;
+  if (!target)
+  {
+    tell_object(caster,
+      "Your spell failed ... the item isn't here.\n");
+    return -1;
   }
  
-    /* Specialists spend only half guild points to cast spells native to their
-    * school, so GP_COST is checked and halved, if necessary.     */
-
-  ADJ_COST = GP_COST;
-
-  if((string)caster->query_guild_name() == "diviner")
-    ADJ_COST = GP_COST/2;
-
-  if (params[2] && (int)caster->adjust_gp(-ADJ_COST)<0)
+  if ( !quiet )
   {
-    tell_object(caster, "You fail to draw enough energy "+
-    "from your god.\n");
-    return 0;
+    tell_room(environment(caster),(string)caster->query_cap_name()+
+      " chants, 'magius is iseio'.\n", ({target,caster}));
+    tell_object(caster, "You chant, 'magius is iseio'.\n");
   }
+  level = caster->query_level();
 
-  tell_room(environment(caster),(string)caster->query_cap_name()+
-    " chants, 'magius is iseio'.\n", ({params[1],caster}));
-
-
-
-     tell_object(caster, "You chant, 'magius is iseio'.\n");
-     if(living(params[1]))
-     {
-         tell_object(caster,"You look closely and"+
-         " "+(string)ob->query_cap_name()+
-        " appears to be surrounded by:\n"+
-        powerp(ob,"poison","green")+
-        powerp(ob,"magical","silver")+
-        powerp(ob,"fire","vermillion")+
-        powerp(ob,"cold","cobalt blue")+
-        powerp(ob,"acid","yellow")+
-        powerp(ob,"electrical","azure")+
-         powerp(ob,"air","lavandar")+
-        "Womble on little frog, womble on\n");
-     }
-     else
-     {
-        tell_room(environment(caster),(string)caster->query_cap_name()+
-            " casts a spell and"+
-            " looks intently at the "+params[1]->query_short()+".\n",
-            caster);
-   if(params[1]->enchant_string())
-       tell_object(caster,
-          params[1]->enchant_string()+"\n");
-      else tell_object(caster,"Hmmm, you can't tell much about this at all.\n");
-    }
-
-  return GP_COST;
+  if(living(target))
+  {
+    tell_object(caster,"You look closely and"
+      " "+(string)target->query_cap_name()+
+      " appears to be surrounded by:\n"+
+      "%^GREEN%^"+powerp(level,target,"poison","green")+
+      "%^WHITE%^%^BOLD%^"+powerp(level,target,"magical","silver")+
+      "%^RED%^"+powerp(level,target,"fire","vermillion")+
+      "%^BLUE%^"+powerp(level,target,"cold","cobalt blue")+
+      "%^YELLOW%^"+powerp(level,target,"acid","yellow")+
+      "%^MAGENTA%^"+powerp(level,target,"electrical","magenta")+
+      "%^CYAN%^"+powerp(level,target,"air","lavendar")+"%^RESET%^"+
+      powerp(level,target,SPIRIT_ARMOUR_PROPERTY,"armour")+
+      "Womble on little frog, womble on.\n");
+      tell_object(target, caster->query_cap_name()+" seems to stare at "
+      "you intently for a minute.\n");
+  }
+  else
+    if(stringp(es=target->enchant_string()) && strlen(es))
+      tell_object(caster, "Peering intently for magical auras, you "
+        "find...\n"+es+"\n");
+    else 
+      tell_object(caster,"Hmmm, can't tell anything much about this.\n");
+  return 0;
 }
+
+
 

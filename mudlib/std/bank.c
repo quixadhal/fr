@@ -181,6 +181,11 @@ int withdraw(string str) {
     notify_fail("You must withdraw something.\n");
     return 0;
   }
+   if(strlen(""+amt) > 6) 
+   {
+      notify_fail("The bank cannot handle so many coins.\n");
+      return 0;
+   }
   values = (mixed *)MONEY_HAND->query_values();
   if ((i=member_array(type, values)) == -1) {
     notify_fail("I do not know of any "+type+" coins.\n");
@@ -336,7 +341,7 @@ int close_account() {
     return 0;
   }
   if ((amt = total)) {
-    write("You get "+MONEY_HAND->money_value_string(amt)+" when you close "+
+    write("You get "+MONEY_HAND->money_value_string(amt)+" when you close "
           "the account.\n");
     this_player()->adjust_money(MONEY_HAND->create_money_array(amt));
     total_account -= amt;
@@ -352,8 +357,23 @@ int close_account() {
 } *//* close_account() */
 
 void load_it() {
+  string from_file;
+  mixed saved_junk;
+
   if (save_file) {
-    restore_object(save_file,1);
+    from_file = read_file(save_file+".save",1,2);
+    if(from_file) {
+      saved_junk = restore_variable(from_file);
+
+      /* here's the actual variable restore */
+      accounts = saved_junk[0];
+      total_made = saved_junk[1];
+      owner = saved_junk[2];
+      collectbox = saved_junk[3];
+      account_cost = saved_junk[4];
+      /* Okay, we're done */
+    }
+
     if (!total_account) {
       string *str;
       int i;
@@ -365,8 +385,18 @@ void load_it() {
 } /* load_it() */
 
 void save_it() {
-  if (save_file)
-    save_object(save_file,1);
+  string to_save;
+
+  if (save_file) {
+    to_save = save_variable( ({ accounts,
+                                total_made,
+                                owner,
+                                collectbox,
+                                account_cost }) );
+    if(file_size(save_file+".save") > 0)
+      rm(save_file+".save");
+    write_file(save_file+".save",to_save);
+  }
 } /* save_it() */
 
 void set_percentage(int per) { percentage = per; }

@@ -1,6 +1,6 @@
                 --* RULES FOR CREATORS *--
 
-1: NEVER MAKE THINGS THAT DOES NOT BELONG IN THE SETTING OF THIS MUD. 
+1: NEVER MAKE THINGS THAT DO NOT BELONG IN THE SETTING OF THIS MUD. 
    This includes known items/monsters/characters from other worlds even
    if that's also AD&D. Also includes things that we compare with our
    own world. Both in descriptions, as comparisons and otherwise.
@@ -101,9 +101,10 @@
    but not as fast or well as it would using our new functions.  Also it will
    help you code things faster and above all in an easier way.     
 
-9  DON'T CHANGE YOUR NAME OR YOUR SHORT. 
-
-   Reason for this rule:  You mire the debug logs with errors due to bad id's.
-   Also several commands can get corrupted by this.  'who', 'finger' and 
-   'people' are examples of commands that always gets ruined.
-
+ 9  DON'T WANDER AROUND IN AN OPEN AREA OF THE MUD, ESPECIALLY IN A 
+    DOMAIN YOU ARE NOT WORKING FOR.
+     Reason for this rule:  You can disrupt any order or theme of the mud just
+     by your presense being seen by mortals.  Interaction with NPCs
+     can severly disable or cripple critical quests and can quickly
+     get you demoted.  Do not fight NPCs, walk around talking to players,
+     or any other interaction in the open areas of the mud.  

@@ -11,12 +11,12 @@ void setup()
   set_name("staff of time");
   add_alias("staff");
   set_short("Staff of Time");
-  set_long("\nStaff of Time\n\n"+
-	"     This staff is about 5 feet long, and made of some weird "+
-	"shiny blue wood.  Two small bands of black iron circle the top "+
-	"of it, and the butt is adorned with a cap of ivory.  Palely "+
+  set_long("\nStaff of Time\n\n"
+	"     This staff is about 5 feet long, and made of some weird "
+	"shiny blue wood.  Two small bands of black iron circle the top "
+	"of it, and the butt is adorned with a cap of ivory.  Palely "
 	"glowing yellow runes are carved along its length.\n\n");
-  set_read_mess("\n'zap <target>' to alter time for something.\n\nNote, the "+
+  set_read_mess("\n'zap <target>' to alter time for something.\n\nNote, the "
 	"staff channels power from the user to produce its effects.\n\n");
   set_weight(350);
   set_value(5000);
@@ -51,7 +51,9 @@ int check_guild()
 {
   switch( this_player()->query_guild_name() )
   {
+      case "bard":
       case "wizthief":
+     case "wiz-war":
      case "wizard":
      case "drow_wizard":
      case "necromancer":
@@ -73,10 +75,10 @@ int do_zap( string str )
 {
   if (this_object()->query_property("num_uses") <= 0 )
   {
-	tell_object(this_player(), "You try to invoke the staff but nothing "+
+	tell_object(this_player(), "You try to invoke the staff but nothing "
 	  "happens.\n");
 	tell_room(environment(this_player()), this_player()->query_cap_name()+
-	  " tries to invoke a Staff of Time but it just fades away into "+
+	  " tries to invoke a Staff of Time but it just fades away into "
 	  "nothing.\n", this_player() );
 	this_object()->dest_me();
 	return 1;
@@ -107,9 +109,9 @@ int do_readrunes(string str)
   switch( check_guild() )
   {
 	case 1:
-	  write("\nYou decipher the runes on the staff, and realize it's "+
-	    "the words to a magic spell!  You study them and soon gain "+
-	    "some small mastery over time.\n\nThe staff fades into another "+
+	  write("\nYou decipher the runes on the staff, and realize it's "
+	    "the words to a magic spell!  You study them and soon gain "
+	    "some small mastery over time.\n\nThe staff fades into another "
 	    "reality as its purpose here is done.\n\n");
 	  if ( !this_player()->query_spell("slow") )
 		this_player()->add_spell("slow", "slow", 9);
@@ -119,7 +121,7 @@ int do_readrunes(string str)
 	  write("\nTry as you might, you cannot understand the runes.\n");
 	  return 1;
 	default:
-	  write("\nThey're just a swirling, jumbled mess and make you "+
+	  write("\nThey're just a swirling, jumbled mess and make you "
 	    "dizzy looking at them.\n\n");
 	  return 1;
   }

@@ -1,8 +1,0 @@
-All spells should use the standard HB spell code, and should inherit
-and use the functions within /std/spells/patch.c
-
-
-All damaging spells should pass a negative number through the wiz_fix_damage()
-code. All healing spells a positive number.
-
-Taniwha 1995

@@ -22,16 +22,16 @@ int ADJ_COST;
  /*** help file ***/
 string help() {
        return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "School: Invocation\n"+
-       "Level: 3rd\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Damage Type: "+TYPE+"\n"+
-       "Saving Throw: 1/2\n"+
-       "Description: \n"+
-       "    This spell will strike a single target with a bolt of "+
-       "lightning.  The damage done is (caster's level)d6.  Maximum "+
+       "\n\n"
+       "Spell Name: "+SP_NAME+"\n"
+       "School: Invocation\n"
+       "Level: 3rd\n"
+       "Gp Cost: "+GP_COST+"\n"
+       "Damage Type: "+TYPE+"\n"
+       "Saving Throw: 1/2\n"
+       "Description: \n"
+       "    This spell will strike a single target with a bolt of "
+       "lightning.  The damage done is (caster's level)d6.  Maximum "
        "damage is 10d6.\n";
        
        
@@ -154,7 +154,7 @@ int hb_spell(object attacker, mixed *params)
    
     /*** TELLS ROOM THE EFFECTS OF THE SPELL BUT NOT CASTER OR TARGET ***/
    say((string)previous_object()->query_cap_name()+
-    " finishes a spell and "+params[1]->query_cap_name()+" is struck "+
+    " finishes a spell and "+params[1]->query_cap_name()+" is struck "
       "with a lightning bolt.\n",({params[1],previous_object()}) );
   }
 

@@ -1,107 +1,77 @@
 /*** Raise Dead Spell ****/
+/*** origional author unknown ***/
+/*** modified for use on FR-MUD by Eerevann ***/
 /* Adding some nastyness, this makes the spell a more unstable.
  * they may loose a statpoint when they get raised, maybe even a con..
  * lover con, giver bigger chance to loose a stat.
  * Baldrick, jan '95
  */ 
-inherit "/std/spells/patch.c";
+/*** -> base spell, Wonderflug ***/
 
-/* find_unique_match() does a find match that ensures the returned 
-   object list contains no duplicates
-   find_one_match() returns only the first matched object
-*/
-mixed find_unique_match(string find,mixed in);
-mixed find_one_match(string find,mixed in);
-/*** origional author unknown ***/
-/*** modified for use on FR-MUD by Eerevann ***/
+inherit "/std/spells/base.c";
 
-/*** Sphere Necromantic ***/
-/*** Level 5 ***/
-
-#define SP_NAME "Raise Dead"
-#define GP_COST 10
-object caster;
-
-mixed spell(string str, int cast);
-
-/*** Help file here ***/
-string help() {
-   return
-   "\n\n"+
-   "Spell Name: "+SP_NAME+"\n"+
-   "Sphere:  Necromantic\n"+
-   "Level:  5th\n"+
-   "Gp Cost: "+GP_COST+"\n"+
-   "Description: \n"+
-   "  This spell raises you from the dead.  It removes one of your lives, unlike "+
-   "resurrect, and turns you back from being a ghost.\n" + 
-   "It has a big glitch tho, the ghost looses a constitution point.\n";
-}
- 
-int cast_spell(string str, object cast)
+void setup()
 {
-  int   skill;
-  mixed ret;
- 
-  if(cast) caster = cast;
-   else caster = this_player();
-   if(interactive(caster))
-   // Taniwha 1995, till I fix this
-   if(0)
-   {
-      write("sorry, removed for abuse.\n");
-      return 0;
-   }
-     str = (string)this_player()->expand_nickname(str);
-  ret = spell(str, 1);
-  if (stringp(ret)) {
-    notify_fail(ret);
-    return 0;
-  }
-  write("You begin to cast Raise Dead.\n");
-  return 1;
+  set_spell_name("Raise Dead");
+  set_spell_level(5);
+  set_sphere("necromantic");
+
+  set_target_type("one");
+  set_range(0);
+  set_line_of_sight_needed(0);
+
+  set_help_desc("This spell raises a ghost from the dead.  It removes "
+    "one of their constitution points, unlike resurrect, and turns them "
+    "back from being a ghost. If the ghost does not wish to return from "
+    "the Halls of the Dead, the spell will fail.");
+
+  set_gp_cost(10);
+  set_casting_time(1);
+  set_rounds( ({ "round1" }) );
 }
  
-mixed spell(string str, int cast) {     
-  mixed ob;
 
-  if (!str || str == "")
-    return "You try to ressurect nothing and fail miserably.\n";
-  ob = find_one_match(str, environment(caster));
-  if (sizeof(ob))
-    ob = ob[0];
-  else
-    return "Who is " + capitalize(str) + "?\n";
-  if (!living(ob))
-	 return (string)ob->query_cap_name() + " refuses to be brought to life.\n";
-  if (!ob->query_property("dead"))
-    return (string)ob->query_cap_name() + " is not dead ... yet.\n";
-  if (ob->query_property("noregen"))
-    return "Death tells you: HOLD ON, I'M NOT FINISHED WITH THEM YET.\n";
-  if (cast && (int)caster->adjust_gp(-GP_COST) < 0)
-    return "Too low on power.\n";
-   if(ob->query_level() > 5)
-   {
-      tell_object(caster,"Tough cookies, it's been blocked because it was abused.\n");
-      return 1;
-   }
-  tell_object(caster,"You call upon the gods to restore to life "+(string)ob->query_cap_name()+
-    " from " + (string)ob->query_possessive() + " immaterial state by "+
-    "hitting "+ob->query_pronoun()+" with a lightning bolt..\n");
-  tell_object(ob, (string)caster->query_cap_name() +
-    " summons the gods for you, and incidently hits you with a lightning "+
+int round1(object caster, mixed target, mixed out_range, int time, int quiet)
+{
+  if ( !target )
+  {
+    tell_object(caster, "Your spell failed .. there is nobody of that "
+      "name here.\n");
+    return -1;
+  } 
+  if (!target->query_dead())
+  {
+    tell_object(caster, (string)target->query_cap_name() + 
+      " is not dead ... yet.\n");
+    return -1;
+  }
+  if (target->query_property("noregen"))
+  {
+    tell_object(caster, "Death tells you: HOLD ON, I'M NOT FINISHED "
+      "WITH THEM YET.\n");
+    return -1;
+  }
+  if ( !target->query_consent("resurrection") )
+  {
+    tell_object(caster,"The ghost does not wish to return to the Realms of "
+      "the living yet. (see 'help consent')\n");
+    return -1;
+  }
+
+  tell_object(caster,"You call upon the gods to restore "+
+    (string)target->query_cap_name()+" from "+ 
+    (string)target->query_possessive() + " immaterial state by hitting "+
+    target->query_objective()+" with a lightning bolt..\n");
+  tell_object(target, (string)caster->query_cap_name() +
+    " summons the gods for you, and incidently hits you with a lightning "
     "bolt.  It doesn't seem to hurt.\n");
-  tell_room(environment(caster),(string)caster->query_cap_name() + " stares intently into space, "+
-    "you hear a vage rumbling in the distance, suddenly a lightning bolt "+
-    "sears through the sky and hits "+ob->query_cap_name()+" restoring "+
-    " them from the dead.\n", ob);
+  tell_room(environment(caster),(string)caster->query_cap_name() + 
+    " stares intently into space, and you hear a vage rumbling in the "
+    "distance. Suddenly a lightning bolt sears through the sky and hits "+
+    target->query_cap_name()+", restoring "+
+    target->query_objective()+" from the dead.\n", ({ caster, target }) );
 
-  ob->remove_ghost();
-/* removed to player.c Taniwha 1995
-  ob->adjust_con(-1);
-   ob->remove_property("dead");
-  ob->adjust_max_deaths(1);
-*/
+  target->remove_ghost();
 
-  return (random(500));
+  return 0;
 }

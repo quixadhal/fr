@@ -63,7 +63,8 @@ int i,j;
   return "/"+str;
 } /* get_path() */
  
-static string *get_files(string str) {
+// Taniwha 1995 made this non-static
+ string *get_files(string str) {
     int loop, count;
     string *filenames, rmpath, temp1, temp2, *names, *files;
  
@@ -79,12 +80,15 @@ static string *get_files(string str) {
         filenames += ({ "/" });
         continue;
       }
+      if(!rmpath)
+         rmpath = "/";
       if(sscanf(rmpath, "%s/%s", temp1, temp2) == 2) {
           string *path_elements;
  
           path_elements = explode(rmpath, "/") - ({ "" });
           rmpath = implode(path_elements[0..sizeof(path_elements) - 2], "/");
       }
+      if(!str) str = "/";
       files = get_dir(str);
 
       if(files) {

@@ -59,7 +59,7 @@ do_create( string quest )
     if ( !quest )
     {
 	write( "Syntax is: create <quest>, where <quest> will be the name of "
-	     + "the new quest.\n" );
+	      "the new quest.\n" );
 	return 1;
     }
     if ( !level )
@@ -108,12 +108,12 @@ do_delete( string quest )
 	old_quest = quest;
 
 	write( "\nYou should not remove someone else's quest!!!\n\n"
-	     + "Are your sure you want to remove this quest? (y/n) > " );
+	      "Are your sure you want to remove this quest? (y/n) > " );
 	input_to( "remove_quest" );
 	return 1;
     }
     write( "Syntax: remove <quest>, where <quest> is the name of an "
-	 + "existing quest.\n" );
+	  "existing quest.\n" );
     return 1;
 }
 
@@ -123,13 +123,13 @@ do_help( string what )
     if ( what != "room" )  return 0;
 
     write( "Quest room help:\n\n"
-+"create <quest>       : Use current settings to create a new quest.\n"
-+"delete <quest>       : Delete a quest.  (Demi-Gods and Gods only.)\n"
-+"help room            : Generate this help screen.\n"
-+"level <level>        : Sets the level of difficulty.\n"
-+"list                 : Lists the current quests.\n"
-+"story <story>        : Sets the quest story.\n"
-+"title <title>        : Sets the title the quests gives to the player.\n"
+"create <quest>       : Use current settings to create a new quest.\n"
+"delete <quest>       : Delete a quest.  (Demi-Gods and Gods only.)\n"
+"help room            : Generate this help screen.\n"
+"level <level>        : Sets the level of difficulty.\n"
+"list                 : Lists the current quests.\n"
+"story <story>        : Sets the quest story.\n"
+"title <title>        : Sets the title the quests gives to the player.\n"
 );
     return 1;
 }
@@ -145,7 +145,7 @@ do_level( string new_level )
     }
     else
 	write( "Syntax: level <new_level>, where new_level is an integer "
-	     + "indicating how difficult the quest is.\n" );
+	      "indicating how difficult the quest is.\n" );
     return 1;
 }
 
@@ -188,7 +188,7 @@ do_story( string new_story )
     }
     else
 	write( "Syntax: story <new_story>, where new_story is a string that "
-	     + "describes the quest.\n" );
+	      "describes the quest.\n" );
     return 1;
 }
 
@@ -202,7 +202,7 @@ do_title( string new_title )
     }
     else
 	write( "Syntax: title <new_title>, where new_title is the title that "
-	     + "is appended to the players name for \"who\".\n" );
+	      "is appended to the players name for \"who\".\n" );
     return 1;
 }
 
@@ -247,7 +247,7 @@ init()
 	do_help( "room" );
 
 	tell_room( this_object() , "\nQuest settings have been reset to "
-				 + "nulls by init().\n\n" );
+				  "nulls by init().\n\n" );
     }
     ::init();
 }
@@ -267,7 +267,7 @@ remove_quest( string answer )
 				     + "\" deleted.\n" );
 	else
 	    tell_room( this_object() , "Quest \"" + old_quest + "\" was not "
-				     + "deleted.\n" );
+				      "deleted.\n" );
 	return;
     }
     tell_room( this_object() , "Quest \"" + old_quest
@@ -279,7 +279,7 @@ void
 setup()
 {
     set_short( "Quest Room" );
-set_long("This room is used to create, list, and remove quests."+
+set_long("This room is used to create, list, and remove quests."
 "  It is a simple room, with a door to the north.\n");
 set_light(100);
 add_exit("north",HEAVEN+"admin2","door");

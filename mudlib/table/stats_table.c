@@ -1,3 +1,5 @@
+// Taniwha 1995. to make good dex fair AC.
+#define AC_MULT 2
 
 /* Stats table.
  * here goes all tables for a players stats. 
@@ -37,37 +39,23 @@ int calc_body_ac(int e)
   switch (e)
     {
     case 1 .. 2: 
-     body_ac_bon = -5;
+     body_ac_bon = -20;
      break;
     case 3:
-     body_ac_bon = -4;
+     body_ac_bon = -15;
      break;
     case 4:
-     body_ac_bon = -3;
+     body_ac_bon = -10;
      break;
     case 5:
-     body_ac_bon = -2;
+     body_ac_bon = -5;
      break;
     case 6:
-      body_ac_bon = -1;
+      body_ac_bon = -2;
       break;
-    case 7 .. 14:
-      body_ac_bon = 0;
-      break;
-    case 15: 
-      body_ac_bon = 1;
-      break;
-    case 16:
-      body_ac_bon = 2;
-      break;
-    case 17: 
-      body_ac_bon = 3;
-      break;
-    case 18:
-      body_ac_bon = 4;
-      break;
-    case 19 .. 100:
-      body_ac_bon = 4;
+    /* Can use a smarter way with base 100.. */
+    case 7 .. 100:
+      body_ac_bon = e * AC_MULT;
       break;
     default: 
       body_ac_bon = 0;

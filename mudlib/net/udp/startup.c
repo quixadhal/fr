@@ -1,4 +1,3 @@
-#include <standard.h>
 #include "udp.h"
 /*
  * We got a startup message.
@@ -18,5 +17,3 @@ void incoming_request(mapping info) {
 void create() {
   seteuid(getuid());
 } /* create() */
-
-void dest_me() { destruct(TO); }

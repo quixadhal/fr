@@ -4,111 +4,93 @@
  *****************/
 
 #include "tweaks.h"
+inherit "/std/spells/base.c";
 
-#define SP_NAME "Dispell Magic"
-#define SPELLTYPE "
 #define TYPE "magical"
 #define save_type "spells"
-#define GP DISPELL_MAGIC_GP
-#define LEVEL 4
-#define LOCKOUT "cast"
 
-string help()
+void setup()
 {
-  return
-  "\n\n"+
-  "Spell Name: "+SP_NAME+"\n"+
-  "School: Invocation\n"+
-  "Level: "+LEVEL+"\n"+
-  "GP Cost: "+GP+"\n"+
-  "Description: \n"+
-  "  This spell disrupts any enchantments that are upon the target.  "+
-  "Higher level targets have enchantments (both good or bad) drawn to "+
-  "them more strongly, and thus enchantments on them will be more difficult "+
-  "to dispel.  A single dispel will only destroy one spell on the target, "+
-  "and will only affect one target.  This spell will not affect inanimate "+
-  "objects.\n";
+  set_spell_name("Dispell Magic");
+  set_sphere("summoning");
+  set_spell_level(3);
+
+  set_target_type("one");
+  set_range(0);
+  set_line_of_sight_needed(0);
+
+  set_help_desc("This spell disrupts any enchantments that are upon the "
+    "target. Higher level targets have enchantments (both good or bad) "
+    "drawn to them more strongly, and thus enchantments on them will be "
+    "more difficult to dispel.  A single dispel will only destroy one "
+    "spell on the target, and will only affect one target.  This spell "
+    "will not affect inanimate objects.  Casting on yourself might work, "
+    "but could have some harmful side-effects.\n");
+
+  set_casting_time(1);
+  set_gp_cost(DISPELL_MAGIC_GP);
+  set_rounds( ({ "round1" }) );
 }
 
-int cast_spell(string str, object caster)
+int round1(object caster, mixed target, mixed out_range, int time, int quiet)
 {
-
-  object my_caster;
-  object target;
-  object* obs;
-  int level;
-
-  if (caster)
-	my_caster = caster;
-  else my_caster = this_player();
-
-  if (!(str))
+  if ( !target )
   {
-	write("Syntax: cast dispel magic <target>\n");
-	return 1;
-  }
-  if ( (int)my_caster->query_gp() < GP )
-  {
-	write("You don't have the energy to cast this spell.\n");
-	return 1;
+    tell_object(caster, "Your target has left.\n");
+    return 0;
   }
 
-  obs = find_match( str, environment(my_caster) );
-  if (!(obs))
+  if ( !quiet )
   {
-	write("Your target is not here.\n");
-	return 1;
+    tell_object(caster, "You chant \"nullo magius\".\n");
+    tell_room(environment(caster), caster->query_cap_name()+
+      " chants, \"nullo magius\".\n", caster);
   }
 
-  target = obs[0];
-  if (!(find_living(target->query_name())))
+  if ( target == caster )
   {
-	write("This spell will not affect inanimate objects.\n");
-	return 1;
+    if ( random(caster->query_wis()) > random((int)caster->query_level()) )
+    {
+      tell_room(environment(caster), (string)caster->query_cap_name()+
+        " finishes a spell but nothing seems to happen.\n", ({caster}) );
+      tell_object(caster,"You complete your spell, but you realize that any "
+        "enchantments on \nyourself were too powerful for your meager "
+        "abilities to dispell.\n");
+      return 0;
+    }
+
+    tell_object(caster, "You finish the spell and feel magic seep "
+      "away from you.\n");
+    tell_room(environment(caster), caster->query_cap_name()+" finishes a "
+      "spell and seems oddly.. normal.\n", caster);
+    caster->dispell_me();
+    caster->add_timed_property("nocast", 1, (int)caster->query_level() );
+    return 0;
+
   }
-
-  level = (int)my_caster->query_level();
-  if ( level < LEVEL*2 )
+  else if ( (int)caster->query_wis() < random((int)target->query_level()) )
   {
-	write("You are too low level to cast this spell.\n");
-	return 1;
-  }
-
-  tell_object(my_caster,"You begin to cast "+SP_NAME+".\n");
-  tell_room(environment(my_caster), my_caster->query_cap_name()+
-	" begins to cast a spell.\n", my_caster );
-
-  my_caster->add_timed_property("cast",1,3);
-  my_caster->adjust_gp(-GP);
-
-  call_out("make_spell",1,my_caster,target);
-  return 1;
-}
-
-
-void make_spell(object caster, object target)
-{
-  if ( (int)caster->query_int() < random((int)target->query_level()) )
-  {
-	tell_room(environment(caster), (string)caster->query_cap_name()+
-	  " finishes the spell with a gesture at "+target->query_cap_name()+
-	  ", \nbut nothing happens.\n", ({caster,target}));
-	tell_object(caster,"You complete your spell, but realize that any "+
-	  "enchantments on \n"+target->query_cap_name()+" were too powerful "+
-	  "for your meager abilities.\n");
-	tell_object(target,caster->query_cap_name()+
-	  " finishes the spell with a gesture at you, but nothing \nseems to "+
-	  "happen.\n");
-	return;
+    tell_room(environment(caster), (string)caster->query_cap_name()+
+      " finishes the spell with a gesture at "+target->query_cap_name()+
+      ", \nbut nothing happens.\n", ({caster,target}));
+    tell_object(caster,"You complete your spell, but you realize that any "
+      "enchantments on \n"+target->query_cap_name()+" were too powerful "
+      "for your meager abilities.\n");
+    tell_object(target,caster->query_cap_name()+
+      " finishes the spell with a gesture at you, but nothing \nseems to "
+      "happen.\n");
+    return 0;
   }
 
   tell_room(environment(caster), (string)caster->query_cap_name()+
 	" finishes the spell with a flourish.\n", ({caster, target}));
   tell_object(target, caster->query_cap_name()+
 	" finishes the spell with a gesture at you.\n");
-  tell_object(caster, "You finish the spell and destroy the magic "+
+  tell_object(caster, "You finish the spell and destroy the magic "
 	"around "+target->query_cap_name()+".\n");
 
+  /* Any dispellable enchantment on the target has a dispell_me() */
   target->dispell_me();
-  return;
+
+  return 0;
 }

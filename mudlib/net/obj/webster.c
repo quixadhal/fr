@@ -79,7 +79,7 @@ int do_open() {
     + this_player()->query_possessive() + " dictionary.\n");
  */
   call_out("do_close", 5*60*60);
-  return telnet::connect("129.79.254.191 2627");
+  return telnet::connect( "128.32.155.1 2627" );
 } /* do_open() */
 
 int do_close() {
@@ -140,6 +140,6 @@ void init() {
   this_player()->add_command("close", this_object());
 } /* init() */
 
-void recieve_message(string str) {
+void receive_message( string str ) {
   say(str);
 } /* recievr_message() */

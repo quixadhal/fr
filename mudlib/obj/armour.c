@@ -26,7 +26,7 @@ inherit "/std/basic/condition";
 /* Shields *can* be twohanded.. :=) */
 static int twohanded;   /* used to be "str hand" */
 
-int enchant, value_adjustment, cond, max_cond;
+int enchant,value_adjustment;
 
 /* This is the armours damage_ac.. */
 int ac, max_ac, min_ac;
@@ -35,8 +35,12 @@ int ac, max_ac, min_ac;
  * Will add magical ac later..
  */
 static int armour_ac;
-static int value;
+//static int value;
 
+string cond_string()
+{
+   return condition::cond_string();
+}
 /* this is the values from the armour_table: */
 /* Look at /table/armour_table for explanation. */
 int ench_gp_cost,
@@ -45,10 +49,11 @@ int ench_gp_cost,
     armour_type,
     material,
     no_dex_bon;
-
-// Rage fixed something
-    string base_name;
     
+/* This will hold whatever you send to set_base_armour().
+   query_armour_name() returns it.  -- Hamlet 
+*/
+string armour_name = "crap";
 
 /* need this one here ? */
 
@@ -64,31 +69,37 @@ void set_base_armour(string lookup)
   {
   int *data;
   
+  if(stringp(lookup))
+    armour_name = lookup;  /* Hamlet */
   data = (int *)ARMOUR_TABLE->lookup_armour_data(lookup);
-
-   base_name = lookup;
 
   gp_cost = data[0]; // Value is GP's
   ench_gp_cost = data [1];
   set_weight(data[2]);
-  armour_ac = data [3];
-  armour_type = data [4];
-  material = data [5];
+  set_size(data[3]);
+  armour_ac = data [4];
+  armour_type = data [5];
+  material = data [6];
 
   /* Ok, this slot is holdable or not, if it's not holdable, it's wearable */
 
-  if (data[6])
+  if (data[7])
     set_holdable(1);
    else
     set_wearable(1);
-
-  no_dex_bon = data [7]; 
+  // Following if/else fix by Wonderflug.
+  // Most entries don't HAVE a 9th entry, this driver complains.
+  if ( sizeof(data) >= 9 )
+    no_dex_bon = data [8]; 
+  else
+    no_dex_bon = 0;
   set_value(gp_cost);
 
 }
 
-// Rage fix continues
-string query_base_name() { return base_name; }
+/* This just returns the basearmour name -- Hamlet */
+string query_armour_name() {  return armour_name; }
+
 int query_no_dex_bon() { return no_dex_bon; }
 
 int query_ac() { return armour_ac + enchant; }
@@ -118,7 +129,14 @@ string query_armour_type_name()
       return "ring"; 
     case 8:
       return "gloves"; 
-
+    case 9: 
+      return "belt";
+    case 10: 
+      return "backpack";
+    case 11:
+      return "trousers";
+    case 12:
+      return "shirt";
     default:
       return "unknown";
     }
@@ -144,7 +162,7 @@ string query_material_name()
    }
 } /* string query_material_name */
 
-void set_value(int i) 
+void set_value(int gp_cost)
   {
   /* Make this simpler later.. 
    * And similar to weapon.c (not made either..:=)
@@ -158,7 +176,7 @@ void set_value(int i)
       value = gp_cost * -10 + value_adjustment + (max_cond - cond) *
         COST_TO_FIX;
   else
-    value = ench_gp_cost * exp(2,enchant-1) + 
+    value = ench_gp_cost * enchant * 100 +
             value_adjustment + (max_cond - cond)
       * COST_TO_FIX;
 }
@@ -200,13 +218,12 @@ void create()
 /* for cond_string() in condition.c: */
   cond = max_ac - min_ac; 
   max_cond = max_ac - min_ac; 
-  /* Hmmmm */
-  // armour_logic::create();
-  /* Property ? naah.. */
-  /* I have material.. */
   add_alias("armour"); 
   add_plural("armours"); 
-  // set_wearable(1);
+
+  // Radix : Oct 1996
+  if(!clonep(this_object()))
+     catch("/obj/handlers/item_info"->update_armour(this_object()));
 } 
 
 int query_armour() { return 1; } 
@@ -217,10 +234,14 @@ int query_hands_needed()
   return 1;
 } 
 
+/* moved to /std/item.c    Radix - Jan 18, 1996
 string long(string s, int dark) 
   {
-  return cond_string()+::long(s, dark); 
+// Radix was here to put things in their proper order, Dec 14, 1995
+//return cond_string()+::long(s, dark); 
+  return ::long(s, dark)+cond_string();
 } 
+*/
 
 void dest_me() 
   {

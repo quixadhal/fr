@@ -1,4 +1,3 @@
-#include <standard.h>
 #include "udp.h"
 /*
  * They answered our do you support xx request.
@@ -24,5 +23,3 @@ void incoming_request(mapping info) {
 void create() {
   seteuid(getuid());
 } /* create() */
-
-void dest_me() { destruct(TO); }

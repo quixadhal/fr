@@ -11,7 +11,7 @@
  * wonder what's happening if I just remove it..
  * Not smart to remove it, have to change the darn thingie tho..
 
-/* held.c ? Hmm... thought I did this in std/living/hold.c 
+* held.c ? Hmm... thought I did this in std/living/hold.c 
  * Should be able to inherit std/object instead.. 
  * Adding it to std/item instead.. 
  */
@@ -27,7 +27,7 @@ inherit "/std/basic/condition";
 /* attack_out consists of concatenated 7-tuples */
 
 int twohanded;   
-int enchant, value_adjustment, cond, max_cond;
+int enchant,value_adjustment;
 
 /* AC in a weapon ????? why ??? */
 /* Magical weapons can work as armour tho.. 
@@ -85,6 +85,7 @@ void set_base_weapon(string lookup)
   set_weight(wep_weight);
   set_value(gp_cost);
 }
+string cond_string() { return condition::cond_string() ;}
 
 string query_weapon_name()
   {
@@ -256,11 +257,13 @@ void create()
   cond = max_ac - min_ac; 
   max_cond = max_ac - min_ac; 
   weapon_logic::create();
-  /* Property ? naah.. */
-  /* I have material.. */
   add_alias("weapon"); 
   add_plural("weapons"); 
   set_holdable(1);
+
+  // Radix : Oct 1996
+  if(!clonep(this_object()))
+     catch("/obj/handlers/item_info"->update_weapon(this_object()));
 } 
 
 int query_weapon() { return 1; } 
@@ -270,18 +273,16 @@ int query_hands_needed()
   if (twohanded) return 2;
   return 1;
 } 
-
-/* I'll put it here, a lot easier than query for rolls, dice and add_rolls */
 int query_damage_roll()
   {
   return ( roll(rolls, dice) + roll_add );
 }
 
-
-string long(string s, int dark) 
-  {
-  return cond_string()+::long(s, dark); 
-} 
+// Called by /obj/handlers/item_info.c - Radix
+int *query_damage_vals()
+{
+  return ({ rolls, dice, roll_add });
+}
 
 /* dank: wield() and unwield() are always called from creature that wields the
 weapon, even if a spell is thrown on the weapon or the weapon breaks.  These

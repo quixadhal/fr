@@ -15,15 +15,15 @@ mixed find_one_match(string find, mixed in);
  /*** help file ***/
 string help() {
        return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "Sphere: Combat and Elemental Fire\n"+
-       "Level: 5th\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Damage Type: "+TYPE+"\n"+
-       "Saving Throw: 1/2\n"+
-       "Description: \n"+
-       "    This spell brings down a column of fire upon your enemy.  The "+
+       "\n\n"
+       "Spell Name: "+SP_NAME+"\n"
+       "Sphere: Combat and Elemental Fire\n"
+       "Level: 5th\n"
+       "Gp Cost: "+GP_COST+"\n"
+       "Damage Type: "+TYPE+"\n"
+       "Saving Throw: 1/2\n"
+       "Description: \n"
+       "    This spell brings down a column of fire upon your enemy.  The "
        "damage caused is 6-48 points of damage.\n\n";
        
 
@@ -96,7 +96,7 @@ int hb_spell(object attacker, mixed *params)
    /*** DEDUCTS THE GP COST OF THE SPELL, IF NOT ENOUGH, SPELL FAILS ***/
   if (params[2] && (int)previous_object()->adjust_gp(-GP_COST)<0)
   {
-    tell_object(previous_object(), "You fail to draw enough power from "+
+    tell_object(previous_object(), "You fail to draw enough power from "
        "your god.\n");
     return 0;
   }

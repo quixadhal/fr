@@ -101,7 +101,7 @@ int request(string str)
   return 1;
 }
 
-mixed request_weapon(string name, int per) 
+object request_weapon(string name, int per) 
  {
   object ob;
 
@@ -110,7 +110,7 @@ mixed request_weapon(string name, int per)
   return ob;
 }
 
-mixed request_armour(string name, int per) 
+object request_armour(string name, int per) 
   {
   object ob;
 

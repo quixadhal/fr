@@ -18,14 +18,14 @@ int ADJ_COST;
 
 string help() {
        return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "School: Abjuration\n"+
-       "Level: 3rd\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Description: \n"+
-       "    This spell reduces damage done by Fire based attacks "+
-       "by 25% plus +1% per level of the caster.\n"+
+       "\n\n"
+       "Spell Name: "+SP_NAME+"\n"
+       "School: Abjuration\n"
+       "Level: 3rd\n"
+       "Gp Cost: "+GP_COST+"\n"
+       "Description: \n"
+       "    This spell reduces damage done by Fire based attacks "
+       "by 25% plus +1% per level of the caster.\n"
        "    The duration is based upon the casters level.\n";
        
 

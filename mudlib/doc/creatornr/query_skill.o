@@ -1,4 +1,0 @@
-#obj/handlers/nroff.c
-nroffed_file ({0,"int query_skill(string str)Description	Returns the level of the skill.  This is defined on the playerand npc objects.  It checks to make sure ths skill is valid on the/std/skills object.",})
-nroffed_file_name "/doc/lfun/query_skill"
-modified_time 780286603

@@ -91,7 +91,7 @@ int default_weight()
 
 
 /* have this move here to get it to my weather room ;) (Sleaze) */
-move(arg) {
+move(string arg) {
   ::move(HOME);
 }
 

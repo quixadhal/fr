@@ -16,7 +16,7 @@ string help()
     "GP Cost: 1000\n"
     "Usage: cast touch of severan <targe>\n"
     "Description:\n"
-    "With this spell you call down the power of Severan to kill your enemy "+
+    "With this spell you call down the power of Severan to kill your enemy "
     "with a touch.\n\n"; 
   }
  
@@ -71,7 +71,7 @@ mixed spell(string str, int cast)
   say((string)this_player()->query_cap_name() + " reaches out and gently touches " +
      (string)ob->query_cap_name() + "!\n");
   tell_object(ob, "You feel " + (string)this_player()->query_cap_name() +
-    "'s touch strikes deep into your soul, and you feel the power of "+
+    "'s touch strikes deep into your soul, and you feel the power of "
     "Severan tear though you! \n\n");
    ob->do_death();
   return 1;

@@ -9,9 +9,10 @@ mapping being_written;
 
 void setup() {
   set_name("board");
-  set_short("bulletin board");
+  set_short("collection of scrolls");
   add_adjective("boards");
   reset_drop();
+   reset_get();
   board_name = "fish";
   being_written = ([ ]);
 }
@@ -50,7 +51,7 @@ string long(string str, int dark) {
   mapping news_rc;
 
   stuff = (mixed *)BOARD_HAND->get_subjects(board_name);
-  ret = "A bulletin board ("+board_name+").\n";
+  ret = "A collection of scrolls ("+board_name+").\n";
   ret += sprintf("%#-*s\n\n", this_player()->query_cols(),
                             "read <note number>\npost <subject>\n"+
                             "store <note number> <file>\neat <note number>\n"+
@@ -305,7 +306,7 @@ int kfile(string arg) {
   return 1;
 }
 
-int new() {
+int newx() {
   int i;
   string *boards;
   mixed *stuff;

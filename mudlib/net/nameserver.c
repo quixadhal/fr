@@ -2,21 +2,16 @@
  * Reads in the nameserver config file and gets all of the
  * ip's from it.
  */
-#define DEBUG 1
-#ifdef DEBUG
-#define TC(STR) tell_object(find_player("tester"),STR)
-#else
-#define TC(STR)
-#endif
 #include "socket.h"
 #include "inet.h"
-#define SERVER_PORT 7685
-#define TIMEOUT (14*60)
+#define SERVER_PORT 2001
+#define TIMEOUT (5*60)
 #define CONFIG "/net/config/"
-#define ME machines[MUD_NAME]
-#define JUST_ADDR(BING) sscanf(BING, "%s %d", BING, womble)
+#define ME machines[lower_case(mud_name())]
+/* #define ME machines[lower_case(MUD_XNAME)] */
+#define JUST_ADDR(BING) if ( BING && ( BING != "" ) ) if ( stringp( BING ) ) sscanf( BING, "%s %*d", BING )
 
-#define NAM 0
+#define XNAME 0
 #define REVERSE 1
 #define LAST_REQ 2
 #define SERVICE 3
@@ -32,7 +27,7 @@ mapping machines,
         services;
 string *nameservers,
        *pending;
-int my_port, womble;
+int my_port;
 int my_socket, open_server, current_ns;
 
 void load_mappings(string str, string gf);
@@ -45,8 +40,8 @@ void write_service(int fd);
 void create() {
   string bing;
 
-  seteuid(getuid());
   nameservers = ({ });
+  service_req = ([ ]);
   machines = ([ ]);
   services = ([ "default" : ([ ]) ]);
   failed = ([ ]);
@@ -55,10 +50,10 @@ void create() {
   sent = ([ ]);
   requests = ([ ]);
   my_write = ([ ]);
-  service_req = ([ ]);
   load_mappings(CONFIG+"nameserver", CONFIG+"services");
 /* The default... */
-  setup_nameserver(my_port);
+/* Commented out by Turrican, since noone connects up there anymore anyway. 
+  setup_nameserver(my_port); */
 } /* create() */
 
 void load_mappings(string filen, string ser) {
@@ -89,6 +84,8 @@ void load_mappings(string filen, string ser) {
             nameservers += ({ address+" "+port });
             break;
         }
+   /* name = lower_case(name);  */
+        name = replace(name, ".", " ");
         machines[name] = address+" "+port;
 /* Case for multiple muds? frog is lets sleeze it... */
         reverse[address] = name;
@@ -96,8 +93,6 @@ void load_mappings(string filen, string ser) {
       }
     }
   }
-  my_port = SERVER_PORT;
-  sscanf(ME, "%s %d", file, my_port);
   file = read_file(ser);
   if (file) {
     file = implode(explode(file, " ") - ({ "" }), " ");
@@ -108,6 +103,7 @@ void load_mappings(string filen, string ser) {
         continue;
 /* The pattern is, name, port */
       if (sscanf(bits[i], "%s %s %s", name, address, tmp)) {
+/* name = lower_case(name); */
         if (name != "default") {
           name = machines[name];
           de_port = SERVER_PORT;
@@ -132,6 +128,27 @@ void load_mappings(string filen, string ser) {
       }
     }
   }
+/* Setup the nameserver ports.   They have to be in the config files. */
+  for (i=0;i<sizeof(nameservers);i++) {
+    sscanf(nameservers[i], "%s %d", tmp, my_port);
+    if (services[tmp] && services[tmp]["nameserver"])
+      my_port = services[tmp]["nameserver"];
+    else if (services["default"] && pointerp(services["default"]["nameserver"]))
+      my_port = services["default"]["nameserver"][0];
+    else if (services["default"] && services["default"]["nameserver"])
+      my_port += services["default"]["nameserver"];
+    nameservers[i] = tmp+" "+my_port;
+  }
+  my_port = SERVER_PORT;
+   if ( ME )
+      sscanf( ME, "%s %d", file, my_port );
+  tmp = machines[mud_name()];
+  if (services[tmp] && services[tmp]["nameserver"])
+    my_port = services[tmp]["nameserver"];
+  else if (services["default"] && pointerp(services["default"]["nameserver"]))
+    my_port = services["default"]["nameserver"][0];
+  else if (services["default"] && services["default"]["nameserver"])
+    my_port += services["default"]["nameserver"];
 } /* load_mappings() */
 
 /*
@@ -248,16 +265,16 @@ void lookup_mud(string name, string finitio, mixed args, string *ser) {
   string host;
   int port;
 
+/* name = lower_case(name); */
   if (machines[lower_case(name)]) {
     host = machines[lower_case(name)];
 /*
     JUST_ADDR(host);
  */
-TC("NAMSERVER: host: "+host+"* name: "+name+"*\n");
     call_other(previous_object(), finitio, name, host, args);
     return ;
   }
-  if (failed[name] || !sizeof(nameservers)) {
+  if ((failed[XNAME] && failed[XNAME][name]) || !sizeof(nameservers)) {
     call_other(previous_object(), finitio, name, 0, args);
     return ;
   }
@@ -274,7 +291,7 @@ TC("NAMSERVER: host: "+host+"* name: "+name+"*\n");
     return ;
   }
 /* Ok, ask any name servers we know about */
-  do_request(NAM, name, finitio, args, ser);
+  do_request(XNAME, name, finitio, args, ser);
 } /* lookup_mud() */
 
 void reverse_lookup(string address, string func, mixed args, string *ser) {
@@ -287,7 +304,7 @@ void reverse_lookup(string address, string func, mixed args, string *ser) {
     call_other(previous_object(), func, address, bits[i], args);
     return ;
   }
-  if (failed[address] || !sizeof(nameservers)) {
+  if ((failed[REVERSE] && failed[REVERSE][address]) || !sizeof(nameservers)) {
     call_other(previous_object(), func, address, 0, args);
     return ;
   }
@@ -298,6 +315,8 @@ void reverse_lookup(string address, string func, mixed args, string *ser) {
 void lookup_service(string name, string host, string func, string args) {
   string blue;
 
+  name = lower_case(name);
+  host = lower_case(host);
   if (host[0] < '0' || host[0] > '9') {
 /* Need to lookup the host first... */
     this_object()->lookup_mud(host, "finish_hostlookup",
@@ -318,7 +337,7 @@ void lookup_service(string name, string host, string func, string args) {
                                           port+services["default"][name], args);
     return ;
   }
-  if (!host || host == ME) {
+  if (!host || host == ME || !services[host]) {
     host = ME;
     JUST_ADDR(host);
     if (!services[ME] || !services[ME][name])
@@ -431,12 +450,15 @@ void got_address(int fd, mixed message) {
       map_delete(sent, type);
   }
   switch (type) {
-    case NAM :
+    case XNAME :
       if (res== "0") {
 /* Frog! We failed!  Sulk. */
 /* Sigh....  We failed tell em about the bad news */
-        if (check_finish(type, name))
+        if (check_finish(type, name)) {
+          if (!failed[type])
+            failed[type] = ([ ]);
           failed[type][name] = 1;
+        }
         break;
       }
 /* We got an answer!  Yes! */
@@ -450,7 +472,11 @@ void got_address(int fd, mixed message) {
       break;
     case REVERSE :
       if (res == "0") {
-        check_finish(type, name);
+        if (check_finish(type, name)) {
+          if (!failed[type])
+            failed[type] = ([ ]);
+          failed[type][name] = 1;
+        }
         break;
       }
       finish_request(type, name, res);
@@ -475,17 +501,26 @@ void setup_nameserver(int port) {
 } /* setup_nameserver() */
 
 void write_callback() {
-  string *path, s;
+  string * path, s;
 /*
  * Put all of the nameservers in the path as we will ask them all eventually.
  */
+  path = ({ });
   if (!sizeof(pending))
     return ;
   if (requests[pending[0]])
-    path = requests[pending[0]][1] + nameservers + ({ ME });
+    {
+    /*
+    path = requests[pending[0]][1] + nameservers + 
+           ({ machines[mud_name()] });
+    */
+    path += (string *)requests[pending[0]][1];
+    path += nameservers;
+    path += ({ machines[mud_name()] });
+    }
   else
-    path = nameservers + ({ ME });
-  if (socket_write(open_server, (s=(pending[0]+"^"+pending[1]+"^"
+    path = nameservers + ({ machines[mud_name()] });
+    if (socket_write(open_server, (s=(pending[0]+"^"+pending[1]+"^"
                                 +implode(path, "$")))) >= 0) {
     if (sent[pending[0]])
       sent[pending[0]] += ({ pending[1] });
@@ -555,7 +590,7 @@ void read_callback(int fd, mixed message, mixed blue) {
   sscanf(message, "%d^%s^%s", type, name, path);
   new_p = explode(path, "$");
   switch (type) {
-    case NAM :
+    case XNAME :
 /* Name lookup */
       if (machines[name]) {
         send_back(fd, type+"^"+name+"^"+machines[name]);
@@ -641,4 +676,6 @@ void close_callback(int fd) {
 } /* close_callback() */
 
 mapping query_services() { return services + ([ ]); }
+mapping query_failed() { return failed + ([ ]); }
+string *query_nameservers() { return nameservers + ({ }); }
 mapping query_machines() { return machines + ([ ]); }

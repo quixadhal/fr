@@ -5,10 +5,20 @@
 varargs int cat(string file, int start, int num)
 {
   string s;
-  if(!"secure/master"->valid_read(file, geteuid(previous_object()), 
+  object me;
+
+  // Fix by wonderflug.
+  if ( this_player(1) ) 
+    me = this_player(1);
+  else
+    me = previous_object();
+
+  if(!"secure/master"->valid_read(file, geteuid(me), 
       "read_file") || file_length(file) <= 0)
     return 0;
 
+
+  if(!num)  num = file_length(file);
   s = read_file(file, start, num);
   if(!s)
     return 0;
@@ -28,6 +38,7 @@ varargs int cat(string file, int start, int num)
   return 1;
 */
 }
+/*
 
 varargs string e_extract(string str, int from, int to)
 {
@@ -35,3 +46,5 @@ varargs string e_extract(string str, int from, int to)
     to = strlen(str)-1;
   return str[from..to];
 }
+*/
+

@@ -8,7 +8,7 @@ shield_it(SHIELD,"/d/ss/daggerford/ladyluck");
 }
 
 void setup() {
-set_long("You are on Immortal avenue.  You stand south"+
+set_long("You are on Immortal avenue.  You stand south"
 " of the palace, and too the west of you lies "+ IM2A + 
 ", while to the east of you lies "+ IM2B +".\n");
 set_short("Immortal Avenue");

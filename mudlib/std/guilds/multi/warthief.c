@@ -10,9 +10,9 @@ void setup()
  set_name("war-thief");
  set_short("Warrior-Thief");
  set_long(
-      "Warrior-Thieves specialize in neighter fighting nor pilfering, "+
-      "but are fairly competent in both.  It is quite costly for them "+
-      "to advance in levels since they have to learn twice as much "+
+      "Warrior-Thieves specialize in neighter fighting nor pilfering, "
+      "but are fairly competent in both.  It is quite costly for them "
+      "to advance in levels since they have to learn twice as much "
       "as the specialized classes for each level they gain.\n");
  reset_get();
 }

@@ -10,7 +10,7 @@ void setup() {
   set_name("snowball");
   add_alias("ball");
   add_adjective("snow");
-  set_long("A small hastily made snowball, just ready for throwing at"+
+  set_long("A small hastily made snowball, just ready for throwing at"
            " someone.\n");
   set_strength(99);
   set_heart_beat(1);

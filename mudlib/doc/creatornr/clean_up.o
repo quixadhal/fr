@@ -1,4 +1,0 @@
-#obj/handlers/nroff.c
-nroffed_file ({0,2,8,"Clean_up","Discworld driver help","Clean_up","Name",7,5,"clean_up - periodically called in inactive objects","Synopsis",7,5,"int clean_up(int inheritted);","Description",3,5,5," The clean_up() function is called by the driver on a regular basis in all objects that have been inactive for the time specified for clean_up() in the runtime configuration file.  One flag is passed to the function, specifying whether or not the object has been inheritted by anything.  If clean_up() returns 0, clean_up() will never be called again on that object.  If it returns 1, it will be called again when the object remains inactive for the specified clean_up() delay.One thing that might be commonly done by an object in this function is destructing itself to conserve memory. ",})
-nroffed_file_name "/doc/driver/applies/clean_up"
-modified_time 774777859

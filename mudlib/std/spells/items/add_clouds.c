@@ -5,11 +5,16 @@ int add_spell(object tp,int x)
 {
    switch(tp->query_guild_name())
    {
-      case "tempus":
-      case "Lolth":
+      case "timion":
+      case "Cyrcia":
+   case "ducky":
+   case "virga":
       case "cle-war":
-      case "tymora":
-      case "lathander":
+      case "hokemj":
+      case "taniwha":
+      case "paladin":
+      case "antipaladin":
+      case "Grimbrand":
          if(x) tp->add_spell("blade barrier","bbarrier",1);
          else tp->add_spell("silence","silence",1);
       break;
@@ -21,11 +26,16 @@ int add_spell(object tp,int x)
       case "enchanter":
       case "illusionist":
       case "invoker":
-      case "wizthief":
-      case "wiz-war":
       case "transmuter":
+      case "bard":
          if(x) tp->add_spell("confusion","ccloud",1);
          else tp->add_spell("stinking cloud","scloud",1);
+      break;
+      // Taniwha. 1995. They have a cloud spell, these are more use.
+      case "wiz-war":
+      case "wizthief":
+         if(x) tp->add_spell("fireball","fireball",1);
+         else tp->add_spell("snowball swarm","snowball",1);
       break;
       }
 }

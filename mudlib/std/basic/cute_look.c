@@ -40,6 +40,13 @@ mixed query_inventory(object *obs) {
       inv[4] += ({ ob });
       continue;
     }
+   /* Remove comments when ready for hidden players - Radix
+    if(interactive(ob) && (int)ob->query_hidden())
+    {
+       inv[4] += ({ ob });
+       continue;
+    }
+   */
     if (pointerp(desc)) {
       if (living(ob)) {
         if (ob == this_player()) continue;

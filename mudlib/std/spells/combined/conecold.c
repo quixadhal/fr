@@ -17,17 +17,17 @@ mixed find_one_match(string find, mixed in);
  /*** help file ***/
 string help() {
        return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "School: Invocation\n"+
-       "Level: 5th\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Damage Type: "+TYPE+"\n"+
-       "Saving Throw: 1/2\n"+
-       "Description: \n"+
-       "    This spell shoots a blast of cold and frost at a single target."+
-       "  The damage done is (caster's level)d4 + caster's level.  There "+  
-       "is no maximum on this spell.\n"+
+       "\n\n"
+       "Spell Name: "+SP_NAME+"\n"
+       "School: Invocation\n"
+       "Level: 5th\n"
+       "Gp Cost: "+GP_COST+"\n"
+       "Damage Type: "+TYPE+"\n"
+       "Saving Throw: 1/2\n"
+       "Description: \n"
+       "    This spell shoots a blast of cold and frost at a single target."
+       "  The damage done is (caster's level)d4 + caster's level.  There "  
+       "is no maximum on this spell.\n"
        "    Example:  A 10th level Wizard would do 10d4+10.\n";
        
 
@@ -147,7 +147,7 @@ int hb_spell(object attacker, mixed *params)
    
     /*** TELLS ROOM THE EFFECTS OF THE SPELL BUT NOT CASTER OR TARGET ***/
    say((string)previous_object()->query_cap_name()+
-    " finishes a spell as "+params[1]->query_cap_name()+" is blasted "+
+    " finishes a spell as "+params[1]->query_cap_name()+" is blasted "
      "with a cone of cold.\n",
        ({params[1],previous_object()}) );
   }

@@ -8,23 +8,22 @@
 
 inherit "/std/spells/patch.c";
 
-mixed find_one_match(string find,mixed in);
-
 #define SKILL_NAME "Focus"
 #define GP_COST 1
 
-string help() {
- return
-    "\n\n"+
-    "Command Name: "+SKILL_NAME+"\n"+
-    "GP Cost: "+GP_COST+" GP per round\n"+
-    "Syntax: focus <target>, focus off\n"+
-    "Description: \n"+
-    "     This ability lets you attempt to concentrate your blows "+
-    "upon a single foe.  If something is protecting the target you "+
-    "attempt to focus on, it is likely that you will be forced "+
-    "to go through it first.  Use 'focus off' to stop concentrating "+
-    "upon a foe.  After 1 round per level, you will lose your "+
+string help() 
+{
+  return
+    "\n\n"
+    "Command Name: "+SKILL_NAME+"\n"
+    "GP Cost: "+GP_COST+" GP per round\n"
+    "Syntax: focus <target>, focus off\n"
+    "Description: \n"
+    "     This ability lets you attempt to concentrate your blows "
+    "upon a single foe.  If something is protecting the target you "
+    "attempt to focus on, it is likely that you will be forced "
+    "to go through it first.  Use 'focus off' to stop concentrating "
+    "upon a foe.  After 1 round per level, you will lose your "
     "concentration and have refocus on your opponent.\n";
     
 }
@@ -47,14 +46,13 @@ int focus(string str,object doer)
     notify_fail(ret);
     return 0;
   }
-  /* sanity check */
   if (!objectp(ret))
   {
     notify_fail("You fail to focus for some reason.\n");
     return 0;
   }
   tell_object(me,"You begin to focus your attack on "+str+".\n");
-  tell_room(environment(me),me->query_cap_name()+" snarls and "+
+  tell_room(environment(me),me->query_cap_name()+" snarls and "
     "leaps at "+ret->query_cap_name()+".\n", me);
   return 1;
 }
@@ -75,7 +73,7 @@ mixed spell(string str, object me)
   }
   
   ob = find_one_match(str, environment(me));
-  if (!sizeof(ob) || !living(ob=ob[0]) ||
+  if (!ob || !living(ob) ||
       member_array(ob, me->query_attacker_list()) == -1 )
     return "You are not fighting that.\n";
 

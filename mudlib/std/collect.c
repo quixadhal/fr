@@ -339,7 +339,7 @@ int close_account() {
     return 0;
   }
   if ((amt = total)) {
-    write("You get "+MONEY_HAND->money_value_string(amt)+" when you close "+
+    write("You get "+MONEY_HAND->money_value_string(amt)+" when you close "
           "the account.\n");
     this_player()->adjust_money(MONEY_HAND->create_money_array(amt));
     total_account -= amt;

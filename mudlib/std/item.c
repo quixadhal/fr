@@ -6,73 +6,94 @@
  * and for now that's the only one needing it..
  * unless you have any wear / wieldable items.. the should also inherit this
  */
+
 inherit "/std/object";
 
 status wearable;
 status holdable;
-status in_use;
+int size, armour_type;
+int hands;  /* Hamlet */
+
+
+// Moved move() and dest_me() to below.
+// set_in_use() too
+// Radix
+#include "/std/basic/item_misc.c"
+
 
 void set_holdable(int i) 
-  { 
-  holdable = i; 
-  if (wearable && holdable)
-    wearable = 0;
+{ 
+    holdable = i; 
+    if (wearable && holdable)
+	wearable = 0;
 }
 
 void set_wearable(int i) 
-  { 
-  wearable = i; 
-  if (wearable && holdable)
-    holdable = 0;
+{ 
+    wearable = i; 
+    if (wearable && holdable)
+	holdable = 0;
 }
-
-void set_in_use(int i)
-  {
-  in_use = i;
-  }
+void set_armour_type(int i)
+{
+    armour_type = i;
+}
 
 int query_holdable() { return holdable; }
 int query_wearable() { return wearable; }
 int query_in_use() { return in_use; }
+int query_armour_type() { return armour_type; }
 
 void create()
-  {
-  holdable = wearable = 0;
-  object::create();
+{
+    holdable = wearable = 0;
+    size = 0;                 // Fix by Wonderflug
+    object::create();
+    hands = 1;
 }
 
-// Move hack so that wearables/holdables will leave the wear/hold
-// arrays of living creatures.
-int move(mixed dest, mixed messout, mixed messin) 
-   {
-   object ob;
-   int i;
-
-   ob = environment(this_object());
-   i = ::move(dest, messout, messin);
-
-   if (!i && in_use && objectp(ob) && living(ob))
-      if (holdable)
-         ob->unhold_ob(this_object());
-      else if (wearable)
-         ob->unwear_ob(this_object());
-
-   return i;
-}
-/* Added april '95 by Baldrick, does the same as the move, just for dest_me
- * Not sure if it will work tho 
+/* Sizes.. This will be used in wield and wear and later also by containers.
+ * Will have it here and not in /std/object because the roomsize is something 
+ * else.. 
+ * Baldrick aug '95.
  */
-void dest_me()
-  {
-   object ob;
-   int i;
 
-   ob = environment(this_object());
+void set_size(int i)
+{
+    size = i;
+} /* void size */
 
-   if (in_use && objectp(ob) && living(ob))
-      if (holdable)
-         ob->unhold_ob(this_object());
-      else if (wearable)
-         ob->unwear_ob(this_object());
-   ::dest_me();
-} /* void dest_me */
+int adjust_size(int i)
+{
+    size += i;
+    return size;
+} /* adjust_size */
+
+int query_size()
+{
+    return size;
+} 
+
+/* Hamlet Sep 1995 */
+void set_hands_needed(int i) 
+{
+    hands = i;
+}
+
+int query_hands_needed() { return hands; }
+
+
+// Radix, needed for long()
+string cond_string() { return(0); }
+
+// Radix moved long() from /obj/weapon.c & armour.c to here.
+// Also added calc_extra_look() cause it was unused (though inherited)
+// Jan 18, 1996
+string long(string s, int dark)
+{
+    string cond = cond_string();
+    string xtra = calc_extra_look();
+    if(!cond) cond = "";
+    if(!xtra) xtra = "";
+    return ::long()+xtra+cond;
+}

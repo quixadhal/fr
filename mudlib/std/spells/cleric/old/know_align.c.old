@@ -1,0 +1,91 @@
+/* Detect alignment. For priests.
+   Made by Baldrick July 1993.
+   This spell detects the alignment of a player or NPC.
+   Have fun with it.
+   Extended Taniwha 1995
+*/
+/*** Know Alignment ****/
+/*** modified for FR usage by Eerevann ***/
+/*** Sphere ClericDivination ****/
+/*** Level 2nd ***/
+#define SP_NAME "Know Alignment"
+#define GP_COST 4
+mixed spell(string str, int cast);
+/*** Help file here ***/
+string help() {
+   return
+   "\n\n"
+   "Spell Name: "+SP_NAME+"\n"
+   "Sphere:  Divination\n"
+   "Level:  2nd\n"
+   "Gp Cost: "+GP_COST+"\n"
+   "Description: \n"
+   "   This spell detects the alignment of a player or NPC.\n"
+   "   Note that the amount of information you receive improves\n"
+   "   as your level increases.\n";
+  }
+ 
+int cast_spell(string str) 
+  {
+  mixed ret;
+  ret = spell(str, 1);
+  if (stringp(ret)) 
+    {
+    notify_fail(ret);
+    return 0;
+    }
+  return 1;
+  }
+ 
+mixed spell(string str, int cast) 
+{
+  mixed ob;
+  int alignment;
+  int mylvl;
+  string retv;
+  string deity,mydeity;
+   int i;
+
+  if (!str || str == "")
+    return "You feel nothing.\n";
+  ob = find_match(str, environment(this_player()));
+  if (sizeof(ob))
+    ob = ob[0];
+  else
+    return "Where is " + capitalize(str) + " ?\n";
+  if (!living(ob))
+    return ("You know this is not a living object.\n");
+  if (cast && (int)this_player()->adjust_gp(-(GP_COST)) < 0)
+    return "You fail to draw enough power from your deity.\n";
+  
+  write("You call upon the gods to help you detect the alignment of " +
+        capitalize(str) + ".\n");
+  say(this_player()->query_cap_name()+" casts some sort of divination "
+       "magic.\n");
+  i = ob->query_align();
+  retv = "You feel that "+ob->query_cap_name()+" is morally "+(string)ob->query_align_name(i)+".\n";
+  mylvl = (int)this_player()->query_level() ;
+  deity = ob->query_deity();
+  mydeity = this_player()->query_deity();
+  if(mylvl > 5 )
+  {
+    i = ob->query_ethics();
+   retv += "And is ethically "+ob->query_ethical_name(i)+".\n";
+  }
+  if(mylvl > 10)
+  {
+    retv += "Is a follower of "+deity+".\n";
+  }
+  if(mylvl > 15)
+  {
+    i = ob->query_deity_status(deity);
+    retv += "Is"+ob->query_deity_string(i)+deity+".\n";
+  }
+  if(mylvl > 20)
+  {
+    i = ob->query_deity_status(mydeity);
+      retv += "Is"+ob->query_deity_string(i)+mydeity+".\n";
+  }
+  write(retv);
+  return 1;
+}

@@ -22,28 +22,28 @@ int ADJ_COST;
  /*** help file ***/
 string help() {
        return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "School: Illusion\n"+
-       "Level: 5th\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Damage Type: "+TYPE+"\n"+
-       "Saving Throw: Special\n"+
-       "Description: \n"+
-       "    This spell is one of the Shadow Magic spells.  "+
-       "Shadow Magic channels in energy from the Shadow Plane to make "+
-       "quasi-real wizard spells.  "+
-       "The spell "+
-       "creates the illusion of a lightning bolt that strikes the target "+
-       "doing (level)d6 with a maximum of 10d6 damage (the target gets "+
-       "a saving throw for half damage).  The target gets "+
-       "a saving throw to detect the illusion.  If he fails this saving "+
-       "throw, the spell works with the normal effects.  If the target "+
-       "makes his save (detecting the illusion) the shadow magic only does "+
-       "20% of normal damage.\n"+
-       "    Example:  10th level Caster casts Shadow Magic Lightning Bolt "+
-       "at Target."+
-       "  Target misses the saving throw and thinks its real.  Target will "+
+       "\n\n"
+       "Spell Name: "+SP_NAME+"\n"
+       "School: Illusion\n"
+       "Level: 5th\n"
+       "Gp Cost: "+GP_COST+"\n"
+       "Damage Type: "+TYPE+"\n"
+       "Saving Throw: Special\n"
+       "Description: \n"
+       "    This spell is one of the Shadow Magic spells.  "
+       "Shadow Magic channels in energy from the Shadow Plane to make "
+       "quasi-real wizard spells.  "
+       "The spell "
+       "creates the illusion of a lightning bolt that strikes the target "
+       "doing (level)d6 with a maximum of 10d6 damage (the target gets "
+       "a saving throw for half damage).  The target gets "
+       "a saving throw to detect the illusion.  If he fails this saving "
+       "throw, the spell works with the normal effects.  If the target "
+       "makes his save (detecting the illusion) the shadow magic only does "
+       "20% of normal damage.\n"
+       "    Example:  10th level Caster casts Shadow Magic Lightning Bolt "
+       "at Target."
+       "  Target misses the saving throw and thinks its real.  Target will "
        "take 10d6 damage or 5d6 (if he makes a second saving throw).\n";
        
 
@@ -152,7 +152,7 @@ int hb_spell(object attacker, mixed *params)
      DETECTED = 1;
 
      tell_object(params[1], "You realize that "+
-       (string)previous_object()->query_cap_name()+"'s spell is only an "+
+       (string)previous_object()->query_cap_name()+"'s spell is only an "
        "illusion and disbelieve most of the damage!\n");
    }
 
@@ -183,7 +183,7 @@ int hb_spell(object attacker, mixed *params)
    
     /*** TELLS ROOM THE EFFECTS OF THE SPELL BUT NOT CASTER OR TARGET ***/
    say((string)previous_object()->query_cap_name()+
-    " finishes a spell and "+params[1]->query_cap_name()+" is struck "+
+    " finishes a spell and "+params[1]->query_cap_name()+" is struck "
       "with a lightning bolt.\n",({params[1],previous_object()}) );
   }
 

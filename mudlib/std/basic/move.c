@@ -32,7 +32,7 @@ varargs int move(mixed dest, mixed messin, mixed messout) {
     return MOVE_NO_GET;
   if (environment())
     event(environment(), "exit", messout, dest);
-  move_object(this_object(), dest);
+  move_object( dest);
   if (objectp(dest))
     event(dest, "enter", messin, prev);
   else if (find_object(dest))
@@ -41,8 +41,36 @@ varargs int move(mixed dest, mixed messin, mixed messout) {
 }
 
 void dest_me() {
+  int i;
+  object* obs;
+  object ob;
+//  object *siblings; /* Hamlet */
+
   if (environment())
     event(environment(), "dest_me");
+  // Destruct shadows of this object, Wonderflug 96
+  obs = ({ });
+  ob = shadow(this_object(), 0);
+  while ( ob )
+  {
+    obs += ({ ob });
+    ob = shadow(ob, 0);
+  }
+  for ( i=0; i<sizeof(obs); i++ )
+    if ( obs[i] )
+      destruct(obs[i]);
+
+  /* Hamlet's junk... if this was the last clone of the file,
+     discard the file as well.
+  if(clonep(this_object())) {
+    siblings = children(explode(file_name(this_object()),"#")[0]);
+    siblings -= ({ this_object() });
+
+    if((sizeof(siblings) == 1) && !clonep(siblings[0]))
+      siblings[0]->dest_me();
+  }
+*/
+
   efun::destruct(this_object());
 }
 

@@ -1,4 +1,5 @@
 Usage : echo <text>
+Restricted to immortals only.
 
 The echo command takes the text that you provide and prints it to everyone
 in the room.  It is similar to emote except that your name is not prepended
@@ -6,7 +7,7 @@ to the text you type.
 
 Examples:
 
-echo A large branch falls of a tree and bounces of Pinkfish's head.
+echo A large branch falls off a tree and bounces on Pinkfish's head.
 
 echo You are totally amazed by the resounding THUNK sound it made.
 

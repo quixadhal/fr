@@ -1,11 +1,10 @@
 /*
- * And the I got to this thingie..
- * I am adding holdable & wearable so that any object can be one the above..
- * or none of the above, default is not (0).
- * Baldrick.. 
- * Maybe it should be added to /std/basic/"something" instead..?
- * Makind an /std/item of it 
- */
+    /std/object.c 
+    Previous hacks by Dank and Pinkfish
+    Baldrick cleaned after them.
+    Hamlet fixed timed properties.
+    Radix made create_me more accurate - 7/96
+*/
 
 inherit "/std/basic/property";
 inherit "/std/basic/extra_look";
@@ -13,8 +12,23 @@ inherit "/std/basic/read_desc";
 inherit "/std/basic/misc";
 inherit "/std/basic/id";
 
+string create_me;
+ 
+void create() {
+  create_me = "Object";
+  id::create();
+  property::create();
+  extra_look::create();
+  misc::create();
+  read_desc::create();
+  seteuid(master()->creator_file(file_name(this_object())));
+  // Radix, July 1996
+  create_me = master()->get_create_me(create_me);
+  this_object()->setup();
+}
+
 void set_name(string str) 
-  {
+{
   if (name && name != "object") return ;
   name = str;
   if (!short_d)
@@ -22,29 +36,10 @@ void set_name(string str)
   add_plural(pluralize(str));
 }
 
-/* Hmm curserd & held and so on.. probably Dank adds, and no use now..
- * I'll stick it in for now.. 
- */
-
-status set_cursed(status i) { return 0; }  
-status query_cursed() { return 0;}
 int query_enchant() { return 0; }
 status set_enchant(int i) { return 0; }
 status query_weapon() { return 0;}
 status query_armour() { return 0; }
-string create_me;
- 
-void create() {
-  id::create();
-  property::create();
-  extra_look::create();
-  misc::create();
-  read_desc::create();
-  seteuid((string)"/secure/master"->creator_file(file_name(this_object())));
-  create_me = "who knows";
-  if(this_player()) { create_me = (string)this_player()->query_name(); }
-  this_object()->setup();
-}
 
 mixed *stats() {
   return ::stats() + ({
@@ -56,17 +51,6 @@ mixed *stats() {
     ({ "cloned by", create_me, }),
    });
 }
-
-/* WHY? Baldrick..
- *
-int query_alignment() {
-  return query_property("alignment");
-}
-
-int set_alignment(int al) {
-  return add_property("alignment",al);
-}
- */
 
 mixed *query_init_data() {
    return
@@ -91,6 +75,7 @@ mapping query_dynamic_auto_load() {
   return ([ 
             /*"labels" : "/global/player"->create_auto_load(labels),*/
             "properties" : map_prop,
+            "timed"     : freeze_timed_properties(timed_prop), /* Hamlet */
             "read mess" : read_mess,
             "cloned by" : create_me,
           ]);
@@ -130,6 +115,9 @@ void init_dynamic_arg(mapping args) {
     "/global/player"->load_auto_load(args["labels"], this_object());*/
   if (args["properties"])
     map_prop = args["properties"];
+  /* Let's restore timed -- Hamlet */
+  if (args["timed"])
+    timed_prop = thaw_timed_properties(args["timed"]);
   set_read_mess(args["read mess"]);
   create_me = args["cloned by"];
 } /* init_dynamic_arg() */
@@ -150,9 +138,9 @@ void init_arg(mixed *bing) {
   value = bing[12];
 } /* init_arg() */
  
-int query_alive()
+int query_dead()
 {
- return 0;
+ return 1;
 }
 
  // The following is from the TMI-2 Lib. Asmodean Put it here
@@ -178,3 +166,5 @@ dest_me();
         }
         return 1; /* try again later... */
 }
+
+nomask query_create_me() { return create_me; }

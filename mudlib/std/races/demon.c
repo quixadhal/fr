@@ -3,8 +3,8 @@ inherit "/std/races/standard";
 
 void setup()
 {
-  set_long("Demons are creatures from the Abyss...it's is NOT wise to "+
-          "annoy them...unless of course you have a very good life "+
+  set_long("Demons are creatures from the Abyss...it's is NOT wise to "
+          "annoy them...unless of course you have a very good life "
           "insurance.\n");
   set_name("demon");
   /* new thing for light */

@@ -5,173 +5,12 @@ string real_name, birth_day, desc, where;
 void finger_commands() {
   add_action("chfn", "chfn");
   add_action("set_email","email");
-  add_action("finger","finger");
+  //add_action("finger","finger");
   add_action("describe","describe");
   add_action("change_password","password");
   add_action("change_password","passwd");
-  add_action("do_who", "who");
 } /* finger_commands() */
 
-string who_string(int width, int cre, string str)
-{
-  object *arr;
-  int i, c, p;
-  int number, creators, what;
-  string s, tmp, nam, imm,play,prt;
-
-  arr = users();
-  s = "";
-  c = p = 0;
-  imm = play = "";
-
-  prt = sprintf("%|*'-'s\n", width, "======]  Final Realms MUD [======");
-  prt +=  sprintf("%|*s\n", width, ctime(time()), width);
-
-  for(i=0;i<sizeof(arr);i++)
-  {
-    if(arr[i]->query_creator())
-     {
-      c = 1;
-       if(!(tmp = (string)arr[i]->short()))
-         continue;
-       s = "";
-       nam = tmp;
-
-      if (cre)
-        if ((tmp = (string)arr[i]->query_in_editor()))
-          s += " (Editing: "+tmp+")";
-      if (tmp = (string)arr[i]->query_gtitle())
-        s += " " + tmp;
-      if (tmp = (string)arr[i]->query_title())
-        s += ", " + tmp;
-   // s += ".";
-      if (tmp = (string)arr[i]->query_extitle())
-        s += " (" + tmp + ")";
-      if (query_idle(arr[i]) > 120)
-        s += " (Idle: " + (query_idle(arr[i])/60) + ")";
-      // Fix by Aragorn@NANVAENT   Baldrick wanted centered names...
-//   imm += sprintf(nam+"%*-=s", width - strlen(nam), s)+"%^RESET%^\n";
-//    imm += sprintf("%*|=s", width, nam+s)+"%^RESET%^\n";
-
-      imm += sprintf("%*-=s", width, nam+s)+"%^RESET%^\n";
-      if (!arr[i]->query_hidden())
-        creators++;
-
-    }
-
-    else {
-      p = 1;
-      if(!(tmp = (string)arr[i]->short()))
-        continue;
-      s = "";
-      nam = tmp;
-
-      /* time to do some changes on this one.
-         Players should only see the race and gender.
-         Baldrick, march '94
-       */
-
-      if (arr[i]->query_property("guest"))
-         s += " guest of FR-MUD";
-      // else if (tmp = (string)arr[i]->query_gtitle())
-      //   s += " " + tmp;
-      // else
-      //   s += " the newbie";
-      //if (tmp = (string)arr[i]->query_title())
-      //   s += ", " + tmp;
-      //s += ".";
-
-      if ((string)arr[i]->query_female())
-           s += " the female ";
-
-        else s += " the male ";
-
-      if (tmp = (string)arr[i]->query_race_name())
-	   s += tmp;
-
-      /* the extitle should NOT be in use as a title thingie */
-      /* But for use as an info thingir (like posting, mailing and so on) */
-
-      if (tmp = (string)arr[i]->query_extitle())
-         s += " (" + tmp + ")";
-
-      if (query_idle(arr[i]) > 120)
-         s += " (Idle: " + (query_idle(arr[i])/60) + ")";
-
-    // s += ".";
-   // FIX by Aragorn@NANVAENT   Baldrick wanted centered names...
-  //  play += sprintf(nam+"%*-=s", width - strlen(nam), s)+"%^RESET%^\n";
- //   play += sprintf("%*|=s", width, nam+s)+"%^RESET%^\n";
-
-      play += sprintf("          %*-=s", width-10, nam+s)+"%^RESET%^\n";
-      if (!arr[i]->query_hidden())
-         number++;
-     }
-
-  }
-
-  if(!str)
-    what = 0;
-  else if(str == "immortals")
-    what = 1;
-  else if(str == "players")
-    what = 2;
-  else
-    return "Syntax: who\n"+
-           "        who immortals\n"+
-           "        who players\n";
-
-  if(what != 2)
-  {
-   if(!c&&what == 1)
-    return "There are no immortals online.\n";
-   if(c)
-   {
-    prt += sprintf("%*'-'|s\n", width, "] Immortals [");
-    prt += imm;
-
-}
-}
-  if(what != 1)
-  {
-   if(!p&&what == 2)
-    return("There are no players online.\n");
-   if(p)
-   {
-    prt += sprintf("%*'-'|s\n", width, "] Players [");
-    prt += play;
-    }
-    }
-
-  if(number+creators == 1)
-     tmp = "> You are the only mudder online right now. <";
-
-/* My first elegant solution :  *grin*
-     tmp = "> There are "+(creators?query_num(creators, 100)+" Immortal"+
-              (creators<2?" ":"s ")(number?"and ":""))+
-              (number?query_num(number, 100)+" player"+
-              (number<2?"":"s"):"")+" on Final Realms MUD. <";
-** To make things more readable I reconsidered and made this instead *grin* */
-
-  else if(!creators)
-     tmp = "> There are "+query_num(number, 100)+" player"+(number<2?"":"s")+
-           " on Final Realms MUD right now. <";
-  else if(!number)
-     tmp = "> There are "+query_num(creators, 100)+" immortal"+
-           (creators<2?"":"s")+" on Final Realms MUD. <";
-  else
-     tmp = "> There are "+query_num(creators, 100)+" immortal"+
-           (creators<2?"":"s")+" and "+query_num(number, 100)+ " player"+
-           (number<2?"":"s")+" on Final Realms MUD. <";
-  prt += sprintf("%*'-'|s\n", width, tmp);
-  return prt;
-} /* who_string() */
-
-int do_who(string str) {
-  efun::tell_object(this_player(),  (string)this_object()->fix_string(who_string((int)this_object()->query_cols(),
-                         (int)this_object()->query_creator(), str)));
-  return 1;
-} /* do_who() */
 
 int finger(string str) {
   string ret, mud;
@@ -235,6 +74,18 @@ int finger(string str) {
 } /* finger() */
 
 nomask int set_email(string str) {
+    if(str == ":") {
+      if(email && (email[0..0] != ":"))
+        email = ":"+email;
+      write("Only immortals will be able to see your email address.\n");
+       return 1;
+    }
+    if(this_object()->query_registrated()) {
+      write("You are registered.  Have an immortal help you change "
+            "your email address.\nIf you wish to change your email "
+            "to be visible only to immorts, do: 'email :'\n");
+      return 1;
+    }
     if (!str) {
       write("You current email address is "+email+"\n");
       write("To clear use \"email CLEAR\"\n");
@@ -265,7 +116,7 @@ int describe(string arg) {
     else
       notify_fail("Usage: describe <string>\n"+
                   "       describe clear\n"+
-                  "no description set.\n");
+                 "no description set.\n");
     return 0;
   }
   if(arg == "clear") {
@@ -334,6 +185,14 @@ int chfn() {
   write("Change finger information.\n");
   write("Pressing return at the prompts will take the default.  The default "+
         "is the option in []'s.\n");
+  
+  if(this_object()->query_registrated()) {
+    write("Enter your location (ie Hawaii, Tokyo, whatever) ["+where+"]\n"+
+          "(none for none) : ");
+    input_to("get_where");
+    return 1;
+  }
+
   write("What real name do you wish to use ["+real_name+"] ? ");
   input_to("real_name");
   return 1;
@@ -365,7 +224,7 @@ int get_where(string str) {
   if (where && where != "")
     write("Ok location set to "+where+".\n");
   else
-    write("Real name cleared.\n");
+    write("Location cleared.\n");
   write("Enter your birthday (ddmm) ["+query_birthday()+
         "] (none for none) : ");
   input_to("birthday");
@@ -489,11 +348,18 @@ void birthday(string str) {
     }
   }
   this_object()->save_me();
-  write("What email address do you wish to use.  Set to none to clear.\n");
-  write("Putting a : in front of it means that only the MUD Admins "+
-        "can read it.\n");
-  write("["+email+"] : ");
-  input_to("get_email");
+  if(!this_object()->query_registrated()) {
+    write("What email address do you wish to use.  Set to none to clear.\n");
+    write("Putting a : in front of it means that only the MUD Admins "+
+          "can read it.\n");
+    write("["+email+"] : ");
+    input_to("get_email");
+  }
+  else {
+    write("Do you want other players to see your email address? "
+          "(y or n) [y] : ");
+    input_to("mod_email");
+  }
 } /* birthday() */
 
 void get_email(string str) {
@@ -511,6 +377,49 @@ void get_email(string str) {
   }
   this_object()->save_me();
 } /* get_email() */
+
+void mod_email(string str) {
+  if(str == "")
+    str = "y";
+  if(str == "n") {
+    if(email && (email[0..0] != ":"))
+      email = ":" + email;
+    write("Only immortals will see your email address.\n");
+  }
+  else if(str == "y") {
+    if(email && (email[0..0] == ":"))
+      email = email[1..sizeof(email)-1];
+    write("Players will see your email address.\n");
+  }
+  else
+    write("Email status unchanged.\n");
+  if(this_object()->query_registrated()) {
+        write("Do you want other players to see your real name? "
+          "(y or n) [y] : ");
+     input_to("mod_real_name");
+  }
+  return;
+}
+
+void mod_real_name(string str) {
+  if(str == "")
+    str = "y";
+  if(str == "n") {
+    if(real_name && (real_name[0..0] != ":"))
+      real_name = ":" + real_name;
+    write("Only immortals will see your real name.\n");
+    return;
+  }
+  if(str == "y") {
+    if(real_name && (real_name[0..0] == ":"))
+      real_name = real_name[1..sizeof(email)-1];
+    write("Players will see your real name.\n");
+    return;
+  }
+
+  write("Real name status unchanged.\n");
+  return;
+}
 
 int query_is_birthday_today() {
     string cmonth, dummy, bmonth;

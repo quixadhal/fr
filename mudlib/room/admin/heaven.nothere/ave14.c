@@ -8,9 +8,9 @@ shield_it(SHIELDCITY,"/d/ss/daggerford/ladyluck");
 }
 
 void setup() {
-set_long("You are on Immortal avenue.  You stand in the City of"+
-" the Immortals.  You stare in awe at the wondrous buildings around"+
-" you.  You feel the magic in the air, and feel at peace here. To"+
+set_long("You are on Immortal avenue.  You stand in the City of"
+" the Immortals.  You stare in awe at the wondrous buildings around"
+" you.  You feel the magic in the air, and feel at peace here. To"
 " the west of you lies "+ IM14A + 
 ", while to the north of you lies "+ IM14B +".\n");
 set_short("Immortal square");

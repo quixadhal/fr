@@ -12,8 +12,8 @@ void setup()
 
 void set_racial_bonuses()
 {
-  previous_object()->adjust_bonus_int(2);
-  previous_object()->adjust_bonus_dex(2);
+  previous_object()->adjust_bonus_int(1);
+  previous_object()->adjust_bonus_dex(1);
   previous_object()->adjust_bonus_con(-1);
 }
 

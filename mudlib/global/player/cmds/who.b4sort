@@ -1,0 +1,175 @@
+/* Who.c, once upon in /global/finger.c 
+ * made splitted by Ducky, some changes by Baldrick and Aragorn.
+ * Externalized by someone@RD.
+ * Moved back to FR and Fr'ized by Baldrick. oct '95
+ */
+
+// Color added by Radix ... splish splash
+// Damned Hide command, fixed for players and immortals, Radix 1996
+
+#include <standard.h>
+#include <cmd.h>
+inherit CMD_BASE;
+
+
+void setup()
+{
+position = 0;
+}
+
+string query_usage()
+{
+return "command";
+}
+
+string who_string(int width, int cre, string str)
+{
+  object *arr;
+  int i, c, p;
+  int number, creators, what;
+  string s, tmp, nam, imm,play,prt;
+  string ttl = "======]  %^GREEN%^Final Realms MUD%^RESET%^  [======";
+
+  arr = users();
+  s = "";
+  c = p = 0;
+  imm = play = "";
+
+  prt = "\n";
+  prt += sprintf("%|*'-'s\n", width+4, ttl);
+  prt +=  sprintf("%|*s\n", width, ctime(time()), width);
+  for(i=0;i<sizeof(arr);i++)
+  {
+    if(arr[i]->query_creator())
+    {
+       c = 1;
+       if(!(tmp = (string)arr[i]->query_short()))
+         continue;
+       /* Here it denies to show "super invis" */
+       if(arr[i]->query_invis() > 1) 
+          if (!this_player()->query_god()) 
+            continue;
+       if(cre && arr[i]->query_invis() == 1)
+          tmp = "*"+(string)arr[i]->query_short()+"*";
+       if(cre && arr[i]->query_invis() == 2)
+          tmp = "**"+(string)arr[i]->query_short()+"**";
+       if(!cre && arr[i]->query_invis() == 1) continue;
+       s = "";
+       nam = tmp;
+
+      if (cre)
+        if ((tmp = (string)arr[i]->query_in_editor()))
+          s += "(Editing: "+tmp+") ";
+      if (tmp = (string)arr[i]->query_gtitle())
+        s += tmp;
+      if (tmp = (string)arr[i]->query_title())
+        s += ", " + tmp;
+      if (tmp = (string)arr[i]->query_extitle())
+        s += " (" + tmp + ")";
+      if (query_idle(arr[i]) > 120)
+        s += " (Idle: " + (query_idle(arr[i])/60) + ")";
+
+      imm += sprintf("%s %*-=s", nam, width - 13, s) + "%^RESET%^\n";
+      if(!arr[i]->query_invis() || cre)
+        creators++;
+    }
+    else {
+      p = 1;
+      if(!(tmp = (string)arr[i]->query_short()))
+//    if(!(tmp = (string)arr[i]->short()))
+        continue;
+      s = "";
+      nam = tmp;
+
+      if (arr[i]->query_property("guest"))
+         s += " guest of FR-MUD";
+
+      if ((string)arr[i]->query_female())
+           s += " the female ";
+
+        else s += " the male ";
+
+      if (tmp = (string)arr[i]->query_race_name())
+	   s += tmp;
+
+      /* the extitle should NOT be in use as a title thingie */
+      /* But for use as an info thingir (like posting, mailing and so on) */
+
+      if (tmp = (string)arr[i]->query_extitle())
+         s += " (" + tmp + ")";
+
+      if (query_idle(arr[i]) > 120)
+         s += " (Idle: " + (query_idle(arr[i])/60) + ")";
+
+
+      play += sprintf("          %*-=s", width-10, nam+s)+"%^RESET%^\n";
+      if (!arr[i]->query_invis())
+         number++;
+     }
+
+  }
+
+  if(!str)
+    what = 0;
+  else if(str == "immortals"[0..sizeof(str)-1])
+    what = 1;
+  else if(str == "players"[0..sizeof(str)-1])
+    what = 2;
+  else
+    return "Syntax: who\n"+
+           "        who immortals\n"+
+           "        who players\n";
+
+  if(what != 2)
+  {
+   if(!c&&what == 1)
+    return "%^WHITE%^There are no immortals online.%^RESET%^\n";
+   if(c)
+   {
+    ttl = "] %^BOLD%^WHITE%^Immortals%^RESET%^ [";
+    prt += sprintf("%*'-'|s\n",width+2, ttl);
+    prt += imm;
+
+}
+}
+  if(what != 1)
+  {
+   if(!p&&what == 2)
+    return("There are no players online.\n");
+   if(p)
+   {
+    ttl = "]%^BOLD%^WHITE%^ Players%^RESET%^ [";
+    prt += sprintf("%*'-'|s\n", width+3, ttl);
+    prt += play;
+    }
+    }
+
+  if(number+creators == 1)
+     tmp = "> You are the only mudder online right now. <";
+
+  else if(!creators)
+     tmp = "> There are "+query_num(number, 100)+" player"+(number<2?"":"s")+
+           " on Final Realms MUD right now. <";
+  else if(!number)
+     tmp = "> There are "+query_num(creators, 100)+" immortal"+
+           (creators<2?"":"s")+" on Final Realms MUD. <";
+  else
+     tmp = "> There are "+query_num(creators, 100)+" immortal"+
+           (creators<2?"":"s")+" and "+query_num(number, 100)+ " player"+
+           (number<2?"":"s")+" on Final Realms MUD. <";
+  prt += sprintf("%*'-'|s\n", width+0, tmp);
+  return prt;
+} /* who_string() */
+
+int do_who(string str) {
+  efun::tell_object(this_player(),  (string)this_object()->fix_string(who_string((int)this_object()->query_cols(),
+                         (int)this_object()->query_creator(), str)));
+  return 1;
+} /* do_who() */
+
+static int cmd(string str, object me) {
+  efun::tell_object(me,
+(string)me->fix_string(who_string((int)me->query_cols(),
+(int)me->query_creator(),str)));
+  return 1;
+} /* do_who() */

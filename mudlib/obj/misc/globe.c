@@ -2,6 +2,7 @@ inherit "/std/object";
 
 /* The Pub Globe. A chatter between rooms with the Globe in them.
  * Version 2, with globewho
+ * Baldrick, '93, fix jan '96.
  */  
 
 /* This object: if it's moved, alter this. */
@@ -10,7 +11,7 @@ inherit "/std/object";
 string drunk_speech(string str);
 int do_globe_tell(string bladder);
 void globe_tell(string bladder);
-void globe_who();
+int globe_who();
 
 void setup()
   {
@@ -41,7 +42,10 @@ int do_chat(string str)
   object *drunks;
 
   if (!str)
-    return notify_fail("You wanted to chat what?\n");
+    {
+    notify_fail("You wanted to chat what?\n");
+    return 0;
+     }
 
   if (this_player()->query_drunk())
     str = drunk_speech(str);
@@ -77,7 +81,7 @@ void show_drunks(object curious)
 
   for (i=0;i<sizeof(drunks);i++)
     {
-    if (living(drunks[i]))
+     if(living(drunks[i]) && !drunks[i]->query_hide_shadow())
       { 
       drunk_name = (string)drunks[i]->query_cap_name();
       tell_object(curious, "  " + drunk_name + "\n");

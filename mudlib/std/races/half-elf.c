@@ -12,7 +12,7 @@ void setup()
 void set_racial_bonuses() 
 {
   previous_object()->adjust_bonus_dex(1);
-  previous_object()->adjust_bonus_con(-1);
+  previous_object()->adjust_bonus_str(-1);
 }
 
 int query_skill_bonus(int lvl, string skill) 

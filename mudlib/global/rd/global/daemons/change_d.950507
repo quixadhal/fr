@@ -1,0 +1,314 @@
+/*
+   This "handler" or "daemon", will handle changes that has
+   been made. All the creator will have to do is to report
+   it, and it will be logged in a nice way and this daemon
+   will be able to answer the last NUM_CHANGES a creator
+   have done, or a file have been abused with ;)
+
+   Coded by High Tramser Begosh of Hepp
+   
+   You can reach me at the following emails :
+   begosh@enter.hb.se
+    jonas@admin.enter.hb.se
+   begosh@unibar.anu.edu.au
+   beyond@admin.enter.hb.se
+   dat313@utb.shv.hb.se
+
+*/
+
+#include "change_d.h"
+
+inherit "/global/more_file.c";
+
+mapping c_fixes = ([]);
+mapping f_fixes = ([]);
+object us;
+static string tmppath;
+
+/*
+   Protos of all functions
+*/
+
+void change();
+void coder_info( string name );
+void create();
+void desc_change( string change );
+int exit_all();
+int file_excist( string path );
+void file_info( string path );
+void full_path( string path );
+void menu_choice( string str );
+void report_change();
+void save();
+void show_menu();
+
+/*
+**	Function name : create
+**
+**	Description : This is called in every object when
+**        it is created.
+**	Input : Nothing
+**	Output : Nothing
+*/
+void create()
+{
+  seteuid( "Root" );
+  restore_object( SAVE_PATH, 1 );
+}
+
+/*
+**	Function name : file_excist
+**
+**	Description : Returns true if the file excist
+**	Input : Path of the file
+**	Output : Boolean
+*/
+int file_excist( string path )
+{
+  if( ALLOWED_DIRS[explode( path, "/" )[0]] ){
+    write( RED + "Searching for the file.\n" );
+    return ( file_size( path ) > 0 );
+  } else {
+    write( RED + "That file is in a non allowed directory to log.\n" + RESET );
+    return 0;
+  }
+}
+
+/*
+**	Function name : save
+**
+**	Description : Saves the daemon
+**	Input : None
+**	Output : None
+*/
+void save()
+{
+  write( RED + "Saving data.\n" + RESET );
+  save_object( SAVE_PATH, 1 );
+}
+
+/*
+**	Function name : exit_all
+**
+**	Description : Exits and saves 
+**	Input :
+**	Output :
+*/
+int exit_all()
+{
+  save();
+  NEW_LINES;
+  write( GREEN + "Thank you for using the changehandler.\n    Report any bugs to " +
+	"High Tramser Begosh of Hepp.\n " + BLUE + "Email: begosh@enter.hb.se\n" + RESET );
+  
+  return 1;
+}
+
+
+/*
+**	Function name : report_change
+**
+**	Description : The entrance to the report section, hmm that sounds like COBOL
+**	Input : None
+**	Output : None
+*/
+void report_change()
+{
+  NEW_LINES;
+  write( BLUE + "Write the full path to the file you have changed in.\n" +
+	"Full path : " + RESET );
+  input_to( "full_path" );
+  
+  return;
+}
+
+/*
+**	Function name : full_path
+**
+**	Description : Countinues to search for information
+**	Input : path of the file
+**	Output : none
+*/
+void full_path( string path )
+{
+  if( !file_excist( path ) ) report_change();
+  else {
+    write( BLUE + "Write your change, keep it short and concistent.\n" +
+	  "Changed : " + RESET );
+    tmppath = path;
+    input_to( "desc_change" );
+  }
+  
+  return ;
+}
+
+/*
+**	Function name : desc_change
+**
+**	Description : here we shall describe the change 
+**	Input : the change
+**	Output : none
+*/
+void desc_change( string change )
+{
+  if( change == "" || !change )
+    write( BLUE + "\nWell then we return to the main menu instead.\n" + RESET );
+  else {
+    write( "\n" + GREEN + "Change reported.\n" + RESET );
+    if( !c_fixes[geteuid( us )] ) c_fixes[geteuid( us )] = ({});
+    if( !f_fixes[tmppath] ) f_fixes[tmppath] = ({});
+    if( sizeof( c_fixes[geteuid( us )] ) > 9 ) ARR_FIX( c_fixes[geteuid( us )] );
+    if( sizeof( f_fixes[ tmppath ] ) > 9 ) ARR_FIX( f_fixes[tmppath] );						
+    
+    c_fixes[ geteuid( us ) ] += ({ GREEN + ctime( time() ) + RESET + " (" + 
+      RED + tmppath + RESET + ") " + BLUE + capitalize( change ) + RESET + "\n" });
+    f_fixes[ tmppath ] += ({ GREEN + ctime( time() ) + RESET + " (" + RED + 
+      capitalize( geteuid( us ) ) + RESET + ") " + BLUE + capitalize( change ) + 
+	RESET + "\n" });
+    write_file( tmppath + ".chlog", ctime( time() ) + " [" + capitalize( geteuid( us ) ) +
+	       "] " + change + "\n" );
+    save();
+    show_menu();
+  }
+  
+  return ;
+}
+
+
+/*
+**	Function name : show_menu
+**
+**	Description : Shows the menu and accepts input;
+**	Input :
+**	Output :
+*/
+void show_menu()
+{
+  NEW_LINES;
+  write( RED + "  --= Changehandler v1.0 =--\n\n" );
+  write( BLUE + " a) " + GREEN + "See the " + NUM_CHANGES + " last " +
+	"changes a coder has done.\n" );
+  write( BLUE + " b) " + GREEN + "See the " + NUM_CHANGES + " last " +
+	"changes that has been done on a file.\n" );
+  write( BLUE + " c) " + GREEN + "Report a change you have done.\n" );
+  write( BLUE + " d) " + GREEN + "Look at a logfile of a file.\n" );
+  write( BLUE + " e) " + GREEN + "Exit.\n " );
+  write( GREEN + "\n   Enter your choice : " + RESET );
+
+  input_to( "menu_choice" );
+  
+  return ;
+}
+
+/*
+**	Function name : menu_choice
+**
+**	Description : This one directs to the right function
+**	Input : A choice from the show_menu
+**	Output : Nothing
+*/
+void menu_choice( string str )
+{
+  if( !str || str == "" ) show_menu();
+  
+  switch( str ) {
+  case "a" :
+    write( GREEN + "Write the name of the coder : " + RESET );
+    input_to( "coder_info" );
+    break;
+  case "b" :
+    write( GREEN + "Write the full path of the file : " + RESET );
+    input_to( "file_info" );
+    break;
+  case "c" :
+    report_change();
+    break;
+  case "d" :
+    write( GREEN + "Write the full path of the file : " + RESET );
+    input_to( "log_info" );
+    break;
+  case "e" :
+    exit_all();
+    break;
+  default :
+    show_menu();
+  }
+  
+  return ;				       
+}
+
+/*
+**	Function name : coder_info
+**
+**	Description : Will show you all the available info of a coder
+**	Input : the name of the coder
+**	Output : his changes
+*/
+void coder_info( string name )
+{
+   
+  if( c_fixes[name] )
+    write( sprintf( "\n%@s\n", c_fixes[name] ) );
+  else 
+    write( RED + "\n" + capitalize( name ) + " hasn't done any changes lately. " +
+	  "Maybe he is lazy.\n" + RESET );
+  show_menu();
+  
+  return ;
+}
+
+/*
+**	Function name : file_info
+**
+**	Description : Returns information about the changes of the file
+**	Input : path of the file
+**	Output : none
+*/
+
+void file_info( string path )
+{
+  if( f_fixes[path] ) 
+    write( sprintf( "\n%@s\n", f_fixes[path] ) );
+  else 
+    write( RED + "\nThere haven't been any changes to that file lately.\n" + RESET );
+  show_menu();
+  
+  return ;
+}
+
+
+/*
+**	Function name : log_info
+**
+**	Description : This one will more a file.
+**	Input : The path
+**	Output :
+*/
+void log_info( string str )
+{
+  if( file_excist( str + ".chlog" ) )
+    more_file( str + ".chlog" );
+  else
+    write( RED + "There is no log of that file.\n" + RESET );
+  show_menu();
+  
+  return ;
+}
+
+
+/*
+**	Function name : change
+**
+**	Description : This doesn't do much ...
+**	Input : Nothing really
+**	Output : Nothing really
+*/
+void change()
+{
+  us = this_player();
+  show_menu();
+}
+
+
+
+

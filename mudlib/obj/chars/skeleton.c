@@ -1,5 +1,5 @@
-
-inherit "obj/monster";
+#include "path.h"
+inherit BASE;
 int query_kill_xp() { return 0; }
 void setup()
 {
@@ -8,7 +8,7 @@ void setup()
 	set_short("Skeleton");
 set_long("Nothing more than an animate skeleton, this fiend has returned to "+
        "life to visit woe on the living.\n");
-	set_class("fighter");
+	set_guild("fighter");
 	set_level(5);
 	set_al(20);
    set_str(25);

@@ -20,15 +20,15 @@ mixed spell(string str, int skill, int cast);
 
 string help() {
    return
-   "\n\n"+
-   "Spell Name:  Light\n"+
-   "Sphere:  Sun\n"+
-   "Level: 1st\n"+
-   "Gp Cost: 30\n"+
-   "Description: \n"+
-   "    This spell will create a small globe of light that is placed upon "+
-   "the target to help illuminate dark areas.  This spell must be cast on a "+
-   "target of some sort.\n"+
+   "\n\n"
+   "Spell Name:  Light\n"
+   "Sphere:  Sun\n"
+   "Level: 1st\n"
+   "Gp Cost: 30\n"
+   "Description: \n"
+   "    This spell will create a small globe of light that is placed upon "
+   "the target to help illuminate dark areas.  This spell must be cast on a "
+   "target of some sort.\n"
    "    The spell has a limited duration.\n\n";
 }
 
@@ -79,7 +79,7 @@ int hb_spell(object caster, mixed *params)
 
  if(!params[1])
  {
-  tell_object(previous_object(), "Your light spell fizzles since you "+
+  tell_object(previous_object(), "Your light spell fizzles since you "
    "can't see it's intended target.\n");
   return 0;
  }
@@ -92,7 +92,7 @@ int hb_spell(object caster, mixed *params)
 
  if (params[1] == previous_object())
  {
-  tell_object(previous_object(),"You will now be able to see in any dark "+
+  tell_object(previous_object(),"You will now be able to see in any dark "
    "room.\n");
   say((string)previous_object()->query_cap_name() +
    " raises his hands and a globe of light appears.\n", params[1]);

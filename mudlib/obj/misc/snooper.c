@@ -1,3 +1,6 @@
+// Why this is here I have no idea, but had a security bug
+// Fixed by Radix, December 19, 1995
+
 inherit "/std/object";
 
 void setup() {
@@ -11,7 +14,6 @@ void setup() {
 void init() {
   ::init();
   add_action("do_snoop", "snoop");
-  add_action("do_snoop", "qsnoop");
 }
 
 int do_snoop(string str) {

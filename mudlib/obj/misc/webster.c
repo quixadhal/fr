@@ -76,7 +76,7 @@ int do_open() {
   }
   say((string)this_player()->query_cap_name() + " opens "
     + this_player()->query_possessive() + " dictionary.\n");
-  return telnet::connect("129.79.254.195 2627");
+  return telnet::connect("129.79.254.191 2627");
 } /* do_open() */
 
 int do_close() {
@@ -125,7 +125,6 @@ int dcomplete(string arg) {
 } /* dcomplete() */
 
 void init() {
-  add_action("do_help", "help");
   add_action("dlookup", "define");
   add_action("dskim", "endings");
   add_action("dspell", "spell");
@@ -137,13 +136,3 @@ void init() {
 void recieve_message(string str) {
   say(str);
 } /* recievr_message() */
-do_help(string jalla)
-{
-  if(!jalla) return 0;
-  if(jalla=="webster" || jalla=="book")
-     {
-       write("Available commands are: define, endings, spell and complete.\n");
-       return 1;
-     }
-  else return 0;
-}

@@ -1,7 +1,7 @@
 inherit "/std/races/standard";
 
 void setup() {
-  set_long("The human race.  The standard by which all the races are set, "+
+  set_long("The human race.  The standard by which all the races are set, "
            "this is race can be considered the norm.\n");
    set_name("human");
 }

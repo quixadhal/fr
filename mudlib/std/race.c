@@ -87,9 +87,9 @@ int remove_guild(string name) {
 
 mapping query_guilds() { return guilds; }
 
-void monster_heart_beat(string race, string class, mixed race_ob, mixed class_ob) {
+void monster_heart_beat(string race, string pclass, mixed race_ob, mixed class_ob) {
   race_ob->player_heart_beat(race);
-  class_ob->player_heart_beat(class);
+  class_ob->player_heart_beat(pclass);
 } /* monster_heart_beat() */
 
 int query_limbs()

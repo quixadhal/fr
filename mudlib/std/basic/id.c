@@ -163,9 +163,11 @@ object query_frac_parse_id(mixed *arr) {
   return 0;
 }
 
+/* removed Taniwha 1995, *kicks the bastard who put this here*
 void attack_by(object ob) {
   ob->stop_fight(this_object());
 }
+*/
 
 /* std/basic/id: */
 mixed *query_init_data() {

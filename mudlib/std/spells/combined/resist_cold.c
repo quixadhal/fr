@@ -17,13 +17,13 @@ mixed find_one_match(string find,mixed in);
 
 string help() {
        return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "Sphere: Protection\n"+
-       "Level: 2nd\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Description: \n"+
-       "    This spell reduces damage done by Cold based attacks "+
+       "\n\n"
+       "Spell Name: "+SP_NAME+"\n"
+       "Sphere: Protection\n"
+       "Level: 2nd\n"
+       "Gp Cost: "+GP_COST+"\n"
+       "Description: \n"
+       "    This spell reduces damage done by Cold based attacks "
        "by 50%.  The duration is based upon the casters level.\n\n";
        
 
@@ -80,7 +80,7 @@ int hb_spell(object attacker, mixed *params)
   }
   if (params[2] && (int)previous_object()->adjust_gp(-GP_COST)<0)
   {
-    tell_object(previous_object(), "You fail to draw enough energy from "+
+    tell_object(previous_object(), "You fail to draw enough energy from "
      "your god.\n");
     return 0;
   }

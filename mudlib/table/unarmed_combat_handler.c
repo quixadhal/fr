@@ -22,13 +22,13 @@ mapping unarmed_combat_styles;
 create()
 {
   seteuid("Room");
-  unarmed_combat_styles=([ "brawling" : ({ 1, 3, ({ "punch", "kick", "headbutt", "knee", }), }), ]);
+  unarmed_combat_styles=([ "brawling" : ({ 1, 3, ({ "punch", "kick", "headbutt", "knee" }) }) ]);
   restore_object(SAVEFILE);
 }
 
 void add_uc_style(string name, int num_dice, int dam_die, string *moves)
 {
-  unarmed_combat_styles+=([ name : ({ num_dice, dam_die, moves, }), ]);
+  unarmed_combat_styles+=([ name : ({ num_dice, dam_die, moves }) ]);
   save_object(SAVEFILE);
 }
 

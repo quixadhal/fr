@@ -16,8 +16,8 @@ void setup() {
   set_light(60);
   set_short("Patrician's Office");
   set_long(
-"This is a small sparsely funished outer waiting room in the Patrician's "+
-"Office.  Several busy looking clerks are rushing around.  You can see a "+
+"This is a small sparsely funished outer waiting room in the Patrician's "
+"Office.  Several busy looking clerks are rushing around.  You can see a "
 "small sign hanging on the wall.\n");
  
   add_exit("east", OUTSIDE, "door");
@@ -88,12 +88,12 @@ int complain() {
     return 0;
   }
   message = this_player()->query_cap_name() + " " + ctime(time()) + "\n";
-  write("You are lodging an official complaint about something or someone.\n"+
-        "Do not take this action lightly.\n"+
-        "Please provide as much information as possible and a Lord or God "+
-        "will mail you regarding the problem as soon as possible.  Only "+
-        "problems that you feel affect the entire mud should be complained "+
-        "about.  Feedback for the general populous will probably end up on "+
+  write("You are lodging an official complaint about something or someone.\n"
+        "Do not take this action lightly.\n"
+        "Please provide as much information as possible and a Lord or God "
+        "will mail you regarding the problem as soon as possible.  Only "
+        "problems that you feel affect the entire mud should be complained "
+        "about.  Feedback for the general populous will probably end up on "
         "bulletin boards around the place.\n");
 /*
   write("Enter complaint.  ** to end or ~q to abort.\n");

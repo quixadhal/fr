@@ -7,20 +7,20 @@
 string help()
 {
   return
-    "Command name: Decapitate\n"+
-    "GP Cost: "+GP_COST+"\n"+
-    "Syntax: decapitate <object>\n"+
-    "Decscription:\n"+
-    "    This ability lets you hack the head off of a corpse "+
-    "lying around.  Useful for trophies, and not much else "+
-    "really.  Of course, something still alive might get annoyed "+
+    "Command name: Decapitate\n"
+    "GP Cost: "+GP_COST+"\n"
+    "Syntax: decapitate <object>\n"
+    "Decscription:\n"
+    "    This ability lets you hack the head off of a corpse "
+    "lying around.  Useful for trophies, and not much else "
+    "really.  Of course, something still alive might get annoyed "
     "if you try this on them.\n\n";
 }
 
 int decapitate(string str,object x)
 {
   object me;
-  object* ob;
+  mixed ob;
   object* weap;
   int noweap;
   object head;
@@ -30,11 +30,12 @@ int decapitate(string str,object x)
   else
     me = this_player();
 
-  if(!str || str == "") str = "corpse";
+  if(!str || str == "") 
+    str = "corpse";
 
-  if(me->query_property("dead"))
+  if(me->query_dead())
   {
-    tell_object(me,"You, a disembodied ghost, expect to decapitate "+
+    tell_object(me,"You, a disembodied ghost, expect to decapitate "
       "something?.\nCyric pats you on the head and tells you: Nice try.\n ");
     return 1;
   }
@@ -52,7 +53,7 @@ int decapitate(string str,object x)
 
   if ( noweap )
   {
-    tell_object(me, "You'd make a mess of it without a sharp "+
+    tell_object(me, "You'd make a mess of it without a sharp "
       "weapon in hand.\n");
     return 1;
   }
@@ -68,10 +69,10 @@ int decapitate(string str,object x)
  
   if(living(ob))
   {
-    tell_object(me, ob->query_cap_name()+" doesn't feel like being "+
+    tell_object(me, ob->query_cap_name()+" doesn't feel like being "
       "decapitated right now.\n");
-    tell_object(ob, me->query_cap_name()+" walks toward you with a long "+
-      "sharp weapon in hand, then, looking\ncloser at your neck, appears "+
+    tell_object(ob, me->query_cap_name()+" walks toward you with a long "
+      "sharp weapon in hand, then, looking\ncloser at your neck, appears "
       "startled and backs away, disappointed.\n");
     return 1;
   }
@@ -84,21 +85,22 @@ int decapitate(string str,object x)
  
   if (ob->query_property("decapitated"))
   {
-    tell_object(me, "Someone's beat you to the head of this one.  Wouldn't "+
+    tell_object(me, "Someone's beat you to the head of this one.  Wouldn't "
       "eat at the local\nrestaurant anytime soon if I were you.\n");
     return 1;
   }
  
   tell_object(me, "You hack the head off the "+ob->short()+".\n");
-  tell_room(environment(me), me->query_cap_name()+" hacks the head off "+
+  tell_room(environment(me), me->query_cap_name()+" hacks the head off "
     "the "+ob->short()+".\n", me);
  
   ob->add_property("decapitated",1);
-  ob->set_long(ob->query_long()+"\nIt appears someone has hacked off the "+
+  ob->set_long(ob->query_long()+"\nIt appears someone has hacked off the "
     "head.\n");
  
   head = clone_object(HEAD);
-  head->set_short("Decapitated head of "+ob->query_owner());
+  head->set_head_name(ob->query_owner());
+  head->add_property("owner", ob->query_owner());
   head->move(environment(me));
  
   return 1;

@@ -17,16 +17,16 @@ int ADJ_COST;
  /*** help file ***/
 string help() {
        return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "School: Conjuration\n"+
-       "Level: 3rd\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Damage Type: "+TYPE+"\n"+
-       "Saving Throw: 1/2\n"+
-       "Description: \n"+
-       "    This spell will hurl fiery bolts at a single target.  The "+
-       "caster gets 1 arrow for every 5 levels of experience.  A single "+
+       "\n\n"
+       "Spell Name: "+SP_NAME+"\n"
+       "School: Conjuration\n"
+       "Level: 3rd\n"
+       "Gp Cost: "+GP_COST+"\n"
+       "Damage Type: "+TYPE+"\n"
+       "Saving Throw: 1/2\n"
+       "Description: \n"
+       "    This spell will hurl fiery bolts at a single target.  The "
+       "caster gets 1 arrow for every 5 levels of experience.  A single "
        "arrow will do 4d6 damage, two would do 8d6, and so on.\n";
        
 

@@ -1,3 +1,4 @@
+// No longer needed, externalized by Radix - Jan 21, 1996
 string mtime(int i) {
   string str;
 

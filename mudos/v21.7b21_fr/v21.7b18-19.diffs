@@ -1,0 +1,129 @@
+diff -cr v21.7b18/ChangeLog.beta v21.7b19/ChangeLog.beta
+*** v21.7b18/ChangeLog.beta	Fri Mar  1 12:08:08 1996
+--- v21.7b19/ChangeLog.beta	Sun Mar 10 04:39:14 1996
+***************
+*** 1,3 ****
+--- 1,10 ----
++ Fri Mar  1 12:20:12 EST 1996 (tim@handel.princeton.edu (Beek))
++ 	* raised patchlevel to v21.7b19
++ 	* set the telnet flag for anything that responds to telnet queries,
++ 	  even if it refuses terminal negotiation
++ 	* fixed debugmalloc compilation problem (had old name for CFG_MAX_EFUN_SOCKS)
++ 	* fixed crasher in author/domain_file() returning bad types
++ 
+  Thu Feb 22 10:38:57 EST 1996 (tim@handel.princeton.edu (Beek))
+  	* raised patchlevel to v21.7b18
+  	* Fixed ./build.MudOS to create comptest.o so it exists for the ar
+diff -cr v21.7b18/comm.c v21.7b19/comm.c
+*** v21.7b18/comm.c	Mon Feb 26 20:38:38 1996
+--- v21.7b19/comm.c	Fri Mar  1 14:50:29 1996
+***************
+*** 620,626 ****
+  		       terminal type */
+  		    push_constant_string(ip->sb_buf + 2);
+  		    apply(APPLY_TERMINAL_TYPE, ip->ob, 1, ORIGIN_DRIVER);
+- 		    ip->iflags |= USING_TELNET;
+  		} else
+  		if (ip->sb_buf[0]==TELOPT_NAWS) {
+  		    int w, h, i, c[4];
+--- 620,625 ----
+***************
+*** 706,711 ****
+--- 705,717 ----
+  	    ip->state = TS_DATA;
+  	    break;
+  	case TS_WILL:
++ 	    /* if we get any IAC WILL or IAC WONTs back, we assume they
++ 	     * understand the telnet protocol.  Typically this will become
++ 	     * set at the first IAC WILL/WONT TTYPE/NAWS response to the
++ 	     * initial queries.
++ 	     */
++ 	    ip->iflags |= USING_TELNET;
++ 
+  	    if (from[i] == TELOPT_TTYPE) {
+  		add_message(ip->ob, telnet_term_query);
+  		flush_message(ip);
+***************
+*** 712,717 ****
+--- 718,729 ----
+  	    }
+  	case TS_DONT:
+  	case TS_WONT:
++ 	    /* if we get any IAC WILL or IAC WONTs back, we assume they
++ 	     * understand the telnet protocol.  Typically this will become
++ 	     * set at the first IAC WILL/WONT TTYPE/NAWS response to the
++ 	     * initial queries.
++ 	     */
++ 	    ip->iflags |= USING_TELNET;
+  	    ip->state = TS_DATA;
+  	    break;
+  	case TS_SB:
+diff -cr v21.7b18/md.c v21.7b19/md.c
+*** v21.7b18/md.c	Thu Feb 22 10:33:32 1996
+--- v21.7b19/md.c	Sun Mar 10 01:37:28 1996
+***************
+*** 419,425 ****
+      int i;
+      char *s;
+  
+!     for (i = 0; i < MAX_EFUN_SOCKS; i++) {
+  	if (lpc_socks[i].flags & S_READ_FP) {
+  	    mark_funp(lpc_socks[i].read_callback.f);
+  	} else 
+--- 419,425 ----
+      int i;
+      char *s;
+  
+!     for (i = 0; i < CFG_MAX_EFUN_SOCKS; i++) {
+  	if (lpc_socks[i].flags & S_READ_FP) {
+  	    mark_funp(lpc_socks[i].read_callback.f);
+  	} else 
+diff -cr v21.7b18/packages/mudlib_stats.c v21.7b19/packages/mudlib_stats.c
+*** v21.7b18/packages/mudlib_stats.c	Thu Feb 22 10:34:30 1996
+--- v21.7b19/packages/mudlib_stats.c	Sun Mar 10 01:27:55 1996
+***************
+*** 313,319 ****
+      ret = apply_master_ob(APPLY_AUTHOR_FILE, 1);
+      if (ret == (svalue_t *)-1) {
+  	ob->stats.author = master_author;
+!     } else if (IS_ZERO(ret)) {
+  	ob->stats.author = NULL;
+      } else {
+  	ob->stats.author = add_stat_entry(ret->u.string, &authors);
+--- 313,319 ----
+      ret = apply_master_ob(APPLY_AUTHOR_FILE, 1);
+      if (ret == (svalue_t *)-1) {
+  	ob->stats.author = master_author;
+!     } else if (!ret || ret->type != T_STRING) {
+  	ob->stats.author = NULL;
+      } else {
+  	ob->stats.author = add_stat_entry(ret->u.string, &authors);
+***************
+*** 402,407 ****
+--- 402,409 ----
+      ret = apply(domain_file_fname, tmp_ob, 1, ORIGIN_DRIVER);
+      if (!ret)
+  	error("No function 'domain_file' in master ob!\n");
++     if (ret->type != T_STRING)
++ 	error("'domain_file' in the master object must return a string!\n");
+      domain_name = ret->u.string;
+      if (IS_ZERO(ret)
+  	|| strcmp(current_object->stats.domain->name, domain_name) == 0) {
+diff -cr v21.7b18/packages/packages v21.7b19/packages/packages
+*** v21.7b18/packages/packages	Fri Mar  1 11:43:50 1996
+--- v21.7b19/packages/packages	Sun Mar 10 01:20:54 1996
+***************
+*** 1,2 ****
+! SRC=contrib.c sockets.c develop.c math.c 
+! OBJ=contrib.o sockets.o develop.o math.o 
+--- 1,2 ----
+! SRC=contrib.c sockets.c develop.c parser.c 
+! OBJ=contrib.o sockets.o develop.o parser.o 
+diff -cr v21.7b18/patchlevel.h v21.7b19/patchlevel.h
+*** v21.7b18/patchlevel.h	Fri Mar  1 12:09:57 1996
+--- v21.7b19/patchlevel.h	Sun Mar 10 04:41:07 1996
+***************
+*** 1 ****
+! #define PATCH_LEVEL "v21.7b18"
+--- 1 ----
+! #define PATCH_LEVEL "v21.7b19"

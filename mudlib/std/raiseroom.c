@@ -7,15 +7,19 @@
 #define HEALER "/baseobs/monsters/healer.c"
 inherit "/std/collect";
 
+int clean_up_room(int flag) { return 1; }
+void clean_up(int flag) { }
 string nurs;
 
 void setup()
   {
+   this_object()->add_property("no_undead",1);
   set_short("Raiseroom Object.");
 }
 
 void init()
   {
+   this_object()->add_property("no_undead",1);
   add_action ("do_raise", "raise");
   ::init();
 } /* void init */
@@ -50,37 +54,41 @@ int do_raise(string str)
       poor_guy = olist[0];
       if(!find_living(str)) return 0;
    }
-  if (!poor_guy->query_property("dead"))
-    return notify_fail("Why ask for a raise when you don't need it?\n");
+   if(!poor_guy->query_dead())
+   {
+     notify_fail("Why ask for a raise when you don't need it?\n");
+    return 0;
+   }
 
   if (!find_match(nurs, environment(this_player())))
     {
-    notify_fail("The priestess is not here to help you with the " +
+    notify_fail("The priestess is not here to help you with the " 
                 "raising. You have to wait for her.\n");
     return 1;
     }
  
-  if ((int)poor_guy->query_level() > 1) 
+  if ((int)poor_guy->query_level() > 10) 
     {
     cost = (int)poor_guy->query_level() * 5;
     if(!get_money(cost))
       {
-      tell_room(this_object(), "The Nurse says: Due to sad lack of "+
+      tell_room(this_object(), "The Nurse says: Due to sad lack of "
                     "money we will not be able to raise you.\n");
       return 1;
       } /* if */
     } /* if int poorguy.. */
 
-   tell_room(this_object(), "The Nurse"+
-             " walks out and comes back with an old man " +
-             "with ceremonial clothes. He chants a spell.\n");
 
   priest = new(HEALER);
    priest->move(this_object());
-  priest->do_raising(poor_guy);
-  tell_room(this_object(), "The priest says: You are now alive again. " +
+  if(priest->do_raising(poor_guy)) {
+  tell_room(this_object(), "The Nurse"
+            " walks out and comes back with an old man "
+             "dressed in ceremonial clothing.  He chants a spell.\n");
+  tell_room(this_object(), "The priest says: You are now alive again. " 
              "Be more careful this time.\n");
   tell_room(this_object(), "The priest walks out of the room.\n");
+  }
   priest->dest_me();
   return 1;
 } /* do  raise */

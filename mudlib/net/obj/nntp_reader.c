@@ -8,10 +8,9 @@
 #include "socket.h"
 #include "board.h"
 
-#define DEBUG
 
 #ifdef DEBUG
-#define TP(RABBIT) tell_object(find_player("isthar"), RABBIT)
+#define TP(RABBIT) tell_object(find_player("pinkfish"), RABBIT)
 #else
 #define TP(RABBIT)
 #endif

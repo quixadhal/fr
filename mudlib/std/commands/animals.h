@@ -1,0 +1,7 @@
+#define WEASEL "/std/commands/animals/weasel.c"
+#define HAWK "/std/commands/animals/hawk.c"
+#define WOLF "/std/commands/animals/wolf.c"
+#define BOAR "/std/commands/animals/boar.c"
+#define TIGER "/std/commands/animals/tiger.c"
+#define BEAR "/std/commands/animals/bear.c"
+#define OBJECT "/std/commands/animals/animal_object.c"

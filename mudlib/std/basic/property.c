@@ -103,7 +103,7 @@ int remove_timed_property(string var) {
   return 1;
 }
  
-int query_old_property(string str) {
+mixed query_old_property(string str) {
   int i;
 
   if (!str)
@@ -115,7 +115,7 @@ int query_old_property(string str) {
 }
 
 
-int query_static_property(string str) {
+mixed query_static_property(string str) {
   int i;
   
   if (!str)
@@ -132,7 +132,7 @@ int query_static_property(string str) {
  * Smart, idea from Taniwha, coded by Baldrick.
  * ehh tried to be coded.. wonder if it will work..
  */
-int query_timed_property(string str) {
+mixed query_timed_property(string str) {
   int i;
   int val;
 
@@ -189,7 +189,10 @@ void traverse_timed_properties()
   koofs = m_indices (timed_prop);
   for (i=0;i<sizeof(koofs);i++)
     {
-    koo = koofs[i][1];
+    // Fix by Wonderflug, we don't want the first character
+    // in the string :)  first element of the mapping element
+    //koo = koofs[i][1];
+    koo = timed_prop[koofs[i]][1];
     if (this_object()->query_hb_diff(timed_prop[koofs[i]][2]) > koo)
       {
       remove_timed_property(koofs[i]);
@@ -215,7 +218,13 @@ int query_static_property_exists(string str) {
 int query_timed_property_exists(string str) {
 
   if (!timed_prop)
+  {
     timed_prop = ([ ]);
+      return 0;
+   }
+   if(!str || str == "") return 0;
+   if(!sizeof(m_indices(timed_prop))) return 0;
+   query_timed_property(str); // Taniwha, so they expire
   return (member_array(str, m_indices(timed_prop))) != -1;
 }
  
@@ -239,9 +248,10 @@ int add_timed_properties(mapping map) {
 
 /* std/basic/property: */
 mixed *query_init_data() {
-   return ({ "properties", map_prop, "add_properties/p/" });
+   return ({ "properties",map_prop,"add_properties/p/","timed",timed_prop,"add_timed_properties/p/"});
 } /* query_init_data() */
-int query_property(string str) {
+
+mixed query_property(string str) {
 
   if (!str)
     return 0;
@@ -249,4 +259,41 @@ int query_property(string str) {
    if(query_static_property_exists(str)) return query_static_property(str);
    return query_old_property(str);
  
+}
+
+/* Added by Hamlet -- If we're going to save timed properties, let's
+   have them restore to something worthwhile. :)
+*/
+mapping freeze_timed_properties(mapping wabbit) {
+  string *ind;
+  int i;
+  int timeleft;
+  mapping ret = ([ ]);
+
+  if(!wabbit || !sizeof(wabbit))  return ([ ]);
+  ind = m_indices(wabbit);
+
+  for(i=0;i<sizeof(ind);i++) {
+    timeleft = wabbit[ind[i]][1] -
+                 (int)this_object()->query_hb_diff(wabbit[ind[i]][2]);
+    if(timeleft > 0)
+      ret[ind[i]] = ({ wabbit[ind[i]][0], timeleft });
+  }
+  return ret;
+}
+
+mapping thaw_timed_properties(mapping turtle) {
+  string *ind;
+  int i;
+  mapping ret = ([ ]);
+
+  if(!turtle || !sizeof(turtle))  return ([ ]);
+  ind = m_indices(turtle);
+
+  for(i=0;i<sizeof(ind);i++)
+    ret[ind[i]] = ({ turtle[ind[i]][0], turtle[ind[i]][1],
+                     this_object()->query_hb_counter()
+                  });
+
+  return ret;
 }

@@ -1,10 +1,22 @@
+/* Wonderflug 96, got rid of global initialization in declaration,
+ * added a create()
+ */
+
 inherit "/std/basic/desc";
 /* this one also contians info on read_messages... */
 #include "language.h"
 
 static mixed *read_mess;
-static int max_size = 100,
+static int max_size,
            cur_size;
+
+
+void create()
+{
+  ::create();
+  max_size = 100;
+  cur_size = 0;
+}
 
 void add_read_mess(string str, string type, string lang, int size);
 

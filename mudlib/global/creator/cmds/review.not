@@ -1,0 +1,22 @@
+#include <standard.h>
+#include <cmd.h>
+inherit CMD_BASE;
+
+void setup()
+{
+position = 1;
+}
+
+int review() {
+  PEOPLER->review();
+  return 1;
+} /* review() */
+
+static int cmd(string str, object me) {
+  me->query_player_review();
+  review();
+  return 1;
+} /* review() */
+ 
+
+

@@ -1,9 +1,7 @@
-#include <standard.h>
 #include "udp.h"
 /*
  * They have answered our remote who question.
  */
-
 void incoming_request(mapping info) {
   object ob;
 
@@ -21,5 +19,3 @@ void incoming_request(mapping info) {
 void create() {
   seteuid(getuid());
 } /* create() */
-
-void dest_me() { destruct(TO); }

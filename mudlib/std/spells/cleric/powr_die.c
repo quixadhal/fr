@@ -1,10 +1,3 @@
-#define save_type "magical"
-#define SP_NAME "Power Word: Die"
-#define SPELLTYPE "offensive"
-#define GP_COST 40
-
-mixed spell(object caster,string str);
-
 /* Power word Die.
   Made by Baldrick June 1993.
     Mods for FR jan '95, by the same nerd.
@@ -17,158 +10,129 @@ mixed spell(object caster,string str);
   --Check for pacified target.
   --Added a casting delay, some new fancy messages. 
   --Basically rewrote it.
+
+  96, -> base spell.  Wonderflug again
 */
 
-string help() 
+inherit "/std/spells/base.c";
+
+void setup()
 {
-  return "\n"+
-	"Spell name: "+SP_NAME+"\n"
-	"GP Cost: "+GP_COST+"\n"
-	"Sphere: All\n"+
-	"\nDescription: \n"+
-	"This spell kills the one you use it at; if the victim is "+
-	"powerful enough it may survive.\n\n";
+  set_spell_name("Power Word Die");
+  set_spell_level(7);
+  set_sphere("necromantic");
+
+  set_target_type("one");
+  set_range(0);
+  set_line_of_sight_needed(0);
+
+  set_help_desc("This spell kills the one you use it at; if the victim is "
+    "powerful enough it may survive.");
+
+  set_gp_cost(40);
+  set_casting_time(4);
+  set_rounds( ({ "round1", "round2", "round3", "round4" }) );
 }
 
-int cast_spell(string str,object cast)
+int round1(object caster, mixed target, mixed out_range, int time, int quiet)
 {
-  mixed ret;
-  object caster;
-
-  caster = cast ? cast : this_player();
-
-  if(interactive(caster))
-	str = (string)caster->expand_nickname(str);
-  ret = spell(caster, str);
-  if (stringp(ret))
-  {
-	notify_fail(ret);
-	return 0;
-  }
-  return 1;
+  tell_object(caster, "You start to chant in a hissing, "
+    "cursing tongue.\n");
+  tell_room(environment(caster), caster->query_cap_name()+" chants "
+    "quietly in a hissing, cursing sound.\n", caster);
+  return 0;
 }
 
-mixed spell(object caster, string str) 
+int round2(object caster, mixed target, mixed out_range, int time, int quiet)
 {
-  mixed ob;
-
-  if ( (int)caster->query_spell_effect(SPELLTYPE) )
-    return "You are already casting a spell.\n";
-
-  if ( !str || str == "" )
-	return "You shout and shout but feel that a target would help.\n";
-
-  ob = find_match( str, environment(caster) );
-  if ( sizeof(ob) )
-    ob = ob[0];
-  else ob = 0;
-
-  if (ob && !living(ob))
-        return ("All that shouting at dead objects tires you out somewhat.\n");
-  if (ob && ob->query_creator())
-        return ("You don't think it is wise to kill an immortal.\n");
-  if (ob && ob->query_property("dead"))
-         return (string)ob->query_cap_name()+" is already dead.\n";
-  if (ob && ob->query_pacify_spell())
-	return ("You don't feel like harming "+(string)ob->query_cap_name()+
-	  ", seeing how peaceful "+ob->query_pronoun()+" is.\n");
-
-  if(ob && member_array(caster,ob->query_attacker_list()) != -1)
-        return("You cannot concentrate enough while you are fighting "+
-	  "your target.\n");
-
-  tell_object(caster, "You begin to cast Power Word: Die.\n");
-  tell_room(environment(caster), caster->query_cap_name()+
-    " begins to cast a spell.\n", caster);
-
-  caster->add_spell_effect(4, SPELLTYPE, SP_NAME, this_object(),
-    "hb_spell", ({ ob }) );
-  return 1;
+  tell_object(caster, "Your chanting becomes a vile, twisted "
+    "shouting.\n");
+  tell_room(environment(caster), caster->query_cap_name()+"'s chant "
+    "grows louder, into a foul, twisted shout.\n", caster);
+  return 0;
 }
 
-int hb_spell( object caster, mixed* params, int time )
-{     
-  object ob;
+int round3(object caster, mixed target, mixed out_range, int time, int quiet)
+{
+  tell_object(caster, "You cut off abruptly, a pall of silence "
+    "drops over the area.\n");
+  tell_room(environment(caster), caster->query_cap_name()+" cuts off "
+    "abruptly and an ominous silence fills the air.\n", caster);
+  return 0;
+}
+
+int round4(object caster, mixed target, mixed out_range, int time, int quiet)
+{
   int skill;
   int check;
   int cost;
   int c_roll, t_roll;
 
-  switch( time )
+  if ( !target )
   {
-    case 4:
-	tell_object(caster, "You start to chant in a hissing, "+
-	  "cursing tongue.\n");
-	tell_room(environment(caster), caster->query_cap_name()+" chants "+
-	  "quietly in a hissing, cursing sound.\n", caster);
-	return 1;
-    case 3:
-	tell_object(caster, "Your chanting becomes a vile, twisted "+
-	  "shouting.\n");
-	tell_room(environment(caster), caster->query_cap_name()+"'s chant "+
-	  "grows louder, into a foul, twisted shout.\n", caster);
-	return 1;
-    case 2:
-	tell_object(caster, "You cut off abruptly, a pall of silence "+
-	  "drops over the area.\n");
-	tell_room(environment(caster), caster->query_cap_name()+" cuts off "+
-	  "abruptly and an ominous silence fills the air.\n", caster);
-	return 1;
-    default:
-	break;
-  }
-
-  cost = GP_COST;
-
-  if ( (int)caster->adjust_gp(-cost) < 0)
-  {
-    tell_object(caster, "You don't have the power to finish "+
-      "casting the Power Word.\n");
+    tell_object(caster,
+      "Your spell failed ... there is nobody of that name here.\n");
     tell_room(environment(caster), caster->query_cap_name()+
-      " looks tired and confused suddenly.\n", caster);
-    return 1;
+      " looks very confused and curses.\n", caster);
+    return -1;
   }
 
-  ob = params[0];
-
-  if (!ob || environment(ob) != environment(caster) )
+  if (target->query_creator())
   {
-	tell_object(caster, "Your target seems to have left.\n");
-	tell_room(environment(caster), caster->query_cap_name()+
-	  " looks very confused and curses.\n", caster);
-	return 1;
+    tell_object(caster, "You don't think it is wise to kill an immortal.\n");
+    tell_room(environment(caster), caster->query_cap_name()+
+      " looks very confused and curses.\n", caster);
+    return -1;
   }
 
-/* here is the "saving throw" I'm trying out */
+  if (target->query_dead())
+  {
+    tell_object(caster, (string)target->query_cap_name()+
+      " is already dead.\n");
+    tell_room(environment(caster), caster->query_cap_name()+
+      " looks very confused and curses.\n", caster);
+    return -1;
+  }
+
+  if (target->query_pacify_spell())
+  {
+    tell_object(caster, "You don't feel like harming "+
+      (string)target->query_cap_name()+", seeing how peaceful "+
+      target->query_pronoun()+" is.\n");
+    return -1;
+  }
+
+  /* here is the "saving throw" I'm trying out */
 
   c_roll = random( (int)caster->query_level() * (int)caster->query_wis() + 5 );
-  t_roll = (int)ob->query_level() * (int)ob->query_wis();
-  if ( c_roll * ( (100 - (int)ob->query_property("magical")) / 100 ) < t_roll )
+  t_roll = (int)target->query_level() * (int)target->query_wis();
+  if ( c_roll*((100-(int)target->query_property("magical")) / 100 ) < t_roll )
   {
-	tell_object(ob, "You hear "+(string)caster->query_cap_name()+
-	  " whisper death to you through the silence.\n");
-	caster->attack_ob(ob);
+    tell_object(target, "You hear "+(string)caster->query_cap_name()+
+      " whisper death to you through the silence.\n");
+    caster->attack_ob(target);
     tell_object(caster, "Your word comes out only as a whisper.\n");
-    tell_room(environment(caster), caster->query_cap_name()+" whispers "+
-      "something into the silence to "+ob->query_cap_name()+".\n",
+    tell_room(environment(caster), caster->query_cap_name()+" whispers "
+      "something into the silence to "+target->query_cap_name()+".\n",
       caster);
-    return 1;
+    return 0;
   }
 
-   if(ob->query_property("pacify_on"))
-   {
-      tell_room(environment(caster),"The Gods step in to save the life of "+ob->query_cap_name()+" who is harmless.\n");
-      return 1;
-   }
+  if(target->query_property("pacify_on"))
+  {
+    tell_room(environment(caster),"The Gods step in to save the life of "+
+      target->query_cap_name()+" who is harmless.\n");
+    return 0;
+  }
   tell_object(caster,"You shout into the sudden silence: DIE "+
-	ob->query_cap_name()+"!\n\nYou call upon the gods to help you kill " +
-         ob->query_cap_name() + ".\n");
+    target->query_cap_name()+"!\n\nYou call upon the gods to help you kill " +
+    target->query_cap_name()+".\n");
   tell_room(environment(caster),(string)caster->query_cap_name() + 
-	" shouts in the sudden silence: DIE "
-	+(string)ob->query_cap_name() + "!\n",
-	({ caster }) );
-  tell_object(ob, "\nYou feel " + (string)caster->query_cap_name() +
-    	"'s word attack you.\n\nThe powerword killed you.\n\n");
-  ob->do_death(caster);
-  return 1;
+    " shouts in the sudden silence: DIE " +(string)target->query_cap_name() + 
+    "!\n", ({ caster }) );
+  tell_object(target, "\nYou feel " + (string)caster->query_cap_name() +
+    "'s word attack you.\n\nThe powerword killed you.\n\n");
+  target->do_death(caster);
+
+  return 0;
 }

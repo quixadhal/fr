@@ -5,12 +5,12 @@ inherit "/std/room";
 void setup() {
   set_short("Mail control room");
   set_long(
-"This is the mail control room.  You can order mailing lists here if you're "+
-"getting tired of extensive CC'ing.\n"+
-"Available commands here are:\n"+
-"create <list>              :  Creating a new mailing list.\n"+
-"add <list> <names>         :  Adding a name to a mailing list.\n"+
-"remove <list>              :  Removing a mailing list.\n"+
+"This is the mail control room.  You can order mailing lists here if you're "
+"getting tired of extensive CC'ing.\n"
+"Available commands here are:\n"
+"create <list>              :  Creating a new mailing list.\n"
+"add <list> <names>         :  Adding a name to a mailing list.\n"
+"remove <list>              :  Removing a mailing list.\n"
 "list                       :  List all the mailing lists.\n");
 
   set_light(100);
@@ -37,7 +37,7 @@ int do_add(string str) {
     return 0;
   }
   if (!MAIL_TRACK->query_controller(list, this_player()->query_name())) {
-    notify_fail("You have to be a member of a mailing list to get mail "+
+    notify_fail("You have to be a member of a mailing list to get mail "
                 "from it.\n");
     return 0;
   }
@@ -104,7 +104,7 @@ int do_remove(string str) {
     return 0;
   }
   if (!MAIL_TRACK->query_controller(list, this_player()->query_name())) {
-    notify_fail("You have to be a controller of a mailing list to get mail "+
+    notify_fail("You have to be a controller of a mailing list to get mail "
                 "from it.\n");
     return 0;
   }

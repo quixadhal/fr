@@ -27,7 +27,7 @@ void add_bit(string name, string alias, mixed *varr)
 }
 
 void create() {
-   set_long("The standard boring race.  Get a new one soon, this one is "+
+   set_long("The standard boring race.  Get a new one soon, this one is "
             "pretty sad.\n");
    reset_get();
    bits = ({

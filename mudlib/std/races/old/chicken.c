@@ -3,7 +3,7 @@ inherit "/std/races/standard";
 string *inedible;
 
 void setup() {
-   set_long("Chickens.  That's all there is to say.  Chickens, chickens, "+
+   set_long("Chickens.  That's all there is to say.  Chickens, chickens, "
       "chickens, chickens, chickens.  Thank you.\n");
    set_name("chicken");
    /* throw away human bits and replace totally */

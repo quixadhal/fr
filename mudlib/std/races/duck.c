@@ -1,13 +1,13 @@
 inherit "/std/races/standard";
-#include "light_defs.inc"
+#include "light_defs.inc"   
 
 string *inedible;
 
 void setup() {
    set_long("This is a cute Duck. Just watch the cute way it walks around.\n");
    set_name("duck");
-set_light_limits(LIGHT_DUCK_LOW, LIGHT_DUCK_HIGH);
    /* throw away human bits and replace totally */
+set_light_limits(LIGHT_DUCK_LOW, LIGHT_DUCK_HIGH);
    bits = ({ 
 "head", 0, ({ 0, 2, 0, "left eye", "right eye", "beak", "comb", "skull" }),
 "left eye", "eye", ({ "head", 1, 0 }),
@@ -37,6 +37,17 @@ set_light_limits(LIGHT_DUCK_LOW, LIGHT_DUCK_HIGH);
 });
   inedible = ({ "beak", "skull", "feather", "tail feather",
                 "comb", "neck", "genitals", "left claw", "right claw" });
+}
+
+void init() {
+  add_action("sit", "sit");
+  ::init();
+}
+
+int sit() {
+  write("Ducks can't sit, as you well should know from your Duck anatomy "+
+        "lessons!\n");
+  return 1;
 }
 
 string query_desc(object ob) 

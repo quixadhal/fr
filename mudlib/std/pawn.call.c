@@ -25,7 +25,7 @@ void create() {
   hold_time = 1800;
   set_short("Pawn Shop");
   set_long(
-"You are in a Pawn shop.  You can value, leave and reclaim things here.  "+
+"You are in a Pawn shop.  You can value, leave and reclaim things here.  "
 "There is a sign describing how the shop works.\n");
   set_light(60);
   buy_mess = ({ "You reclaim $ob$ for $money$.\n",
@@ -53,8 +53,8 @@ void dest_me() {
   if(!people) people = ({ });
   for(loop = 0; loop < sizeof(people); loop++) {
     tell_object(find_living(people[loop]), 
-"A little person runs up to you and hands you a note, then vanishes again.\n"+
-"The note reads:\n"+
+"A little person runs up to you and hands you a note, then vanishes again.\n"
+"The note reads:\n"
 "Pawnbroker has gone broke.  " + objs[loop]->query_name() + " sold to shop.\n");
     objs[loop]->move(shop);
   }
@@ -112,14 +112,14 @@ int read(string str) {
      notify_fail("The only thing here to read is a sign.\n");
     return 0;
   }
-  write("You can leave things here in exchange for cash.  The value of the "+
-        "item determines the amount of cash you can get for it.  If you do "+
+  write("You can leave things here in exchange for cash.  The value of the "
+        "item determines the amount of cash you can get for it.  If you do "
         "not return and claim your item within " + 
-        (hold_time / 60) +  " minutes, then it "+
-        "will be sold to a shop to reclaim its worth.\n"+
-        "You can leave <item>, reclaim <item>, list, and value <item> here.\n"+
-        "Selling things here gets you less money than the shop, but "+
-        "reclaiming the item does not cost as much as buying it back from the "+
+        (hold_time / 60) +  " minutes, then it "
+        "will be sold to a shop to reclaim its worth.\n"
+        "You can leave <item>, reclaim <item>, list, and value <item> here.\n"
+        "Selling things here gets you less money than the shop, but "
+        "reclaiming the item does not cost as much as buying it back from the "
         "shop would.\n");
   return 1;
 }

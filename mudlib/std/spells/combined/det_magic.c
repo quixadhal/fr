@@ -13,15 +13,15 @@ mixed find_one_match(string find, mixed in);
 
 string help() {
        return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "School: Lesser Divination\n"+
-       "Level: 1st\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Description: \n"+
-       "    This spell is used to determine whether an item is magical or "+
-       "not.  The brightness of a magical item also gives the caster "+
-       "an idea of its power.  This spell must be cast upon and item to "+
+       "\n\n"
+       "Spell Name: "+SP_NAME+"\n"
+       "School: Lesser Divination\n"
+       "Level: 1st\n"
+       "Gp Cost: "+GP_COST+"\n"
+       "Description: \n"
+       "    This spell is used to determine whether an item is magical or "
+       "not.  The brightness of a magical item also gives the caster "
+       "an idea of its power.  This spell must be cast upon and item to "
        "work properly.\n\n";
        
 

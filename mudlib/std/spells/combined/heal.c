@@ -23,17 +23,17 @@ mixed find_one_match(string find, mixed in);
 /*** Help file here ***/
 string help() {
    return
-   "\n\n"+
-   "Spell Name: "+SP_NAME+"\n"+
-   "Sphere:  Healing\n"+
-   "Level:  6th\n"+
-   "Gp Cost: "+GP_COST+"\n"+
-   "Description: \n"+
-       "    Heal will cure the target of all diseases, curses, and nearly"+
-       "cures all but 1-4 points of damage.\n"+
-       ""+
-       "  See Also:\n"+
-       "      Cure Light Wounds, Cure Serious Wounds, Cure Critical Wounds."+
+   "\n\n"
+   "Spell Name: "+SP_NAME+"\n"
+   "Sphere:  Healing\n"
+   "Level:  6th\n"
+   "Gp Cost: "+GP_COST+"\n"
+   "Description: \n"
+       "    Heal will cure the target of all diseases, curses, and nearly"
+       "cures all but 1-4 points of damage.\n"
+       ""
+       "  See Also:\n"
+       "      Cure Light Wounds, Cure Serious Wounds, Cure Critical Wounds."
        "\n";
 
 }
@@ -84,7 +84,7 @@ int hp;
   if (!living(params[1])) {
     tell_object(previous_object(),
       (string)params[1]->query_cap_name() +
-      " is happy with the way it is now and doesnt want any help" +
+      " is happy with the way it is now and doesnt want any help" 
       " from you.\n");
     return 0;
     }
@@ -95,7 +95,7 @@ int hp;
     }
   if (params[1] == previous_object()) {
     tell_object(previous_object(),
-      "You cast a healing spell on yourself and feel a warm" +
+      "You cast a healing spell on yourself and feel a warm" 
       " sensation.  God that felt good!\n");
     say(
       (string)previous_object()->query_cap_name() +
@@ -113,7 +113,7 @@ int hp;
       params[1]);
     tell_object(params[1],
       (string)previous_object()->query_cap_name() +
-      " mumbles something then points at you.  You feel a warm" +
+      " mumbles something then points at you.  You feel a warm" 
       " sensation.  God that felt good!\n");
     }
  

@@ -46,46 +46,46 @@ void setup_long() {
    if (race_name) {
       set_short(race_name + " " + bit_data[BIT_NAME]);
       set_long("This is a fresh " + (bit_data[BIT_NAME]) + 
-         " severed from the " +
+         " severed from the " 
          "corpse of " + add_a(race_name) + ".\n");
    } else {
       set_short(bit_data[BIT_NAME]);
       set_long("This is a fresh " + (bit_data[BIT_NAME]) +
-         " severed from the " +
+         " severed from the " 
          "corpse of an unknown creature.\n");
    }
   } else if (decay > 50) {
    if (race_name) {
       set_short(race_name + " " + bit_data[BIT_NAME]);
-      set_long("This is " + add_a(bit_data[BIT_NAME]) + " severed from the " +
+      set_long("This is " + add_a(bit_data[BIT_NAME]) + " severed from the " 
          "corpse of " + add_a(race_name) + ".\n");
    } else {
       set_short(bit_data[BIT_NAME]);
-      set_long("This is " + add_a(bit_data[BIT_NAME]) + " severed from the " +
+      set_long("This is " + add_a(bit_data[BIT_NAME]) + " severed from the " 
          "corpse of an unknown creature.\n");
    }
   } else if (decay > 30) {
    if (race_name) {
       set_short(race_name + " " + bit_data[BIT_NAME]);
       set_long("This is the partially decayed remains of " +
-         add_a(bit_data[BIT_NAME]) + " severed from the " +
+         add_a(bit_data[BIT_NAME]) + " severed from the " 
          "corpse of " + add_a(race_name) + ".\n");
    } else {
       set_short(bit_data[BIT_NAME]);
       set_long("This is the partially decayed remains of " +
-         add_a(bit_data[BIT_NAME]) + " severed from the " +
+         add_a(bit_data[BIT_NAME]) + " severed from the " 
          "corpse of an unknown creature.\n");
    }
   } else {
    if (race_name) {
       set_short(race_name + " " + bit_data[BIT_NAME]);
       set_long("This is the almost unrecognizable remains of " +
-         add_a(bit_data[BIT_NAME]) + " severed from the " +
+         add_a(bit_data[BIT_NAME]) + " severed from the " 
          "corpse of " + add_a(race_name) + ".\n");
    } else {
       set_short(bit_data[BIT_NAME]);
       set_long("This is the almost unrecognizable remains of " +
-         add_a(bit_data[BIT_NAME]) + " severed from the " +
+         add_a(bit_data[BIT_NAME]) + " severed from the " 
          "corpse of an unknown creature.\n");
    }
   }

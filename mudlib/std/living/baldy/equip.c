@@ -79,9 +79,9 @@ status set_amputated_hands(int i, status amputated) {
     str = ({ "right", "left" });
     tell_room(environment(),this_object()->query_cap_name()+" loses "+this_object()->query_possessive()
       +" "+str[j]+ " hand!  "+this_object()->query_pronoun()+" drops everything from the "
-      +"shock!\n", this_object());
+      "shock!\n", this_object());
     tell_object(this_object(),"You lose your "+str[j]+" hand!  You drop "
-      +"everything from the shock!\n");
+      "everything from the shock!\n");
     for (j=0; j<2; j++)
       if (ob=held_ob[j]) {
         held_ob[j] = 0;
@@ -124,7 +124,7 @@ status set_useless_hands(int i, status useless) {
     tell_room(environment(),this_object()->query_cap_name()+" loses the use of "+
       this_object()->query_possessive()+" "+str[j]+ " hand!  "+this_object()->query_pronoun()+
       " drops everything from the shock!\n", this_object());
-    tell_object(this_object(),"You lose the use of your "+str[j]+" hand!  "+
+    tell_object(this_object(),"You lose the use of your "+str[j]+" hand!  "
       "You drop everything from the shock!\n");
     for (j=0; j<2; j++)
      if (ob=held_ob[j]) {
@@ -266,7 +266,7 @@ status hold_wield(string str, int j)
     tell_object(this_object(),"You must 'remove shield' to put away your " 
        +(str=ob->short(0))+".\n");
     tell_room(environment(), this_object()->query_cap_name()+" must 'remove shield' to put"
-      +" away "+this_object()->query_possessive()+" "+str+".\n",this_object());
+      " away "+this_object()->query_possessive()+" "+str+".\n",this_object());
     return 0;
   }
   if (!str || str == "hands" || str == "nothing")
@@ -297,7 +297,7 @@ status hold_wield(string str, int j)
     tell_room(environment(), this_object()->query_cap_name()+" tries to "+h+" "+str+
       ", but "+this_object()->query_pronoun()+" has no useful "+h+"ing hand.\n",
       this_object());
-    tell_object(this_object(),"You try to "+h+" "+str+", but "+
+    tell_object(this_object(),"You try to "+h+" "+str+", but "
       "you have no useful "+h+"ing hand.\n");
     return 0;
   }
@@ -305,7 +305,7 @@ status hold_wield(string str, int j)
   if (!sizeof(obs)) {
     tell_room(environment(), this_object()->query_cap_name()+" tries to "+h+" "+str+
       ", but "+this_object()->query_pronoun()+" doesn't have that.\n", this_object());
-    tell_object(this_object(),"You try to "+h+" "+str+", but "+
+    tell_object(this_object(),"You try to "+h+" "+str+", but "
       "you don't have that.\n");
     return 0;
   }
@@ -349,8 +349,8 @@ status hold_wield(string str, int j)
   }
   else if (ob2)
   {
-    wear_remove_mess(ob2, h, "doesn't have both hands free, "+
-      "and it take two hands to "+h+" it", "don't have both hands free, "+
+    wear_remove_mess(ob2, h, "doesn't have both hands free, "
+      "and it take two hands to "+h+" it", "don't have both hands free, "
       "and it take two hands to "+h+" it");
   }
   else if (obs[0]->query_armor())
@@ -444,10 +444,10 @@ if(guild_ob)
 
 
 void armor_call_out(string str, int i, object armor, string type) {
-  tell_room(environment(), this_object()->query_cap_name()+" is finally "+
+  tell_room(environment(), this_object()->query_cap_name()+" is finally "
     "finished "+str+" "+this_object()->query_possessive()+" body armor.\n",
     this_object());
-  tell_object(this_object(), "You're finally finished "+str+" your body"+
+  tell_object(this_object(), "You're finally finished "+str+" your body"
     " armor.\n");
   if (str == "wearing") {
     armor->set_wearer(this_object());
@@ -532,7 +532,7 @@ void wear(string str) {
   if (!sizeof(obs)) {
     tell_room(environment(), this_object()->query_cap_name()+" tries to wear "+str+
       ", but "+this_object()->query_pronoun()+" doesn't have that.\n", this_object());
-    tell_object(this_object(),"You try to wear "+str+", but "+
+    tell_object(this_object(),"You try to wear "+str+", but "
       "you don't have that.\n");
     return;
   }
@@ -555,7 +555,7 @@ void remove(string str) {
   if (!sizeof(obs)) {
     tell_room(environment(), this_object()->query_cap_name()+" tries to remove "+str+
       ", but "+this_object()->query_pronoun()+" doesnt have that.\n", this_object());
-    tell_object(this_object(),"You try to remove "+str+", but "+
+    tell_object(this_object(),"You try to remove "+str+", but "
       "you don't have that.\n");
     return;
   }
@@ -623,9 +623,9 @@ if (!guild_ob) guild_ob = "/std/guild";
 
   if (i = member_array("shield", armor)!=-1) {
     if (held_ob[1]) {
-      tell_room(environment(),this_object()->query_cap_name()+" decides not to wear a "+         "shield since "+this_object()->query_possessive()+" shield hand is holding something"
-        +" already.\n", this_object());
-      tell_object(this_object(),"You decide not to wear a shield since your"+
+      tell_room(environment(),this_object()->query_cap_name()+" decides not to wear a "         "shield since "+this_object()->query_possessive()+" shield hand is holding something"
+        " already.\n", this_object());
+      tell_object(this_object(),"You decide not to wear a shield since your"
         " shield hand is holding something already.\n");
       armor = delete(armor, i-2, 3);
     }
@@ -658,7 +658,7 @@ if(weapon[0])
     tell_object(this_object(),"You have nothing to wield.\n");
   }
 else if (!free_hands[0]){
-    tell_room(environment(), this_object()->query_cap_name()+" doesn't have a free weapon "+
+    tell_room(environment(), this_object()->query_cap_name()+" doesn't have a free weapon "
       "hand.\n", this_object());
     tell_object(this_object(),"You don't have a free weapon hand.\n");
   }

@@ -1,82 +1,31 @@
+/*** By Wonderflug ***/
 
+inherit "/std/spells/base.c";
 #include "tweaks.h"
 
-#define SP_NAME "Fumble"
-#define GP_COST FUMBLE_GP_COST
-#define ALREADY_CASTING "cast"
-#define save_type "spells"
-
-
-object shadow;
-
-void make_spell(object caster, object target);
-
-string help() {
-  return
-	"\n\n"+
-	"Spell Name: "+SP_NAME+"\n"+
-	"School: Necromancy\n"+
-	"Level: 4th\n"+
-	"Gp Cost: "+GP_COST+"\n"+
-	"Description: \n"+
-	"  This spell causes the target to immediately fumble whatever is "+
-	"in their hand.  Depending on the skill of the caster, wielded "+
-	"weapons get either unwielded or dropped, and possibly other "+
-	"equipment as well.  Fast and experienced targets will not be "+
-	"affected as much.\n";
-}
-
-int cast_spell(string str, object caster)
+void setup() 
 {
-  int cost;
-  int i;
-  object my_caster;
-  object* target;
-  object* ob;
+  set_spell_name("Fumble");
+  set_spell_level(4);
+  set_school("necromancy");
 
+  set_target_type("one");
+  set_range(2);
+  set_line_of_sight_needed(1);
 
-  if (caster)
-	my_caster = caster;
-  else my_caster = this_player();
+  set_help_desc("This spell causes the target to immediately fumble "
+    "whatever is in their hand.  Depending on the skill of the caster, "
+    "wielded weapons get either unwielded or dropped, and possibly other "
+    "equipment as well.  Fast and experienced targets will not be "
+    "affected as much.\n");
 
-  if(interactive(my_caster))
-  str = (string)my_caster->expand_nickname(str);
-
-  if (my_caster->query_timed_property(ALREADY_CASTING))
-  {
-	write("You are already casting a spell.\n");
-	return 1;
-  }
-  if ((int)my_caster->query_gp() < GP_COST )
-  {
-	write("You are too mentally drained to cast this spell.\n");
-	return 1;
-  }
-
-  target = find_match( str, environment(my_caster) );
-
-  if (sizeof(target)==0)
-  {
-	write("Your target is not here.\n");
-	return 1;
-  }
-
-  if (interactive(caster) && (string)my_caster->query_guild_name() == "trickster" )
-	cost = GP_COST/2;
-  else 
-	cost = GP_COST;
-
-  write("You start to cast "+SP_NAME+".\n");
-  say(my_caster->query_cap_name()+" begins to cast a spell.\n",
-     previous_object());
-
-  my_caster->add_timed_property(ALREADY_CASTING,3,1);
-  my_caster->adjust_gp(-cost);
-  call_out("make_spell",1,my_caster,target[0]);
-  return 1;
+  set_casting_time(1);
+  set_gp_cost(FUMBLE_GP_COST);
+  set_rounds( ({ "round1" }) );
 }
 
-void make_spell( object caster, object target )
+
+int round1(object caster, mixed target, mixed out_range, int time, int quiet)
 {
   object* ob;
   object* ob2;
@@ -88,15 +37,19 @@ void make_spell( object caster, object target )
   int target_roll;
   int i, j;
 
-  say((string)caster->query_cap_name()+
-	" chants, 'digitis mali failus'.\n", 
-	caster);
-  tell_object(caster, "You chant, 'digitus mali failus'.\n");
+  if ( !target )
+  {
+    tell_object(caster, 
+      "Your spell failed ... there is nobody of that name here.\n");
+    return -1;
+  }
 
-  /* do the effects and saving throw;  several possibilities; drop nothing, 
-   * drop weapons, drop weapons and equip; this can be expanded easily by
-   * putting more things in the switch...
-   */
+  if ( !quiet )
+  {
+    tell_room(environment(caster), (string)caster->query_cap_name()+
+      " chants, 'digitis mali failus'.\n", caster);
+    tell_object(caster, "You chant, 'digitus mali failus'.\n");
+  }
 
   caster_level = (int)caster->query_level();
   target_level = (int)target->query_level();
@@ -105,51 +58,57 @@ void make_spell( object caster, object target )
 
   caster_roll = random(FUMBLE_CASTER_ADJ*(caster_level+caster_int));
   target_roll = target_level+
-		random(FUMBLE_TARGET_ADJ*(target_level+target_dex));
+    random(FUMBLE_TARGET_ADJ*(target_level+target_dex));
 
   if ( caster_roll > target_roll )
   {
+    tell_object(caster, "You cast Fumble on "+target->query_cap_name()+
+      ", who is momentarily clumsy.\n");
     tell_object(target, caster->query_cap_name()+
-	" completes his gestures, and you suddenly feel very clumsy, and"+
-	" can't hold on to your equipment.\n");
+      " completes his gestures, and you suddenly feel very clumsy, and"
+      " can't hold on to your equipment.\n");
     tell_room(environment(target), caster->query_cap_name()+
-      	" finishes a spell with a gesture at "+target->query_cap_name()+
-	".\n", target);
+      " finishes a spell with a gesture at "+target->query_cap_name()+
+      ".\n", ({ caster, target }) );
   }
   else
   {
+    tell_object(caster, "You cast Fumble on "+target->query_cap_name()+
+      ", but nothing seems to happen.\n");
     tell_object(target, caster->query_cap_name()+
-	" completes his gestures, pointing at you, but nothing happens.\n");
+      " points at you, but nothing happens.\n");
     tell_room(environment(target), caster->query_cap_name()+
-	" finishes a spell with a gesture at "+target->query_cap_name()+
-	", but nothing seems to happen.\n",target);
+      " gestures at "+target->query_cap_name()+
+      ", but nothing seems to happen.\n", ({ caster, target}) );
     return 1;
   }
 
-  target->add_timed_property(ALREADY_CASTING,1,10);
-
-/* kludge since drop_ob notifies the caster of items dropping, not the
- * the target.  no way around except to rewrite drop_ob HERE, which is
- * an even worse kludge, i think.  -- wonderflug
- */
+  /* kludge since drop_ob notifies the caster of items dropping, not the
+   * the target.  no way around except to rewrite drop_ob HERE, which is
+   * an even worse kludge, i think.  -- wonderflug
+   */
   caster_roll = target_roll+10;
 
   switch( caster_roll - target_roll )
   {
-	case 1..20:
-	  ob = (object*)target->query_held_ob();
-	  for (i=0;i<sizeof(ob);i++)
-		if ( ob[i] )
-	  		target->unhold_ob(ob[i]);
-   	  break;
-	default:
-	  ob = all_inventory(target);
-	  ob2 = (object*)target->query_worn_ob();
-	  for (i=0;i<sizeof(ob);i++)
-		if ( member_array(ob[i], ob2) == -1 )
-		  target->drop_ob(ob[i]->query_name());
-	  break;
+    case 1..20:
+      ob = (object*)target->query_held_ob();
+      for (i=0;i<sizeof(ob);i++)
+        if ( ob[i] )
+          target->unhold_ob(ob[i]);
+      break;
+    default:
+      ob = all_inventory(target);
+      ob2 = (object*)target->query_worn_ob();
+      for (i=0;i<sizeof(ob);i++)
+        if ( member_array(ob[i], ob2) == -1 )
+          target->drop_ob(ob[i]->query_name());
+      break;
   }
 
-  return GP_COST;
+  // Make monsters attack sometimes (well, ok, often)
+  if ( !interactive(target) && random(4) )
+    target->attack_by(caster);
+  
+  return 0;
 }

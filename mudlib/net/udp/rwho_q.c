@@ -1,4 +1,3 @@
-#include <standard.h>
 #include "udp.h"
 #include "term.h"
 /*
@@ -33,10 +32,8 @@ void incoming_request(mapping info) {
   object *cre, *play, *all;
 
   if (stringp(info["NAME"]) && stringp(info["PORTUDP"])) {
-/*
     if (info["NAME"] == mud_name())
       return ;
-*/
     if (!NAMESERVER_CD->query_mud_info(info["NAME"]))
       PING_Q->send_ping_q(info["HOSTADDRESS"], info["PORTUDP"]);
     if (info["FULL"])
@@ -51,7 +48,8 @@ void incoming_request(mapping info) {
           else
             play += ({ all[i] });
       if (!sizeof(cre) && !sizeof(play))
-        str = mud_name()+" has nobody on at all at present.\n";
+        str = "There is no one at all on "+mud_name()+", I am depressed "+
+              "are you depressed?\n";
       else if (!sizeof(cre))
         str = "There are only players on "+mud_name()+".\n"+
               sprintf("They are: %-=70s\n", query_multiple_short(play)+".");
@@ -66,7 +64,6 @@ void incoming_request(mapping info) {
               sprintf("These are the players: %-=52s\n",
                        query_multiple_short(play)+".");
     }
-    str = VERSION+"  The time in Norway is: "+ctime(time())+".\n"+str;
     NAMESERVER_CD->send_udp(info["HOSTADDRESS"], info["PORTUDP"],
                             "@@@"+UDP_RWHO_A+
                             "||NAME:"+mud_name()+
@@ -96,5 +93,3 @@ void send_rwho_q(string mud) {
 void create() {
   seteuid(getuid());
 } /* create() */
-
-void dest_me() { destruct(TO); }

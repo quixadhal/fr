@@ -19,6 +19,7 @@ init() {
    add_action("bingle_loud_say","lsay");
    add_action("bingle_loud_say","\"*");
    add_action("bingle_whisper","whi*sper");
+  this_player()->add_property("poison",100);
 }
 
 wibble_speech(string str)
@@ -62,7 +63,7 @@ void bingle_loud_say(string arg)
 {
  int x;
  
-   arg=wibble_speech(arg);
+ arg=(string)wibble_speech(arg);
  x=this_player()->do_loud_say(arg);
  return x;
 }
@@ -77,7 +78,7 @@ void bingle_say(string arg)
    wool=({"Praytell, ","I'faith, ","Prithee, "})[random(3)];
     else
   wool=({"Verily, ","Truth, ","By my Troth, ","",""})[random(5)];
-   arg=wibble_speech(arg);
+   arg=(string)wibble_speech(arg);
   x=this_player()->do_say(wool+arg);
  return x;
 }
@@ -97,7 +98,7 @@ void bingle_tell(string arg)
   cow[0]=({"Verily, ","Truth, ","By my Troth, ","",""})[random(5)];
    arg=implode(cow," ");
  
-   arg=wibble_speech(arg);
+   arg=(string)wibble_speech(arg);
    arg=woobie+" "+arg;
   x=this_player()->do_tell(arg);
  return x;
@@ -113,7 +114,7 @@ void bingle_shout(string arg)
    wool=({"Praytell, ","I'faith, ","Prithee, "})[random(3)];
     else
   wool=({"Verily, ","Truth, ","By my Troth, ","",""})[random(5)];
-   arg=wibble_speech(arg);
+   arg=(string)wibble_speech(arg);
   x=this_player()->do_shout(wool+arg);
  return x;
 }
@@ -132,7 +133,7 @@ void bingle_whisper(string arg)
   cow[0]=({"Verily, ","Truth, ","By my Troth, ","",""})[random(5)];
    arg=implode(cow," ");
  
-   arg=wibble_speech(arg);
+   arg=(string)wibble_speech(arg);
    arg=woobie+" "+arg;
   x=this_player()->do_whisper(arg);
  return x;

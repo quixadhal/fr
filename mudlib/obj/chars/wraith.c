@@ -1,5 +1,5 @@
-
-inherit "obj/monster";
+#include "path.h"
+inherit BASE;
 int query_kill_xp() { return 0; }
 void setup()
 {
@@ -11,7 +11,7 @@ void setup()
    set_max_gp(200);
    set_gp(200);
    set_level(10);
-	set_class("cleric");
+	set_guild("cleric");
 	set_level(5);
 	set_al(20);
    set_str(15);

@@ -1,186 +1,103 @@
-#define SP_NAME "Horrid Wilting"
-#define GP_COST 16
+/*** Yes, rewrote again, by Wonderflug ***/
+
+#include "tweaks.h"
 #define TYPE "air"
 #define SIZE_OF_DICE 8
 #define save_type "air"
 
-inherit "/std/spells/patch.c";
+inherit "/std/spells/base.c";
 
-/* find_unique_match() does a find match that ensures the returned
-        object list contains no duplicates
-        find_one_match() returns only the first matched object
-*/
-mixed find_unique_match(string find,mixed in);
-mixed find_one_match(string find,mixed in);
-int wiz_fix_damage(object caster,object victim,int damage,string save);
-int ADJ_COST;
-object caster;
+void setup()
+{
+  set_spell_name("Horrid Wilting");
+  set_spell_level(8);
+  set_school("necromancy");
 
+  set_target_type("many");
+  set_range(0);
+  set_line_of_sight_needed(0);
 
-string help() {
-                 return
-                 "\n\n"+
-                 "Spell Name: "+SP_NAME+"\n"+
-                 "School: Alteration and Necromancy\n"+
-                 "Level: 8th\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Damage Type: "+TYPE+"\n"+
-       "Saving Throw: 1/2\n"+
-                 "Description: \n"+
-       "     This spell will evaporate all the moisture from the bodies "+
-       "of your enemies.  The damage is equal to the casters level times "+
-       "8.  A 16th level Wizard could do 16-128 points of damage.\n\n";
+  set_help_extras(
+    "Damage Type: " TYPE "\n"
+    "Saving Throw: 1/2");
+  set_help_desc("This spell will evaporate all the moisture from the bodies "
+    "of your enemies.  The damage is equal to the casters level times "
+    "8.  A 16th level Wizard could do 16-128 points of damage.  There is "
+    "no limit to the damage done by this spell.");
 
+  set_gp_cost(16);
+  set_casting_time(2);
+  set_rounds( 
+    ({ 
+      ({
+        "You chant very softly, and the air suddenly tingles with unleashed "
+          "power.\n",
+        "Suddenly the air seems to tingle against your skin, as if some "
+          "massive power is about to be unleashed.\n",
+      }),
+      "round2" 
+    }) );
 }
 
-mixed spell( string str, int skill, int cast );
-
-int cast_spell(string str,object cast)
+int round2(object caster, mixed target, mixed out_range, int time, int quiet)
 {
-
-  int skill;
-  mixed ret;
-
-   if(cast) caster = cast;
-   else caster = this_player();
-  ret = spell(str, skill, 1);
-  if (stringp(ret))
-  {
-    notify_fail(ret);
-    return 0;
-  }
-  tell_object(caster,"You begin to cast "+SP_NAME+".\n");
-  tell_room(environment(caster),caster->query_cap_name()+" begins casting an
-offensive spell.\n",
-        caster);
-  return 1;
-}
-
-mixed spell(string str, int skill, int cast)
-{
-  mixed ob;
-  if ((int)caster->query_spell_effect("offensive"))
-    return "You are already casting an offensive spell.\n";
-
-  ob = find_unique_match(str, environment(caster));
-
-  caster->add_spell_effect(3, "offensive", "SP_NAME", this_object(),
-    "hb_spell", ({ skill,ob,cast }));
-  return 1;
-}
-
-int hb_spell(object caster, mixed *params, int time)
-{
- int damage;
- string str;
- int NO_OF_DICE;
- int j;
- int i;
+  int damage;
+  int NO_OF_DICE;
+  int i;
  
-/*
- if (sizeof(params) != 3 ) 
- {
-	tell_object(caster,"Fizzle de wizzle.\n");
-	return 1;
- }
-*/
-
- switch( time )
- {
-    case 4:
-	tell_object(caster, "You begin to chant and make somantic gestures.\n");
-	tell_room(environment(caster), caster->query_cap_name()+" starts "+
-	  "to chant softly and make somantic gestures.\n", caster);
-	return 1;
-    case 3:
-	tell_object(caster, "You draw power in from the world, gathering "+
-	  "into yourself the energies needed \nfor this weave.\n");
-	tell_room(environment(caster), caster->query_cap_name()+" begins "+
-	  "to glow softly with power, and you feel a tingling in the air.\n",
-	  caster);
-	return 1;
-    case 2:
-	tell_object(caster, "Your chanting becomes a shout: 'wilos magius "+
-	  "evapious'!\n");
-	tell_room(environment(caster), caster->query_cap_name()+"'s chanting "+
-	  "becomes a shout: 'wilos magius evapious'!\n", caster);
-	return 1;
-    default:
-	break;
- }
- 
- NO_OF_DICE = caster->query_level();
-
- if(NO_OF_DICE == 0)
-         NO_OF_DICE = 1;
-
-
-  str = (string)caster->query_cap_name();
-
-
-  /* to remove the caster, if he uses 'all' */
-  if((i = member_array(caster, params[1])) != -1)
-    params[1] = delete(params[1], i, 1);
-  
-  if(!sizeof(params[1])) 
+  if ( !target || !sizeof(target) )
   {
-    notify_fail("There is noone here by that name.\n");
-    return 0;
+    tell_object(caster, 
+      "Your spell failed ... there is nobody of that name here.\n");
+    return -1;
   }
 
+  if ( !quiet )
+  {
+    tell_object(caster, "Your chanting becomes a shout: 'wilos magius "
+      "evapious'!\n");
+    tell_room(environment(caster), caster->query_cap_name()+" shouts "
+      "dreadfully, 'wilos magius evapious'!\n", caster);
+  }
 
-  ADJ_COST = GP_COST;
-
-  if(interactive(caster) && 
-	((string)caster->query_guild_name() == "transmuter" ||
-          (string)caster->query_guild_name() == "necromancer"))
-         ADJ_COST = GP_COST/2;
+  if ( (i = member_array(caster, target)) != -1)
+    target = delete(target, i, 1);
   
- if (params[2] && (int)caster->adjust_gp(-ADJ_COST)<0)
- {
+  if(!sizeof(target)) 
+  {
+    tell_object(caster, "There is noone here by that name.\n");
+    return -1;
+  }
 
+  caster->add_timed_property("stillcasting",1,3);
 
-  tell_object(caster, "You are currently too "+
-       "mentally drained to cast.\n");
-  return 0;
- }
+  NO_OF_DICE = caster->query_level();
+  if(NO_OF_DICE == 0)
+    NO_OF_DICE = 1;
 
   i = 0;
-  while(i<sizeof(params[1])) {
-  damage = 0;
-    if(params[1][i] &&
-                 environment(params[1][i]) == environment(caster))
-    {
-                params[1][i]->attack_by(caster);
+  for ( i=sizeof(target)-1; i>=0; i-- )
+  {
+    tell_object(target[i], caster->query_cap_name()+" finishes a spell "
+      "as you can feel the moisture from you body evaporating!\n");
+    tell_object(caster, "You vaporise "+target[i]->query_cap_name()+"!\n");
+    tell_room(environment(caster), caster->query_cap_name()+
+      " vaporises "+target[i]->query_cap_name()+".\n",
+      ({ caster, target[i] }) );
 
-  for ( j=1 ; j<=NO_OF_DICE ; j++)
-         damage = damage + random(SIZE_OF_DICE)+1;
-
-  damage = wiz_fix_damage(caster,params[1][i],damage,save_type);
-
-  params[1][i]->spell_damage(params[1][i],damage,TYPE,caster);
-
-
-  tell_object(params[1][i], str +" finishes a spell as you can feel "+
-     "the moisture from you body evaporating!\n");
-
-      if(params[1][i])
-        i++;
-      else
-        params[1] = delete(params[1], i, 1);
-    } else {
-      params[1] = delete(params[1], i, 1);
-    }
+    damage = 0;
+    target[i]->attack_by(caster);
+    damage = roll(NO_OF_DICE, SIZE_OF_DICE);
+    damage = wiz_fix_damage(caster,target[i],damage,save_type);
+    target[i]->spell_damage(target[i],damage,TYPE,caster);
+    if(!target[i])
+      target = delete(target, i, 1);
   }
 
-  tell_room(environment(caster),str + " casts a spell on "+(str =
-query_multiple_short(params[1]))+
-        " and drains the moisture from them.\n", ({caster,params[1]}));
-  tell_object(caster, "You suck the moisture from " + str + "!\n");
+  if ( sizeof(out_range) )
+    tell_object(caster, "Alas, "+query_multiple_short(out_range)+
+      " managed to get out of range.\n");
 
-   
-
-  return GP_COST;
-
+  return 0;
 }
 

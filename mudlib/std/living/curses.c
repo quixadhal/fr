@@ -56,7 +56,7 @@ int remove_disease(string name) {
     diseases = ([ ]);
   if (!diseases[name])
     return 0;
-  this_player()->destruct_disease(name);
+  this_object()->destruct_disease(name);
   diseases = m_delete(diseases, name);
 }
 
@@ -67,7 +67,7 @@ int remove_curse(string name) {
     curses = ([ ]);
   if (!curses[name])
     return 0;
-  this_player()->destruct_curse(name);
+  this_object()->destruct_curse(name);
   curses = m_delete(curses, name);
 }
 

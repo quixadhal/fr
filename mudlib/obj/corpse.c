@@ -1,13 +1,15 @@
 #include "corpse.h"
 inherit "/std/container";
 inherit "std/living/carrying";
- 
+
 #include <bit.h>
 
 #define DECAY_TIME      60
 #define RAISE_CHANCE  25
+#define PC_RAISE_CHANCE 50
 #define PATH "/obj/"
- 
+
+int wasplayer = 0;
 string owner, race_ob, race_name;
 string *bits_gone;
 int decay;
@@ -32,30 +34,30 @@ int prevent_insert() {
 int undead_okay(object room) {
    int i,maxi;
   int CORPSEFINE = 1;
- 
+
 /* Next section excellent but considered unnecessary, Taniwha 1995 */
 /*
   string roomfile = virtual_file_name(room);
   maxi = sizeof(no_undead_dir);
- 
+
   for(i=0;i<maxi;i++)
     if( no_undead_dir[i] == roomfile[0..(strlen(no_undead_dir[i]))] ) {
       CORPSEFINE = 0;
       break;
     }
 */
- 
+
   if( room->query_property("no_undead") )
     CORPSEFINE = 0;
- 
+
   return CORPSEFINE;
 }
- 
+
 void raise_me(object ob)
 {
   object *stuff, cow;
   int i;
- 
+
 i = random(100);
 if(i<=50)
    cow=clone_object(PATH+"chars/skeleton.c");
@@ -70,23 +72,28 @@ else
    cow=clone_object(PATH+"chars/specter.c");
 else
    cow=clone_object(PATH+"chars/lich.c");
-stuff=ob->query_deep_inventory();
+
+if(owner)
+  cow->set_short(cow->query_short()+" of "+owner);
+stuff = all_inventory(ob);
 for(i=0;i<sizeof(stuff);i++)
-  stuff[i]->move(cow);
+   if(stuff[i])
+      stuff[i]->move(cow);
 cow->move(environment(ob));
   tell_room(environment(ob),"You hear the howl of a tortured spirit.\n"+
        "Suddenly, a "+
     cow->query_name()+" stands where the corpse was.\n");
+   cow->init_equip();
 ob->dest_me();
 return;
 }
- 
+
 string query_name() {
   if (!::query_name())
     return "someone";
   return ::query_name();
 }
- 
+
 void setup() {
   bits_gone = ({ });
   owner = "noone";
@@ -98,14 +105,15 @@ void setup() {
   set_long("A corpse, it looks dead.\n");
   set_weight(1300);
   set_race_ob("/std/races/unknown");
+  set_main_plural("corpses");
 }
- 
+
 void set_owner(string n, object ob) {
   owner = n;
   set_name("corpse");
   add_alias("corpse of " + n);
   set_short("corpse of " + capitalize(n));
-  if (ob)
+  if ( ob && ob->query_main_plural() )
     set_main_plural("corpses of "+ob->query_main_plural());
   else
     set_main_plural("corpses of "+pluralize(n));
@@ -114,13 +122,26 @@ void set_owner(string n, object ob) {
   if (ob && ob->query_weight()) set_weight(ob->query_weight());
   else set_weight(STD_CORPSE_WEIGHT);
   set_heart_beat(DECAY_TIME);
+// Taniwha 1996, supress clean up if a player pegs out in a room
+   if(ob)
+   {
+      if(interactive(ob))
+      {
+         wasplayer = 1;
+         environment(ob)->add_timed_property("no_clean_up",1,30000);
+      }
+   }
+   
 }
 
 void set_race_name(string str) { race_name = str; }
 string query_race_name() { return race_name; }
+string query_race() { return race_name; }
 
 void decay() {
 object ob,ob2;
+object *obs;
+int i;
   decay -= 1;
   if (!race_name)
     race_name = (string)race_ob->query_name();
@@ -136,22 +157,24 @@ object ob,ob2;
   if (decay > 0)
     return ;
   /* Hamlet visited the next line */
-  if( (random(100)<=RAISE_CHANCE) && undead_okay(environment(this_object())) )
+  if( ((!wasplayer && (random(100)<=RAISE_CHANCE)) ||
+       (wasplayer && (random(100)<=PC_RAISE_CHANCE)))
+      && undead_okay(environment(this_object())) )
   {
        raise_me(this_object());
    return;
    }
-/* ok destroys all the things in the corpse */
-  transfer_all_to(environment());
-  ob = first_inventory(this_object());
-  while (ob) {
-    ob2 = next_inventory(ob);
-    ob->dest_me();
-    ob = ob2;
-  }
+   /* dump the equip */
+   if(wasplayer) {
+     obs = all_inventory(this_object());
+     for(i = 0; i < sizeof(obs); i++)
+     {
+       if(obs[i]) obs[i]->move(environment(this_object()));
+     }
+   }
   destruct(this_object());
 }
- 
+
 set_race_ob(string s)
 {
    race_ob = s;
@@ -171,7 +194,7 @@ find_inv_match(s)
    bit = race_ob->query_possible_bits(s);
    if (!bit || !sizeof(bit)) return all_inventory();
 
-   bit -= bits_gone;	/* take out of all possible bits the bits_gone */
+   bit -= bits_gone;    /* take out of all possible bits the bits_gone */
    if (!sizeof(bit)) return bit;
 
    weap = (object) this_player()->query_weapon();

@@ -21,16 +21,16 @@ int ADJ_COST;
 
 string help() {
        return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "School: Invocation\n"+
-       "Level: 1st\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Damage Type: Magical\n"+
-       "Saving Throw: None\n"+
-       "Description: \n"+
-       "    This spell will send small bolts of energy at the target.  The"+
-       " bolts do 2-5 points of damage each.  The wizard gets 1 missile "+
+       "\n\n"
+       "Spell Name: "+SP_NAME+"\n"
+       "School: Invocation\n"
+       "Level: 1st\n"
+       "Gp Cost: "+GP_COST+"\n"
+       "Damage Type: Magical\n"
+       "Saving Throw: None\n"
+       "Description: \n"
+       "    This spell will send small bolts of energy at the target.  The"
+       " bolts do 2-5 points of damage each.  The wizard gets 1 missile "
        "for every 2 levels of experience, up to a maximum of 5 missiles.\n";
        
 

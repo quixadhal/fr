@@ -1,4 +1,3 @@
-#include <standard.h>
 #include "udp.h"
 /*
  * Incoming mudlist query.  They want to know which muds we know.
@@ -52,5 +51,3 @@ void incoming_request(mapping info) {
 void create() {
   seteuid(getuid());
 } /* create() */
-
-void dest_me() { destruct(TO); }

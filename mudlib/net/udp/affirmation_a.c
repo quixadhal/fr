@@ -1,10 +1,7 @@
-#include <standard.h>
 #include <udp.h>
 /*
  * Affirmation of something.
  */
-STDOB
-
 void incoming_request(mapping info) {
   object ob;
 

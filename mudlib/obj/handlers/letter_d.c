@@ -75,7 +75,7 @@ void manage_mail() {
         if(++mail_ptr >= sizeof(mail_ls)) mail_ptr = 0;
         return;
     }
-    sscanf(mail_ls[mail_ptr], "%s\.%s", str, ext);
+    sscanf(mail_ls[mail_ptr], "%s.%s", str, ext);
     if(!sscanf(str, "%d", x)) {
         if(++mail_ptr >= sizeof(mail_ls)) mail_ptr = 0;
         return;
@@ -102,7 +102,7 @@ void manage_users() {
         if(++pl_ptr >= sizeof(pl_ls)) pl_ptr = 0;
         return;
     }
-    sscanf(pl_ls[pl_ptr], "%s\.%s", pl, ext);
+    sscanf(pl_ls[pl_ptr], "%s.%s", pl, ext);
     if(!user_exists(pl)) rm (DIR_POSTAL+"/"+pl+".o");
     if(++pl_ptr >= sizeof(pl_ls)) pl_ptr = 0;
     call_out("manage_users", 300);

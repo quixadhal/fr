@@ -22,17 +22,17 @@ int ADJ_COST;
  /*** help file ***/
 string help() {
        return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "School: Invocation and Alteration\n"+
-       "Level: 3rd\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Damage Type: "+TYPE+"\n"+
-       "Saving Throw: None\n"+
-       "Description: \n"+
-       "    This spell creates small globes of fire which are hurled at "+
-       "a single target.  Each globe does 1d4 points of damage.  The "+
-       "caster creates 1 globe for each level of experience with a "+
+       "\n\n"
+       "Spell Name: "+SP_NAME+"\n"
+       "School: Invocation and Alteration\n"
+       "Level: 3rd\n"
+       "Gp Cost: "+GP_COST+"\n"
+       "Damage Type: "+TYPE+"\n"
+       "Saving Throw: None\n"
+       "Description: \n"
+       "    This spell creates small globes of fire which are hurled at "
+       "a single target.  Each globe does 1d4 points of damage.  The "
+       "caster creates 1 globe for each level of experience with a "
        "maximum of 10 globes being created.\n";
        
 

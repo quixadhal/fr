@@ -2,7 +2,7 @@
 #define BARKSKIN_DURATION_BASE 0
 #define BARKSKIN_DURATION_LEVEL 5
 #define BARKSKIN_SHADOW "/std/spells/druid/barkskin_sh.c"
-#define BARKSKIN_FRACTION 1/4
+#define BARKSKIN_FRACTION 3/4
 #define BARKSKIN_GP 4
 
 // Create druidic staff

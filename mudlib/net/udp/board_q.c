@@ -1,4 +1,3 @@
-#include <standard.h>
 #include "udp.h"
 #include "board.h"
 void send_message(mapping info);
@@ -14,8 +13,6 @@ void create() {
   getting_board = ([ ]);
   seteuid(getuid());
 } /* create() */
-
-void dest_me() { destruct(TO); }
 
 void incoming_message(mapping info) {
   mapping minfo;

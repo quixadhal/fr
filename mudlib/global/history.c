@@ -32,7 +32,7 @@ int clear_history()
     notify_fail ("What ?\n");
     return 0;
     }
-  history = ([]) ;
+  history = ({ });
   history = allocate (HISTORY_LENGHT); 
   numoff = -HISTORY_LENGHT;
   hoffset = 1;
@@ -104,11 +104,7 @@ int i;
     history = allocate(HISTORY_LENGHT);
     numoff = -HISTORY_LENGHT;
   }
-#ifdef DRAGON
     history[hoffset++] = arg;
-#else
-  history[hoffset++] = query_verb()+arg;
-#endif
   if (hoffset>=sizeof(history)) {
     numoff += sizeof(history);
     hoffset = 0;

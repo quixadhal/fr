@@ -6,6 +6,8 @@ int wetness;
 
 int query_wetness() { return wetness; }
 void add_wetness(int arg) { wetness += arg; }
+void adjust_wetness(int arg) { wetness += arg; }
+void set_wetness(int i) { wetness = i; }
 
 void create() {
   this_object()->add_alias("weather");
@@ -20,7 +22,13 @@ void weather_commands() {
 
 string weather_extra_look() {
   string me;
-  me = this_object()->query_objective();
+/* Ghosts shouldn't be wet, nor getting wet, Baldrick, june '96 */
+  if (this_object()->query_dead())
+    {
+    wetness = 0;
+    return "";
+    } 
+  me = capitalize(this_object()->query_pronoun());
   if (wetness>200)
     return "Wet as a pond.\n";
   if (wetness>100)
@@ -111,16 +119,19 @@ void check_it() {
                "snowing" })[type[0]-1]+".\n");
     current_thing = type[0];
     if (bingle > 0)
+      {
       switch (type[0]) {
         case 1 :
         case 2 :
-          if (bingle>0 && loc == "outside") {
+          if (bingle>0 && loc == "outside") 
+            {
 /* we get wet ;) */
             arr = all_inventory(this_object());
             arr = filter_array(arr, "check_umbrella", this_object());
             if (!sizeof(arr))
               wetness += bingle; /* strength... my oh my what rain ! */
-          }
+            tell_object(this_object(),"You get wet.\n");
+            }
           break;
         case 3 :
           if (bingle && loc == "outside") {
@@ -128,10 +139,13 @@ void check_it() {
             arr = filter_array(arr, "check_umbrella", this_object());
             if (!sizeof(arr))
              wetness += bingle /2;
+            tell_object(this_object(),"You get a little wet.\n");
           }
           break;
-      }
-    else if (wetness>0) {
+        } /* switch */
+      } /* if */ 
+    else if (wetness>0) 
+      {
 /* the warmth property is used for fires etc... */
       bingle = WEATHER->temperature_index(env)+
                environment()->query_property("warmth");
@@ -140,10 +154,14 @@ void check_it() {
         wetness += bingle;
       else
         wetness -= 1; /* we do get dry slowly even if it is cold */
-    }
+      tell_object(this_object(),"You dry up.\n");
+      }
   }
+  /* try to leave it out, I don't like it tho...
+   * Baldrick, june '96.
   if (wetness>0 && random(100) < 10)
     tell_object(this_object(),"Squelch.\n");
+   */
 }
  
 int check_umbrella(object ob) {

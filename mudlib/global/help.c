@@ -58,6 +58,22 @@ int do_help(string str) {
     write("\nUsage : help <topic>\n");
     return 1;
   }
+  if ( sscanf(str, "spell %s", s) )
+  {
+    s = this_object()->help_spell(s);
+    if ( !s )
+      write("You do not know that spell.\n");
+    else write(s);
+    return;
+  }
+  if ( sscanf(str, "command %s", s) == 1 )
+  {
+    s = this_object()->help_command(s);
+    if (!s)
+      write("You do not know that command.\n");
+    else write(s);
+    return ;
+  }
   filen = search_help(str);
   if (!filen)
     filen = create_help(str);

@@ -1,0 +1,51 @@
+inherit "/std/object";
+inherit "/global/auto_load";
+  mixed auto_string;
+#define ETP this_player()
+void setup()
+{
+   set_name("iou");
+   add_alias("IOU");
+   set_short("IOU");
+   set_long("This is an IOU for an item that went missing for some unknown reason, probably something obscure to do with gods meddling with things wat man is not meant to know of. (The buggers have been messing with the fabric of reality again.). "
+   "Hang onto it, and you never know, it might be reclaimed.\n"
+   "\"reclaim\" to try to reclaim on the IOU.\n"
+   );
+}
+mapping query_static_auto_load()
+{
+   return (["auto_string":auto_string]);
+}
+void init_static_arg(mapping stuff)
+{
+   auto_string = stuff["auto_string"];
+}
+void init()
+{
+   add_action("try_loading","reclaim");
+}
+mixed add_auto_string(mixed str)
+{
+   auto_string = str;
+   return auto_string;
+}
+mixed add_object(object ob)
+{
+   auto_string = create_auto_load( ({ob }) );
+   return auto_string;
+}
+int try_loading(string str)
+{
+   object *olist;
+         notify_fail("Nothing happens.\n");
+   if(auto_string)
+   {
+      olist = load_auto_load(auto_string,ETP);
+      if(sizeof(olist))
+      {
+          call_out("dest_me",2);
+         write("A small demon hands you something and runs off with the IOU\n");
+         return 1;
+      }
+   }
+}

@@ -1,73 +1,61 @@
-
-#include "tweaks.h"
-/*** Balde Barrier ***/
+/*** Blade Barrier ***/
 /*** Created by Taniwha ***/
+/*** ->base spell by Wonderflug ***/
  
+#include "tweaks.h"
 
-#define SP_NAME "Blade Barrier"
-#define SPELLTYPE "offensive/defensive"      
-#define TYPE "magical"
-#define SIZE_OF_DICE 4
-#define save_type "spells"
-#define GP BBARIER_GP
-#define LEVEL BBARIER_LEVEL
-#define LOCKOUT BBARIER_LOCKOUT
+inherit "/std/spells/base.c";
 
-object room;
-int hb;
-object caster;
+void setup()
+{
+  set_spell_name("Blade Barrier");
+  set_spell_level(6);
+  set_sphere("guardian");
 
-string help() {
-		 return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "Level: "+LEVEL+"\n"+
-		 "Gp Cost: "+GP+"\n"+
-       "Damage Type: Physical\n"+
-       "Saving Throw: Level Dexterity\n"+
-       "Description: \n"+
-		 "    This spell will create a wall of blades around the caster."+
-       "Anyone in the room will take damage if they don't make the saving "+
-		 "throw, and extra damage if they are attacking the caster. "+
-       "The spell lasts 1 round /level +3 , "+
-       "until it is dispelled, or until the caster dies or leaves the game. "
-		 "Also note the caster gets a 10* bonus save, not total immunity. "+
-       "\n";
+  set_target_type("none");
+  set_range(0);
+  set_line_of_sight_needed(0);
+
+  set_help_extras(
+    "Damage Type: Physical\n"
+    "Saving Throw: Level Dexterity");
+  set_help_desc("This spell will create a wall of blades around the caster."
+    "Anyone in the room will take damage if they don't make the saving "
+    "throw, and extra damage if they are attacking the caster. "
+    "The spell lasts 1 round /level +3 , "
+    "until it is dispelled, or until the caster dies or leaves the game. "
+    "Also note the caster gets a 10* bonus save, not total immunity.");
+
+  set_gp_cost(BBARIER_GP);
+  set_casting_time(1);
+  set_rounds( ({ "round1" }) );
 }
 
 
-int cast_spell(string str,object cast)
+int round1(object caster, mixed target, mixed out_range, int time, int quiet)
 {
+  object ob;
 
-  caster = cast ? cast : this_player();
-
-  room = environment(caster);
-  if((caster->query_hb_diff(hb) < LOCKOUT) || (caster->query_level()< LEVEL) )
+  if ( caster->query_property("blade_barrier_cast") )
   {
-		 tell_object(caster,"You just can't muster the concentration to cast yet.\n");
-		 return 0;
+    tell_object(caster, "You cannot bring forth another blade barrier "
+      "so soon.\n");
+    return -1;
   }
-  hb = caster->query_hb_counter();
-  tell_object(caster,"You start to cast "+SP_NAME+".\n");
-  if( caster->adjust_gp(-GP)<0)
+
+  if ( !quiet )
   {
-		 tell_object(caster, "You are too mentally drained to cast.\n");
-		 return 0;
-   }
-	tell_room(environment(caster),(string)caster->query_cap_name()+
-		" chants, \"Deus Clavius\".\n", ({ caster }));
+    tell_object(caster, "You chant, 'Deus Clavius'.\n");
+    tell_room(environment(caster),(string)caster->query_cap_name()+
+      " chants, \"Deus Clavius\".\n", ({ caster }));
+  }
 
-	call_out("make_spell",1,caster);
-   return 1;
-}
-
-void make_spell(mixed tp)
-{
-	object ob;
-	ob = clone_object(SPELLS+"blader.c");
-	ob->move(room);
-	ob->set_spell(tp,3+(int)tp->query_level());
-   tell_room(room,"The ground rips open and a wall of blades springs up!\n",({ }) );
+  caster->add_timed_property("blade_barrier_cast", 1, 30);
+  ob = clone_object(SPELLS "blader.c");
+  ob->move(environment(caster));
+  ob->set_spell(caster, 3+(int)caster->query_level());
+  tell_room(environment(caster),
+    "The ground rips open and a wall of blades springs up!\n", ({ }) );
 }
 
 

@@ -111,6 +111,9 @@ string long(string str, int dark) {
 } /* long() */
 
 void init() {
+   // Removed the * from the next two add_action's - Radix
+   // Wonderflug put them back in cause he wouldn't tell me why he
+   // took them out.
   add_action("read", "r*ead", action_pri);
   add_action("post", "p*ost", action_pri);
   add_action("post", "note", action_pri); 
@@ -250,7 +253,7 @@ int followup(string str) {
   string s;
 
    if( (member_array(board_name,readonly) != -1) && !this_player()->query_creator())
-  {
+   {
    write("Sorry, only immortals may write upon this board.\n");
     return 1;
   }
@@ -276,7 +279,7 @@ int reply(string str) {
   int num;
   mixed stuff;
 
-   if( (member_array(board_name,readonly) != -1) && !this_player()->query_creator())
+  if(board_name=="announcements" && !this_player()->query_creator() )
   {
   write("Sorry, only immortals may write upon this board.\n");
   return 1;

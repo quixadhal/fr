@@ -16,15 +16,15 @@ mixed spell(string str,int skill, int cast);
 
 string help() {
        return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "School: Invocation\n"+
-       "Level: 5th\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Damage Type: "+TYPE+"\n"+
-       "Saving Throw: None\n"+
-       "Description: \n"+
-       "     This spell will pelt your enemies in a storm of icy shards "+
+       "\n\n"
+       "Spell Name: "+SP_NAME+"\n"
+       "School: Invocation\n"
+       "Level: 5th\n"
+       "Gp Cost: "+GP_COST+"\n"
+       "Damage Type: "+TYPE+"\n"
+       "Saving Throw: None\n"
+       "Description: \n"
+       "     This spell will pelt your enemies in a storm of icy shards "
        "and hail.  The damage is 3-30 points of damage.\n\n";
 
 }
@@ -92,7 +92,7 @@ int hb_spell(object attacker, mixed *params)
   
  if (params[2] && (int)previous_object()->adjust_gp(-ADJ_COST)<0)
  {
-  tell_object(previous_object(), "You are currently too "+
+  tell_object(previous_object(), "You are currently too "
        "mentally drained to cast.\n");
   return 0;
  }
@@ -113,7 +113,7 @@ int hb_spell(object attacker, mixed *params)
 
   params[1][i]->spell_damage(params[1][i],damage,TYPE);
 
-  tell_object(params[1][i], str + " conjures and ice storm to pelt "+
+  tell_object(params[1][i], str + " conjures and ice storm to pelt "
 	  "you with icy shards!\n");
 
       if(params[1][i])

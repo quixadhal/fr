@@ -34,7 +34,7 @@ void add_bit(string name, string alias, mixed *varr)
 void create() {
   ::create();
    bits = ({ });
-  set_long("The standard boring race.  Get a new one soon, this one is "+
+  set_long("The standard boring race.  Get a new one soon, this one is "
            "pretty sad.\n");
    set_name("strange");
   reset_get();

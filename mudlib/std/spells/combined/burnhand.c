@@ -17,16 +17,16 @@ mixed find_one_match(string find, mixed in);
  /*** help file ***/
 string help() {
        return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "School: Alteration\n"+
-       "Level: 1st\n"+
-       "Gp Cost: "+GP_COST+"\n"+
-       "Damage Type: "+TYPE+"\n"+
-       "Saving Throw: 1/2\n"+
-       "Description: \n"+
-       "    When cast, a jet of flame shoots from the caster's fingertips "+
-       "to the target.  Damage done is 1d3 points + 2 points per level of "+
+       "\n\n"
+       "Spell Name: "+SP_NAME+"\n"
+       "School: Alteration\n"
+       "Level: 1st\n"
+       "Gp Cost: "+GP_COST+"\n"
+       "Damage Type: "+TYPE+"\n"
+       "Saving Throw: 1/2\n"
+       "Description: \n"
+       "    When cast, a jet of flame shoots from the caster's fingertips "
+       "to the target.  Damage done is 1d3 points + 2 points per level of "
        "the caster, to a maximum of 1d3+20 points.\n";
        
 
@@ -131,8 +131,8 @@ int hb_spell(object attacker, mixed *params)
    
     /*** TELL TARGET WHAT HAPPENS TO HIM AFTER SPELL GOES OFF ***/
    tell_object(params[1],(string)previous_object()->query_cap_name()+
-      " brings "+previous_object()->query_possessive()+" hands together, and "+
-      "the air around them flashes into a brilliant jet of flames that "+
+      " brings "+previous_object()->query_possessive()+" hands together, and "
+      "the air around them flashes into a brilliant jet of flames that "
       "envelopes you.\n");
    
     /*** TELL CASTER THE EFFECTS OF HIS SPELL AND WHO IT HIT ***/

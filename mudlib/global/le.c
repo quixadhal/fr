@@ -22,6 +22,8 @@ le(s)
 {
    int j;
 
+   seteuid(geteuid(this_player(1)));
+
    if (!pointerp(cfile)) { cfile = ({ }); line = 0; }
    if (!s || s == "") { print_line(); return 1; }
 
@@ -76,11 +78,11 @@ le(s)
          sA = read_file(sB);
          cfile = explode(sA, "\n");
          line = 1;
-      }
       write("Read file "  + sB + ": " + sizeof(cfile) + " lines.\n");
       cfile_name = sB;
       print_line();
       return 1;
+}
    case '+':
       if (line < sizeof(cfile)) line++;
       print_line();

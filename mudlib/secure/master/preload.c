@@ -76,7 +76,8 @@ string *epilog() {
   }
   for (i=0;i<sizeof(call_out_preload);i++)
     call_out("preload", 2, call_out_preload[i]);
-  return preload;
+  // Wonderflug 96, Making secure
+  return ( preload ? preload + ({ }) : ({ }) );
 } /* epilog() */
 
 void preload(string file) {

@@ -1,27 +1,30 @@
-#include <standard.h>
 #include <udp.h>
 /*
  * gwizmsg...  The global wizard chat line.
  */
-string *allowed_array;
+string *allowed_array, last;
 
 void create() {
-  SETEUID;
   allowed_array = ({ "bing", "flame", "Discworld", "actuator" });
 } /* create() */
-
-void dest_me() { destruct(TO); }
 
 void send_gwizmsg(string msg, int emoted) {
   int i;
   string *allowed_array;
-  mapping minfo, muds;
+  mapping minfo, muds, sent;
 
+  if (!interactive(previous_object())) {
+    event(users(), "inform", file_name(previous_object())+
+        " attempted to send unauthorised gwiz message", "cheat");
+    return ;
+  }
   muds = NAMESERVER_CD->query_known_muds();
   allowed_array = keys(muds);
-  msg = replace(msg, ({ "|", "", "@@@", "" }));
+  msg = replace(msg, ({ "", "^G", "|", "", "@@@", "" }));
+  sent = ([ ]);
   for (i=0;i<sizeof(allowed_array);i++)
-    if (lower_case(allowed_array[i]) != lower_case(mud_name())) {
+    if (lower_case(allowed_array[i]) != lower_case(mud_name())
+        && !sent[lower_case(allowed_array[i])]) {
       if (!mapp(muds[allowed_array[i]]))
         continue;
       minfo = muds[allowed_array[i]];
@@ -33,7 +36,11 @@ void send_gwizmsg(string msg, int emoted) {
                               "||GWIZ:"+msg+
                               "||CHANNEL:CREATOR"+
                               (emoted?"||EMOTE:1":"")+"@@@\n");
+      sent[lower_case(allowed_array[i])] = 1;
     }
+  event(users(), "intermud_tell", sprintf("%s%s", 
+      this_player()->query_cap_name(), (emoted?" ":": ")), msg,
+      "gwiz");
 } /* send_gwizmsg() */
 
 void incoming_request(mapping info) {
@@ -58,6 +65,7 @@ void incoming_request(mapping info) {
     if (member_array(info["NAME"], allowed_array) == -1)
       return ;
 #endif
+    tmsg = replace(tmsg, "", "^G");
     if (info["HOSTADDRESS"] != minfo["HOSTADDRESS"]) {
 /* Faked.  sheeze... */
       log_file("UDP_fakewizmsg", sprintf("%s: %s\n@%s", ctime(time()),
@@ -70,7 +78,10 @@ void incoming_request(mapping info) {
                               "@@@\n");
       return ;
     }
-    event(users(), "inter_creator_tell", info["NAME"], info["WIZNAME"],
-          info["GWIZ"], this_object(), info["EMOTE"] == "1");
+    if (tmsg != last)
+      event(users(), "intermud_tell", sprintf("%s@%s%s", 
+          info["WIZNAME"], info["NAME"], (info["EMOTE"] == "1"?" ":": ")),
+          info["GWIZ"], "gwiz");
+    last = tmsg;
   }
 } /* incoming_request() */

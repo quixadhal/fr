@@ -2,6 +2,7 @@ inherit "/global/creator";
 
 #define  O_TYPE "P"
 
+nomask
 string query_gtitle()
 {
   string patronage;
@@ -11,6 +12,7 @@ string query_gtitle()
    return "the Patron of "+patronage;
 }
 	    
+nomask
 string query_object_type() 
   {
   return O_TYPE;

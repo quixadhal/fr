@@ -3,7 +3,7 @@ inherit "/std/races/standard";
 string *inedible;
 
 void setup() {
-  set_long("The Sysadm is the least liked race on the mud. Somehow"+
+  set_long("The Sysadm is the least liked race on the mud. Somehow"
 	   "the mud often get shut down when he is on.\n");
   set_name("lord");
   set_short("Sysadm");

@@ -2,7 +2,7 @@ inherit "std/object";
 
 void setup () {
   set_short("Snowman");
-  set_long("A wonderfull snowman with glowing eyes made of coal and twigs "+
+  set_long("A wonderfull snowman with glowing eyes made of coal and twigs "
            "for ears.\n");
   set_name("snowman");
   call_out("die",400);

@@ -1,11 +1,13 @@
-#include <standard.h>
 #include "udp.h"
+#define TELL_DEMON "/net/daemon/chars/tell_demon"
+
+void create() {
+  seteuid(getuid());
+} /* create() */
+
 /*
  * Tell a wiz on another mud.
  */
-
-STDOB
-
 void send_gtell(string wiz_to, string mud, string msg) {
   mapping minfo;
 
@@ -25,6 +27,7 @@ void send_gtell(string wiz_to, string mud, string msg) {
 } /* send_gtell() */
 
 void incoming_request(mapping info) {
+  object ob;
   mapping minfo;
   object pl;
 
@@ -50,8 +53,6 @@ void incoming_request(mapping info) {
     }
     pl = find_player(lower_case(info["WIZTO"]));
     if (pl) {
-      pl->event_person_tell(this_object(), info["WIZFROM"]+"@"+info["NAME"]+
-                           " tells you: ", info["MSG"], "common");
       if (!random(10))
         (UDP_PATH+"affirmation_a")->send_affirmation_a(info["HOSTADDRESS"],
                 info["PORTUDP"], "Gtell@"+mud_name(), info["WIZFROM"],
@@ -64,6 +65,9 @@ void incoming_request(mapping info) {
         (UDP_PATH+"affirmation_a")->send_affirmation_a(info["HOSTADDRESS"],
                 info["PORTUDP"], "Gtell@"+mud_name(), info["WIZFROM"],
                 info["WIZTO"]+" successfully saw the message.\n");
+    ob = clone_object(TELL_DEMON);
+    ob->setup_tell(info["WIZFROM"], info["NAME"], 
+                   lower_case(info["WIZTO"]), info["MSG"]);
     } else
       (UDP_PATH+"affirmation_a")->send_affirmation_a(info["HOSTADDRESS"],
                 info["PORTUDP"], "Gtell@"+mud_name(), info["WIZFROM"],

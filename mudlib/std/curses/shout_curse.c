@@ -47,11 +47,11 @@ int destruct_curse(string str) {
 }
 
 int do_echo_all(string str) {
-  write("Your voice is too hoarse to shout.\n");
+  write("Your voice is to horse to shout.\n");
   return 1;
 }
 
 int do_shout(string str) {
-  write("Your voice is too hoarse to shout.\n");
+  write("Your voice is to horse to shout.\n");
   return 1;
 }

@@ -23,7 +23,7 @@ void create() {
     "elf" : ({ L_SPOKEN|L_WRITTEN|L_DISTANCE, "/std/languages/elf", 10 }),
     "drow" : ({ L_SPOKEN|L_WRITTEN|L_DISTANCE, "/std/languages/drow", 10 }),
     "dwarf" : ({ L_SPOKEN|L_WRITTEN|L_DISTANCE, "/std/languages/dwarf",10}),
-   "duergar" : ({ L_SPOKEN|L_WRITTEN|L_DISTANCE, "/std/languages/dwarf",10}),
+   "duergar" : ({ L_SPOKEN|L_WRITTEN|L_DISTANCE, "/std/languages/duergar",10}),
     "halfling" : ({L_SPOKEN|L_WRITTEN|L_DISTANCE,"/std/languages/halfling",10}),
     "gnome" : ({ L_SPOKEN|L_WRITTEN|L_DISTANCE, "/std/languages/gnome", 10 }),
     "goblin" : ({ L_SPOKEN|L_WRITTEN|L_DISTANCE, "/std/languages/goblin", 10 }),
@@ -36,6 +36,7 @@ void create() {
     "drizz" : ({ L_SPOKEN, "/std/languages/drizz", 100 }),
     "gobbledegook" : ({ L_SPOKEN|L_DISTANCE, "/std/languages/gobbledegook", 10 }),
     "arf" : ({ L_SPOKEN|L_DISTANCE, "/std/languages/arf", 10 }),
+    "bork" : ({ L_SPOKEN|L_DISTANCE, "/std/languages/bork", 10 }),
   ]);
 } /* create() */
 

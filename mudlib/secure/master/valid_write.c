@@ -8,9 +8,13 @@
  * any access is done to them.  This is a very flexible system,
  * but perhaps a little hard for some people to use.
  */
+ 
+#define PLAYEROBS ({ "/global/player", "/global/creator","/global/patron", \
+                     "/global/thane", "/global/lord", "/global/god" })
+ 
 int valid_write(string path, mixed euid, string func) {
   string *bing;
-  string  master;
+   mixed master;
 
   if (objectp(euid)) euid = geteuid(euid);
   if (high_programmer(euid)) return 1;
@@ -19,6 +23,20 @@ int valid_write(string path, mixed euid, string func) {
     bing = bing - ({ ".", "" });
   else
     return 0;
+
+/* Little patch to plug a security leak -- Wahooka */
+  if(func == "save_object" && bing[0] == "players") {
+    string tmp;
+    int i;
+    sscanf(tmp = file_name(previous_object()), "%s#%d", tmp, i);
+    if(member_array(tmp, PLAYEROBS) != -1) return 1;
+    else return 1;
+  }
+  else if(func == "save_object" && bing[0] == "secure") {
+    if(high_programmer(euid)) return 1;
+    else return 0;
+  }
+  else if(func == "save_object") return 1;
 
   if (euid == "tmp") {
       return bing[0] == "tmp";

@@ -1,107 +1,129 @@
+
+// Taniwha 1995 uncommented clean_up
+/* Baldrick started some lobotomizing. sept '96
+ * Will reduce the size of this beast.
+ */
 inherit "/std/basic/light";
 inherit "/std/basic/property";
 inherit "/std/basic/cute_look";
-inherit "/std/basic/extra_look";
 inherit "/std/basic/desc";
 inherit "/std/senses";
 #include "room.h"
 #include "door.h"
- 
+// debugging logs
+//#define CLEAN_UP_LOG "clean_up_room"
+//#define DOOR_LOG "room_doors.cloned"
+
+#define FAST_CLEAN_UP 6
+#define SLOW_CLEAN_UP 480
+private static int room_create_time;    // time of creation
+private static int room_init_time;      // time of previous init
+private static int room_stabilize;      // don't bother call_out
+
+
+object *query_hidden_objects();
 string query_dirs_string();
-#define ROOM_HAND "/obj/handlers/room_handler"
-#define STD_ORDERS ({\
-"north", ({ -1, 0, 0 }), "south", ({ 1, 0, 0 }), "east", ({ 0, -1, 0 }),\
-"west", ({ 0, 1, 0 }), "up", ({ 0, 0, -1 }), "down", ({ 0, 0, 1 }),\
-"northeast", ({ -1, -1, 0 }), "northwest", ({ -1, 1, 0 }),\
-"southwest", ({ 1, 1, 0 }), "southeast", ({ 1, -1, 0 }), })
-#define SHORTEN ([\
-"north":"n", "south":"s", "west":"w", "east":"e", "northeast":"ne",\
-"northwest":"nw", "southeast":"se", "southwest":"sw", "up":"u",\
-"down":"d" ])
+static mixed *room_clones;
 
 static mapping items,
-               door_control;
+        exit_map,
+        door_locks,
+        door_map,
+        door_control;
+
 static string exit_string,
        short_exit_string,
        room_zone,
-         *exit_type,*exit_material,
-         *dig_exit,*dig_where,
-         *lock_str,*lock_dir,
-         *all_locks,
        dark_mess,
+       *dig_where,
+       *dig_exit,
        *dest_direc,
        *aliases;
-static mixed  *dest_other;
-static int *co_ord;
-static object *destables,
-              *hidden_objects;
+
+static mixed *dest_other;
+int *co_ord;
+object *destables,
+       *hidden_objects;
+/* Hamlet -- I'm adding choices for colors with the exit arrays. */
+static string exit_color;
 
 string query_short_exit_string();
- 
+object * query_hidden_objects() { return hidden_objects; }
+
 int test_add(object ob, int flag) { return 1; }
 int test_remove(object ob, int flag) { return 1; }
 int add_weight(int n) { return 1; }
- 
+
 int *query_co_ord() { return co_ord; }
-void set_co_ord(int *new) { co_ord = new; }
-void shield_it(string str, string waitpunk) {
-   object porter;
- porter = this_player();
-if (str == "players") {
-if(this_player()->query_creator()) {
-     write("You feel a small pulse of magic as you pass through"+
-            " a magical shield.\n");
- return;
-}
-else
+void set_co_ord(int *newc) { co_ord = newc; }
+mixed *query_init_data()
 {
-        waitpunk->force_load();
-        this_player()->move(waitpunk);
-        write("You are not powerful to breach the magical shield which"+
-        " protects your destination.\n"+
-        "The magical shield bounces you to another location.\n");
+   return light::query_init_data()+property::query_init_data();
+}
+
+void reset()
+{
+    object it;
+    if ( room_clones ) // From Laggard RoD
+    {
+        string thing;
+
+        int i = sizeof(room_clones);
+     // processing backwards yields room inventory in order of add_clones.
+     // (for those who care)
+        while ( i-- > 0 )
+        {
+            if ( stringp(room_clones[i]) ) // See if it's a tag, if so we use it for now
+            {
+                thing = room_clones[i];
+            }
+            else if ( !room_clones[i] ) // fill up any empties using the tag
+            {
+//          Taniwha, clone, then TEST then move, so if it's screwed it still works
+            room_clones[i] = clone_object(thing);
+            if(room_clones[i]) room_clones[i]->move(this_object());
+            }
+        }
     }
 }
-if (str == "creators") {
-if(this_player()->query_lord()) {
-    write("You feel a unnerving pulse of magic as you pass through"+
-            " a magical shield.\n");
-return;
+
+/* Hamlet -- setting of exit string colors.  Meat is in the handler. */
+void set_exit_color(string which) {
+  exit_color = ROOM_HAND->exit_string_color(which);
 }
-else
+
+void add_clone( string the_file, int how_many )
 {
-        waitpunk->force_load();
-        this_player()->move(waitpunk);
-        write("Devoe appears before you.\n"+
-         "Devoe smiles at you.\n"+
-         "Devoe says: I am sorry m'lord, only higher immortals may pass the"+
-         "magical shield that protects this area.\n"+
-         "Devoe opens a rift in time and steps through.\n"+
-        "The magical shield bounces you to another location.\n");
+// Laggard RoD 1995, minor mods by Taniwha
+//
+    if ( !stringp(the_file) )
+    {
+        log_file("debug.log", ctime(time())
+                + " bad clone file: " + the_file
+                + ", " + file_name(this_object())
+                + "\n");
+        return;
     }
-}
-if (str == "demigods") {
-if(this_player()->query_god()) {
-    write("You feel a large pulse of magic as you pass through"+
-            " a magical shield.\n");
- return;
-}
-else
-{
-        waitpunk->force_load();
-        this_player()->move(waitpunk);
-        write("This is a magically protected area.  This shield should of"+
-                " been placed by: "+
-                " Bivins, Ducky, or Dank.  Only gods may pass here.\n"+
-                "The magical shield bounces you to another location.\n");
+    if ( !how_many ) how_many = 1;
+    // don't make array unless we have something to put in it!
+    if ( !room_clones )
+    {
+        room_clones = ({ });
     }
+     while ( how_many-- > 0 )
+    {
+            // make space for objects in array
+            room_clones += ({ 0 });
+   }
+    // last, for backward processing.
+    room_clones += ({ the_file });
 }
-} 
-/* shield_it func doesnt really work fully. but am working on it -biv */
- 
- 
+
+mixed *query_room_clones() { return room_clones; }
+
 string query_dark_mess(int lvl)
-{ 
+{
+   if(!exit_string) query_dirs_string();
  switch(lvl)
  {
     default:
@@ -109,57 +131,57 @@ string query_dark_mess(int lvl)
     case 1: /* Total blackout */
       return dark_mess;
     case 2: /* pretty damn dark */
-      return "You can't see much.\n"+ query_dirs_string();
+      return "You can't see much.\n"+ exit_string;
     case 3: /* getting dim */
-      return "It's hard to see in this gloom.\n"+ ::short(1)+"\n" + query_dirs_string();
+      return "It's hard to see in this gloom.\n"+ ::short(1)+"\n" + exit_string;
     case 4: /* slightly dazzled */
-      return "You are dazzled by the light.\n"+ ::short(0)+"\n"+ query_dirs_string();
+      return "You are dazzled by the light.\n"+ ::short(0)+"\n"+ exit_string;
     case 5: /* very bright */
-      return "The light is painfully bright.\n"+ query_dirs_string();
+      return "The light is painfully bright.\n"+ exit_string;
     case 6:
      return "You are too blinded by the light to see properly.";
   }
 }
 
 void set_dark_mess(string str) { dark_mess = str; }
- 
+
 void create() {
+  string *inh;
   dest_other = ({ });
-   dig_exit =({ });
-   dig_where = ({ });
-   exit_material = ({ });
-   all_locks = ({ });
   dest_direc = ({ });
-   exit_type = ({ });
-   lock_str = ({ });
-   lock_dir = ({ });
+  door_locks = ([ ]);
+  dig_where = ({ });
+  dig_exit = ({ });
+  exit_map = ([ ]);
   items = ([ ]);
   aliases = ({ });
   destables = ({ });
   hidden_objects = ({ });
   door_control = ([ ]);
+  door_map = ([ ]);
   room_zone = "nowhere";
+  exit_color = "%^BOLD%^%^CYAN%^";
   seteuid((string)"/secure/master"->creator_file(file_name(this_object())));
   set_dark_mess("It is too dark to see");
   property::create();
-  extra_look::create();
   senses::create();
   add_property("location", "inside");
   this_object()->setup();
-  this_object()->reset();
+  reset();
+  if(replaceable(this_object())) {
+    inh = inherit_list(this_object());
+    if(sizeof(inh) == 1)
+      replace_program(inh[0]);
+  }
 } /* create() */
- 
+
 string expand_alias(string str);
 
+// moved glance code to the command  (:   Radix 1996
 string short(int dark) {
-  if (dark)
-    return ::short(1);
-  if(query_verb() == "glance")
-    return ::short(0) + query_short_exit_string();
-  else
-    return ::short(0);
+   return ::short(dark);
 } /* short() */
- 
+
 int id(string str) {
   int i;
 
@@ -167,68 +189,25 @@ int id(string str) {
   str = expand_alias(str);
   return items[str];
 } /* id() */
- 
-string expand_alias(string str) {
-  int i;
- 
-  if (!aliases)
-    return str;
- 
-  if ((i=member_array(str,aliases))==-1)
-    return str;
- 
-  if (i%2)
-    return aliases[i-1];
+
+string expand_alias(string str)
+{
+  str = EXIT_HAND->expand_alias(aliases,str);
   return str;
 } /* expand_alias() */
- 
-/*
- * Yes folks. This creates that really stupid obvious exits message you keep
- * getting. Hope you really hate it.
- * specialy changed to handle stupid things. If you can figure it out I
-/** will shake your hand. Look for docs coming soon to a universe near you.
- */
-string query_dirs_string() {
-  string ret, *dirs;
-  int no, i, nostore;
- 
-  if (!dest_direc || sizeof(dest_direc)==0)
-    dest_direc = ({ });
-  dirs = ({ });
-  for (i=0;i<sizeof(dest_other);i+=2)
-    if (dest_other[i+1][ROOM_OBV]) {
-      no += 1;
-      dirs += ({ dest_other[i] });
-    } else if (stringp(dest_other[i+1][ROOM_OBV])) {
-      nostore = 1;
-      if (call_other(this_object(),dest_other[i+1][ROOM_OBV]))
-        dirs += ({ dest_other[i] });
-    } else if (pointerp(dest_other[i+1][ROOM_OBV])) {
-      nostore = 1;
-      if (call_other(dest_other[i+1][ROOM_OBV][0],dest_other[i+1][ROOM_OBV][1]))
-        dirs += ({ dest_other[i] });
-    }
-  if (sizeof(dirs)==0) {
-    if (nostore)
-      return "%^GREEN%^There are no obvious exits.%^RESET%^";
-    exit_string = "%^GREEN%^There are no obvious exits.%^RESET%^";
-    return exit_string;
-  }
-  if (sizeof(dirs)==1) {
-    if (nostore)
-      return "%^GREEN%^There is one obvious exit: "+dirs[0]+".%^RESET%^";
-    exit_string = "%^GREEN%^There is one obvious exit: "+dirs[0]+".%^RESET%^";
-    return exit_string;
-  }
-  ret = " and "+dirs[sizeof(dirs)-1]+".";
-  dirs = delete(dirs,sizeof(dirs)-1, 1);
-  if (nostore)
-    return "%^GREEN%^There are "+query_num(sizeof(dirs)+1, 0)+
-           " obvious exits : "+implode(dirs,", ")+ret+"%^RESET%^";
-  exit_string = "%^GREEN%^There are "+query_num(sizeof(dirs)+1, 0)+
-                " obvious exits : "+implode(dirs,", ")+ret+"%^RESET%^";
+
+//  Thanks to viewers like you this function [insert name here]
+//     has been moved to your local exit_handler [Piper 1/5/96]
+
+string query_dirs_string()
+{
+  object room_ob = this_object();
+
+  exit_string = EXIT_HAND->query_dirs_string(dest_direc,
+                        dest_other,room_ob,exit_color);
   return exit_string;
-} /* query_dirs_string() */
+}
+int reset_short_exit_string() { return short_exit_string = 0; }
 
 /*
  * This creates the exits message you keep getting
@@ -237,7 +216,7 @@ string query_short_exit_string() {
   string ret, *dirs;
   int no, i, nostore, add;
 
-  if (short_exit_string) 
+  if (short_exit_string)
     return short_exit_string;
   if (!dest_direc || sizeof(dest_direc)==0)
     dest_direc = ({ });
@@ -263,40 +242,31 @@ string query_short_exit_string() {
   }
   if (sizeof(dirs)==0) {
     if (nostore)
-      return " %^GREEN%^[none]%^RESET%^";
-    return short_exit_string = " %^GREEN%^[none]%^RESET%^";
+      return exit_color+" [none]%^RESET%^";
+    return short_exit_string = exit_color+" [none]%^RESET%^";
   }
   if (nostore)
-    return " %^GREEN%^["+implode(dirs,",")+"]%^RESET%^";
-  return short_exit_string  = " %^GREEN%^["+implode(dirs,",")+"]%^RESET%^";
+    return exit_color+" ["+implode(dirs,",")+"]%^RESET%^";
+  return short_exit_string  = exit_color+" ["+implode(dirs,",")+"]%^RESET%^";
 } /* query_short_exit_string() */
- 
+
 string long(string str, int dark) {
   int i;
-  string ret,s;
- 
+
   if (dark)
     return query_dark_mess(dark)+"\n";
-  if (!str) {
-    ret = "";
-    ret += query_long();
-    s = calc_extra_look();
-    if (s && s!="")
-      ret += s;
-    if (!exit_string)
-      s = query_dirs_string();
-    else
-      s = exit_string;
-    ret += s + "\n";
-    return ret+query_contents("");
+   if(!exit_string) query_dirs_string();
+  if (!str)
+  {
+    return( query_long()+exit_string+"\n"+query_contents("") );
   }
   str = expand_alias(str);
   return items[str];
 } /* long() */
- 
+
 void calc_co_ord() {
   int *old_co_ord, i, j, k;
- 
+
   for (i=0;i<sizeof(dest_other) && !co_ord;i+=2)
     if (find_object(dest_other[i+1][ROOM_DEST]))
     if (!catch((old_co_ord = (int *)dest_other[i+1][ROOM_DEST]->query_co_ord())))
@@ -316,17 +286,22 @@ void default_calc_co_ord() {
   if(!co_ord)
     co_ord = ({ 0, 0, 0 });
 }
- 
+
 void init() {
   int i, j;
   mapping done;
+   int old_call_out;
+#ifdef FAST_CLEAN_UP
+  // when folk in room, update timers {Laggard}
+  old_call_out = remove_call_out( "clean_up_room" );
+#endif
+  room_init_time = time();
 
 
-add_action("do_dig","dig");
   if (!dest_direc)
     return 0;
 
-  done = ([ ]); 
+  done = ([ ]);
   for (i=0;i<sizeof(dest_direc);i++) {
     if (!done[dest_direc[i]])
       add_action("do_exit_command", dest_direc[i]);
@@ -334,7 +309,7 @@ add_action("do_dig","dig");
     if ((j=member_array(dest_direc[i], aliases)) != -1) {
       string *al;
       al = aliases;
-      
+
       do {
         if (!(j%2)) {
          if (!done[al[j+1]]) {
@@ -348,550 +323,271 @@ add_action("do_dig","dig");
     }
   }
   add_action("do_search", "search");
+  add_action("do_dig","dig");
   if (!pointerp(co_ord))
     calc_co_ord();
+
+  hidden_objects -= ({ 0 });
+
   for (i=0;i<sizeof(hidden_objects);i++)
-    if (hidden_objects[i])
       hidden_objects[i]->init();
-    else {
-      hidden_objects = delete(hidden_objects, i, 1);
-      i--;
-    }
+
   senses::init();
+#ifdef FAST_CLEAN_UP
+    if ( old_call_out < FAST_CLEAN_UP
+      &&  (room_init_time - room_create_time) < FAST_CLEAN_UP )
+    {
+        // was merely passing through {Laggard}
+        call_out( "clean_up_room", FAST_CLEAN_UP, 0 );
+    }
+    else if ( !room_stabilize )
+    {
+        call_out( "clean_up_room", old_call_out, 0 );
+    }
+#endif
+
 } /* init() */
- 
+
 /*
  * not particularly useful.
  * But here just the same, great for debugging purposes.
  */
 string *query_direc() { return dest_direc; }
- 
+
 /*
  * It IS useful to get directions+where they go to
  * BTW this is not a frog.
  */
-mixed *query_dest_dir() {
+nomask mixed *query_dest_dir() {
   int i;
   string *retval;
- 
+
   retval = ({ });
   for (i=0;i<sizeof(dest_other);i+=2)
     retval += ({ dest_other[i], dest_other[i+1][ROOM_DEST] });
   return  retval;
 } /* query_dest_dir() */
- 
+
 mixed *query_dest_other() { return dest_other; }
- 
+
 void set_zone(string str) {
   room_zone = str;
 } /* set_zone() */
- 
+
 string query_zone() {
+#ifdef FAST_CLEAN_UP
+    // monsters call this to move, but may not actually come here,
+    // so potential clean_up_room {Laggard}
+    if ( !room_stabilize  &&  !room_init_time )
+    {
+        room_init_time = time();
+        call_out( "clean_up_room", FAST_CLEAN_UP, 0 );
+    }
+#endif
+
   return room_zone;
 } /* query_zone() */
 
 /*
  * this function puts the directions into the thingy list
- * I am sure you know what I mean 
+ * I am sure you know what I mean
  */
 string expand_direc(string str) {
   string s1,s2;
- 
+
   if (sscanf(str,"%s %s",s1,s2)==2)
     return s1;
   return str;
 } /* expand_direc() */
- 
-/* ok.... I am going to rewrite the add_exit, modify_exit and
- * remove_exit code.... I hope you dont mind.
- */
 
- 
-//  New add_exit more strings!!!!   Piper 3/6/95
+//  Externalized exit portions of room.c (Piper 12/24/95)
+//      Now look in lock_handler.c & exit_handler.c
 
 varargs int add_exit(string direc,mixed dest,string type,
-                          string material)
+                     string material)
 {
-   mixed *stuff;
-   int i;
+   mixed *m;
+  if(!dest_other) dest_other = ({ });
 
-   if(!exit_type||sizeof(exit_type) == 0)
-     exit_type = ({ });
-   exit_type += ({ type });
+  m = EXIT_HAND->add_exit(door_control,exit_map,            //mappings
+                      dest_other,dest_direc,hidden_objects, //arrays
+                      direc,dest,type,material             //data
+                      );
 
-   if(!material)
-      material = "normal";
+  if(sizeof(m) > 0)
+  {
 
-   if(!exit_material||sizeof(exit_material) == 0)
-      exit_material = ({ });
-   exit_material += ({ material });
-
-   if(!dest_other)
-      dest_other = ({ });
-
-   if(member_array(direc, dest_other) != -1)
-     return(0);
-
-   stuff = ({dest}) +ROOM_HAND->query_exit_type(type,direc);
-   dest_other += ({ direc, stuff});
-   dest_direc += ({expand_direc(direc) });
-   exit_string = 0;
-   short_exit_string = 0;
-   if((stuff = (mixed)ROOM_HAND->query_door_type(type,direc,dest)))
-   {
-      door_control[direc] = ({ clone_object(DOOR_OBJECT) });
-      door_control[direc][0]->setup_door(direc,this_object(),dest,stuff);
-      hidden_objects += ({door_control[direc][0] });
-      door_control[dest] = direc;
-   }
-   return(1);
-}
- 
-//  Query for the exit_type.. only the type...  **Piper**
-string *query_ex_type(string direc)
-{
-   return exit_type;
-}
-
-// Query for the exit material **Piper**
-
-string *query_exit_material(string direc)
-{
-   return exit_material;
-}
-
-//  This is the best thing I can think of doing that would be simple
-// enough to code for locked doors... adding in a random strength of the
-// lock.                 **Piper**
-
-varargs int door_lock(string direc, int strength)
-{
-   if(!strength)
-      strength = random(101);
-   if(strength != 0)
-   {
-      if(!lock_dir||sizeof(lock_dir) ==0)
-         lock_dir = ({ });
-      lock_dir += ({ direc });
-
-      if(!lock_str||sizeof(lock_str) ==0)
-         lock_str = ({ });
-      lock_str += ({ strength });
-
-      if(!all_locks||sizeof(all_locks) == 0)
-         all_locks = ({ });
-      all_locks += ({ direc,strength });
-
-      return(1);
-   }
-   return(1);
-}
-
-// First stab a an unlock feature... to enable the lock to be opened...
-//      ***Piper***
-
-int door_unlock(string direc)
-{
-   int i;
-  string strong;
-   if((i = member_array(direc,lock_dir)) == -1)
-     return(0);
-   strong = lock_str[i];
-            write("\n   You unlock the "+direc+" exit.\n\n");
-              say("\n   "+this_player()->query_cap_name()+
-                  " unlocks the "+direc+" exit.\n\n");
-            lock_dir -= ({ direc });
-            lock_str -= ({ strong });
-            all_locks -= ({ direc,strong });
-         return(1);
-}
-
-// Attempt at a query for the strength of the locked doors
-//               ***Piper***
-
-string *query_lock_str(string direc)
-{
-   return lock_str;
-}
-
-// Query for the lock direction.... ***Piper**
-
-string *query_lock_dir(string direc)
-{
-   return lock_dir;
-}
-
-// Query that **shows** you the locked exits and there respective
-//      strengths   **Piper**
-
-mixed *query_locks() { return all_locks; }
-
-//    This is a function to set up exits that can be dug to...
-//   ie <dig direction>  lets you if allowed to dig an exit in this
-//     room...    **Piper**
-
-int dig(string direc, mixed dest)
-{
-   string *nodig = this_object()->query_direc();
-
-   if(!dig_exit||sizeof(dig_exit) == 0)
-      dig_exit = ({ });
-      dig_exit += ({ direc });
-
-   if(!dig_where||sizeof(dig_where) == 0)
-      dig_where = ({ });
-      dig_where += ({ dest });
-
-}
-
-// This is a query for the array of diggable exits.... :)
-//   returns the exits in array form....  **Piper**
-
-string *query_pos_dig() { return dig_exit; }
-
-// This is a query for the array of diggable exit destinations
-//    returns array of file pathnames...  **Piper**
-
-string *query_dig_dest() { return dig_where; }
-
-//  Had to add the dig code to this file.. no longer inheriting it
-//  needed add_exit (besides thought it might streamline better.)
-//    ***Piper***   (4-1-95)
-//   Inheritable digging routine...  dig (direction) with digging tool
-//       Original idea by Lor
-//       Major rework by Piper
-
-#define TP this_player()
-#define TPP this_player()->query_possessive()
-#define TPN this_player()->query_cap_name()
-
-string tool;
-
-int query_wielded_pick()
-{
-   int i;
-   object *olist;
-   olist = this_player()->query_held_ob();
-   for(i=0;i<sizeof(olist);i++)
-   {
-      if(olist[i])
-      {
-         if((string)olist[i]->query_name() == "shovel")
-         {
-            tool = olist[i];
-            return(1);
-         }
-         if((string)olist[i]->query_name() == "mining pick")
-         {
-            tool = olist[i];
-            return(1);
-         }
-         if((string)olist[i]->query_name() == "pick")
-         {
-            tool = olist[i];
-            return(1);
-         }
-      }
-   }
-   return(0);
-}
-
-void do_dig(string direc)
-{
-   mixed path = file_name(this_object());
-   string adirec = "hole";
-
-   int i,j;
-   mixed *dlist,*dwhere;
-   dwhere = this_object()->query_dig_dest();
-   dlist = this_object()->query_pos_dig();
-   for(i=0;i<sizeof(dlist) && i<sizeof(dwhere);i++)
-   {
-     mixed *ndlist;
-     ndlist = this_object()->query_direc();
-     for(j=0;j<sizeof(ndlist);j++)
-     {
-         if((string)ndlist[j] && direc == (string)ndlist[j])
-         {
-            if(query_wielded_pick())
-            {
-            write("\n   Why would you dig somewhere that a way"+
-                  " of passage already exists.  Try digging else"+
-                  "where.\n\n");
-               say("\n   "+TPN+" prepares to dig"+
-                  ", takes a step forward then stops, slaps "+TPP+
-                  " forehead and looks digruntled.\n\n");
-             return(1);
-            }
-         write("\n   Dig with what?\n\n");
-          return(1);
-         }
-      }
-      if((string)dlist[i] && direc == (string)dlist[i])
-      {
-         string where = dwhere[i];
-         if(query_wielded_pick())
-         {
-            write("\n   You begin to dig slowly into the earth, but"+
-                  " meet difficulty immediately.  The rock and dirt"+
-                  " here has been settled for so long, it seems that"+
-                  " it will be immpossible to make any progress.  With"+
-                  " determination and a little time however, you are"+
-                  " finally able to dig a hole.\n\n");
-             tell_room(environment(this_player()),"\n   "+
-                  this_player()->query_cap_name()+" begins to dig"+
-                  " into the earth with fierce determination"+
-                  ".  After a considerable amount of digging a"+
-                  " nice size hole develops.\n\n",({this_player()}));
-            add_exit(direc,where,"hole");
-            this_object()->init();
-               if(direc == "east")
-                 adirec = "west";
-               if(direc == "west")
-                 adirec = "east";
-               if(direc == "north")
-                 adirec = "south";
-               if(direc == "south")
-                 adirec = "north";
-               if(direc == "up")
-                 adirec = "down";
-               if(direc == "down")
-                 adirec = "up";
-               if(direc == "northeast")
-                 adirec = "southwest";
-               if(direc == "southeast")
-                 adirec = "northwest";
-               if(direc == "northwest")
-                 adirec = "southeast";
-               if(direc == "southwest")
-                  adirec = "northeast";
-            where->add_exit(adirec,path,"hole");
-         return(1);
-         }
-      write("\n   Dig with what?\n\n");
-      return(1);
-      }
-   }
-   write("\n   You start to dig into the earth with such vigor that"+
-         " the air is growing dusty and thick with dirt.  It is only"+
-         " after you take a rest that you realize that the hole is"+
-         " growing very slowly...  Looks like your gonna be digging for a"+
-         " while.\n\n");
-     say("\n   "+
-         this_player()->query_cap_name()+" starts to dig with a"+
-         " determination that you can only admire."+
-         "\n\n"+
-         " ");
-   return(1);
-}
-
-// Modify_exit... does this thing ever work? **Piper**
-int modify_exit(string direc, mixed *data) {
-  int i, j;
-  if ((i=member_array(direc, dest_other)) == -1)
-    return 0;
- 
-  for (j=0;j<sizeof(data);j+=2)
-    switch (lower_case(data[j])) {
-      case "message" :
-        dest_other[i+1][ROOM_MESS] = data[j+1];
-        break;
-      case "obvious" :
-        dest_other[i+1][ROOM_OBV] = data[j+1];
-        break;
-      case "function" :
-        dest_other[i+1][ROOM_FUNC] = data[j+1];
-        break;
-      case "size" :
-        dest_other[i+1][ROOM_SIZE] = data[j+1];
-        break;
-      case "enter" :
-        dest_other[i+1][ROOM_ENTER] = data[j+1];
-        break;
-      case "dest" :
-        dest_other[i+1][ROOM_DEST] = data[j+1];
-        break;
-      case "open" :
-        if (door_control[direc])
-          door_control[direc][0]->set_open(data[j+1]);
-        break;
-      case "locked" :
-        if (door_control[direc])
-          door_control[direc][0]->set_locked(data[j+1]);
-        break;
-      case "key" :
-        if (door_control[direc])
-          door_control[direc][0]->set_key_prop(data[j+1]);
-        break;
-      case "other" :
-        if (door_control[direc])
-          door_control[direc][0]->set_other_id(data[j+1]);
-        break;
-      case "difficulty" :
-        if (door_control[direc])
-          door_control[direc][0]->set_difficulty(data[j+1]);
-        break;
-      case "open desc" :
-        if (door_control[direc])
-          door_control[direc][0]->set_open_desc(data[j+1]);
-        break;
-      case "close desc" :
-        if (door_control[direc])
-          door_control[direc][0]->set_close_desc(data[j+1]);
-        break;
-      case "undoor" :
-        if (door_control[direc]) {
-          door_control[direc][0]->go_away();
-          hidden_objects = hidden_objects - ({ door_control[direc][0] });
-        }
-        door_control = m_delete(door_control, direc);
-        break;
-    }
-  return 1;
-} /* modify_exit() */
- 
-int remove_exit(string direc) {
-  int i;
-  if (!dest_other)
-    dest_other = ({ });
-  if ((i=member_array(direc, dest_other)) == -1)
-    return 0;
-  dest_other = delete(dest_other, i, 2);
-  dest_direc = delete(dest_direc, i/2, 1);
-  if (door_control[direc]) {
-    door_control[direc][0]->go_away();
-    hidden_objects = hidden_objects - ({ door_control[direc][0] });
+     door_control = m[0];
+     exit_map = m[1];
+     dest_other = m[2];
+     dest_direc = m[3];
+     hidden_objects = m[4];
+     query_dirs_string();
+     return(1);
   }
-  door_control = m_delete(door_control, direc);
-  short_exit_string = 0;
-  exit_string = 0;
-  return 1;
-} /* remove_exit() */
+
+
+return 0;
+}
+
+// Query for exit type... [Piper 12/24/95]
+string query_ex_type(string direc)
+{
+  if(!exit_map[direc]) { return 0; }
+  return exit_map[direc][1];
+}
+
+// Query for the exit material [Piper 12/24/95]
+string query_ex_material(string direc)
+{
+  if(!exit_map[direc]) { return 0; }
+  return exit_map[direc][2];
+}
+//Locks... again.. much better this time   [Piper 12/24/95]
+
+varargs int door_lock(string direc, string type,
+                      int str, int pub, int trap)
+{
+  door_locks = LOCK_HAND->add_lock(door_locks,direc,type,str,pub,trap);
+  return(1);
+}
+
+int query_lock_dir(string direc)
+{
+  int lock_chk = LOCK_HAND->query_lock_index(door_locks,direc);
+  return lock_chk;
+}
+
+string query_lock_type(string direc)
+{
+  string lock_typ = LOCK_HAND->query_lock_type(door_locks,direc);
+  return lock_typ;
+}
+
+int query_lock_str(string direc)
+{
+  int str_chk = LOCK_HAND->query_lock_str(door_locks,direc);
+  return str_chk;
+}
+
+int query_lock_notify(string direc)
+{
+  int pub_chk = LOCK_HAND->query_lock_notify(door_locks,direc);
+  return pub_chk;
+}
+
+int query_trap(string direc)
+{
+  int trap = LOCK_HAND->query_trap(door_locks,direc);
+  return trap;
+}
+
+int remove_lock(string direc)
+{
+  door_locks = LOCK_HAND->remove_lock(door_locks,direc);
+  return(1);
+}
+
+// modify_eixt... "now showing in an exit_handler near you"
+//  [Piper 12/30/95]
+
+mixed *_BT_;
+mixed *query_bt() { return _BT_; }
+
+int modify_exit(string direc, mixed *data)
+{
+  mixed *m;
+
+  m = EXIT_HAND->modify_exit(door_control,door_map,dest_other,
+           hidden_objects,direc,data);
+
+         if(sizeof(m) > 0)
+ {
+   _BT_ = m;
+   if(sizeof(m) > 0 )
+   {
+  door_control = m[0];
+  door_map = m[1];
+  dest_other = m[2];
+  hidden_objects = m[3];
+   query_dirs_string();
+  return(1);
+   }
+  }
+   return 0;
+}
+
+int remove_exit(string direc)
+{
+  mixed *m;
+// Radix
+// is an idiot.  Checked door_map.  Doormap contains nothing.
+// Fixed by Wonderflug.
+  if ( member_array(direc, dest_other) == -1 )
+    return(0);
+
+  m = EXIT_HAND->remove_exit(door_control,door_map,exit_map,dest_other,
+                dest_direc,hidden_objects,direc);
+
+  door_control = m[0];
+  door_map = m[1];
+  exit_map = m[2];
+  dest_other = m[3];
+  dest_direc = m[4];
+  hidden_objects = m[5];
+  door_locks = LOCK_HAND->remove_lock(door_locks,direc);
+   query_dirs_string(); // Update the exit string
+  reset_short_exit_string();  //so glance works, Anirudh
+
+
+  return(1);
+}
 
 int query_exit(string direc) {
   return (member_array(direc, dest_other) != -1);
 } /* query_exit() */
 
-int query_size(string direc) {
-   int i;
- 
-  if ((i=member_array(direc, dest_other))==-1)
-    return 0;
-  if (stringp(dest_other[i+1][ROOM_SIZE]))
-    return (int)call_other(this_object(), dest_other[i+1][ROOM_SIZE]);
-  if (pointerp(dest_other[i+1][ROOM_SIZE]))
-    return (int)call_other(dest_other[i+1][ROOM_SIZE][0],
-                      dest_other[i+1][ROOM_SIZE][1]);
-  return dest_other[i+1][ROOM_SIZE];
-} /* query_size() */
- 
-int do_exit_command(string str, mixed verb, object ob, object foll) {
-  string special_mess, closed;
-   int i,lk;
+int query_size(string direc)
+{
+  int size;
+  object room_ob = this_object();
+  size = EXIT_HAND->query_size(dest_other,direc,room_ob);
+  return size;
+}
+
+int do_exit_command(string str,mixed verb,object ob,object foll)
+{
   mixed zip;
+   int old_call_out;
+  object room_ob = this_object();
+  zip = EXIT_HAND->do_exit_command(door_control,door_locks,
+                                   exit_map,dest_direc,dest_other,
+                                   aliases,str,verb,ob,foll,room_ob);
+#ifdef FAST_CLEAN_UP
+    old_call_out = remove_call_out( "clean_up_room" );  // multiple folks in room
 
-   object *locklist,*lockstr;
-   locklist = this_object()->query_lock_dir();
-   lockstr = this_object()->query_lock_str();
+    if ( old_call_out > 0
+      &&  old_call_out < FAST_CLEAN_UP
+      &&  (time() - room_create_time) < FAST_CLEAN_UP )
+    {
+        // was merely passing through {Laggard}
+        call_out( "clean_up_room", FAST_CLEAN_UP, 0 );
+    }
+    else if ( !room_stabilize )
+    {
+        call_out( "clean_up_room", SLOW_CLEAN_UP, 0 );
+    }
+#endif
 
-  if (!verb)
-    verb = query_verb();
-  else {
-    if (pointerp(verb)) {
-      special_mess = verb[1];
-      verb = verb[0];
-    }
-    if (!sscanf(verb, "%s %s", verb, str) !=2)
-      str = "";
-  }
-  if (!ob)
-    ob = this_player();
-  if ((i=member_array(verb,dest_direc))==-1)
-    if ((i=member_array(verb, aliases)) == -1)
-      return 0;
-    else
-      if ((i=member_array(aliases[i-1], dest_direc)) == -1)
-        return 0;
- 
-/* ok must be two command exit */
-  if (dest_direc[i] != dest_other[i*2]) {
-    string s1,s2;
-    int j;
- 
-    sscanf(dest_other[i*2],"%s %s",s1,s2);
-    str = expand_alias(str);
-    if (s2 != str) {
-      zip = dest_direc[i+1..sizeof(dest_direc)];
-      while (1)
-        if ((j = member_array(verb, zip)) != -1) {
-          i += j+1;
-          sscanf(dest_other[i*2],"%s %s", s1, s2);
-          if (str == s2)
-            break;
-          zip = zip[j+1..sizeof(zip)];
-        } else
-          return 0;
-    }
-  }
-//  Gonna add my own little locked door thingy here.
-//         **Piper**
-   for(lk=0;lk<sizeof(locklist)&&lk<sizeof(lockstr);lk++)
-   {
-      if(locklist[lk] == dest_direc[i])
-      {
-         string capname = ob->query_cap_name();
-         object here = this_object();
-         string direc = dest_direc[i];
-         string etype = exit_type[i];
-         int locked = lockstr[lk];
-
-         if((locked != 0)&&
-           ((etype == "gate")||
-            (etype == "door")))
-         {
-         write("\n   The "+etype+" is locked."+
-               "\n\n");
-            say ("\n   "+capname+" tries to open the "+direc+" "+etype+
-                  ", but it is locked.\n\n");
-            return(1);
-         }
-      }
-   }
-/* First check for lockedness of doors etc */
-  if (zip = door_control[dest_other[i*2]]) {
-    if (zip[0]->query_locked()) /* Locked...  We auto-unlock, if they have the key */
-      if (!zip[0]->moveing_unlock(ob))
-        return 0;
-    if (!zip[0]->query_open()) { /* Closed open it and close it after us. */
-      if (!zip[0]->moveing_open(ob))
-        return 0;
-      closed = zip[0];
-    }
-  }
-  if (dest_other[i*2+1][ROOM_FUNC])
-    if (stringp(dest_other[i*2+1][ROOM_FUNC])) {
-      if (!call_other(this_object(), dest_other[i*2+1][ROOM_FUNC], str, ob, special_mess))
-        return 0;
-    } else {
-      if (pointerp(dest_other[i*2+1][ROOM_FUNC]))
-        if (!call_other(dest_other[i*2+1][ROOM_FUNC][0],
-                        dest_other[i*2+1][ROOM_FUNC][1], ob, special_mess))
-          return 0;
-    }
-  if (!special_mess)
-    zip = (int)ob->move_player(dest_other[i*2], dest_other[i*2+1][ROOM_DEST],
-                                   dest_other[i*2+1][ROOM_MESS], foll,
-                                   dest_other[i*2+1][ROOM_ENTER]);
-  else
-    zip = (int)ob->move_player(dest_other[i*2], dest_other[i*2+1][ROOM_DEST],
-                                   special_mess, foll,
-                                   dest_other[i*2+1][ROOM_ENTER]);
-  if (closed)
-    closed->moveing_close(ob);
   return zip;
-} /* do_exit_command() */
- 
-/* 
+}
+
+/* Here is the add_item stuff, what I don't understand is why this is objects..
+ * could it help if we used just a mapping? not too sure tho.
+ * Baldrick.
+ */
+
+/*
  * Ok we have done all the exit junk, now for the item bits and pieces
  * share and enjoy your plastic pal who is fun to be with
  */
@@ -917,7 +613,7 @@ int add_item(string str,string desc) {
  */
 int remove_item(string str) {
   object ob;
- 
+
   if (!items)
     items = ([ ]);
 
@@ -932,7 +628,7 @@ int remove_item(string str) {
  */
 int modify_item(string str, string new_desc) {
   object ob;
- 
+
   if (!items)
     items = ([ ]);
 
@@ -949,49 +645,67 @@ mapping query_items() { return items; }
  */
 int add_alias(mixed name,string str) {
   int i;
- 
+
   if (!aliases)
     aliases = ({ });
- 
+
   if (pointerp(name)) {
     for (i=0;i<sizeof(name);i++)
       add_alias(name[i], str);
     return 1;
   }
- 
+
   aliases += ({ str, name });
   return 1;
 } /* add_alias() */
- 
+
 int modify_alias(string str,string name) {
   int i;
- 
+
   if (!aliases)
     return 0;
- 
+
   if ((i=member_array(str, aliases))==-1 || !(i%2))
     return 0;
- 
+
   aliases[i+1] = name;
   return 1;
 } /* modify_alias() */
- 
+
 int remove_alias(string str) {
   int i;
- 
+
   if (!aliases)
     return 0;
- 
+
   if ((i=member_array(str, aliases))==-1 || !(i%2))
     return 0;
- 
+
   aliases = delete(aliases, i, 2);
   return 1;
 } /* remove_alias() */
- 
+
 int query_no_writing() { return 1; }
- 
+
+
+object * query_destables() { return destables; }
+static int empty_room(object ob)
+{
+   object *olist;
+   int i;
+    if(!environment(ob)) return 1;
+   // TEMP fix I think, - Radix
+   if(interactive(environment(ob))) return 0;
+   olist = all_inventory(environment(ob));
+   for( i = 0; i < sizeof(olist) ; i++)
+   {
+      if(interactive(olist[i])) return 0; // Player in room
+   }
+   return 1; // dest it
+}
+
 void dest_me() {
+  object *arr;
   int i;
 
   if (!destables)
@@ -1001,32 +715,182 @@ void dest_me() {
   for (i=0;i<sizeof(destables);i++)
     if (destables[i])
       destables[i]->dest_me();
+// Isthar@Aurora 10-dec-1994, destruct everything here
+  arr = all_inventory(this_object());
+  for (i=0;i<sizeof(arr);i++) {
+    if (interactive(arr[i])) arr[i]->move("/room/void");
+    else arr[i]->dest_me();
+  }
+  for(i =0; i < sizeof(hidden_objects); i++)
+  {
+    if(hidden_objects[i]) hidden_objects[i]->dest_me();
+  }
+// Wandering NPC hunt, Taniwha 1996
+   for( i = 0; i < sizeof(room_clones); i++)
+   {
+      if(objectp(room_clones[i]))
+      {
+          if(empty_room(room_clones[i])) room_clones[i]->dest_me();
+      }
+   }
   destruct(this_object());
 } /* dest_me() */
+
+
+// function called by the driver before swapping.
 int clean_up( int flag )
 {
-  mixed *arr;
-  int i;
- 
-  if( flag > 1 ) return 0; // If inherited don't call clean_up() for TO again
-  arr = all_inventory(this_object());
-  for (i=0;i<sizeof(arr);i++)
-    if (interactive(arr[i]))
-     return 1;
-  arr->dest_me();
-  dest_me();
-  return 0;
-} // clean_up()
+    object *arr = deep_inventory( this_object() );
+    int i = sizeof( arr );
+    int elapsed_time = time() - room_create_time;
+
+  /* next line is mine -- Hamlet */
+  if(this_object()->query_property("no_clean_up"))  return 1;
+  if(this_object()->query_property("corpse_here"))  return 1;
+#if 1
+    // check for inherited room
+    if ( flag )
+    {
+#ifdef CLEAN_UP_LOG
+    log_file( CLEAN_UP_LOG, ctime( time() )
+            + " inherited "
+            + (room_init_time ? time() - room_init_time : "*0*")
+            + "/"
+            + elapsed_time
+            + " seconds ("
+            + memory_info( this_object() )
+            + " bytes) "
+            + file_name( this_object() )
+            + ".\n" );
+#endif
+        return 0;
+    }
+#endif
+
+    // Loop to find if user inside the room somehow {Begosh}
+    // Also check for longer term room usage {Laggard}
+    while( i-- )
+    {
+        if ( userp( arr[i] )
+         ||  elapsed_time > SLOW_CLEAN_UP )
+        {
+#ifdef CLEAN_UP_LOG
+    log_file( CLEAN_UP_LOG, ctime( time() )
+            + " stabilized "
+            + (room_init_time ? time() - room_init_time : "*0*")
+            + "/"
+            + elapsed_time
+            + " seconds ("
+            + memory_info( this_object() )
+            + " bytes) "
+            + file_name( this_object() )
+            + ".\n" );
+#endif
+            // room is frequently used, stop cleaning up
+            room_stabilize = 1;
+            return 1;
+        }
+    }
+
+#ifdef CLEAN_UP_LOG
+    log_file( CLEAN_UP_LOG, ctime( time() )
+            + " clean_up "
+            + (room_init_time ? time() - room_init_time : "*0*")
+            + "/"
+            + elapsed_time
+            + " seconds ("
+            + memory_info( this_object() )
+            + " bytes) "
+            + file_name( this_object() )
+            + ".\n" );
+#endif
+    dest_me();
+    return 0;    // don't call back
+}
+
+
+#ifdef FAST_CLEAN_UP
+// use call_out to attempt faster clean up {Laggard}
+// this is almost but not quite the same as the preceeding function.
+// the differences are not subtle.
+int clean_up_room( int flag )
+{
+    object *arr = deep_inventory( this_object() );
+    int i = sizeof( arr );
+    int elapsed_time = time() - room_init_time;
+
+  /* Next line is mine -- Hamlet */
+  if(this_object()->query_property("no_clean_up"))  return 1;
+  if(this_object()->query_property("corpse_here"))  return 1;
+
+    if (room_stabilize)
+    {
+        return 0;
+    }
+    remove_call_out( "clean_up_room" );
+
+    // Loop to find if user inside the room somehow {Begosh}
+    // Also check for recent living (monster?) arrival {Laggard}
+    while( i-- )
+    {
+        if ( userp( arr[i] )
+         ||  living( arr[i] )
+          &&  elapsed_time < SLOW_CLEAN_UP )
+        {
+            // we do a call_out to kill the room later if we can ;)
+            call_out( "clean_up_room", SLOW_CLEAN_UP, 0 );
+            return 1;
+        }
+    }
+
+#ifdef CLEAN_UP_LOG
+    log_file( CLEAN_UP_LOG, ctime( time() )
+            + " "
+            + elapsed_time
+            + "/"
+            + (time() - room_create_time)
+            + " seconds ("
+            + memory_info( this_object() )
+            + " bytes) "
+            + file_name( this_object() )
+            + ".\n" );
+#endif
+    dest_me();
+    return 0;    // don't call back
+}
+#endif
+
+
+
+
+
 object *find_inv_match(string str) {
-  return all_inventory(this_object()) + hidden_objects + m_values(items);
+  if(!sizeof(hidden_objects))
+  {
+     return(object *)all_inventory(this_object()) + m_values(items);
+  }
+  return (object *)all_inventory(this_object()) + (object *)hidden_objects + m_values(items);
 } /* find_inv_match() */
 
 int do_search(string str) {
+  // Fix by wonderflug.  ghosts shouldn't search.
+  if ( this_player()->query_dead() )
+  {
+    notify_fail("A ghost cannot do that.\n");
+    return 0;
+  }
+  // A bit of gp to do this -- Wf, oct 95
+  if ( this_player()->adjust_gp(-1) < 0 )
+  {
+    notify_fail("You are too tired to search right now.\n");
+    return 0;
+  }
+
   write( ({
-"You search around for a while but dont find anything.\n",
-"You scrounge around, the ground does look interesting you decide.\n",
-"You look carefully at everything, but you find nothing.\n",
-"After a while of intensive searching you find nothing.\n" })[random(3)]);
+    "You search around for a while but dont find anything.\n",
+    "You scrounge around, the ground does look interesting you decide.\n",
+    "You look carefully at everything, but you find nothing.\n",
+    "After a while of intensive searching you find nothing.\n" })[random(4)]);
   say(this_player()->query_cap_name()+" searches around the room a bit.\n");
   event(this_object(), "player_search");
   return 1;
@@ -1120,3 +984,45 @@ int query_decay() { return 10; }
 
 /* Number of move points used by an attack... */
 int attack_speed() { return 15; }
+
+//This is the function to include IF you add_exit with a
+//  add_action, while other players are in the same room as
+// the add_action triggerer...  Piper (9/29/95)
+
+int renew_exits()
+{
+   int i;
+   object *olist = all_inventory(this_object());
+   for(i=0;i<sizeof(olist);i++)
+   {
+      olist[i]->move(this_object());
+   }
+} /*renew_exits() */
+
+
+//  Here lies the dig stuff... much smaller and little used
+// Piper [1/26/96]
+
+int add_dig_exit(string direc, mixed dest)
+{
+  mixed *m;
+
+  m = DIG_HAND->add_dig_exit(dig_exit,dig_where,direc,dest);
+
+  dig_exit = m[0];
+  dig_where = m[1];
+
+return(1);
+}
+
+string *query_dig_dest() { return dig_where; }
+
+string *query_pos_dig() { return dig_exit; }
+
+int do_dig(string direc)
+{
+  object room_ob = this_object();
+  DIG_HAND->do_dig(dig_exit,dig_where,room_ob,direc);
+
+  return(1);
+}

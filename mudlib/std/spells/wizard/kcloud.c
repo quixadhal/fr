@@ -1,83 +1,62 @@
-
-#include "tweaks.h"
 /*** Cloud Kill ***/
 /*** Created by Taniwha ***/
- 
+/*** Adapted to base object by Wonderflug ***/
 
-#define SP_NAME "Cloud Kill"
-#define SPELLTYPE "offensive"      
-#define TYPE "magical"
-#define GP CLOUD_KILL_GP
-#define LEVEL CLOUD_KILL_LEVEL
+inherit "/std/spells/base.c";
+ 
+#include "tweaks.h"
 #define LOCKOUT "cloud_kill_cast"
 
-object room;
-int hb;
+void setup()
+{
+  set_spell_name("Cloud Kill");
+  set_school("invocation");
+  set_spell_level(CLOUD_KILL_LEVEL);
 
-string help() {
-       return
-       "\n\n"+
-       "Spell Name: "+SP_NAME+"\n"+
-       "School: Invocation\n"+
-       "Level: "+LEVEL+"\n"+
-       "Gp Cost: "+GP+"\n"+
-       "Damage Type: Physical (poison)\n"+
-       "Saving Throw: Level + Resist Poison\n"+
-       "Description: \n"+
-       "    This spell will fill a room with a Lethal Cloud."+
-       "Players except the caster are forced to flee. "+ 
-       "The spell lasts 1 round/level,  "+
-       "until it is dispelled, or until the caster dies or leaves the game. "
-       "Also note the caster gets a 10* bonus save, not total immunity. "+
-       "This spell will earn you kill XP IF you stay in the room. "+
-       "\n";
+  set_target_type("none");
+  set_range(0);
+  set_line_of_sight_needed(0);
+
+  add_property_to_check(LOCKOUT);
+
+  set_help_desc("This spell will fill a room with a lethal cloud of gas. "
+    "Players other than the caster are forced to flee.  The cloud lasts "
+    "1 round/level, until it is dispelled, or until the caster dies or "
+    "leaves the game.  Also note the caster gets a large bonus to save, "
+    "not total immunity.  The spell will earn you kill XP IF you stay in "
+    "the room.");
+  set_help_extras(
+    "Damage Type: Poison\n"
+    "Saving Throw: Level + Resist Poison");
+
+  set_casting_time(1);
+  set_gp_cost(CLOUD_KILL_GP);
+  set_rounds( ({ "round1" }) );
 }
 
-
-int cast_spell(string str, object caster)
-{
-  object my_caster;
-
-  if (caster)
-	my_caster = caster;
-  else my_caster = this_player();
   
-  room = environment(my_caster);  
-  if((my_caster->query_timed_property(LOCKOUT)) || 
-	((int)my_caster->query_level()< LEVEL) )
+
+int round1(object caster, mixed target, mixed out_range, int time, int quiet)
+{
+  object ob;
+
+  if ( !quiet )
   {
-       tell_object(my_caster,"You just can't muster the concentration to "+
-	"cast yet.\n");
-       return 1;
+    tell_object(caster, "You chant \"Cumulous letum\".\n");
+    tell_room(environment(caster), caster->query_cap_name()+
+      " chants \"Cumulous letum\".\n", caster);
   }
-  if( my_caster->query_gp() < GP )
-  { 
-       tell_object(my_caster, "You are too mentally drained to cast.\n");
-       return 0;
-   }
-  tell_object(my_caster,"You start to cast "+SP_NAME+".\n");
-  tell_room(environment(my_caster),(string)my_caster->query_cap_name()+
-     " chants, 'cumulous letum'.\n", ({ my_caster }));
 
-  my_caster->adjust_gp(-GP);
-  my_caster->add_timed_property(LOCKOUT,1,CLOUD_KILL_LOCKOUT);
+  tell_room(environment(caster),
+    "A cloud of deadly vapour fills the room!\n",({ }) );
 
-  call_out("make_spell",1,my_caster);   
+  caster->add_timed_property(LOCKOUT,1,CLOUD_KILL_LOCKOUT);
+
+  ob = clone_object(SPELLS+"ckiller.c");
+  ob->move(environment(caster));
+  ob->set_spell(caster,(int)caster->query_level());
+
   return 1;
-}
-
-int cast(string str)
-{
-   return(cast_spell(str,this_player()));
-}
-
-void make_spell(mixed tp)
-{
-   object ob;
-   ob = clone_object(SPELLS+"ckiller.c");
-   ob->move(room);
-   ob->set_spell(tp,(int)tp->query_level());
-   tell_room(room,"A cloud of deadly vapour fills the room!\n",({ }) );
 }
 
 

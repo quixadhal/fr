@@ -2,13 +2,6 @@
 int member_array(mixed el_match, mixed *arr)
 {
    int i, bing;
-
-   bing = -1;
-   for (i = 0; i < sizeof(arr); i++) {
-      if (el_match == arr[i]) {
-         bing = i;
-         break;
-      }
-   }
-   return bing;
+   if(!el_match || !arr) return -1;
+   return efun::member_array(el_match,arr);
 }

@@ -1,4 +1,4 @@
 #obj/handlers/nroff.c
-nroffed_file ({0,"Usage : setmin <message>        setmout <message>Set your entry/exit message.  You can only use this command if you havecompleted the quest that gives this ability as a reward.  The commands aresetmin and setmout.  Setmin sets the message given when you enter a room andsetmout sets the message printed when you leave.KEEP YOUR ENTRY/EXIT MESSAGES IN THEME WITH Forgotten Realms!Examples:setmin wanders insetmout wanders awaySee also:setmmin, review",})
+nroffed_file ({0,"Usage : setmout <message>Restricted to immortals only.Set your exit message.  The message given is to the room when you exit.In <message>, $N and $T must appear.  $N represents your name and $T representsthe direction you leave to.KEEP YOUR ENTRY/EXIT MESSAGES IN THEME WITH Forgotten Realms!Examples:setmout $N gets bored and leaves $T.setmout You hear a loud noise and suddenly $N turns and flees $T.See also:setmin, setmmout, setmmin, review",})
 nroffed_file_name "/doc/helpdir/setmout"
-modified_time 794643888
+modified_time 824327923

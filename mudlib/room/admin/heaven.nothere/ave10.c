@@ -8,13 +8,13 @@ shield_it(SHIELDCITY,"/d/ss/daggerford/ladyluck");
 }
 
 void setup() {
-set_long("You are on Immortal avenue.  You stand in the City of"+
-" the Immortals.  You stare in awe at the wondrous buildings around"+
-" you.  You feel the magic in the air, and feel at peace here. To"+
+set_long("You are on Immortal avenue.  You stand in the City of"
+" the Immortals.  You stare in awe at the wondrous buildings around"
+" you.  You feel the magic in the air, and feel at peace here. To"
 " the west of you lies "+ IM10A + 
-", while to the east of you lies "+ IM10B +".\n"+
-"To the south of you is a window into the universe. From it you"+
-" can see Magisk Jord from the heavens.  You cannot make out any"+
+", while to the east of you lies "+ IM10B +".\n"
+"To the south of you is a window into the universe. From it you"
+" can see Magisk Jord from the heavens.  You cannot make out any"
 " details out, but it is very pretty.\n");
 set_short("Immortal square");
 add_exit("north",ROOM+"ave9","road");

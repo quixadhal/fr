@@ -8,6 +8,10 @@ int found;
 void dest_hide_shadow();
 
 void setup_shadow(object ob) {
+   if(ob->query_hide_shadow())
+   {
+      return;
+   }
   tp = ob;
   shadow(ob,1);
 }
@@ -90,7 +94,7 @@ void do_dest_hide_shadow() {
 int query_hide_shadow()
 {
   int i;
-  i = random((int)tp->query_level() / LEVEL_MOD );
+  i = random((int)tp->query_level() * LEVEL_MOD );
   i = (i==0) ? 1 : i;
   return i;
 }
@@ -102,7 +106,9 @@ string pretty_short() {
 }
 
 string short() {
-  if (found && tp || (query_verb() && query_verb() == "who"))
+// if (found && tp || (query_verb() && query_verb() == "who"))
+// Radix, added whopaged verb check
+  if(found && tp || (query_verb() &&(query_verb()=="who" || query_verb()=="whopaged")))
     return (string)tp->short();
   return 0;
 }
@@ -118,3 +124,4 @@ string query_plural() {
     return (string)tp->query_plural();
  return 0;
 }
+

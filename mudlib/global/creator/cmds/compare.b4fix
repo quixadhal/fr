@@ -1,0 +1,83 @@
+/** coded by Raskolnikov July 1996 **/
+#include <standard.h>
+#include <cmd.h>
+inherit CMD_BASE;
+
+void setup(){
+
+    position = 1;
+}
+
+
+
+static int cmd(string str, object me) {
+    string file1, file2, *filename1, *filename2, text1, text2;
+    string line1, line2;
+    string *diffs1, *diffs2;
+    mixed *diffs;
+    int numtimes;
+    int loop, numlines1, numlines2;
+
+    if (!str) {
+	notify_fail("Usage : compare file1|file2\n");
+	return 0;
+    }
+    sscanf(str, "%s %s", file1, file2);
+    filename1 = me->get_files(file1);
+    filename2 = me->get_files(file2);
+    if (!sizeof(filename1)) {
+	notify_fail("Invalid file1\n");
+	return 0;
+    }
+    if (!sizeof(filename2)) {
+	notify_fail("Invalid file2\n");
+	return 0;
+    }
+    text1 = read_file(filename1[0]);
+    text2 = read_file(filename2[0]);
+    if(!text1) {
+	notify_fail("Not a file : "+text1+"\n");
+	return 0;
+    }
+    if(!text2) {
+	notify_fail("Not a file : "+text2+"\n");
+	return 0;
+    }
+    numlines1 = -3;
+    numlines2 = -3;
+    for(loop=0;read_file(filename1[0], loop, 1) != 0;loop++) {
+	numlines1 += 1;
+    }
+    for(loop=0;read_file(filename2[0], loop, 1) != 0;loop++) {
+	numlines2 += 1;
+    }
+    if(numlines1 >= numlines2)
+	numtimes = numlines1;
+    else numtimes = numlines2;
+    numtimes += 1;
+    diffs = ({ });
+    for(loop=1;loop<numtimes;loop++) {
+	line1 = read_file(filename1[0], loop, 1);
+	line2 = read_file(filename2[0], loop, 1);
+	if(line1 != line2) {
+	    diffs += ({loop+" "+line1, loop+" "+line2,});
+	}
+    }
+    write("File Differences :\n\n"+filename1[0]+"\n"+filename2[0]+"\n\n");
+    for(loop=0;loop<sizeof(diffs);loop++) {
+	write(diffs[loop]+"\n");
+    }
+    return 1;
+} /* compare_file() */
+
+string query_short_help() {
+    return "This command allows the user to compare two files.  "
+    "The command compares each file1 line with its corresponding "
+    "file2 line and returns those lines that did not "
+"match up.\n\n"
+"Note: The extension must be specfied for both files.";
+}
+
+string query_usage() {
+    return "compare file1|file2";
+}

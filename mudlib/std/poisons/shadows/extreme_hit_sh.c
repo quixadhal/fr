@@ -41,11 +41,11 @@ int weapon_attack( object him, object me )
   ret = my_weapon->weapon_attack(him, me);
   if ( ret > 0 )
   {
-    tell_object(me, him->query_cap_name()+" screams and howls in agony "+
+    tell_object(me, him->query_cap_name()+" screams and howls in agony "
 	"from the poison on your weapon.\n");
-    tell_object(him, "You notice some poison on the weapon and scream in "+
+    tell_object(him, "You notice some poison on the weapon and scream in "
 	"agony as your wound brings unending pain.\n");
-    tell_room(environment(me), him->query_cap_name()+" screams and howls "+
+    tell_room(environment(me), him->query_cap_name()+" screams and howls "
 	"in agony as "+him->query_pronoun()+" gets hit.\n", ({ him, me}) );
 
     do_poison_effect( him, me );

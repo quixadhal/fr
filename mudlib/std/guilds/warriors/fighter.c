@@ -5,11 +5,11 @@ void setup()
    set_name("fighter");
    set_short("Fighter");
    set_long(
-      "The Warriors guild teaches one principle of survival:  beating " +
-      "people to a pulp!  It gives you skills that relate to finding " +
-      "out how good a weapon or armour is at much lower costs than " +
-      "other wimpy guilds, like the wizards.  Warriors hack and slash " +
-      "their way through life, and do not appear to be much good at " +
+      "The Warriors guild teaches one principle of survival:  beating " 
+      "people to a pulp!  It gives you skills that relate to finding " 
+      "out how good a weapon or armour is at much lower costs than " 
+      "other wimpy guilds, like the wizards.  Warriors hack and slash " 
+      "their way through life, and do not appear to be much good at " 
       "anything else.\n");
    reset_get();
    add_guild_command("judge", 1); 

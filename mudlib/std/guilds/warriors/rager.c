@@ -5,8 +5,8 @@ void setup()
    set_name("battlerager");
    set_short("Battle Rager");
    set_long(
-"Battle ragers are fierce Duergar warriors.  Trained to tap "+
-"into primal rage and let it lose in battle, ignoring pain and attacking "+
+"Battle ragers are fierce Duergar warriors.  Trained to tap "
+"into primal rage and let it lose in battle, ignoring pain and attacking "
 "friend or foe.  Only a Duergar can be a Battle Rager.\n\n");
    reset_get();
    add_guild_command("judge", 1); 
@@ -19,6 +19,7 @@ void setup()
 int query_legal_race(string race) {
 switch(race) {
   case "duergar" :
+  case "immortal" :
      return 1;
   default :
     return 0;

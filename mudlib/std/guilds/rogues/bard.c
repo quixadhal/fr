@@ -2,14 +2,15 @@ inherit "/std/guilds/rogue";
 
 #define SPELL_TABLE "/table/spell_table"
 string query_main_skill() { return "cha"; }
+int query_advance_cost() { return 750; }
 
 void setup() {
   set_name("bard");
   set_short("Bard");
-  set_long("The bards' guild is for those who seek the romantic life of an "+
-   "entertainer. Along the path to greatness, a bard will pick up a variety "+
-   "of skills, all necessary to put on a good show. And when times are tough,"+
-   " a bard may be forced to rely on those less-than-honorable abilities "+
+  set_long("The bards' guild is for those who seek the romantic life of an "
+   "entertainer. Along the path to greatness, a bard will pick up a variety "
+   "of skills, all necessary to put on a good show. And when times are tough,"
+   " a bard may be forced to rely on those less-than-honorable abilities "
    "more often associated with thieves.\n");
   reset_get();
 //add_guild_command("lore", "/std/commands/lore", "lore"); /*legend lore*/
@@ -29,26 +30,28 @@ int query_legal_weapon(string type) {
 int query_legal_armour(string type) {
   switch(type)
   {
-    case "banded mail":
-    case "banded":
-    case "bronze plate":
-    case "field plate":
-    case "full plate":
-    case "plate mail":
-    case "splint mail":
-    case "buckler":
-    case "medium shield":
-    case "large shield":
-    case "small shield":
-    case "wooden shield":
-       return 0;
-    default: return 1;
+   case "elfin chain":
+   case "amulet":
+   case "leather":
+   case "cloak":
+   case "gloves":
+   case "boots":
+   case "ring":
+   case "bracers":
+   case "cowl":
+   case "shield":
+   case "small shield":
+   case "medium shield":
+   case "wooden shield":
+         return 1;
+   default: return 0;
   }
 }
 
 int query_legal_race(string race) {
   switch(race)
   {
+    case "immortal":
     case "human":
     case "elf":
     case "half-elf":
@@ -61,21 +64,13 @@ int query_legal_race(string race) {
 }
 
 string query_spell_directory() {
-  return "/std/spells/wizard/";
+  return "/std/spells/bards/";
 }
 
-
-mixed query_legal_spheres() {
-
-string race;
-  race = (string)this_player()->query_race_name();
-  switch(race)
-  {
-    case "gnome": return ({"illusion"});
-    case "dwarf":
-    case "halfling": return ({""});
-    default: return ({"abjuration","alteration","illusion","lesserdivination",
-       "greaterdivination", "necromancy",
-       "invocation","conjuration","enchantment"});
-  }
+int query_xp_cost() { return 1800; }
+mixed query_legal_spheres()
+{
+  return ({
+    ({ "bard", "major" })
+    });
 }

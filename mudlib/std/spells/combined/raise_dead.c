@@ -21,13 +21,13 @@ mixed find_one_match(string find,mixed in);
 /*** Help file here ***/
 string help() {
    return
-   "\n\n"+
-   "Spell Name: "+SP_NAME+"\n"+
-   "Sphere:  Necromantic\n"+
-   "Level:  5th\n"+
-   "Gp Cost: "+GP_COST+"\n"+
-   "Description: \n"+
-   "  This spell raises you from the dead.  It removes one of your lives, unlike "+
+   "\n\n"
+   "Spell Name: "+SP_NAME+"\n"
+   "Sphere:  Necromantic\n"
+   "Level:  5th\n"
+   "Gp Cost: "+GP_COST+"\n"
+   "Description: \n"
+   "  This spell raises you from the dead.  It removes one of your lives, unlike "
    "resurrect, and turns you back from being a ghost.\n\n";
 }
  

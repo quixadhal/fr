@@ -1,10 +1,12 @@
 Usage : rearrange
 
-Once during a characters life you can rearrange your stats. When you rearrange
-your stats you'll be given a base of 8 in all scores, and the remainder will 
-be put in a pool for you to distribute as you please. 
+This command allows you to rank your abilities in order of preference, 
+then allows you to roll for a selection of basic stats.
+I.e. a fighter would probably place strength as the top priority,
+     a wizard intelligence and a cleric wisdom.
+You get to roll a number of times till you get a set of stats that you like,
+they can never be "ideal", but a few attempts is probably worth while.
 
-Stats will be of the range between 8 and 18/00 normally, just like in AD&D.
 Racial adjustment and adjustments because of guilds will come after your
 rearranging.
 

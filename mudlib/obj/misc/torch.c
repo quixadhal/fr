@@ -17,6 +17,7 @@ void setup() {
   is_lighted = 0;
   set_weight(50);
   set_value(50);
+  set_size(1);
 }
 
 int query_holdable() {return 1;}
@@ -48,6 +49,25 @@ void init() {
 
 }
  
+//Taniwha, 1997, for cute stuff
+void lightme()
+{
+   is_lighted = 1;
+   set_light(BRIGHTNESS);
+   if(ETO)
+   {
+      tell_room(ETO,"%^YELLOW%^A torch flickers into life.\n",({ 0 }));
+   }
+}
+void unlightme()
+{
+   is_lighted = 0;
+   set_light(0);
+   if(ETO)
+   {
+      tell_room(ETO,"A torch flickers and dies.\n");
+   }
+}
 
 /* This function will only be called as a result of the add_command(), that
 is, it will only be called by the living object that has this torch in 
@@ -84,11 +104,11 @@ void out_of_fuel()
   tell_object(environment(), "The " + short(0) + " goes out.\n");
 }
 
-void set_held(int i) 
+int set_in_use(int i)
   {
-  // ::set_held(i);
   if (i==0 && is_lighted)
     out_of_fuel();      /* it's not really out of fuel */
+       return ::set_in_use(i);
 }
 
 int do_extinguish(object *indir, string s1, string s2, string prep) {

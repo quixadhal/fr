@@ -75,7 +75,7 @@ int query_hide_shadow()
 {
   int i;
 
-  i = random((int)tp->query_level()/2) + (int)tp->query_level() / 4;
+  i = random((int)tp->query_level()*4) + (int)tp->query_level() / 2;
   i =  (i==0) ? 1 : i;
   return i;
 }

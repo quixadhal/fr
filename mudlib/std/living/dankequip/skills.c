@@ -276,9 +276,9 @@ int teach_skill(object *obs, string str) {
       continue;
     }
     if (obs[i] != this_object()) {
-      tell_object(obs[i], this_object()->query_cap_name()+" offers to teach "+
+      tell_object(obs[i], this_object()->query_cap_name()+" offers to teach "
                           "you "+num+" level"+(num>1?"s":"")+" of "+skill+
-                          " for "+total+" xp.\nUse 'learn' to learn the "+
+                          " for "+total+" xp.\nUse 'learn' to learn the "
                           "skill.\n");
       ok += ({ obs[i] });
     } else
@@ -290,11 +290,11 @@ int teach_skill(object *obs, string str) {
     write("You are too low a level to teach "+query_multiple_short(cannot)+
           " "+num+" levels of "+skill+".\n");
   if (sizeof(too_low))
-    write(capitalize(query_multiple_short(too_low))+" is not high enough "+
+    write(capitalize(query_multiple_short(too_low))+" is not high enough "
           "level in the outer skills to learn "+num+" levels of "+skill+".\n");
 /*
   if (sizeof(too_little))
-    write(capitalize(query_multiple_short(too_little))+" does not have "+
+    write(capitalize(query_multiple_short(too_little))+" does not have "
           "enough xp to learn "+num+" levels of "+skill+".\n");
  */
   if (sizeof(ok))
@@ -315,7 +315,7 @@ int do_learn(string str) {
   string skill, *bits;
   mixed *bing;
 
-  notify_fail("Syntax: learn <skill> from <person>\nIf they have to have "+
+  notify_fail("Syntax: learn <skill> from <person>\nIf they have to have "
               "offered to teach you to use this.\n");
   if (!str)
     return 0;
@@ -367,7 +367,7 @@ int do_learn(string str) {
     teach_offer = m_delete(teach_offer, obs[i]);
   }
   if (sizeof(not_offer))
-    write(capitalize(query_multiple_short(not_offer))+" is not offering to "+
+    write(capitalize(query_multiple_short(not_offer))+" is not offering to "
           "teach you "+skill+" at your current level in it.\n");
   if (sizeof(no_xp))
     write("You do not have enough xp to learn "+skill+" from "+

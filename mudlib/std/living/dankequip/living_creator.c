@@ -143,7 +143,7 @@ varargs mixed move_player(string dir, string dest, mixed message,
         }
       }
     } else {
-      write("One of the people following you just quit or died a horrible "+
+      write("One of the people following you just quit or died a horrible "
             "death.\n");
       followers = delete(followers, i, 1);
       i--;

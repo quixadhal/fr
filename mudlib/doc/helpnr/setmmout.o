@@ -1,4 +1,4 @@
 #obj/handlers/nroff.c
-nroffed_file ({0,"Usage : setmmin <message>        setmmout <message>These commands allow you to set the message printed when you are moved viamagical means.  Examples of this are teleporting, being summoned magically, etc.You will not get these commands until you perform a quest which grants them asa reward.KEEP YOUR ENTRY/EXIT MESSAGES IN THEME WITH Forgotten Realms!Examples:setmmin Appears in a cloud of white featherssetmmout Fades slowly into a magical blue haze",})
+nroffed_file ({0,"Usage : setmmin <message>        setmmout <message>Restricted to immortals only.These commands allow you to set the message printed when you are moved viamagical means.  Examples of this are teleporting, being summoned magically, etc.$N must appear in <message>.  This represents your name.KEEP YOUR ENTRY/EXIT MESSAGES IN THEME WITH Final Realms!Examples:setmmout The sound of pebble on a pond, a shimmer in the air and $N disappears.setmin You see lightning flash and $N stands before!See also:setmin, setmout, review",})
 nroffed_file_name "/doc/helpdir/setmmout"
-modified_time 795374370
+modified_time 824235983

@@ -1,3 +1,4 @@
+
 #include "unarmed_combat.h"
 
 /*
@@ -27,10 +28,10 @@
 static int ovr_num,
            ovr_type;
 static object defender,
-	      attacker;
+              attacker;
 
 string *known_unarmed_styles,
-	current_unarmed_style;
+        current_unarmed_style;
 
 
 /* Hmm, I'll do it the same way as weapon_logic.. Baldrick. */
@@ -38,7 +39,7 @@ string *known_unarmed_styles,
 int unarmed_attack(object def, object att);
 
 /* This is wrong too I think.. should make the att / defdr thing a
- * standard! Hmm... maybe it is? this is starting to be a mess..:=) 
+ * standard! Hmm... maybe it is? this is starting to be a mess..:=)
  */
 void write_message(int damage, string attack_style, object att, object defdr);
 void apply_damage(int hps, object att);
@@ -54,7 +55,7 @@ void create()
 {
   ovr_num=0;
   ovr_type=0;
-  known_unarmed_styles=({ "brawling", });
+  known_unarmed_styles=({ "brawling" });
   current_unarmed_style="brawling";
 }
 
@@ -77,48 +78,46 @@ mixed *workout_attack(string unarmed_type)
   int tmproll, result, achit, defenderac, damage_done, THAC0;
 
   THAC0=(int)attacker->query_thac0();
-  tmproll=roll(1,20);
-  if(tmproll==1)
+  tmproll=roll(1,200);
+  // Taniwha 1995, LUCK factor
+  if(tmproll < defender->query_cha() )
     return ({ "fumble", 0});
-  /*
-  achit = ((THAC0 - (int)attacker->extra_bonus("attack")) - tmproll);
-    defenderac = ((int)defender->query_total_ac() -
-		(int)defender->extra_bonus("defend"));
-  */
- 
+
   /* This is the way it is done everywhere else.. */
-  achit = ((THAC0 - (int)attacker->query_attack_bonus()) - tmproll);
+  achit = ((THAC0 - (int)attacker->query_tohit_bonus()) - tmproll);
   defenderac = (int)defender->query_total_ac();
 
   result = (achit - defenderac);
 
   if (result < 1)
-    {
+  {
       happen = "hit";
       if(member_array(unarmed_type, known_unarmed_styles)>-1)
       damage_done=(int)UNARMED_BASE->
                    unarmed_damage(unarmed_type, ovr_num, ovr_type) +
-		   (int)attacker->query_damage_bonus();
-      else 
-	damage_done=roll(BDEFNUM, BDEFTYPE);
-    }
+                   (int)attacker->query_damage_bonus();
+      else
+        damage_done=roll(BDEFNUM, BDEFTYPE);
+      // Taniwha 1995, critical hit, luck based
+      if( random(200) < attacker->query_cha() ) damage_done *= 2;
+  }
   else
-    {
+  {
       happen = "miss";
       damage_done = 0;
-    }
+  }
 
-  return ({ happen, damage_done, });
+  return ({ happen, damage_done });
 } /* workout_attack */
 
 int set_unarmed_combat_style(string style)
 {
   if(member_array(style, known_unarmed_styles)>-1)
-    {
+  {
       current_unarmed_style=style;
       write("Unarmed Combat Style set to : "+style+"\n");
       return 1;
-    }
+  }
   notify_fail("You do not know : "+style+"\n");
   return 0;
 }
@@ -126,7 +125,7 @@ int set_unarmed_combat_style(string style)
 int add_known_unarmed_style(string style)
 {
   if(!style) return 0;
-  known_unarmed_styles+=({ style, });
+  known_unarmed_styles+=({ style });
   return 1;
 }
 
@@ -180,31 +179,19 @@ void write_message(int damage, string attack_style, object att, object defdr)
   tell_object(att, "You do " + damage + " hp's unarmed damage.\n");
   tell_object(defdr, "You get " + damage + " hp's unarmed damage.\n");
 
-  /* This one goes... -Aragorn
-//I really want to do varying stregth attacks but that would require
-//a heck of a lot of hacking around so for now std messages.
-  for(i=0;i<sizeof(keys(valid_attack()));i++)
-    if(UNARMED_BASE->query_valid_attack(keys(valid_attack())[i], attack_style))
-      vatts+=({ values(valid_attack())[i], });
-  i=random(sizeof(vatts));
-  tell_room(environment(attacker), 
-		valid_attack()[vatts[i][0]], ({attacker, defender,}));
-  tell_object(attacker, valid_attack()[vatts[i][1]]);
-  tell_object(defender, valid_attack()[vatts[i][2]]);
- */
   va_all = valid_attack();
   va_keys = keys(va_all);
 
   for(i=0;i<sizeof(va_keys);i++)
   if (UNARMED_BASE->query_valid_attack(va_keys[i], attack_style))
-    vatts += ({ va_all[va_keys[i]] });
+    vatts += ({ va_keys[i] });
 
   i=random(sizeof(vatts));
 
   tell_room(environment(attacker),
-    va_all[va_keys[i]][0], ({attacker, defender,}));
-  tell_object(attacker, va_all[va_keys[i]][1]);
-  tell_object(defender, va_all[va_keys[i]][2]);
+    va_all[vatts[i]][0], ({attacker, defender}));
+  tell_object(attacker, va_all[vatts[i]][1]);
+  tell_object(defender, va_all[vatts[i]][2]);
 }
 
 
@@ -214,31 +201,48 @@ mapping valid_attack()
   bing=random(3);
   bong=random(2);
   return ([
-	"punch" : ({ AN+" punches "+DN+" in the "+({ "stomach", "face", "solar plexus",})[bing]+".\n",
-		     "You punch "+DN+" in the "+({ "stomach", "face", "solar plexus",})[bing]+".\n",     
-		     AN+" punches you in the "+({ "stomach", "face", "solar plexus",})[bing]+".\n", }),    
-	"kick" : ({ AN+" kicks "+DN+" in the "+({ "stomach", "groin", "shin",})[bing]+".\n",
-		     "You kick "+DN+" in the "+({ "stomach", "groin", "shin",})[bing]+".\n",     
-		     AN+" kicks you in the "+({ "stomach", "groin", "shin",})[bing]+".\n", }),    
-	"knee" : ({ AN+" knees "+DN+" in the "+({ "side", "groin",})[bong]+".\n",
-		     "You knee "+DN+" in the "+({ "side", "groin",})[bong]+".\n",     
-		     AN+" knees you in the "+({ "side", "groin",})[bong]+".\n", }),    
-	"headbutt" : ({ AN+" headbutts "+DN+".\n",
-			"You headbutt "+DN+".\n",
-			AN+" headbutts you.\n", }),
-	 ]);
+        "punch" : ({ AN+" punches "+DN+" in the "+({ "stomach", "face", "solar plexus"})[bing]+".\n",
+                     "You punch "+DN+" in the "+({ "stomach", "face", "solar plexus"})[bing]+".\n",
+                     AN+" punches you in the "+({ "stomach", "face", "solar plexus"})[bing]+".\n" }),
+        "rapid" : ({ AN+" rapidly punches "+DN+" in the "+({ "stomach", "face", "solar plexus"})[bing]+".\n",
+                     "You rapidly punch "+DN+" in the "+({ "stomach", "face", "solar plexus"})[bing]+".\n",
+                     AN+" rapidly punches you in the "+({ "stomach", "face", "solar plexus"})[bing]+".\n" }),
+        "kick" : ({ AN+" kicks "+DN+" in the "+({ "stomach", "groin", "shin"})[bing]+".\n",
+                     "You kick "+DN+" in the "+({ "stomach", "groin", "shin"})[bing]+".\n",
+                     AN+" kicks you in the "+({ "stomach", "groin", "shin"})[bing]+".\n" }),
+        "spinkick" : ({ AN+" spin kicks "+DN+" in the "+({ "side of the head", "neck", "chest"})[bing]+".\n",
+                     "You spin kick "+DN+" in the "+({ "side of the head", "neck", "chest"})[bing]+".\n",
+                     AN+" spin kicks you in the "+({ "side of the head", "neck", "chest"})[bing]+".\n" }),
+        "chop" : ({ AN+" karate chops "+DN+" in the "+({ "side of the head", "throat", "chest"})[bing]+".\n",
+                     "You karate chop "+DN+" in the "+({ "side of the head", "throat", "chest"})[bing]+".\n",
+                     AN+" karate chops you in the "+({ "side of the head", "throat", "chest"})[bing]+".\n" }),
+        "roundhouse" : ({ AN+" roundhouse kicks "+DN+" in the "+({ "side of the head", "face", "chest"})[bing]+".\n",
+                     "You roundhouse kick "+DN+" in the "+({ "side of the head", "face", "chest"})[bing]+".\n",
+                     AN+" roundhouse kicks you in the "+({ "side of the head", "face", "chest"})[bing]+".\n" }),
+        "knee" : ({ AN+" knees "+DN+" in the "+({ "side", "groin"})[bong]+".\n",
+                     "You knee "+DN+" in the "+({ "side", "groin"})[bong]+".\n",
+                     AN+" knees you in the "+({ "side", "groin"})[bong]+".\n" }),
+        "headbutt" : ({ AN+" headbutts "+DN+".\n",
+                        "You headbutt "+DN+".\n",
+                        AN+" headbutts you.\n" }),
+        "footsweep" : ({ AN+" foot sweeps "+DN+".\n",
+                        "You foot sweep "+DN+".\n",
+                        AN+" foot sweeps you.\n" }),
+         ]);
 }
-		     
-		     
+
+
 
 
 
 void set_damage_dice(int numdie, int dietype)
 {
-  if(numdie>0&&dietype>0)
+  if(numdie>0 && dietype>0)
   {
     ovr_num=numdie;
     ovr_type=dietype;
   }
   return;
 }
+
+

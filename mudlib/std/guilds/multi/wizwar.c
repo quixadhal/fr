@@ -10,11 +10,17 @@ void setup()
  set_name("wiz-war");
  set_short("Wizard-Warrior");
  set_long(
-      "Wizard-Warriors specialize in neighter magic nor fighting, "+
-      "but are fairly competent in both.  It is very costly for them "+
-      "to advance in levels since they have to learn twice as much "+
+      "Wizard-Warriors specialize in neighter magic nor fighting, "
+      "but are fairly competent in both.  It is very costly for them "
+      "to advance in levels since they have to learn twice as much "
       "as the specialized classes for each level they gain.\n");
  reset_get();
+set_main_skill("int");
+  add_guild_command("focus", 1);
+  add_guild_command("sneak", 1);
+  add_guild_command("fix", 1);
+  add_guild_command("judge", 1);
+  add_guild_command("retrieve", 1);
 }
 
 void set_gp(object ob)
@@ -34,30 +40,6 @@ int query_legal_race(string race)
   }
 }
 
-/* If you want to, feel free to broaden this list */
-mixed query_legal_spells()
-{
-  mixed list;
-  list = ({ });
-
-  switch(level)
-  {
-   case 20: list += ({"wish",});
-   case 1 : list += ({"magic missile",});
-            list += ({"light",});
-  }
-  return list;
-}
-
-int query_legal_spell(string str)
-{
-  int spell;
-
-  if(spell = member_array(str, query_legal_spells()) != -1)
-    return 1;
-  return 0;
-}
-
 string query_spell_directory() { return "/std/spells/wizard/"; }
 
 int query_legal_armour(string type)
@@ -65,6 +47,7 @@ int query_legal_armour(string type)
   switch(type)
   {
     case "robe":
+    case "studded leather":
     case "leather":
     case "padded leather":
     case "padded":       
@@ -78,8 +61,12 @@ int query_legal_armour(string type)
     case "cape":
     case "cloak":        
     case "ring":          
-       return 0;
-    default: return 1;
+   case "elfin chain":
+   case "cowl":
+   case "small shield":
+   case "medium shield":
+       return 1;
+    default: return 0;
   }
 }
 
@@ -96,12 +83,38 @@ int query_legal_weapon(string type)
   }
 }
 
+int query_extr_str()  { return 1; }
 int query_dice()         { return 8; }
 int query_advance_cost() { return 1000; }
-int query_xp_cost()      { return 4500; }
+int query_xp_cost()      { return 3000; }
+int query_thac0_step() { return 5; }
 
-int check_spell(object ob)
+int query_dual_wield_penalty(object me, object w1, object w2)
 {
- if (random(3))
-  call_out("do_check_spell", 0, ob);
+  int bon;
+
+  bon = 50 - (int)me->query_level()*2;
+  bon = ( bon<0 ? 0 : bon );
+
+  return bon;
+}
+mixed query_legal_spheres()
+{
+  return ({  });
+}
+
+
+void start_player(object ob)
+{
+   ::start_player(ob);
+
+  if(ob->query_str() - ob->query_tmp_str() >= 18)
+    return;
+  if(ob->query_str() - ob->query_tmp_str() < 17)
+    return;
+
+  if(ob->query_extreme_str())  return;
+
+  ob->set_extreme_str(roll(1,10));
+  tell_object(ob,"You rolled extreme strength.\n");
 }

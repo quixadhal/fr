@@ -44,7 +44,7 @@ void do_clone(object dest, string str) {
   if (ob) ob->move(dest);
 } /* do_clone() */
 
-object prop_to_fun(string file, mapping funs, string class, int clone) {
+object prop_to_fun(string file, mapping funs, string mclass, int clone) {
     string  *segments, *ind, data, s1, dir, tmp_name;
     mixed   *val;
     int      i;
@@ -99,13 +99,13 @@ object prop_to_fun(string file, mapping funs, string class, int clone) {
 	 * extract_arguments returns array of arguments-to-use in funcall
 	 */
         if (ind[i] == "Class") {
-            class = segments[i * 2 + 1];
+            mclass = segments[i * 2 + 1];
         } else if (ind[i] == "include") {
             write_file(tmp_name, "#include <"+segments[i*2+1]+">\n");
         }
     }
     write_file(tmp_name, 
-               "  clone = (object)SERVER->create_virtual_object(\""+class+
+               "  clone = (object)SERVER->create_virtual_object(\""+mclass+
                                                                "\", 1);\n");
     write_file(tmp_name, "  clone->add_property(\"virtual name\", \""
                          +file+(clone?"#1":"")+"\");\n");

@@ -1,39 +1,43 @@
 #include "path.h"
 inherit "/std/room";
 
-object floor, sign;
-string log_bing, chair;
+#define LOGGER "/obj/handlers/meeting_log"
+object floor;
+string chair;
+int last_say;
+int log_souls;
 
 void setup() {
   set_short("Meeting room");
   set_long(
-"A large oak table dominates this room.  There are some heavy ornate "+
-"looking candle sticks in the center of the table.  The table is "+
-"surrounded by large expensive looking teak chairs, at one end of the "+
-"table are some larger more expensive looking ones.  There is a small "+
-"hammer sitting in the middle of the room.  You can see a small sign on "+
-"the wall.\n");
-add_exit("south","/w/common","door");
-  set_light(70);
+"Heaven:  Meeting room.\n\n"
+"   This room is the definition of comfort.  Along the oak-paneled walls "
+"on every side are book shelves stretching all the way to the high ceiling.  "
+"One corner has a table adorned with various liquor decanters.  The center "
+"of the room is filled with all types of large, soft chairs.  Each has a "
+"foot stool and a small table beside it.  Cowering in another corner you see "
+"a young scribe rapidly taking notes.\n");
 
-  add_item("oak table",
-           "A large heavy looking oak table.  It was built to last. "+
-           "It looks very old, you can tell by all the worn marks "+
-           "at the places around the table where people sit.\n");
-  add_item("teak chair",
-           "The chairs are overly ornate and obviously in a very good "+
-           "condition for their age.  The large chairs at the end are "+
-           "obviously not well used (you can tell, all the dust).\n");
-  add_item("candle stick",
-           "The candle sticks are made of silver, however if you try "+
-           "and take them, you notice they are attached to the table "+
-           "somehow.  The candles seemed to have been carved into the "+
-           "shape of a small chicken holding a torch.\n");
-  add_item(({ "hammer", "gavel" }),
-           "The gavel looks like ones fo those things so common in "+
-           "meeting rooms.  You could bang it around a little maybe, "+
-           "it might help if you had it though.\n");
-  log_bing = 0;
+  add_exit("south","/w/common","door");
+  set_light(45);
+
+  add_item("wall","These are oak paneled walls, dummy.  What more would you "
+                  "have me say about them?\n");
+  add_item(({"book","book shelf","book shelves"}),"The shelves are all "
+           "filled with ancient leather-bound volumes.  Their collection "
+           "must have taken quite some time.\n");
+  add_item("table","All the tables are made of hard woods and are ornately "
+           "crafted.\n");
+  add_item("ceiling","This room must be two stories high.  You have trouble "
+           "seeing any details of the ceiling.\n");
+  add_item("liquor decanters","Made of a fine crystal, these decanters "
+           "hold any sort of alcohol you might want.\n");
+  add_item("chair","The chair looks extremely comfortable.\n");
+  add_item("foot stool","The stool is just what you need to fully relax "
+           "during a meeting.\n");
+  add_item("scribe","Being a very young man, this scribe obviously feels "
+           "dwarfed by the immense characters of your party.  Dutifully "
+           "he takes down the minutes of the meeting.\n");
 }
 
 void reset() {
@@ -53,17 +57,18 @@ void init() {
   string str;
 
   ::init();
+  add_action("log_mode","logmode");
 /* So I just banged my gavel.
  * You did what?
  * I banged my gavel and did the "order in the court thing"
  */
-  if ("/secure/master"->high_programmer((str=(string)this_player()->query_name()))
+  if
+("/secure/master"->high_programmer((str=(string)this_player()->query_name()))
       || str == chair) {
     add_action("appoint", "appoint");
     add_action("bang", "bang");
     add_action("recover", "recover"); /* recovers the floor in case of
                                        * loss */
-    add_action("do_log", "log");
   }
 }
 
@@ -84,9 +89,8 @@ int appoint(string str) {
   write("Ok, "+str+" is now the chair of the meeting.\n");
   tell_object(ob, this_player()->query_cap_name()+
         " just appointed you the chair of the meeting.\n");
-  if (environment(ob) == this_object())
+  if (environment(ob) != this_object())
     ob->move(this_object());
-  sign->set_read_mess("The chair of the meeting is "+str+".\n");
   return 1;
 }
 
@@ -110,38 +114,40 @@ int recover() {
   return 1;
 }
 
-int do_log(string str) {
-  if (log_bing && !str) {
-    write("Stopped logging.\n");
-    log_bing = str;
-    return 1;
-  }
-  if (!str) {
-    notify_fail("Syntax: log <file_name>\n"+
-                "        log by itself to stop logging.\n");
-    return 0;
-  }
-  if (log_bing)
-    write("Stopped loggin to "+log_bing+" and started logging to "+str+".\n");
+int log_mode(string str) {
+  log_souls = !log_souls;
+  
+  if(log_souls)
+    tell_object(this_player(),"Souls will be logged.\n");
   else
-    write("Logging to "+str+".\n");
-  log_bing = str;
+    tell_object(this_player(),"Souls will not be logged.\n");
+
   return 1;
 }
 
+/* this will divide up separate conversation. */
+void check_expired() {
+  if( (time() - last_say) > (600) )
+    LOGGER->log_it("* * * * *\n");
+    
+  last_say = time();
+}
+
 void event_person_say(object ob, string start, string rest) {
-  if (log_bing)
-    log_file(log_bing, start+rest+"\n");
+  check_expired();
+  LOGGER->log_it(start+rest+"\n");
 }
 
 void event_say(object ob, string rest) {
-  if (log_bing)
-    log_file(log_bing, rest);
+  check_expired();
+  LOGGER->log_it(rest);
 }
 
 void event_soul(object ob, string rest) {
-  if (log_bing)
-    log_file(log_bing, rest);
+  if(log_souls) {
+    check_expired();
+    LOGGER->log_it(rest);
+  }
 }
 
 void dest_me() {

@@ -12,9 +12,9 @@ void setup()
  set_name("wizthief");
  set_short("Wizard-Thief");
  set_long(
-      "Wizard-Thieves specialize in neither magic nor pilfering, "+
-      "but are fairly competent in both.  It is costly for them "+
-      "to advance in levels since they have to learn twice as much "+
+      "Wizard-Thieves specialize in neither magic nor pilfering, "
+      "but are fairly competent in both.  It is costly for them "
+      "to advance in levels since they have to learn twice as much "
       "as the specialized classes for each level they gain.\n");
  reset_get();
  set_main_skill("dex");
@@ -47,7 +47,13 @@ int query_legal_race(string race)
 
 mixed query_legal_spheres()
 {
- return ({"alteration","lesserdivination","illusion","enchantment"});
+  return ({
+   ({"alteration","major"}),
+   ({"lesserdivination","minor"}),
+   ({"illusion","major"}),
+   ({"enchantment","minor"}),
+    ({ "shadowmagic", "major" })
+   });
 }
 
 
@@ -58,6 +64,7 @@ int query_legal_armour(string type)
 {
   switch(type)
   {
+   case "small shield":
     case "robe":
     case "leather":
     case "padded leather":
@@ -70,8 +77,11 @@ int query_legal_armour(string type)
     case "pendant":
     case "necklace":
     case "cape":
+   case "elfin chain":
     case "cloak":
     case "ring":
+   case "bracers":
+   case "cowl":
        return 1;
     default: return 0;
   }
@@ -81,6 +91,7 @@ int query_legal_weapon(string type)
 {
   switch(type)
   {
+      case "bow":
     case "twohanded sword":
     case "polearm":
     case "bastard sword":
@@ -99,6 +110,13 @@ int query_dice()         { return 7; }
 int query_advance_cost() { return 1000; }
 // lowered the xp cost from 4000, excessive considering they get no good offenive spells
 int query_xp_cost()      { return 3000; }
-int query_thac0_step()   { return 2;}
+int query_thac0_step()   { return 3;}
 string query_main_skill() { return "dex"; }
 
+int query_dual_wield_penalty(object me, object w1, object w2)
+{
+  if ( w1->query_attack_type() == 3 && w2->query_attack_type() == 3 )
+  return 50 - (int)me->query_level();
+  else
+    return 50;
+}

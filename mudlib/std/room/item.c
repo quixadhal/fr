@@ -5,8 +5,20 @@ string *lng,
        *plu,
        *name;
 mapping verb,
-        plural;
+        plural,
+        other_things;
 int *cur_desc;
+
+/* commented out by Kelaronus 2/9/95
+void init() {
+  int i;
+  string *bits;
+
+  bits = keys(other_things);
+  for (i=0;i<sizeof(bits);i++)
+    this_player()->add_command(bits[i], this_object());
+}
+*/
 
 void create() {
   adjs = ({ });
@@ -17,6 +29,7 @@ void create() {
   verb = ([ ]);
   plural = ([ ]);
   cur_desc = ({ });
+  other_things = ([ "smell" : 0, "taste" : 0, "read" : 0 ]);
 } /* create() */
 
 string short() {
@@ -88,9 +101,23 @@ string *query_shrt() { return shrt; }
 int drop() { return 1; }
 int get() { return 1; }
 
-void setup_item(mixed nam, string long) {
-  string *bits, s;
+varargs void setup_item(mixed nam, mixed long, int no_plural) {
+  string *bits, s, real_long;
   int i;
+
+  if (pointerp(long)) {
+    real_long = "You see nothing special.\n";
+    for (i=0;i<sizeof(long);i+=2)
+      if (long[i] != "long") {
+        if (!other_things[long[i]])
+          other_things[long[i]] = ([ sizeof(lng) : long[i+1] ]);
+        else
+          other_things[long[i]][sizeof(lng)]  = long[i+1];
+      } else {
+        real_long = long[i+1];
+      }
+    long = real_long;
+  }
 
   if (pointerp(nam)) {
     if (sizeof(nam) > 0)
@@ -100,12 +127,18 @@ void setup_item(mixed nam, string long) {
       name += ({ (s=bits[sizeof(bits)-1]) });
       if (!verb[s]) {
         verb[s] = ({ bits[0..sizeof(bits)-2], sizeof(lng) });
-        plural[(s=pluralize(s))] = ({ bits[0..sizeof(bits)-2], sizeof(lng) });
+        if (!no_plural)
+          plural[(s=pluralize(s))] = ({ bits[0..sizeof(bits)-2], sizeof(lng) });
       } else {
         verb[s] += ({ bits[0..sizeof(bits)-2], sizeof(lng) });
-        plural[(s=pluralize(s))] += ({ bits[0..sizeof(bits)-2], sizeof(lng) });
+        if (!no_plural)
+          plural[(s=pluralize(s))] += 
+                   ({ bits[0..sizeof(bits)-2], sizeof(lng) });
       }
-      plu += ({ s });
+      if (no_plural)
+        plu += ({ "no plural" });
+      else
+        plu += ({ s });
       adjs += bits[0..sizeof(bits)-2];
     }
     lng += ({ long });
@@ -116,24 +149,41 @@ void setup_item(mixed nam, string long) {
   name += ({ (s=bits[sizeof(bits)-1]) });
   if (!verb[s]) {
     verb[s] = ({ bits[0..sizeof(bits)-2], sizeof(lng) });
-    plural[(s=pluralize(s))] = ({ bits[0..sizeof(bits)-2], sizeof(lng) });
+    if (!no_plural)
+      plural[(s=pluralize(s))] = ({ bits[0..sizeof(bits)-2], sizeof(lng) });
   } else {
 /* Dey are both existant... */
     verb[s] += ({ bits[0..sizeof(bits)-2], sizeof(lng) });
-    plural[(s=pluralize(s))] += ({ bits[0..sizeof(bits)-2], sizeof(lng) });
+    if (!no_plural)
+      plural[(s=pluralize(s))] += ({ bits[0..sizeof(bits)-2], sizeof(lng) });
   }
-  plu += ({ s });
+  if (no_plural)
+    plu += ({ "no plural" });
+  else
+    plu += ({ s });
   adjs += bits[0..sizeof(bits)-2];
   lng += ({ long });
 } /* setup_item() */
 
-int modify_item(string str, string new_long) {
-  int i;
+int modify_item(string str, mixed long) {
+  int i, j;
 
-  if ((i = member_array(str, shrt)) == -1)
+  if ((j = member_array(str, shrt)) == -1)
     return 0;
 /* Got a match... */
-  lng[i] = new_long;
+  if (pointerp(long)) {
+    for (i=0;i<sizeof(long);i+=2)
+      if (long[i] != "long") {
+        if (!other_things[long[i]])
+          other_things[long[i]] = ([ sizeof(lng) : long[i+1] ]);
+        else
+          other_things[long[i]][sizeof(lng)]  = long[i+1];
+      } else {
+        lng[j] = long[i+1];
+      }
+    return 1;
+  }
+  lng[j] = long;
   return 1;
 } /* modify_exit() */
 
@@ -223,3 +273,19 @@ void dwep() {
 } /* dwep() */
 
 int move() { return 1; }
+
+int command_control(string command) {
+  int i;
+  string ret;
+
+  if (!other_things[command])
+    return 0;
+  for (i=0;i<sizeof(cur_desc);i++)
+    if (other_things[command][cur_desc[i]])
+      write(process_string(other_things[command][cur_desc[i]]));
+    else
+      cur_desc = delete(cur_desc, i--, 1);
+  return sizeof(cur_desc);
+} /* command_control() */
+
+mapping query_other_things() { return other_things; }

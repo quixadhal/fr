@@ -1,0 +1,46 @@
+
+/* This is a table of the different stats the guilds has.
+ * Baldrick, aug '95
+ */
+/*
+ * XP cost: the base calc for advancing one level. 
+ * Advance cost: Not in use yet.
+ * Dice: The roll for more hit points when advancing.
+ * Main skill: 
+ * Thac0 step: The amount of thac0 decreasing every level.
+ */
+
+Warriors:
+
+ - Xp cost: 2000
+ - Advance cost (not in use yet): 500
+ - Dice: 10
+ - Main skill: Strenght.
+ - Thac0 step: 6
+
+Clerics:
+/* Here we have different types of priests, we'll add it when we have the
+ * Objects ready.
+ */
+
+ - Xp cost: 1500
+ - Advance cost (not in use yet): 500
+ - Dice: 8
+ - Main skill: Wisdom
+ - Thac0 step: 3
+
+Rogues:
+
+ - Xp cost: 1250
+ - Advance cost (not in use yet): 1000
+ - Dice: 8
+ - Main skill: Strenght.
+ - Thac0 step: 4
+
+Wizards:
+
+ - Xp cost: 2500
+ - Advance cost (not in use yet): 500
+ - Dice: 6
+ - Main skill: Intelligence.
+ - Thac0 step: 2
