@@ -6,13 +6,20 @@ static mixed *rest;
 /* muhahaha filtering out parse stuff...Raskolnikov Nov 96 */
 // If you're going to fix this, might as get rid of the
 // "him", "her", and "it" shit too - Radix
+/* Flode - 240897
+ * Made find_match varargs with an optional no_hidden -flag
+ * If the flag is set, hidden players, hidden npc's and basically
+ * any object returning 1 on query_hidden are filtered out.
+ */
 
 string *parse_blocks = ({
   "thing",
   "things",
 });
 
-mixed find_match(string str, mixed ob) {
+static int not_hidden(object ob) { return ob && !ob->query_hide_shadow(); }
+
+varargs mixed find_match(string str, mixed ob, int no_hidden) {
     mixed *array, test, *ret;
     int i, num, top, bot, bing, j;
     string nick, type, *bits;
@@ -37,6 +44,8 @@ mixed find_match(string str, mixed ob) {
 		array += test;
 	ob = array;
     }
+    if(no_hidden)
+      ob = filter(ob, "not_hidden", this_object());
     bits = explode(implode(explode(str, " and "), ","), ",");
     ret = ({ });
     for (j=0;j<sizeof(bits);j++) {
@@ -77,6 +86,8 @@ mixed find_match(string str, mixed ob) {
 	    continue;
 	}
 	test = explode(str, " ");
+	// Flode added the next line, 120997
+	if(!sizeof(test)) test = ({ "" });
 	sscanf(test[sizeof(test)-1], "%d", bing);
 	test = ({ });
 	rest = ({ });

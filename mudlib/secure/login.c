@@ -8,7 +8,7 @@ inherit "std/object";
                          /* Undef this if you are allowing players */
 //#define PLAYER_LOCKOUT 1
                          /* Total number of users allowed on.  */
-#define TOTAL_SLOTS 90
+#define TOTAL_SLOTS 110
                          /* How many user slots are reserved for immorts */
 #define IMMORT_SLOTS 4
 
@@ -202,8 +202,9 @@ void logon1(string str) {
   if(!read_file("/w/"+name+"/workroom.c"))
   {
     write("\n\nFINAL REALMS MUD \n\n"+
-    "This is the development site for FR.\n\n " +
-    "The playable FR has been moved to fr.hiof.no port 2001\n\n");
+    "The mud is closed for players right now, that often mean we are " +
+    "either fixing a serious bug or preparing an OMIQ, please try again " +
+    "in a short time.\n\n");
     destruct(this_object());
     return;
   }
@@ -472,6 +473,9 @@ static void begin2(int new_player) {
   }
   new_copy -> set_name(name);
   new_copy -> set_password(password);
+  if( query_property("NOMULTI") )
+    new_copy->add_static_property("NOMULTI", query_property("NOMULTI"));
+
   tp = this_object();
 
   exec(new_copy, tp);
@@ -491,6 +495,7 @@ static void begin2(int new_player) {
   new_copy->move_player_to_start(name, new_player, invis_wish);
 
   new_copy->set_gender(gender);
+  WHO_HANDLER->add_user(new_copy);
   destruct(this_object());
 } /* begin2() */
 

@@ -13,6 +13,9 @@
 #define AVG_CHA 11
 #define CHA_AD 5
 
+#define NEWBIE_WCOST 1
+#define NORMAL_WCOST 10
+
 #define GOOD_RACES ({ "elf","dwarf","halfling","half-elf" })
 #define NEUTRAL_RACES ({ "human","gnome","lizard-men" })
 #define EVIL_RACES ({ "orc","drow","duergar","half-orc","goblin" })

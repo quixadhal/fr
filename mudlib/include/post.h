@@ -9,3 +9,4 @@
 #define DIR_POSTAL "/save/boxes"
 #define DIR_LETTERS "/save/letters"
 #define DIR_TMP "/tmp"
+#define AGED 60*60*24*62        // Two months

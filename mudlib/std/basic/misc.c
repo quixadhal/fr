@@ -89,7 +89,8 @@ move(mixed dest, mixed messout, mixed messin) {
       return 0;
    }
   from = environment();
-  if (!dest->add_weight(weight))
+// put parentheses around stuff after !... Anirudh
+  if (!(dest->add_weight(weight)))
     return MOVE_TOO_HEAVY;
   i = ::move(dest, messout, messin);
   if (i == MOVE_OK) {

@@ -8,21 +8,25 @@ inherit "/std/object";
 
 #define REBOOT_TIME 23 * 60 * 60  /* every 23 hours, so its not always 
                                       the same time */
-#define REBOOT_MEMORY 35 * 1024 * 1024
+#define REBOOT_MEMORY 42 * 1024 * 1024
+
+#define STAT_TIME 600 /* Do a statistics every tenth minute */
 
 int SHUTTING=0;                         // whether in shutdown at the moment
+int last_time;
 
 object *netdeads();
 int query_player_object(object pob);
 
 string *checks = ({
 //         "do_idletest", "auto_reboot", "net_dead_purge"
-         "auto_reboot"
+         "auto_reboot", "do_stat_users"
         });
 
 // Here are the function definitions
 // This is so they are known to anything that wants to call them
 void do_idletest();
+void do_stat_users();
 void auto_reboot();
 void net_dead_purge();
 
@@ -104,9 +108,10 @@ int query_player_object(object pob) {
   return (file_name(pob)[0..7] == "/global/" && clonep(pob));
 } /* query_player_object() */
 
-object *netdeads() {
-object *livs, *l, *nd;
-int i;
+object *netdeads() 
+  {
+  object *livs, *l, *nd;
+  int i;
 
   l = ({ });
   nd = ({ });
@@ -129,4 +134,25 @@ void dest_me() {
 int clean_up()
 { 
 return 1;
+}
+
+void do_stat_users()
+  {
+  object *foos;
+  int i, mortals, immortals;
+  
+  if (time() < last_time + STAT_TIME)
+    return;
+  last_time = time();
+
+  foos = users();
+  for(i=0;i<sizeof(foos);i++)
+    {
+    if ((int)foos[i]->query_creator() == 1)
+      immortals++;
+     else
+      mortals++;
+    }
+  log_file("STAT", ctime(time())+": " + immortals + "," + mortals + "\n");
+  return; 
 }

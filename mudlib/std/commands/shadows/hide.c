@@ -16,7 +16,7 @@ void setup_shadow(object ob) {
   shadow(ob,1);
 }
 
-attack_by(object him)
+int attack_by(object him)
 {
   dest_hide_shadow();
   return tp->attack_by(him);
@@ -28,7 +28,7 @@ int cast(string str)
   return tp->cast(str);
 }
 
-attack_ob(object him)
+int attack_ob(object him)
 {
   dest_hide_shadow();
   return tp->attack_ob(him);
@@ -106,9 +106,7 @@ string pretty_short() {
 }
 
 string short() {
-// if (found && tp || (query_verb() && query_verb() == "who"))
-// Radix, added whopaged verb check
-  if(found && tp || (query_verb() &&(query_verb()=="who" || query_verb()=="whopaged")))
+  if (found && tp || (query_verb() && query_verb() == "who"))
     return (string)tp->short();
   return 0;
 }

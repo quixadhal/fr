@@ -10,3 +10,33 @@
 int omiq_in_progress() {  return (OMIQ || FLAG);  }
 
 int flag_in_progress() {  return FLAG;  }
+
+int is_playing_flag(object ob) {
+  string team;
+
+  if(catch(team = "/d/omiq/flag/master_control"->query_property(ob, "flagteam")))
+    return 0;
+
+  if(!team || !stringp(team))
+    return 0;
+
+  if((team == "observer") || (team == "admin"))
+    return 0;
+
+  return 1;
+}
+
+void clear_playertmp() {
+  string *tmp;
+  string f;
+
+  if(explode(file_name(previous_object()), "#")[0] ==
+     "/d/omiq/flag/master_control")
+  {
+    seteuid("Root");
+    tmp = get_dir("/save/playertmp/");
+    foreach(f in tmp)
+      rm("/save/playertmp/"+f);
+    seteuid(0);
+  }
+}

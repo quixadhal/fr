@@ -51,7 +51,7 @@ int fix(string str,object fixer)
     obs[i]->adjust_cond(1);
     total_cost += val;
   }
-  if (total_cost)
+  if (total_cost > 1)
     fixer->pay_money((mixed*)MONEY_HAND->create_money_array(total_cost));
   if (sizeof(fail))
     tell_object(fixer,"You failed to fix "+query_multiple_short(fail)+".\n");

@@ -4,25 +4,25 @@ inherit "/std/guild";
 
 int query_skill_cost(string skill)
 {
- return 6;
+    return 6;
 }
 
 void setup()
 {
-  set_name("mage");
-  set_short("mage");
-  set_long(
-   "Mages are the most powerful magic-users on "
-   "Magisk Jord.  Their power lays in quickness of thought "
-   "and powerful spells rather than hand to hand fighting "
-   "ability.  They favor the power of  the Arcane and have "
-   "no desire for the 'barbaric' forms of combat.\n"); 
-  reset_get();
+    set_name("mage");
+    set_short("mage");
+    set_long(
+      "Mages are the most powerful magic-users on "
+      "Magisk Jord.  Their power lays in quickness of thought "
+      "and powerful spells rather than hand to hand fighting "
+      "ability.  They favor the power of  the Arcane and have "
+      "no desire for the 'barbaric' forms of combat.\n"); 
+    reset_get();
 }
 void create()
-  {
-  ::create();
-  set_main_skill("int");
+{
+    ::create();
+    set_main_skill("int");
 }
 
 int query_advance_cost() { return  500; }
@@ -32,22 +32,22 @@ int query_thac0_step()   { return 2;    }
 string query_main_skill() {return "int";}
 
 int query_legal_race(string race) {
-switch(race) {
-  case "dwarf":
-  case "halfling":
-  case "lizard-man":
-  case "half-orc":
-  case "orc": return 0;
-  default       :return 1;
- }
+    switch(race) {
+    case "dwarf":
+    case "halfling":
+    case "lizard-man":
+    case "half-orc":
+    case "orc": return 0;
+    default       :return 1;
+    }
 }
 
 string query_spell_directory() { return "/std/spells/wizard/"; }
 
 int query_legal_weapon(string type)
 {
-  switch(type)
-  {
+    switch(type)
+    {
     case "dagger":
     case "dirk":
     case "dart":
@@ -55,15 +55,15 @@ int query_legal_weapon(string type)
     case "staff":
     case "sling":
     case "knife":
-         return 1;
+	return 1;
     default: return 0;
-  }
+    }
 }
 
 int query_legal_armour(string type)
 {
-  switch(type)
-  {
+    switch(type)
+    {
     case "robe":
     case "boots":
     case "shoes":
@@ -76,16 +76,17 @@ int query_legal_armour(string type)
     case "cape":
     case "slippers":
     case "leather":
-         return 1;
+    case "belt":
+	return 1;
     default:
-         return 0;
-  }
+	return 0;
+    }
 }
 
 
 int query_dual_wield_penalty(object me, object w1, object w2)
 {
-  return 50;
+    return 50;
 }
 
 

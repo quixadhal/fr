@@ -99,10 +99,20 @@ void set_race_ob(string str)
     }
 
     if( (file_size(str) < 1) && (file_size(str+".c") < 1) ) {
-	tell_object(this_object(),"That didn't work.  Tell someone who "
+	tell_object(this_object(),"Attempt to set race didn't work.  Tell someone who "
 	  "can fix it.\n"); 
 	return;
     }
+// Taniwha 1997, stop these accumulating on race change
+   TO->adjust_bonus_str(-TO->query_bonus_str());
+   TO->adjust_bonus_con(-TO->query_bonus_con());
+   TO->adjust_bonus_dex(-TO->query_bonus_dex());
+   TO->adjust_bonus_cha(-TO->query_bonus_cha());
+   TO->adjust_bonus_wis(-TO->query_bonus_wis());
+   TO->adjust_bonus_int(-TO->query_bonus_int());
+    // Remove the old language if they have one. Flode - 150997
+    if(race_ob)
+      this_object()->remove_language(race_ob->query_name());
     race_ob = str;
     race_ob->start_player(this_object());
     race_ob->set_racial_bonuses();
@@ -238,7 +248,7 @@ void set_group_ob(string str)
 
     if(file_size(str+".c") < 1)
     {
-	tell_object(this_object(),"That did not work.  Tell someone who "
+	tell_object(this_object(),"Attempt to set group did not work.  Tell someone who "
 	  "can fix it.\n");
 	return;
     }
@@ -283,7 +293,7 @@ void set_race_group_ob(string str)
 
     if(file_size(str+".c") < 1)
     {
-	tell_object(this_object(),"That did not work.  Tell someone who "
+	tell_object(this_object(),"Attempt to set race group (clan) did not work.  Tell someone who "
 	  "can fix it.\n");
 	return;
     }

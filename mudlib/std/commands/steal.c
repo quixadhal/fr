@@ -24,6 +24,7 @@ int steal_succeed(object me, object her,object it)
     return 0;
   if ( her->query_property("steal at will") )
     return 1;
+   me->add_timed_property("noguild",1,1);
 
   if ( me->query_guild_name() == "thief" )
     mult = 2;

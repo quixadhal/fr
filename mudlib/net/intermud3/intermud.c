@@ -27,7 +27,7 @@ static void create() {
     Password = 0;
     Tries = 0;
     Banned = ([]);
-    Nameservers = ({ ({ "*gjs", "205.218.122.131 9000" }) });
+    Nameservers = ({ ({ "*gjs", "208.192.43.105 9000" }) });
     MudList = new(class list);
     ChannelList = new(class list);
     MudList->ID = -1;
@@ -51,7 +51,7 @@ static void Setup() {
     eventWrite( ({ "startup-req-2", 5, mud_name(), 0, Nameservers[0][0], 0,
                    Password, MudList->ID, ChannelList->ID, PORT_MUD,
 		   IMUD_TCP_PORT, IMUD_UDP_PORT,  MUDLIB_VERSION, 
-		   "Discworld", __VERSION__, "LP",
+		   "FR", __VERSION__, "LP",
                    OPEN_STATUS, ADMIN_EMAIL,
 		   (mapping)SERVICES_D->GetServices(), OTHER_SERVICES }) );
 }

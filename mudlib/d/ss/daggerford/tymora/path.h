@@ -1,5 +1,0 @@
-#define ROOM "/d/ss/daggerford/tymora/"
-#define ROAD "/d/ss/daggerford/"
-#define CITYROOM "/d/ss/daggerford/cityroom"
-#define CHAR ROAD+"chars/"
-#define ITEM "/d/ss/items/"

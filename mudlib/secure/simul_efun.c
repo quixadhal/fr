@@ -38,28 +38,35 @@ mixed query_strange_inventory(mixed arr) {
 
 string add_a(string s) /* adds 'a' or 'an' on to the string as appropriate */
 {
+   //int i, e;
    int i;
+  int c;
 
+  return s; // Taniwha, totally poked efun.
    i = 0;
+//   e = sizeof(s);
    while (s[i] == ' ') i++;
 
-   switch (s[i]) {
-   case 'a':
-   case 'e':
-   case 'i':
-   case 'o':
-   case 'u':
-   case 'y':
-   case 'A':
-   case 'E':
-   case 'I':
-   case 'O':
-   case 'U':
-   case 'Y':
-      return "an " + extract(s, i);
-   default:
-      return "a " + extract(s, i);
-   }
+   c = (int)s[i..i];
+   switch(c) {
+    case 'a':
+    case 'e':
+    case 'i':
+    case 'o':
+    case 'u':
+    case 'y':
+    case 'A':
+    case 'E':
+    case 'I':
+    case 'O':
+    case 'U':
+    case 'Y':
+   return "an "+(string)extract(s,i);
+ //  return "an "+s[i..e];
+    default:
+   return "a "+(string)extract(s,i);
+//   return "a "+s[i..e];
+    }
 } /* add_a() */
 
 mixed *delete(mixed *arr, int start, int len) {
@@ -93,7 +100,9 @@ varargs mapping filter_mapping(mapping map, string func, mixed ob, mixed extra)
 // #include "/secure/simul_efun/pluralize.c"
 // added by Baldrick. Dummy for missing efun in new driver.
 // Maybe we should remove it again ? not sure, we have a fix (aragorn)
+
 #include "/secure/simul_efun/log_file.c"
+#include "/secure/simul_efun/secure_log_file.c"
 
 #include "/secure/simul_efun/find_match.c"
 #include "/secure/simul_efun/m_delete.c"
@@ -131,6 +140,7 @@ varargs mapping filter_mapping(mapping map, string func, mixed ob, mixed extra)
 
 // Radix's simul's 
 #include "/secure/simul_efun/users.c"
+//#include "/secure/simul_efun/file_commands.c"
 #include "/secure/simul_efun/files_obj.c"
 #include "/secure/simul_efun/resist_damage.c"
 
@@ -152,3 +162,7 @@ varargs mapping filter_mapping(mapping map, string func, mixed ob, mixed extra)
 
 /* Raskolnikov's simul_efuns */
 #include "/secure/simul_efun/children.c"
+
+/* Wahooka's inane hacks NB: Magus == Wahooka  =)
+ */
+#include "/secure/simul_efun/nice_list.c"

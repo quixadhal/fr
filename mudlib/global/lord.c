@@ -43,14 +43,20 @@ void move_player_to_start(string bong, int new_pl, int going_invis) {
 } /* move_player_to_start() */
 
 // Radix... who was the nimrod who moved the commands to externals?
+// The same one who did a log_file() before the shutdown(0) maybe ?
+// Hope call_out's never fail :P
 
 int emergency_shutdown()
 {
    write("This is going to shutdown the mud _immediately_\n");
+   call_out("enditall",0);
    log_file("CRASH",this_player(1)->query_cap_name()+
       "shutdown the MUD in an emergency! "+ctime(time())+"\n");
-   shutdown(0);
    return;
+}
+int enditall()
+{
+   shutdown(0);
 }
 
 // Added by Radix (So I lied, we could dest'em instead)
@@ -124,7 +130,24 @@ static int visible() {
 
 static int invisible(string str) 
 {
-    if(query_invis() == 2) 
+    // Flode, 120997 - Added the possibility to go from invis 2
+    // to invis 1 the hard way
+    if(str && str == "1")
+      if(!query_invis())
+      {
+        write("You disappear.\n");
+        say(query_cap_name()+" suddenly disappears.\n", this_player());
+        set_invis(1);
+        return 1;
+      }
+      else
+      {
+        write("You become slightly more visible.\n");
+        say(query_cap_name()+" becomes slightly more visible.\n", this_player());
+        set_invis(1);
+        return 1;
+      }
+    if(query_invis() == 2)
     {
 	notify_fail("You are already true invisible.\n");
 	return 0;
@@ -233,18 +256,18 @@ string query_gtitle()
 	if(query_demi())
 	{
 	    of_title = "/secure/lords.c"->query_boo(name);
-	    return "the Demi-Goddess " + of_title;
+	    return "the Professor " + of_title;
 	}
-	return "the Alchemist";
+	return "the Tutor";
     }
     else
     {
 	if(query_demi())
 	{
 	    of_title = "/secure/lords.c"->query_boo(name);
-	    return "the Demi-God " + of_title;
+	    return "the Professor " + of_title;
 	}
-	return "the Alchemist";
+	return "the Tutor";
     }
 }
 

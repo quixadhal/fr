@@ -35,6 +35,8 @@ void set_save_file(string str)
 } /* set_save_file9) */
 
 string query_save_file() { return save_file; }
+//Anirudh
+int query_bank() { return 1; }
 
 void init() {
   add_action("balance", "balance");
@@ -157,6 +159,9 @@ int balance() {
     write("Your account is empty.\n");
     return 1;
   }
+  if(amt>1000000) 
+    secure_log_file("MONEY",amt+" "+this_player()->query_name()+" "
+         +file_name(this_object())+"\n");
   write("You have "+MONEY_HAND->money_value_string(amt)+" in your account.\n");
   return 1;
 } /* balance() */
@@ -166,6 +171,11 @@ int withdraw(string str) {
   string s1, type;
   mixed *values;
 
+if(this_player()->query_dead())
+{
+  notify_fail("You are dead, you can't carry any money.\n");
+  return 0;
+}
   total = get_account();
   if (total < 0) {
     notify_fail("You do not have an account here.\n");
@@ -244,6 +254,14 @@ int deposit(string str)
   {
   object *obs, cont;
   int i, total_amt, amt, total;
+ 
+/* Added by Timion, 06 NOV 97
+   To prevent deposits in vault during CTF */
+  if("/global/omiq.c"->flag_in_progress())
+	{
+	notify_fail("Sorry, the bank does not take deposits during a Flag Game.\n");
+	return 0;
+	}
 
   total = get_account();
   if (total < 0) {

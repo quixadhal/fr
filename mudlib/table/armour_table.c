@@ -59,7 +59,7 @@ int *lookup_armour_data(string name)
       armour_data=({8000, 30000, 700, 20, 90, 1, 2, 0, 1 }); break;
 
     case "hide":
-      armour_data=({  15,  2500, 300, 17, 40, 1, 3, 0, 0 }); break;
+      armour_data=({  15,  2500, 300, 17, 30, 1, 3, 0, 0 }); break;
 
     case "leather":
       armour_data=({   5,  2000, 150, 15, 20, 1, 3, 0, 0 }); break;
@@ -67,6 +67,9 @@ int *lookup_armour_data(string name)
     case "padded leather":
     case "padded":
       armour_data=({   4,  2000, 100, 18, 20, 1, 3, 0, 0 }); break;
+
+    case "heavy hide":
+      armour_data=({ 1000, 4000, 600, 20, 60, 1, 3, 0, 1 }); break;
 
     case "plate mail":
     case "plate": 

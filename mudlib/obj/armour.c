@@ -320,6 +320,7 @@ mixed *stats()
   return 
      ({ 
      ({ "Value (in copper pieces)", query_value() }),
+     ({ "Cond", cond }),
      ({ "ac", ac }),
      ({ "holdable", query_holdable() }),
      ({ "Max ac", max_ac }),

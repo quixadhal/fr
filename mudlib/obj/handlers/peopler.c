@@ -226,8 +226,9 @@ void print_entrys(object *obs, mixed *format) {
   int i, age, j;
   object g;
   string form, str;
+string ret;
 
-  printf("%s\n", create_title(format));
+   ret = "";
   for (i=0;i<sizeof(obs);i++) {
     str = "";
     for (j=0;j<sizeof(format);j+=2) {
@@ -355,8 +356,11 @@ void print_entrys(object *obs, mixed *format) {
           break;
       }
     } /* for j... */
-    printf("%s\n",str);
-  } /* for i... */
+  ret += sprintf("%s\n", str);
+ } /* i */
+ret = implode(sort_array(explode(ret, "\n"), 1), "\n");
+ ret = ret = sprintf("%s\n", create_title(format)) + ret;
+this_player()->more_string(ret);
 } /* print_entrys() */
 
 int do_people(string str) 

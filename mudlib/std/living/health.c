@@ -53,9 +53,8 @@ int set_max_hp(int i) {
     return max_hp;
 }  /* set_max_hp() */
 
-// attacher used to be 'this_player()' for some odd reason.
-// That's attacker, not attacher...
-int set_hp(int i, object hp_remover)
+// Made varargs : Radix - March 3, 1997
+varargs int set_hp(int i, object hp_remover)
 {
     if (i>max_hp)
 	i = max_hp;
@@ -130,6 +129,8 @@ void logit(string what,int amount)
 
 int adjust_xp(int i) 
 {
+    // Radix : Aug 1997
+    master()->valid_adjust_xp(previous_object(), this_object(), i);
     if(i > XP_LIMIT) logit("XP",i);
     if (i>0) {
 	i = (100-wimpy)*i/100;
@@ -140,6 +141,8 @@ int adjust_xp(int i)
 } /* adjust_xp() */
 
 int set_xp(int i) {
+    // Radix : Aug 1997
+    master()->valid_adjust_xp(previous_object(), this_object(), i);
     if( (i-xp) > XP_LIMIT) logit("XP",(i-xp));
     if ( (xp-i) > XP_LIMIT) logit("XP", -(xp-i));
     if(i == -1 || !i) logit("XP", i);

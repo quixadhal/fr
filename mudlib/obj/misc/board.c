@@ -112,10 +112,9 @@ string long(string str, int dark) {
 
 void init() {
    // Removed the * from the next two add_action's - Radix
-   // Wonderflug put them back in cause he wouldn't tell me why he
-   // took them out.
-  add_action("read", "r*ead", action_pri);
-  add_action("post", "p*ost", action_pri);
+    // Put'em back, and I remove you
+  add_action("read", "read", action_pri);
+  add_action("post", "post", action_pri);
   add_action("post", "note", action_pri); 
   add_action("eat", "eat", action_pri);
   add_action("followup", "f*ollowup", action_pri);
@@ -299,6 +298,7 @@ int reply(string str) {
 } /* reply() */
 
 void set_board_name(string str) {
+  str = lower_case(str);
   board_name = str;
   BOARD_HAND->create_board(board_name, 0);
 }

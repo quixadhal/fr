@@ -6,6 +6,7 @@
  */
 #define MAX_RETRYS 1
 #define BANK_HANDLER "/obj/handlers/bank_handler"
+#define POSTAL_D "/obj/handlers/postal_d"
 
 string password;
 int no_times;
@@ -63,7 +64,12 @@ static int put_password(mixed str)
 /* have to get root access to be able to do the RM of the file. */
 /* Done by putting the whole thingie in the master. */
 
-int do_retirejob(string name)
+/*
+ * Made this puppy static before someone else finds it!
+ *  -- Wahooka
+ */
+
+static int do_retirejob(string name)
   {
   // write ("You made it !" + name + "\n");
   this_player()->add_property("guest",1);
@@ -74,11 +80,16 @@ int do_retirejob(string name)
   /* May make problem if the player don't have a mail.o file.. */
   // rm ("/save/post/" + name + ".o");
 
+   // Maybe THIS will work, and actually free the disk space - Radix
+   POSTAL_D->retire_user(name);
+
   /* Hmm.. should add a delete of bank accounts, think i have some code. */
   /* WHY does the BANK_HANDLER thingie work here and not in bank.c ? */
   // BANK_HANDLER->refresh_account(name);
 
   write ("You are now a Guest. Quit to get rid of the character for good.\n");
+  /* Wonerflug1997, adding a log til someone fixes the bug */
+  log_file("RETIRE", this_player()->query_cap_name()+" retired.\n");
   return 0;
 
 } /* do_retire */

@@ -1,16 +1,20 @@
 
-----  The FR mudlib version 3.2br2 ----
-(c)opyright Final Realms 1997.
+----  The FR mudlib version 3.4 ----
+(c)opyright Final Realms 1992-1998.
 
 A few steps to get started:
 
   - Untar the distribution.
+
+  - Get a MudOS driver from the same place you got this and untar it in 
+    mudos/
 
   - Compile the driver (mudos), should be some docs about that in the 
     sourcetree. It's ready and tested for Linux, both a.out and ELF.
      
      - You probably only have to cd to mudos/v21.7b21_fr and type 'make'.
        Ignore the warnings.
+     - Run the ./build.MudOS script if you have anything else than a Linux box.
      - move driver and addr_server to the bin directory.
 
   - Edit mudos/bin/config.fr-release.
@@ -35,14 +39,24 @@ A few steps to get started:
     to find the mud. Nice to know who uses us. So feel free to tell
     as much as possible about it.
 
+    Even if you are just using it at home to learn or whatever, please
+    mail so that we know it's worth doing this.
+
 More readme's for this mudlibrelease can be found (and *must* be read)
 in mudlib/doc/frlib.
 
-There will be one or two mailinglists for the users of this lib.
-More info about that will come on the webpages.
+If you need help, the fr mudpages on http://fr.imaginary.com/ has pointers
+to the FR news server which have groups for discussing this release.
+
+You can also get help on FR:Illumitech, which is the development mud
+for this mudlib.
+
+You should visit both the pages about the release and read the news group,
+this mudlib are certain to have bugs, and if you read the groups you will
+at least get help from people that has already fixed the bugs.
 
 Have fun with it.
 For the FR-MUD development team.
 
   Baldrick, God.
-Baldrick@fr.imaginary.com
+mudadm@fr.imaginary.com

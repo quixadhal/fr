@@ -116,12 +116,17 @@ int do_become(string str)
    if( !( robj == "/std/races/unknown" || robj == "std/races/unknown" ) )
    if ((string)me->query_race_ob() != "std/races/unknown")
    {
+/*  Commenting out level dependency  --Benedick 
    if(me->query_level() < 5)
-      startplace = "/room/start/" + me->query_race();
+*/
+      startplace = "/room/entryroom.c";
+/*
    else startplace = "/d/ss/swamp/sw2.c"; // Taniwha 1995, higher level players NOT to newbie zones
+*/
+   notify_fail("Your race has not been altered.\n");
    me->move(startplace);
-   notify_fail("Already chosen one before, moving you to your home.\n");
-   return 0;
+   this_player()->do_cmd("look");
+    return 0;
    } /* in (me */
 
    switch(str)
@@ -149,13 +154,11 @@ int do_become(string str)
    say(this_player()->query_cap_name()+" enters the "+race+" statue and "
     "disappears.\nA new "+race+" statue suddenly appears.\n", this_player());
    me->set_race_ob("/std/races/"+race);
-   write("You feel a strange sensation, and suddenly you wake up in your "
-         "childhood home.\nYou seem to remember you stuffed away some "
-         "equipment somewhere in case you should choose to leave, but "
-         "where ?\n");
-   startplace = "/room/start/" + race;
+   write("\nMoving you to the Entry Hall...\n\n");
+   startplace = "/room/entryroom.c";
    // me->move("/room/start/"+race);
    me->move(startplace);
+   this_player()->do_cmd("look");
    startplace->add_equipment();
    switch(race)
    {

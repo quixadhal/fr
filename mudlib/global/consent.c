@@ -18,16 +18,19 @@ string help()
     "The current valid types are: \n"
     "resurrection:  If a player tries to resurrect/raise you, you will "
     "attempt to dodge the spell.  Often you do not want to be raised.\n"
+    "reincarnation: Same as ressurection but on the spell 'reincarnate'.\n"
       "tag: The means that you are prepared to play one of a number "
       "of silly, but non-lethal games.\n"
     "drinks:  This lets another player buy you a drink. "  
     "Drunkenness often has nasty side-effects.\n";
+
 }  
 
 void create()
 {
   consents = ([ ]);
-  valid_consents = ({ "resurrection", "follow", "drinks","tag"});
+  valid_consents = ({ "resurrection", "follow", "drinks","tag",
+                      "reincarnation"});
 }
 
 void consent_commands()
@@ -84,4 +87,3 @@ int change_consent(string str)
 
   return 1;
 }
-

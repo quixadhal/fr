@@ -214,7 +214,7 @@ void set_breath_type(string type) {
       if(color == "black")   breath_type = "acid"; 
       if(color == "blue")    breath_type = "electrical"; 
       if(color == "brass")   breath_type = "fire"; 
-      if(color == "bronze")  breath_type = "electric"; 
+      if(color == "bronze")  breath_type = "electrical"; 
       if(color == "copper")  breath_type = "acid"; 
       if(color == "gold")    breath_type = "fire"; 
       if(color == "green")   breath_type = "poison"; 
@@ -263,7 +263,9 @@ void create_dragon()  {
    set_main_plural(color+" dragons");
    add_plural("dragons");
    add_plural("Dragons");
-   set_max_hp( ((BASE + age) * 50) + random(1000) );
+   set_max_hp( ((BASE + age) * 70) + random(500) );
+   set_gp(1000);
+   set_cha((random(30)) + (random(age)));
    set_kill_xp((BASE * age) * 150);
    set_thac0(100 - (BASE * age));
    set_ac(200 - ((BASE * age) + random(100)));
@@ -287,7 +289,7 @@ int unarmed_attack(object target,object me) {
   monster::unarmed_attack(att[random(sizeof(att))],me);
 }  /*  unarmed_attack()  */
 
-valid_attack() {
+mixed valid_attack() {
   int two = random(2);
   int three = random(3);
   int four = random(4);

@@ -9,7 +9,7 @@
 #define STREAM_BINARY             3
 #define DATAGRAM_BINARY           4
 
-#define PORT_MUD                  4242 
+#define PORT_MUD                  __PORT__ 
 #define PORT_FTP                  4444
 #define PORT_HTTP                 5678
 #undef  PORT_OOB

@@ -11,6 +11,7 @@ void create() {
   add_property("noguild",1);
   add_property("no_undead",1);
   add_property("STAY_OUT",1);
+   add_property("noncombat",1);  //Khelben, for knowing if we are in a noncombat room.
 }
 
 void init() {

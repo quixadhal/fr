@@ -139,7 +139,7 @@ int do_block(string name)
    }
    if(!user_exists(lower_case(name)) && !find_player(name))
    {
-      notify_fail("That player has never existed on Final Realms Mud.\n");
+      notify_fail("That player has never existed on " + mud_name() + ".\n");
       return 0;
    }
    block = name;
@@ -281,7 +281,7 @@ int inform(string str)
     int i;
 
     if (this_object()->query_creator())
-	types = ({ "logon", "link-death", "message", "call", "death" });
+	types = ({ "logon", "link-death", "message", "call", "death", "immort_logon" });
     else
 	types = ({ "logon" });
     on = (string *)this_object()->query_property("inform");
@@ -545,7 +545,7 @@ void event_person_say(object ob, string start, string mess, string lang, int spe
 	start = start[0..strlen(start)-3]+" in "+lang+": ";
     if (ob == this_object()) return;
 //  if(!this_object()->query_creator())
-       mess = "/std/living/language"->scramble_sentence(mess,speaker, this_object()->query_int());
+       mess = "/std/language"->scramble_sentence(mess,speaker, this_object()->query_int());
     efun::tell_object(this_object(), new_line + fix_string(sprintf("%s%-=*s\n",
 	  start, cols-strlen(start), mess)));
 } /* event_person_say() */

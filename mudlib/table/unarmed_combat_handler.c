@@ -7,6 +7,7 @@
    Thinking about it it might be more memory efficient to store
    the standard attacks in this object but in doing so we'd probably
    slow things down by calling out of the player object all the time.
+ Coded by Sojan, Extensively reworked by Timion.
 */
 /* Baldricks verdict:
  * Looking really good, we just have to make the attack and damage routines

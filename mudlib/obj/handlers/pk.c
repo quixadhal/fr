@@ -75,6 +75,7 @@ void update_player_killed(object victim, object killer)
    int i, tmp_avg;
    if(!victim || !killer) return;
    if(wizardp(victim) || wizardp(killer)) return;
+    if("/global/omiq"->flag_in_progress()) return;
    load_this_ob();
    tmp = killer_data[killer->query_name()];
    if(!tmp) tmp = allocate(6);
@@ -137,37 +138,83 @@ void info_player(string name)
       return;
    }
    sites = implode(tmp[2],"\n");
-   ret += "First logged in:  "+ctime(tmp[1])+"\n";
+   ret += "Last PKed on:  "+ctime(tmp[1])+"\n";
    ret += sprintf("Sites:  %*#-s\n",this_player()->query_cols(),sites);
    for(i=0; i<3; i++)
    {
       switch(i)
       {
          case(0) :
-            ret += sprintf("%-20s%12s%12s%10s\n","Guilds","# Murdered",
+            ret += sprintf("\n%-34s%12s%12s%10s\n","Guilds","# Killed",
                "Avg Tot XP","Avg Level");
             break;
          case(1) :
-            ret += sprintf("%-35s\n","Groups");
+            ret += sprintf("\n%-35s\n","Groups");
             break;
          case(2) :
-            ret += sprintf("%-35s\n","Race Groups");
+            ret += sprintf("\n%-35s\n","Race Groups");
             break;
       }
       orgs = keys(tmp[3+i]);
       for(j=0; j<sizeof(orgs); j++)
       {
          org = tmp[3+i][orgs[j]];
-         totk += org[0];
-         totxp += org[1];
-         totl += org[2];
-         ret += sprintf("%-35O%10d%10d%9d",orgs[j],org[0],org[1],org[2]);
+         if(!i)
+         {
+            totk += org[0];
+             totxp += org[0] * org[1];
+             totl += org[0] * org[2];
+         }
+         ret += sprintf("%-35O%10d%10d%9d\n",orgs[j],org[0],org[1],org[2]);
       }
    } 
    if(totk)
-      ret += "TOTAL PKed: "+totk+"\nAVG TOTAL XP of Vics: "+(totxp/totk);
+      ret += "\nTOTAL PKed: "+totk+"\nAVG TOTAL XP of Vics: "+(totxp/totk);
    if(totk)
       ret += ", AVG LEVEL of Vics: "+(totl/totk)+"\n";
    this_player()->more_string(ret);
    return;
+}
+
+
+int total_pk_no(string name)
+{
+ mapping guild_data;
+ string *gnames;
+ int i, total;
+ 
+
+ if(!killer_data[name]) return 0;
+ total = 0;
+ guild_data = killer_data[name][3];
+ gnames = keys(guild_data);
+ for(i=0;i<sizeof(gnames);i++)
+   {
+     total += guild_data[gnames[i]][0];
+   }
+ return total;
+}
+
+int avg_pk_level(string name)
+{
+ mapping guild_data;
+ string *gnames;
+ int i, levels, people;
+
+ if(!killer_data[name]) return 0;
+ guild_data = killer_data[name][3];
+ gnames = keys(guild_data);
+ for(i=0;i<sizeof(gnames);i++)
+  {
+    people += guild_data[gnames[i]][0];
+    levels += (guild_data[gnames[i]][0] * guild_data[gnames[i]][2]);
+  }
+  return (levels / people);
+}
+
+int last_pk(string name)
+{
+ if(killer_data[name])
+   return killer_data[name][1];
+ return 0;
 }

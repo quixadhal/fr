@@ -163,7 +163,7 @@ int do_choice(string str) {
     return 1;
   }
   if (str == "quit") {
-    write("Quiting.\n");
+    write("Quitting.\n");
     return 1;
   }
   if (str == "save") {

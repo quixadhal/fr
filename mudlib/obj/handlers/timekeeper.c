@@ -24,7 +24,7 @@ int add_time(int time_on) {
 int check_write() {
     string *cur_time = explode(ctime(time())," ");
     if(cur_time[0] != last_wrote) {
-        write_file("/save/TIME_ON", 
+        log_file("TIME_ON",
             ctime(time())+"\n"+daily_time+"\n");
         daily_time = 0;
         last_wrote = cur_time[0];

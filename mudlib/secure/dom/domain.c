@@ -139,8 +139,8 @@ int valid_write(string *path, string euid, string funct)
     case("master") :
     case("master.c") :
     case("master.o") :
-    case("master_mods.c") :
-    case("master_mods") :
+//  case("master_mods.c") :
+//  case("master_mods") :
 	return 0;
 	break;
     }
@@ -249,5 +249,11 @@ void mud_death(object victim, object enemy)
       Use this one to catch ALL deaths occuring in the MUD
       - Radix
    */
+   return;
+}
+
+// Thanes should use this to keep their player handlers accurate
+void event_retire(object ob)
+{
    return;
 }

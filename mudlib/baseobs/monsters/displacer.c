@@ -23,7 +23,7 @@ void setup() {
 #define AN attacker->query_cap_name()
 #define DN defender->query_cap_name()
 
-valid_attack() {
+mapping valid_attack() {
 
 int two, three, four, five;
 

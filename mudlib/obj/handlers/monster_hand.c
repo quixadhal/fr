@@ -21,6 +21,9 @@ int check_isin(mapping map,object ob)
     list = map["alignment"];
     if(pointerp(list) && member_array(ob->query_align_name(),list) != -1) return 1;
     if(stringp(list) && (string)list == (string)ob->query_align_name()) return 1;
+    list = map["ethics"];
+    if(pointerp(list) && member_array(ob->query_ethical_name(),list) != -1) return 1;
+    if(stringp(list) && (string)list == (string)ob->query_ethical_name()) return 1;
     list = map["property"];
     if(pointerp(list))for(i = 0; i < sizeof(list); i++)
         {
@@ -67,11 +70,8 @@ int do_aggressive_check(object ob, int aggressive,object me,int minplayer,mappin
         if(random(ob->query_cha()) > 16) return 0; // Friends
         /* fall through */
     case 2:
-        level = me->query_level();
-        if ( (int)ob->query_hide_shadow() < ( level > 10 ? level : 5 ) )
+   if( ob->query_hide_shadow() ) return 0;
             return 1;
-        else 
-            return 0;
         break;
     case 3:
         if ( !interactive(ob) ) 

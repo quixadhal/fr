@@ -18,7 +18,10 @@
    Afterword, treasurers may be added by simple using the 
    "appoint" add_action in the room.  It is only available to
    administrators.  
- 
+
+   Admins - They can balance and look at logs
+   Treasurer - They can WITHDRAW too
+
    Radix
 */
  
@@ -27,10 +30,10 @@
 inherit "/std/room";
  
   /* global variables */
-string save_file;            /* path name of save file */
-string log_file;             /* path name of transactions log */
-string *treasurers;          /* names of players with treasury access */
-string *admins;              /* admins of the guild/group */
+static string save_file;      /* path name of save file */
+static string log_file;       /* path name of transactions log */
+string *treasurers;    /* names of players with treasury access */
+static string *admins;        /* admins of the guild/group */
 int coppers;                 /* total amount of coppers in treasury */
  
   /* function declarations */
@@ -66,6 +69,7 @@ void init()
   add_action("do_deposit", "deposit");
   add_action("do_withdraw", "withdraw");
   add_action("do_balance", "balance");
+  add_action("do_deposits", "deposits");
   add_action("do_treasurer", "treasurer");
   add_action("do_transactions", "transactions");
   add_action("do_appoint","appoint");
@@ -73,8 +77,13 @@ void init()
  
 set_admins(string *names) { admins = names; }
  
+//Anirudh
+int query_treasury() { return 1; }
+
 int query_treasurer(string name)
 { 
+   if(query_admin(name))
+      return 1;
    if(!name || !stringp(name) || member_array(name,treasurers) == -1) 
       return 0;
    return 1;
@@ -107,7 +116,7 @@ int do_withdraw(string str) {
   mixed *values;
  
   if(!this_player()->query_lord())
-     if(!query_admin(this_player()->query_name())) {
+     if(!query_treasurer(this_player()->query_name())) {
        notify_fail("Only treasurers can withdraw money from the vault.\n");
        return 0;
      }
@@ -175,6 +184,9 @@ int do_deposit(string str) {
     "  "+ctime(time())+"\n  "+MONEY_HAND->money_value_string(total_amt)+
     " deposited.\n  Balance of "+MONEY_HAND->money_value_string(coppers)+
     " forwarded.\n\n");
+  write_file(log_file+"_deposits",ctime(time())+" : "+this_player()->
+     query_cap_name()+" deposited "+MONEY_HAND->money_value_string(total_amt)
+     +".\n");
   write(capitalize((string)MONEY_HAND->money_value_string(total_amt))+
     " deposited to give a total amount of "+
     MONEY_HAND->money_value_string(coppers)+" in the treasury.\n");
@@ -236,6 +248,19 @@ int do_transactions(string str) {
   }
   
   this_player()->more_file(log_file);
+  return 1;
+}
+ 
+// Radix : August 5, 1997
+int do_deposits()
+{
+  string tpname = this_player()->query_name();
+  if (!query_admin(tpname) || !query_treasurer(tpname)){
+    notify_fail("Only treasurers and administrators can view the lists.\n");
+    return 0;
+  }
+  
+  this_player()->more_file(log_file+"_deposits");
   return 1;
 }
  

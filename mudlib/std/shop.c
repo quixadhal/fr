@@ -43,6 +43,7 @@ inherit "/std/room";
 	    Don't expect that to be true for long (muhahaha)
 */
 
+#include "money_adjust.h"
 #include "money.h"
 #include "move_failures.h"
 #include "shop.h"
@@ -317,6 +318,8 @@ int sell(string str) {
 			amt = amt * obs[i]->query_stolen_modifier() / 100;
 		}
 		/* Adjusts price by item's adaptive multiplier (in 1/10 %) */
+           /*Adjust by mudwide scale factor */
+                amt=amt*MONEY_TRACKER->query_adj_fact(SBFLAG)/1000;
 		amt=amt*query_multiplier(obs[i])/1000;
 		amt = do_weight_min(amt,obs[i]->query_weight(),
 		  obs[i]->query_material(),1);
@@ -356,12 +359,12 @@ int sell(string str) {
 	write("You cannot sell "+query_multiple_short(cannot)+", maybe you are wearing or holding it, or just don't have one.\n");
     do_parse(sell_mess, selling, this_player(),
       (string)MONEY_HAND->money_string(m_array), "");
-    if(sell_func)  call_other(this_object(),sell_func,selling);
+    if(sell_func)  call_other(this_object(),sell_func,selling,total_amt);
     return 1;
 }
 
 int buy(string str) {
-    int i, amt, material, mass, ob_amt, total_cost;
+    int i, amt, material, mass, ob_amt, total_cost, high_cost_flag;
     object *obs, *to_buy, *cannot, *too_much;
     string s;
 
@@ -386,7 +389,21 @@ int buy(string str) {
     amt = (int)this_player()->query_value();
     while (i<sizeof(obs)) {
 	/* adjusts price by adaptive multiplier of object */
-	ob_amt = (int)obs[i]->query_value()*query_multiplier(obs[i])/1000;
+      high_cost_flag = 0;
+      if((ob_amt=(obs[i]->query_value()))>100000) {
+         high_cost_flag = 1;
+         ob_amt /= 100;
+      }
+       ob_amt=ob_amt*MONEY_TRACKER->
+            query_adj_fact(SSFLAG)/1000;
+         ob_amt=ob_amt*query_multiplier(obs[i])/1000;
+/*
+if(ob_amt>2000000) {
+       ob_amt=0;
+         secure_log_file("ani",this_player()->query_name()+" "+ctime(time())+
+     "\n");
+}
+*/
 	ob_amt = do_weight_min(ob_amt,obs[i]->query_weight(),
 	  obs[i]->query_material(),0);
 	ob_amt = do_cha_adjust(ob_amt,this_player()->query_cha(),0);
@@ -395,7 +412,20 @@ int buy(string str) {
 	      "race.\n");
 	    return 0;
 	}
-	if (ob_amt < 1) ob_amt = 1;
+     if(obs[i]->query_property("playersetvalue")){
+        high_cost_flag = 0;
+        ob_amt = obs[i]->query_property("playersetvalue");
+        // voided my hard work, better have a good reason
+        secure_log_file("SHOPS",file_name(this_object())+" "+
+                         file_name(obs[i])+" player set value\n");
+     }
+     if(high_cost_flag) ob_amt *= 100;
+        if (ob_amt < 1) {
+           ob_amt = 1;
+         secure_log_file("SHOPS",file_name(this_object())+" "+
+            file_name(obs[i])+" 0 value, "
+               +this_player()->query_name()+"\n");
+        }
 	if (ob_amt > amt) {
 	    if (obs[i]->short())
 		too_much += ({ obs[i] });
@@ -430,7 +460,7 @@ int buy(string str) {
 	write(s);
     }
     do_buy(to_buy, total_cost, this_player());
-    if(buy_func)  call_other(this_object(),buy_func,to_buy);
+    if(buy_func)  call_other(this_object(),buy_func,to_buy,total_cost);
     return 1;
 }
 
@@ -443,6 +473,7 @@ void do_buy(object *obs, int cost, object pl) {
 	if(!(this_player()->query_creator()) &&
 	  strsrch(this_player()->query_name(),"test") == -1)
 	    add_sold(obs[i]);
+       obs[i]->remove_property("playersetvalue");
 	obs[i]->move(pl);
     }
     pl->pay_money(fish = (int)MONEY_HAND->create_money_array(cost));
@@ -471,7 +502,7 @@ int list(string str) {
 
 int browse(string str) {
     object *obs;
-    int i, ob_amt, mass, material;
+    int i, ob_amt, mass, material, high_cost_flag;
 
     if (!test_open())
 	return 0;
@@ -486,7 +517,19 @@ int browse(string str) {
 	return 0;
     }
     for (i=0;i<sizeof(obs);i++) {
-	ob_amt = obs[i]->query_value()*query_multiplier(obs[i])/1000;
+      high_cost_flag = 0;
+      if((ob_amt=(obs[i]->query_value()))>100000) {
+         high_cost_flag = 1;
+         ob_amt /= 100;
+      }
+       ob_amt=ob_amt*MONEY_TRACKER->
+            query_adj_fact(SSFLAG)/1000;
+         ob_amt=ob_amt*query_multiplier(obs[i])/1000;
+/*
+if(ob_amt>2000000) {
+       ob_amt=0;
+}
+*/
 	ob_amt = do_weight_min(ob_amt,obs[i]->query_weight(),
 	  obs[i]->query_material(),0);
 	ob_amt = do_cha_adjust(ob_amt,this_player()->query_cha(),0);
@@ -495,6 +538,11 @@ int browse(string str) {
 	      "race.\n");
 	    return 0;
 	}
+     if(obs[i]->query_property("playersetvalue")){
+        high_cost_flag = 0;
+        ob_amt = obs[i]->query_property("playersetvalue");
+     }
+     if(high_cost_flag) ob_amt *= 100;
 	if (ob_amt < 1) ob_amt = 1;
 	do_parse(browse_mess, obs[i], this_player(),
 	  (string)MONEY_HAND->money_value_string(ob_amt),
@@ -552,6 +600,7 @@ int value(string str) {
 		val = val * obs[i]->query_stolen_modifier() / 100;
 	}
 	/* adjust price offered by the adaptive multiplier of the item */
+                val=val*MONEY_TRACKER->query_adj_fact(SBFLAG)/1000;
 	val = val*query_multiplier(obs[i])/1000;
 	val = do_weight_min(val,obs[i]->query_weight(),
 	  obs[i]->query_material(),1);
@@ -573,7 +622,7 @@ string shop_list(mixed arr, int detail) {
     mapping inv, costs;
     object *list;
     string s, mon, *shorts, *vals;
-    int i, j, mass, material, ob_amt;
+    int i, j, mass, material, ob_amt, high_cost_flag;
     mixed ind;
 
     if (pointerp(arr))
@@ -625,7 +674,14 @@ string shop_list(mixed arr, int detail) {
 	    costs = ([ ]);
 	    for(j=0;j<sizeof(ind);j++) {
 		/* lists price after multiplier is applied */
-		ob_amt=ind[i]->query_value()*query_multiplier(ind[i])/1000;
+      high_cost_flag = 0;
+      if((ob_amt=(ind[i]->query_value()))>100000) {
+         high_cost_flag = 1;
+         ob_amt /= 100;
+      }
+       ob_amt=ob_amt*MONEY_TRACKER->
+            query_adj_fact(SSFLAG)/1000;
+         ob_amt=ob_amt*query_multiplier(ind[i])/1000;
 		ob_amt = do_weight_min(ob_amt,ind[i]->query_weight(),
 		  ind[i]->query_material(),0);
 		ob_amt = do_cha_adjust(ob_amt,this_player()->query_cha(),0);
@@ -634,6 +690,11 @@ string shop_list(mixed arr, int detail) {
 		      "race.\n");
 		    return 0;
 		}
+     if(ind[i]->query_property("playersetvalue")){
+        high_cost_flag = 0;
+        ob_amt = ind[i]->query_property("playersetvalue");
+     }
+     if(high_cost_flag) ob_amt *= 100;
 		if (ob_amt < 1) ob_amt = 1;
 		mon=(string)MONEY_HAND->money_value_string(ob_amt);
 		if(!costs[mon])
@@ -673,7 +734,7 @@ void set_store_room(mixed ob) {
 	storename = explode(file_name(ob),"#")[0];
 	our_storeroom = ob;
     }   
-    if (our_table) check_shop_table();
+if(our_table && our_storeroom) check_shop_table();
 }
 object query_store_room() { return our_storeroom; }
 
@@ -815,14 +876,24 @@ int do_cha_adjust(int amt, int cha, int updown) {
 int query_multiplier(object ob) {
     int i;
     string item_path,*exper; 
-    if (ob->query_property("fixed_price")) return 1000;
+    if (ob->query_property("fixed_price")) {
+       secure_log_file("SHOPS",file_name(this_object())+" "+file_name(ob)+
+                     " fixed price\n");
+       return 1000;
+    }
     if (!m_sizeof(market_data)) restore_object(file_name(this_object()),1);
     exper = explode(file_name(ob),"#");
     item_path = exper[0];
+    if(!mappingp(market_data))
+    {
+	market_data = ([ ]);
+	return 1000;
+    }
     if (market_data[item_path]) {
 	if(only_sell && market_data[item_path][4] < 1000 &&
 	  no_price_reduce) {
 	    market_data[item_path][4] = 1000;
+         secure_log_file("SHOPS",file_name(this_object())+" no reduce\n");
 	}
 	return market_data[item_path][4];
     }
@@ -855,6 +926,7 @@ void add_sold(object ob) {
     int i;
     string item_path;
     if (!m_sizeof(market_data)) restore_object(file_name(this_object()),1);
+    if(!m_sizeof(market_data)) return ; // Taniwha, no shop table.
     item_path = explode(file_name(ob),"#")[0];
     if (market_data[item_path])
 	market_data[item_path][2]++;
@@ -888,7 +960,7 @@ void set_item_table(mixed ob) {
 	our_table = find_object(ob);
     }
     our_table = ob;
-    if (our_storeroom) check_shop_table();
+   if(our_storeroom && our_table) check_shop_table();
 }
 object query_item_table() { return our_table; }
 
@@ -920,6 +992,7 @@ void check_cloned_items() {
     int i,count,price;
     object dummy;
     mixed *cloned_items;
+   check_storeroom();
     cloned_items = our_storeroom->query_room_clones();
     for (i=0;i<sizeof(cloned_items);i++) {
 	if (!cloned_items[i] || objectp(cloned_items[i])) {
@@ -981,7 +1054,7 @@ void adjust_prices() {
 		changemult = goaldif*goaldif/goal;
 	    else
 	    {
-// Taniwha /0 insanities
+		// Taniwha /0 insanities
 		if(market_data[ite][2] == 0) changemult = 1;
 		else changemult = goaldif*goaldif/100/market_data[ite][2];
 	    }

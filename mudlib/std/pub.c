@@ -1,9 +1,11 @@
 inherit "std/room";
 #define AUTOMATIC 1
+#define BAR_TRACKER "/d/aprior/guilds/bard/tools/bar_tracker.c"
 #include "pub.h"
 #include "money.h"
 #include "drinks.h"
 #include "timestuff.h"
+#include "money_adjust.h"
  
 static mapping menu_items, menu_aliases;
 static string menu_header;
@@ -48,6 +50,8 @@ void create() {
 // Taniwha 1996 LEAVE it out of hidden as hidden is screwed
   //hidden_objects += ({ menu_object });
   this_object()->add_property("no_undead",1);
+// Cailet 1997 tracking bars for the songster quest.
+  BAR_TRACKER->add_bar(file_name(this_object()));
 }
  
 void init() {
@@ -57,18 +61,43 @@ void init() {
   add_action("buy", "order");
 }
  
+string get_domain() {
+  string fname = file_name(this_object());
+  string *dom = explode(fname,"/");
+  return dom[1];
+}
+
+int get_min_per_heal(string type, int volume) {
+  int min_per_heal;
+
+  if(get_domain() == "newbie") 
+    min_per_heal = NEWBIE_WCOST;
+  else
+    min_per_heal = NORMAL_WCOST;
+  
+  if(type == ALCOHOL)
+    min_per_heal = (1000-volume)*min_per_heal/1000;
+  else if(type == SOFTDRINK) 
+    min_per_heal = (1000+volume)*min_per_heal/1000;
+  if(min_per_heal < 1) min_per_heal = 1;
+  return min_per_heal;
+}
+
 void add_menu_item(string name, string type, int basecost, int heal, int volume,
                    int intox, string drmess, string othmess) {
-  int num_type, cost;
+  int num_type, cost, min_per_heal;
 
   if (!sizeof(prices_used))
     restore_object(file_name(this_object()),1);
   if (!prices_used[name]) prices_used[name] = 1000;
   cost = basecost*prices_used[name]/1000;
-  if (cost < 1) {
-    cost = 1;
-    prices_used[name] = 1000/basecost+1;
+
+  min_per_heal = get_min_per_heal(type,volume);
+  if(cost < heal*min_per_heal+1) {
+    cost = heal*min_per_heal+1;
+    prices_used[name] = 1000*cost/basecost+1;
   }
+
   menu_items[name] = ({ type, cost, heal, volume, intox,
                               drmess, othmess, basecost });
 }
@@ -128,8 +157,9 @@ string string_menu(string *items) {
   str = ""; 
   for(loop = 0; loop < sizeof(items); loop++)
   {
-  temp = do_cha_adjust(menu_items[items[loop]][DR_COST],this_player()->
-             query_cha());
+  temp = menu_items[items[loop]][DR_COST]*MONEY_TRACKER->
+       query_adj_fact(TAVFLAG)/1000;
+           temp =do_cha_adjust(temp,this_player()->query_cha());
   temp  = do_race_adjust(temp,this_player()->query_race());
  
     str += sprintf("    %-20s %s\n", items[loop],
@@ -312,6 +342,7 @@ int buy(string str) {
   intox = menu_items[str][DR_INTOX];
   drmess = menu_items[str][DR_DRMESS];
   othmes = menu_items[str][DR_OTHMES];
+   cost=cost*MONEY_TRACKER->query_adj_fact(TAVFLAG)/1000;
   cost=do_cha_adjust(cost,this_player()->query_cha());
   if((cost = do_race_adjust(cost,this_player()->query_race()))==
           -101) { notify_fail("This establishment refuses to deal "
@@ -322,6 +353,10 @@ int buy(string str) {
     notify_fail("You are too poor to afford that.\n");
     return 0;
   }
+
+// Cailet 1997 for songster quest
+  if (forwho == this_player() && intox && forwho->query_guild_name() == "bard")
+    call_out("songster_quest",1,forwho);
 
 #ifdef AUTOMATIC
   this_player()->pay_money( ({ "copper", cost }) );
@@ -360,12 +395,8 @@ int buy(string str) {
   if (!m_sizeof(prices_used))
     restore_object(file_name(this_object()),1);
   
-  switch (menu_items[str][DR_TYPE]) {
-    case ALCOHOL : cost=cost*(1000+volume)/1010;
-                break;
-    case SOFTDRINK : cost=cost*(1000+volume)/1010;
-                break;
-  }
+  cost -= heal*get_min_per_heal(menu_items[str][DR_TYPE],
+                     sqrt(volume*volume+0.0));
   pts_healed+=heal;
   gross_inc+=cost;
   check_adjust_prices();
@@ -509,4 +540,22 @@ object ob;
       if(ob=find_object(dest[i]))
         event(ob,"pub_brawl", this_object());
 }
+
+// Cailet 1997 for songster quest
+
+void songster_quest(object bard) {
+   int *bars_visited, bar_num;
+
+   if(bard->query_property("SONGSTER_DONE")) return;
+   bars_visited = bard->query_property("bars_visited");
+   bar_num = BAR_TRACKER->query_bar_number(file_name(this_object()));
+   if (member_array(bar_num, bars_visited) == -1) {
+      if (!bars_visited) bars_visited = ({ bar_num });
+      else bars_visited += ({ bar_num });
+      bard->add_property("bars_visited",bars_visited);
+      write("You sip your drink and feel a little more knowledgable about "
+            "the world.\n");
+   }
+   return;
+} /* songster_quest() */
 

@@ -10,7 +10,7 @@
  */
 #include "alignment.h"
 #define NOGOD "none"
-static string *gods = ({NOGOD,"baldrick","timion","virga","taniwha","hokemj","cyrcia","bivins","ducky","grimbrand"});
+static string *gods = ({NOGOD,"baldrick","timion","raisa","taniwha","hokemj","cyrcia","radix","ducky","grimbrand"});
 string mygod;
 int *godalign;
 int alignment;
@@ -68,7 +68,7 @@ int clear_deity()
 int set_deity(string str)
 {
     if(!str) return 0;
-    if(mygod) return 0;
+    if(mygod && mygod != NOGOD) return 0;  // Flode added check for NOGOD
     if(member_array(str,gods) > -1)
     {
         mygod = str;
@@ -121,7 +121,8 @@ int set_playerset_alname(string goof);
 
 void set_align(int i) 
   {
-  alignment = i;
+  if(interactive(this_object())&&i<0) i = 0;
+  else alignment = i;
   return;
 }
 
@@ -159,6 +160,7 @@ void reverse_align() {
 int adjust_align(int i)
   {
     alignment += i;
+  if(alignment<0&&interactive(this_object())) alignment=0;
 // aligna isn't needed anymore
     ALIGN_HAND->check_player_al(this_object());
 }                        

@@ -1,0 +1,11 @@
+//Moved item.c to equip.c 
+// Radix
+
+inherit "/std/object.c";
+inherit "/std/equip.c";
+
+create()
+{
+   object::create();
+   equip::create();
+}

@@ -5,6 +5,8 @@
 
 
 */
+// If wandering NPC's eat too much CPU
+//#define NO_WANDER
 
 #define MIN_PLAYER_LEVEL 5
 #define MIN_MONSTER_LEVEL 10
@@ -46,6 +48,7 @@ protecting,              /* Am I protecting someone currently ? */
 level,                   /* level of the monster */
 body_ac,                 /* natural ac */
 move_when,               /* how many hbs we shall move */
+sneaky,               /* makes me sneak around */
 heartheal,
 combat_counter,          /* Counts what we should do next in combat */
 in_talk;                 /* So stuff I say doesn't get catch_talk'd */
@@ -67,6 +70,7 @@ static int hbcheck;	     /* A little patch to avoid slaughtering cowards */
 
 /*** End of local variables ***/
 
+nomask int query_player() { return 0; }
 
 int query_concentrate_valid() { return 1; }
 mixed query_consent(string str) { return "on"; }
@@ -247,10 +251,18 @@ string long(string str, int dark)
 
 int set_race(string str)
 {
+    object ob;
     race = str;
     add_alias(str);
     add_language(str);
     set_language(str);
+    ob = load_object("/std/races/"+str);
+    if(ob)
+    {
+	race_ob = "/std/races/"+str;
+	race_ob->set_racial_bonuses();
+	race_ob->start_player(TO);
+    }
     return 1;
 } /* set_race() */
 
@@ -278,9 +290,12 @@ void do_aggressive_check(object ob)
 {
     if(MONSTER_HAND->do_aggressive_check(ob,aggressive,this_object(),minplayer,hated,loved))
     {
-		if(stringp(join_fight_mess))
-	    	tell_room(ETO,(string)MONSTER_HAND->expand_string(TO,join_fight_mess, TO, ob));
-		attack_ob(ob);
+	if(stringp(join_fight_mess) && !query_timed_property("no_spam"))
+	    tell_room(ETO,(string)MONSTER_HAND->expand_string(TO,join_fight_mess, TO, ob));
+	{
+	    add_timed_property("no_spam",1,10);
+	    attack_ob(ob);
+	}
     }
 }   /* do_aggressive_check */
 
@@ -300,6 +315,7 @@ void init()
 
 void event_enter(object ob, string mess, object from)
 {
+  if(!ob) return;
     // Taniwha 1995, I remember you you bastard, you attacked me then logged off
     if(interactive(ob) && member_array(ob->query_name(),p_attack_list) != -1)
     {
@@ -362,6 +378,9 @@ void expand_mon_string(string str)
     case '"' :
     case '@' :
 	command((string)MONSTER_HAND->expand_string(TO,str,0,0));
+	break;
+    case '#':
+	call_other(TO,str[1..1000]);
 	break;
     default :
 	tell_room(ETO,(string)MONSTER_HAND->expand_string(TO,str,0,0)+"\n");
@@ -431,7 +450,7 @@ void combat_heart_beat()
     if ( (max_hp*wimpy/100) > hp && hp > 0) 
     {
 	run_away();
-	return ;
+// taniwha, don't return here, they may NOT be able to run
     }
     switch(combat_counter++)
     {
@@ -472,6 +491,10 @@ void combat_heart_beat()
  */
 void move_after_heart_beat()
 {
+    // Taniwha 07 02 97, can't handle the crap uptimes.
+#ifdef NO_WANDER
+    return;
+#endif
     if ( !move_when-- )
     {
 	do_move_after(0); //probably change that number.. random ?
@@ -500,6 +523,7 @@ void heart_beat()
     adjust_gp(2);
     heartheal = 0;
     hb_counter++;
+    if(race_ob && !(hb_counter & 31))  race_ob->race_heartbeat(TO);
 
     /* This is the attack part.
      * it runs when the monsie is in fight.
@@ -781,10 +805,14 @@ move_player(string dir, string dest, mixed message, object followee,
     return 0;
 }
 
+void set_sneaky(){ sneaky = 1; }
+int query_sneak(){ return(sneaky); }
+
 void do_move_after(int bing) 
 {
-    mixed *direcs;
-    int i, bong;
+    mixed *direcs,
+    *direcstemp;
+    int i,dd, bong;
     string zone;
 
     if(!ETO)
@@ -792,10 +820,18 @@ void do_move_after(int bing)
 	call_out("dest_me",0);
 	return;
     }
-    direcs = (string *)environment()->query_dest_dir();
+
+    direcstemp = (string *)environment()->query_dest_dir();
+    direcs = ({});
+    for(dd=0;dd<sizeof(direcstemp);dd+=2){
+	if(find_object(direcstemp[dd+1])){
+	    direcs += direcstemp[dd..dd+1];
+	}
+    }
     while (!bong && sizeof(direcs)) 
     {
 	i = random(sizeof(direcs)/2)*2;
+
 	bong = 0;
 	if (bing > 1)
 	    catch(bong = (int)direcs[i+1]->query_property("no throw out"));
@@ -806,11 +842,19 @@ void do_move_after(int bing)
 		direcs = delete(direcs, i, 2);
 		continue;
 	    } /* if (bong */
-	bong = command(direcs[i]);
+
+	if(sneaky)
+	{
+	    "/std/commands/sneak"->sneak(direcs[i],this_object());
+	    break;
+	}
+	else 
+	    bong = command(direcs[i]);
 	if (!bong)
 	    direcs = delete(direcs, i, 2);
     } /* while */
 } /* do_move_after() */
+
 
 void set_talk_string(mixed arr) { talk_string = arr; }
 mixed query_talk_string() { return talk_string; }
@@ -848,40 +892,40 @@ void catch_talk(string str)
 }
 void pile_in(object ob,object ob1)
 {
-		if(ob != TO && (interactive(ob) || fight_npcs) )
-    	{
-			if( !attacker_list || member_array(ob, attacker_list) == -1)
-	   	{
-				if(!attacker_list)
-				{
-	    			if(stringp(join_fight_mess))
-						tell_room(ETO,(string)MONSTER_HAND->expand_string(TO,join_fight_mess, TO, ob));
-	    			else tell_room(ETO,query_cap_name()+" piles into the fight !.\n");
-				}
-				attack_ob(ob);
-			}
-    	}
-   	if(ob != TO && ob1 != TO &&  sizeof(protect) && !protecting )
-   	{
-			if(!interactive(ob) && member_array(ob->query_name(), protect) != -1)
-			{
-	     		tell_room(ETO,capitalize(query_short())+" jumps into the fray to protect "+
-	      		ob->query_short()+".\n");
-				attack_ob(ob1);
-	     		protecting = 1;
-			}	
-		}
-	
+    if(ob != TO && (interactive(ob) || fight_npcs) )
+    {
+	if( !attacker_list || member_array(ob, attacker_list) == -1)
+	{
+	    if(!attacker_list)
+	    {
+		if(stringp(join_fight_mess))
+		    tell_room(ETO,(string)MONSTER_HAND->expand_string(TO,join_fight_mess, TO, ob));
+		else tell_room(ETO,query_cap_name()+" piles into the fight !.\n");
+	    }
+	    attack_ob(ob);
+	}
+    }
+    if(ob != TO && ob1 != TO &&  sizeof(protect) && !protecting )
+    {
+	if(!interactive(ob) && member_array(ob->query_name(), protect) != -1)
+	{
+	    tell_room(ETO,capitalize(query_short())+" jumps into the fray to protect "+
+	      ob->query_short()+".\n");
+	    attack_ob(ob1);
+	    protecting = 1;
+	}	
+    }
+
 }	
 
 void event_fight_in_progress(object one, object two) 
 {
     if(join_fights)
-	 {
-		attacker_list -= ({ 0 });
-		pile_in(one,two);
-		pile_in(two,one);
-	}	
+    {
+	attacker_list -= ({ 0 });
+	pile_in(one,two);
+	pile_in(two,one);
+    }	
 }
 
 // Added by Wonderflug.  To fix add_protect.

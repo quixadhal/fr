@@ -78,9 +78,6 @@ void set_wm_flag(int j) { wm_flag=j; }
 void add_attack(string weapon_type, int nm_bonus, int m_bonus, string fn_code)
   {
 
-    log_file("radix_looking",file_name(this_object())+" "
-      "add_attack()\n");
-
   /* We have a problem here, weapon_skill will be used in the new setup_weapon
      but for compat reasons we can't have it here..
      What can we do ? */
@@ -95,8 +92,6 @@ void add_attack(string weapon_type, int nm_bonus, int m_bonus, string fn_code)
 
 void setup_weapon(string weapon_type, string w_sk, int nm_bonus, int m_bonus, string fn_code)
 {
-    log_file("radix_looking",file_name(this_object())+" "
-      "setup_weapon()\n");
   weapon_table=weapon_type;
   weapon_skill=w_sk;
   norm_bonus=nm_bonus;

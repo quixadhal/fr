@@ -9,16 +9,6 @@ mapping verb,
         other_things;
 int *cur_desc;
 
-/* commented out by Kelaronus 2/9/95
-void init() {
-  int i;
-  string *bits;
-
-  bits = keys(other_things);
-  for (i=0;i<sizeof(bits);i++)
-    this_player()->add_command(bits[i], this_object());
-}
-*/
 
 void create() {
   adjs = ({ });

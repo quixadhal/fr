@@ -1,1 +1,0 @@
-inherit "/baseobs/weapons/mace";

@@ -20,34 +20,34 @@ void communicate_commands() {
     add_action("set_language", "sp*eak");
     add_action("do_emote",":*");
     add_action("do_emote","em*ote");
-    // Removed by Radix - Jan 1996
-    //  add_action("do_channels", "000");
+// Removed by Radix - Jan 1996
+//  add_action("do_channels", "000");
     add_action("do_channels", "eme*rgency");
     add_action("do_channels", "guild");
-    //Added by Quark, May 96.
+//Added by Quark, May 96.
     add_action("do_channels", "group");
     add_action("do_channels", "race");
-
-    /* Testing something, baldrick, may '96
-     * and it works.. next dimension, here we come.
-     */
+ 
+/* Testing something, baldrick, may '96
+ * and it works.. next dimension, here we come.
+ */
 
 #ifndef STRICT_MUD
-    add_action("do_echo","ec*ho");
-    add_action("do_emote_all", "emoteall");
-    add_action("do_echo_to", "echoto");
-    add_action("do_shout", "sh*out");
+      add_action("do_echo","ec*ho");
+      add_action("do_emote_all", "emoteall");
+      add_action("do_echo_to", "echoto");
+      add_action("do_shout", "sh*out");
 #endif
 
-    // Who did this?  goobers!
-    /*
-      if( this_player()->query_creator() )
-      {
-	  add_action("do_channels", "cre");
-	  if( this_player()->query_lord() )
-	      add_action("do_channels", "demi");
-      }
-     */
+   // Who did this?  goobers!
+  /*
+    if( this_player()->query_creator() )
+    {
+	add_action("do_channels", "cre");
+	if( this_player()->query_lord() )
+	    add_action("do_channels", "demi");
+    }
+   */
 } /* communicate_commands() */
 
 void set_max_social_points(int num) {
@@ -123,10 +123,10 @@ string query_whisper_word_type(string str) {
 } /* query_whisper_word_type() */
 
 /* to properly columnate word_typed things */
-void my_mess(string fish, string erk) {
+void my_mess(string fish, string erk)
+{
     if(!interactive()) return;
-    printf("%s%-=*s\n", fish, (int)this_player()->query_cols()-strlen(fish), 
-      this_object()->fix_string(erk));
+    efun::tell_object(this_object(), this_object()->fix_string(fish + erk,strlen(fish))+"\n");
 } /* my_mess() */
 
 int do_loud_say(string arg) 
@@ -161,12 +161,12 @@ int do_say(string arg, int no_echo)
     string word, s1, s2;
     object g;
 
-    // Taniwha, sanity/ no debug errors
-    if(!environment(this_object()))
-    {
-	tell_object(this_object(),"In Limbo, noone can hear say anything.\n");
-	return 0;
-    }
+// Taniwha, sanity/ no debug errors
+   if(!environment(this_object()))
+   {
+      tell_object(this_object(),"In Limbo, noone can hear say anything.\n");
+      return 0;
+   }
     if (!arg) 
 	arg = "";
     if (arg == "" || arg == " ") {
@@ -225,8 +225,8 @@ int do_tell(string arg, object ob, int silent)
 	    ob = find_living(str);
 	if (!ob) {
 	    /* Might be intermud... */
-	    if (this_object()->query_creator() && sscanf(str, "%s@%s", person, mud) == 2) {
-		SERVICES_D->eventSendTell(person, mud, rest);
+            if (this_object()->query_creator() && sscanf(str, "%s@%s", person, mud) == 2) {
+                SERVICES_D->eventSendTell(person, mud, rest);
 		return 1;
 	    }
 	    notify_fail(capitalize(str) + " is not logged in.\n");
@@ -255,7 +255,7 @@ int do_tell(string arg, object ob, int silent)
 	  " tells you" + word + ": ", rest, cur_lang);
 	if (cur_lang != "common") word += " in "+cur_lang;
 	if (!silent)
-	    my_mess("You tell " +  ob->query_cap_name() + word + ": ", rest);
+	    my_mess("You tell " +  ob->query_cap_name() + word + ": ", rest );
     } else {
 	ob->event_person_tell(this_object(), this_object()->query_cap_name()+
 	  " asks you: ", rest, cur_lang);
@@ -301,19 +301,29 @@ int do_emote(string arg)
  * one for the start charge..  SO a shout of yes will cost 1 social
  * point... where as a shout of lots a letters will cost lots
  */
+// Flode added 2-round lockout  -  211197
 int do_shout(string str) 
 {
     string tmp, s1, s2, s;
     object g;
-   if(TP->query_creator() && ! TP->query_lord())
-    {
-	write("Taniwha growls menacingly at you.\n");
-	return 1;
-    }
+
+
+    /* to be removed.
+     * Baldrick.
+    notify_fail("Not right now, the immorts needs peace.\n");
+    return 0;
+     */
+
+
 
     if(!str || str == "") {
 	notify_fail("Syntax : shout <text>\n");
 	return 0;
+    }
+    if (this_object()->query_property("noshout_lock")) {
+        notify_fail("You better clear your throat before you attempt to "
+                    "shout again.\n");
+        return 0;
     }
     if (this_object()->query_earmuffs()) {
 	notify_fail("Why shout when you can't hear people shout back?\n");
@@ -337,6 +347,9 @@ int do_shout(string str)
 	s = "shouts"+s1;
     else
 	s = s1+"s";
+
+      str = "/obj/handlers/profanity"->clean_language(str);
+
     if (this_object()->query_volume(D_ALCOHOL))
 	str = drunk_speech(str);
     event(users(), "person_shout", this_object()->query_cap_name()+
@@ -349,6 +362,7 @@ int do_shout(string str)
 	my_mess("You " + s1 + ": ", str);
     }
     str = " "+lower_case(str);
+    this_object()->add_timed_property("noshout_lock", 1, 2);
     return 1;
 } /* do_shout() */
 
@@ -407,14 +421,25 @@ int do_channels( string str )
 string drunk_speech(string str) 
 {
     return replace(str, ({ "s", "sh", "r", "rr", "ing", "in'", "x", "xsh",
-	"S", "SH", "R", "RR" }));
+      "S", "SH", "R", "RR" }));
 } /* drunk_speech() */
 
+// Flode, 080997. Hopefully my fix will make sure that people won't learn
+// fifteen dwarfs or similar anymore
 void add_language(string lang) 
 {
-    if (!LANGUAGE_HAND->test_language(lang))
-	return ;
+  int i;
+
+  if (!LANGUAGE_HAND->test_language(lang))
+    return ;
+  if(!i=(member_array(lang, languages)+1))
     languages += ({ lang });
+  else
+    while(i < sizeof(languages))
+      if(languages[i] == lang)
+        languages = delete(languages, i, 1);
+      else
+        ++i;
 } /* add_language() */
 
 void remove_language(string lang) 
@@ -457,7 +482,7 @@ string *query_languages() { return languages; }
 // Needed to be here - Radix Jan 1996
 int query_known_language(string lang)
 {
-    if(!lang) return(0);
-    if(member_array(lang,languages) != -1) return(1);
-    return(0);
+   if(!lang) return(0);
+   if(member_array(lang,languages) != -1) return(1);
+   return(0);
 }

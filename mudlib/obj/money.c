@@ -38,8 +38,8 @@ int do_help(string str) {
   values = (mixed *)MONEY_HAND->query_values();
   str = "";
   for (i=0;i<sizeof(values);i+=2)
-    str += sprintf("%10-s : %4d\n", values[i], values[i+1]);
-  printf("%#-*s\n", this_player()->query_cols(), str);
+    str += sprintf("%10-s : %4d %s\n", values[i], values[i+1], values[0]);
+  printf("%-*s\n", this_player()->query_cols(), str);
   return 1;
 }
 
@@ -57,6 +57,12 @@ varargs int adjust_money(mixed amt, string type) {
   if (member_array(type,(mixed *)MONEY_HAND->query_values()) == -1)
     return 0;
     
+  if(environment(this_object()))
+    if(interactive(environment(this_object()))) {
+      val = (int)MONEY_HAND->query_value(type);
+      catch(MONEY_TRACKER->update_statistics(val*amt,
+            environment(this_object())));
+    }
   if ((i=member_array(type, money_array)) == -1) {
     add_adjective(type);
     add_plural(type+"s");
@@ -217,6 +223,10 @@ varargs int move(mixed dest, mixed messin, mixed messout) {
   mixed i;
   int j;
   object ob, mon;
+  object from_where;
+  from_where = environment();
+  if(!from_where) from_where=
+        find_player(query_property("clonedin"));
 
   if(environment() ) environment()->fix_my_loc_weight_later();
   j = (int)::move(dest, messin, messout);
@@ -238,10 +248,21 @@ varargs int move(mixed dest, mixed messin, mixed messout) {
       mon->adjust_money(money_array[j+1], money_array[j]);
     dont_join = 1;
     move("/room/void");
+     if(from_where)
+      if(interactive(from_where))
+      catch(MONEY_TRACKER->update_statistics(-query_value(),
+          from_where));
     call_out("dest_me",0);
     return MOVE_OK;	
   }
   add_alias("Some Money For Me");
+  if(ob&&interactive(ob)) {
+    catch(MONEY_TRACKER->update_statistics(query_value(),ob));
+    }
+     if(from_where)
+      if(!dont_join)
+      catch(MONEY_TRACKER->update_statistics(-query_value(),
+          from_where));
   set_weight(query_number_coins()/WEIGHTDIV);
   if(environment() ) environment()->fix_my_loc_weight_later();
 
@@ -315,6 +336,7 @@ object query_parse_id(mixed *arr) {
     /* Weight stuff.  -- Hamlet */
     set_weight(query_number_coins()/WEIGHTDIV);
     
+        ob->add_property("clonedin",environment()->query_name());
     ob->do_move_call_out(environment());
     return ob;
   }
@@ -400,6 +422,7 @@ object query_parse_id(mixed *arr) {
   /* Weight stuff.  -- Hamlet */
   set_weight(query_number_coins()/WEIGHTDIV);
   
+        ob->add_property("clonedin",environment()->query_name());
   ob->do_move_call_out(environment());  
   return ob;
 }

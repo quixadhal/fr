@@ -1,5 +1,7 @@
 // From Descartes .. who knows when and where...
 // Changed TP->getenv() to TP->query_property, Radix July 1996
+// Added age_mail() call to postal_d.c, Radix March 7, 1997
+// Added MAIL_UNREAD_HEADERS property option for immorts : Radix - April 4, 1997
 
 #include <ed.h>
 #include <post.h>
@@ -45,6 +47,7 @@ void create() {
     my_groups = ([]);
     mud_groups = ([]);
     tmp_post = ([]);
+    seteuid("Root");
 }
 
 void init() {
@@ -59,6 +62,7 @@ void init() {
     mud_groups = (mapping)POSTAL_D->query_mud_groups();
     owner = (string)this_player()->query_name();
     restore_object(DIR_POSTAL+"/"+owner);
+//   POSTAL_D->age_mail(owner);
     if(!(i=sizeof(box_info))) {
         current = 0;
         return;
@@ -79,8 +83,18 @@ void start_mail(string str) {
     write("Imaginary Intermud Postal Service (IIPS) 1.0 for the Discworld Mudlib\n");
     write("Descartes of Borg 1993    (type \"?\" for help)\n");
     write("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
-    if(this_player()->query_property("MAIL_NO_HEADERS")) do_mail(0);
-    else headers(0);
+    if(this_player()->query_property("MAIL_NO_HEADERS"))
+    {
+       do_mail(0);
+       return;
+    }
+    if(this_player()->query_property("MAIL_UNREAD_HEADERS"))
+    {
+       headers(-1);
+       do_mail(0);
+       return;
+    }
+    headers(0);
 }
 
 void do_mail(string str) {
@@ -343,12 +357,29 @@ void headers(int x) {
         do_mail(0);
         return;
     }
-    for(lines = ""; x<i; x++) {
-      lines += (x+1)+" "+(box_info[x]["read"] ? "     " :
-          "(new)")+(x==current ? ">" : (delete[x] ? "*" : " "))+
-          arrange_string(capitalize(box_info[x]["from"]), 16)+" "+
-          arrange_string(get_header_time(box_info[x]["date"]), 12)+
-          box_info[x]["subject"]+"\n";
+    if(x == -1) {
+       lines = "";
+       for(x=0; x<i; x++)
+       {
+          if(!box_info[x]["read"])
+          {
+              lines+= (x+1)+" (new)"+(x==current ? ">" : (delete[x] ?
+               "*" : " "))+
+              arrange_string(capitalize(box_info[x]["from"]),16)+" "+
+              arrange_string(get_header_time(box_info[x]["date"]), 12)+
+              box_info[x]["subject"]+"\n";
+          }
+       }
+    }
+    else
+    {
+        for(lines = ""; x<i; x++) {
+          lines += (x+1)+" "+(box_info[x]["read"] ? "     " :
+              "(new)")+(x==current ? ">" : (delete[x] ? "*" : " "))+
+              arrange_string(capitalize(box_info[x]["from"]), 16)+" "+
+              arrange_string(get_header_time(box_info[x]["date"]), 12)+
+              box_info[x]["subject"]+"\n";
+        }
     }
     this_player()->set_finish_func("do_mail", this_object());
     this_player()->more_string(lines);

@@ -1,6 +1,6 @@
 // NPC statistic tracker for FR-Mud
 // Radix - April 6, 1996
-// Version 1.5
+// Version 1.7
 
 #include "timestuff.h"
 #include "XP_adjust.h"
@@ -41,6 +41,7 @@ int query_screw_rate() {
   int dif = totaldif;
   write(num+"\n");
   if(num > 20000) reset_screw_rate();
+  if(num <= 0) return 1; // Taniwha
   return dif/num;
 }
 
@@ -167,6 +168,7 @@ void full_domain_kar(string realdom) {
   time_now = TIMEKEEPER->query_running_time()/60.0;
   outgoing = "\nDirectory      pc xp killed/xp award    awarded rate\n";
   outgoing += "(player xp in units of 100, time in player hours)\n\n";
+  if(!mappingp(data)) data = ([ ]); // Taniwha
   ind = m_indices(data);
   for(i=0;i<sizeof(ind);i++) {
     tmp = explode(ind[i],"/");
@@ -194,10 +196,16 @@ void full_domain_kar(string realdom) {
         kt+=killed;
         at+=awarded;
       }
-      if(at) outgoing += dom+"  "+(kt+0.0)/(at+0.0)+" ";
-      else outgoing += dom+" no xp awarded";
-      if(timt) outgoing += (at+0.0)*60.0/(timt+0.0)+"\n";
-      else outgoing += " NKT\n";
+      if(dom)
+         dom = dom[strlen(realdom)+3..1000]+"/";
+      if(at)
+         outgoing += sprintf("%-35s %15.4f ", dom, ((kt+0.0) / (at+0.0)));
+      else
+         outgoing += sprintf("%-35s %15.4f ", dom, 0.0);
+      if(timt)
+         outgoing += sprintf("%15.4f\n", ((at+0.0) * 60.0) / (timt+0.0));
+      else
+      outgoing += sprintf("%15.4f\n", 0.0);
       ktt += kt;
       att += at;
       if(timt > timtt) timtt = timt;
@@ -282,6 +290,28 @@ void original_radix_data(string dom) {
   }
 }
 
+float get_real_rate(mixed vals, object npc)
+{
+   float rateret;
+   if(sizeof(vals) < 12)
+      return -1;
+   if(vals[5] && vals[6] / vals[5] < 4) return -1;
+   if(vals[10] < BASE_WEEK/60 && vals[7] < 1000000000) return -1;
+   if (!vals[8]) {
+     if (vals[2]) return MAX_XP_BON;
+     else return -1;
+   }
+   rateret = (vals[2]+0.0)/(vals[8]+0.0)/BASE_KAR;
+   if(rateret*vals[11] > npc->query_level()*60*MAX_XP_BON)
+     rateret = MAX_XP_BON*(npc->query_level()+0.0)*60.0/(vals[11]+0.0);
+   if(rateret*vals[11] < npc->query_level()*60*MAX_XP_PEN)
+   {
+     rateret = MAX_XP_PEN*(npc->query_level()+0.0)*60.0/(vals[11]+0.0);
+     if(rateret > 1.0) rateret = 1.0;
+   }
+   return rateret;
+}
+
 float update_npc_died(object npc, object player)
 {
    mixed vals;
@@ -358,29 +388,52 @@ float update_npc_died(object npc, object player)
    save_this_ob();
    }
 
-   if(vals[6]/vals[5] < 4) return 1;
-   if(vals[10] < BASE_WEEK/60 && vals[7] < 1000000000) return 1;
-   if (!vals[8]) {
-     if (vals[2]) return MAX_XP_BON;
-     else return 1;
-   }
-   rateret = (vals[2]+0.0)/(vals[8]+0.0)/BASE_KAR;
-   if(rateret*vals[11] > npc->query_level()*60*MAX_XP_BON)
-     rateret = MAX_XP_BON*(npc->query_level()+0.0)*60.0/(vals[11]+0.0);
-   if(rateret*vals[11] < npc->query_level()*60*MAX_XP_PEN)
-     {
-     rateret = MAX_XP_PEN*(npc->query_level()+0.0)*60.0/(vals[11]+0.0);
-     if(rateret > 1.0) rateret = 1.0;
-   }
+   // Made seperate function for other purposes - Radix
+  rateret = get_real_rate(vals, npc);
+  if(rateret == -1)
+     return 1.0;
+
    if(!(player->query_creator()) &&
      strsrch(player->query_name(),"test") == -1) {
    totaldif += rateret*vals[11]-(npc->query_level()*60);
    diftimes += 1;
   }
    if(rateret) return rateret;
-   return 1;
+   return 1.0;
 }
 
+// Called from /global/creator/cmds/info.c
+void info_npc(object npc)
+{
+   mixed vals;
+   mapping tmp;
+   float rateret;
+   string domname, obname;
+   
+   if(!(obname = real_filename(npc)) || !(domname = environment_path(npc)))
+   {
+      write("Invalid NPC object filename or environment path.\n");
+      return 0;
+   }
+   tmp = data[domname];
+   if(!tmp)
+   {
+      write("No data for NPC in this environment.\n");
+      return 0;
+   }
+   vals = tmp[obname];
+   rateret = get_real_rate(vals, npc);
+   if(rateret == -1)
+      rateret = 1.0;
+   write("Info Data for NPC: "+npc->query_short()+"\n");
+   write("Filename: "+obname+"\n");
+   write("Environment: "+domname+"\n");
+   write("----------------------------------------\n");
+   write("Kill xp: "+npc->query_kill_xp()+"\n");
+   write("Rate Return: "+rateret+"\n");
+   write("Total: "+npc->query_kill_xp() * rateret+"\n");
+   return;
+}
 void update_player_died(object npc, object player)
 {
    mixed vals;

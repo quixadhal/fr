@@ -8,9 +8,9 @@ string query_gtitle()
   patronage = "/secure/thanes"->query_of(name);
   /* I don't think it is a female Thane.. title..
   if(query_female())
-    return "the Thane of "+patronage;
+    return "the Master of "+patronage;
     */
-   return "the Thane of "+patronage;
+   return "the Master of "+patronage;
 }
 
 /* Maybe this shouldn't be here.. but I need it right now. Should make it

@@ -107,6 +107,7 @@ int add_message(string board, string name, string subject, string body) {
 } /* add_message() */
  
 int create_board(string board, int priva) {
+  board = lower_case(board);
   if (boards[board])
     return 0;
   boards[board] = ({ });

@@ -297,3 +297,36 @@ mapping thaw_timed_properties(mapping turtle) {
 
   return ret;
 }
+
+/*
+ * Added to be cute and be efficient
+ *   Wahooka -- May '97
+ */
+varargs mixed adjust_property(string str, mixed val, int flag) {
+  if(!map_prop || !val) return 0;
+  if(!map_prop[str]) return map_prop[str] = val;
+  if(flag == -1)
+    return map_prop[str] -= val;
+  return map_prop[str] += val;
+}
+
+varargs mixed adjust_static_property(string str, mixed val, int flag) {
+  if(!static_map_prop || !val) return 0;
+  if(!static_map_prop[str]) return static_map_prop[str] = val;
+  if(flag == -1)
+    return static_map_prop[str] -= val;
+  return static_map_prop[str] += val;
+}
+
+/* Don't know if the following will work, can bother to check and see
+ * if it might break something right now...
+
+varargs mixed adjust_timed_property(string str, mixed val, int time) {
+  if(!timed_prop || !timed_prop[str]) return 0;
+  if(val)
+    timed_prop[str][0] += val;
+  if(time)
+    timed_prop[str][1] += time;
+  return timed_prop[str];
+}
+*/

@@ -1,7 +1,0 @@
-#define ROOM "/d/ss/daggerford/tempus/"
-#define ROAD "/d/ss/daggerford/"
-#define DAGG "/d/ss/daggerford/"
-#define CITYROOM "/d/ss/daggerford/cityroom"
-#define CHAR DAGG+"chars/"
-#define POST_OFFICE "/d/ss/daggerford/post"
-#define ITEM "/d/ss/items/"

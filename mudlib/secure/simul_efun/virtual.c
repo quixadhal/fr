@@ -8,6 +8,7 @@ object virtual_find_object(string name) {
 string virtual_file_name(object ob) {
   string name;
   int i;
+  if(!ob) return 0;
   if (name = (string)ob->query_property("virtual name"))
     return name;
   name = file_name(ob);

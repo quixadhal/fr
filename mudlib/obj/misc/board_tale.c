@@ -90,7 +90,7 @@ varargs int subjects(string str, int dark, object player) {
  
   add_timed_property(player->query_name(),1,2);
   player->set_finish_func(0);
-  player->more_string(ret,"tales",player);
+  player->more_string(ret, "tales");
   return 1;
 } /* subjects() */
  

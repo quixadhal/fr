@@ -58,7 +58,8 @@ void recalc_stats(int i)
 
     // No potion boosts
     // Taniwha 1995
-    contmp = wistmp = dextmp = inttmp = strtmp = chatmp = 0;
+    // Taniwha 1997 , turn on potions
+    //contmp = wistmp = dextmp = inttmp = strtmp = chatmp = 0;
     calc();
     if (no_check) return ;
     guild_ob = (object)this_object()->query_guild_ob();
@@ -89,7 +90,7 @@ void recalc_stats(int i)
 	{
 	    max_gain = ((int)guild_ob->query_dice() + hp_bonus) 
 	    * (int)this_object()->query_level();
-// Taniwha, 1996. Charisma affects on roll (lucky rolls)
+	    // Taniwha, 1996. Charisma affects on roll (lucky rolls)
 	    fish = TO->query_cha();
 	    if(fish < 12) fish = 0;
 	    else
@@ -135,22 +136,22 @@ void reset_carry_cap()
     if (st < 8)
 	cap = 500;
     else if (st > 28)
-	cap = 3500+(st-28)*300;
+	cap = 3800+(st-28)*300;
     else
 	cap = ({ 500, 550, 600, 650, 750, 850, 950, 1150, 1300, 1450, 1600,
-	  1750,1900,2100,2300,2500,2700,2950,3200,3500,3850})[st-8];
+	  1750,1900,2100,2300,2500,2700,2950,3200,3500,3800})[st-8];
     this_object()->set_max_weight(cap);
     if (cap >= old_cap)
 	return ;
     ob = first_inventory(this_object());
     while (ob) {
 	ob1 = next_inventory(ob);
-	if (ob->query_weight())
-	    if (ob->move(environment())) {
+   if(ob && ob->query_weight() && ! ob->query_property("cursed"))
+	    if (!ob->move(environment())) {
 		old_cap -= (int)ob->query_weight();
-		say(this_object()->query_cap_name()+" drops "+ob->short()+
-		  " under strain.\n");
-		write("Your fading strength makes you drop "+ob->short()+".\n");
+		tell_room(ETO,this_object()->query_cap_name()+" drops "+ob->short()+
+		  " under strain.\n",({TO}));
+		tell_object(TO,"Your fading strength makes you drop "+ob->short()+".\n");
 	    }
 	if (cap >= old_cap)
 	    return ;
@@ -181,7 +182,6 @@ void reset_all() {
     reset_thac0();
     //reset_hp();
     //reset_gp();
-    reset_carry_cap();
     /* I don't like this! Baldrick. */
     strtmp = 0;
     dextmp = 0;
@@ -189,6 +189,7 @@ void reset_all() {
     wistmp = 0;
     inttmp = 0;
     chatmp = 0;
+    reset_carry_cap();
     calc();
 }
 

@@ -194,7 +194,7 @@ int sacrifice_item(object player, object theitem, string thegod) {
     itemtype = "armours";
   else if(member_array("Some Money For Me",theitem->query_alias()) != -1)
     itemtype = "money";
-  else if((string)theitem->query_name() == "corpse")
+  else if(theitem->query_corpse())
     itemtype = "corpses";
   else
     itemtype = "items";
@@ -330,17 +330,18 @@ int remove_sacrifices(object player) {
 /* Returns the long associated with a god's altar.
    N.B.:  Lathander -> Taniwha        Lolth  -> Cyrcia
           Tempus    -> Timion         Tymora -> Hokemj
+          Virga   -> Raisa        Bivins -> Radix
 */
              
 string altar_long(string whichgod) {
   switch(whichgod) {
     case "baldrick"  : return ALTAR_BALDRICK;
     case "timion"    : return ALTAR_TIMION;
-    case "virga"     : return ALTAR_VIRGA;
+    case "raisa"     : return ALTAR_RAISA;
     case "taniwha"   : return ALTAR_TANIWHA;
     case "hokemj"    : return ALTAR_HOKEMJ;
     case "cyrcia"    : return ALTAR_CYRCIA;
-    case "bivins"    : return ALTAR_BIVINS;
+    case "radix"     : return ALTAR_RADIX;
     case "ducky"     : return ALTAR_DUCKY;
     case "grimbrand" : return ALTAR_GRIMBRAND;
     case "none"      : return ALTAR_NONE;

@@ -8,5 +8,5 @@ setup()
 
 }
 
-int query_channel() { return(0); }
+int query_channel() { return(1); }
 

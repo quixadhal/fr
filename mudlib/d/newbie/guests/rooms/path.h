@@ -1,0 +1,5 @@
+#define HERE "/d/newbie/guests/rooms/"
+#define SWAMPGEN HERE+"swamproom.c"
+#define ITEMS "/d/newbie/guests/items/"
+#define WEAPON "/d/newbie/guests/weapons/"
+#define NPCS "/d/newbie/guests/npcs/"

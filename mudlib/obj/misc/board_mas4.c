@@ -191,9 +191,9 @@ void end_of_thing(string body) {
   if (body && body != "" && being_written[this_player()->query_name()])
     if (!BOARD_HAND->add_message(board_name, this_player()->query_name(),
                             being_written[this_player()->query_name()], body))
-      write("Error writing message.\n");
+      write("Error writing message to "+board_name+" board.\n");
     else
-      write("Message posted.\n");
+      write("Message posted to "+board_name+".\n");
   else
     write("Erorr.\n");
   being_written = m_delete(being_written, this_player()->query_name());

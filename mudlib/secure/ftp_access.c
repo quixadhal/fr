@@ -36,7 +36,7 @@ nomask void create()
 
   permissions = MASTER->query_permissions();
 
-  perms = (["asmodean":(["/":3]),"baldrick":(["/":3]) ]);
+  perms = ([ ]);
 
   if(!positions) positions = ([]);
   if(!permissions) permissions = (["":([]) ]);

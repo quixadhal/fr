@@ -28,7 +28,7 @@ void setup() {
   set_short("Armageddon the game crasher");
   set_long("He is busy counting down the end of the game.\n");
   add_alias("shut");
-  move("/d/ss/daggerford/ladyluck","Armageddon appears in a puff of smoke.\n",
+  move("/room/entryroom","Armageddon appears in a puff of smoke.\n",
       "Armageddon appears in a puff of smoke.\n");
   reset_get();
   call_out("do_delay_prop",0);

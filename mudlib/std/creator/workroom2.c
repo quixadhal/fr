@@ -28,7 +28,7 @@ void setup()
    add_clone("/obj/misc/button.c",1);
 
    add_exit("common","/w/common","door");
-   add_exit("tavern","/d/ss/daggerford/ladyluck.c","door");
+  add_exit("entryroom","/room/entryroom.c","door");
 
    "/w/common.c"->add_exit( CREATOR,"/w/"+CREATOR+"/workroom","door");
 

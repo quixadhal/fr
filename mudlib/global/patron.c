@@ -8,8 +8,8 @@ string query_gtitle()
   string patronage;
   patronage = "/secure/patrons"->query_patronage(name);
   if(query_female())
-    return "the Patroness of "+patronage;
-   return "the Patron of "+patronage;
+    return "the Bachelor of "+patronage;
+   return "the Bachelor of "+patronage;
 }
 	    
 nomask

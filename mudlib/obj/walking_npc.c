@@ -1,5 +1,6 @@
 /* Hamlet threw me together. */
 /* then Hamlet made me better */
+/* Some more stuff added by Timion May 97 */
 inherit "/obj/monster";
 
 /* DOCUMENTATION:

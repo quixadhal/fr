@@ -28,7 +28,15 @@ void create() {
     "gnome" : ({ L_SPOKEN|L_WRITTEN|L_DISTANCE, "/std/languages/gnome", 10 }),
     "goblin" : ({ L_SPOKEN|L_WRITTEN|L_DISTANCE, "/std/languages/goblin", 10 }),
     "orc" : ({ L_SPOKEN|L_WRITTEN|L_DISTANCE, "/std/languages/orc", 10 }),
+    "frog" : ({ L_SPOKEN|L_WRITTEN|L_DISTANCE, "/std/languages/frog", 10 }),
+    "newt" : ({ L_SPOKEN|L_WRITTEN|L_DISTANCE, "/std/languages/newt", 10 }),
+    "varniad" : ({ L_SPOKEN|L_WRITTEN|L_DISTANCE, "/std/languages/varniad", 10 }),
+    "ilythiiri" : ({ L_SPOKEN|L_WRITTEN|L_DISTANCE, "/std/languages/ilythiiri", 10 }),
+    "troll" : ({ L_SPOKEN|L_WRITTEN|L_DISTANCE, "/std/languages/troll", 10 }),
+    "guppy" : ({ L_SPOKEN|L_WRITTEN|L_DISTANCE, "/std/languages/guppy", 10 }),
+    "kender" : ({ L_SPOKEN|L_WRITTEN|L_DISTANCE, "/std/languages/kender",10}),
     "quack" : ({ L_SPOKEN|L_WRITTEN|L_DISTANCE, "/std/languages/quack", 10 }),
+    "werewolf" : ({ L_SPOKEN|L_DISTANCE,"/std/languages/werewolf",10 }),
     "barbarian" : ({ L_SPOKEN|L_WRITTEN|L_DISTANCE, 
                      "/std/languages/barbarian", 10 }),
     "lizard-man" : ({ L_SPOKEN|L_WRITTEN|L_DISTANCE, 
@@ -37,6 +45,8 @@ void create() {
     "gobbledegook" : ({ L_SPOKEN|L_DISTANCE, "/std/languages/gobbledegook", 10 }),
     "arf" : ({ L_SPOKEN|L_DISTANCE, "/std/languages/arf", 10 }),
     "bork" : ({ L_SPOKEN|L_DISTANCE, "/std/languages/bork", 10 }),
+    "giant" : ({ L_SPOKEN|L_DISTANCE, "/std/languages/giant", 10 }),
+    "skaven" : ({ L_SPOKEN|L_DISTANCE, "/std/languages/skaven", 10}),
   ]);
 } /* create() */
 

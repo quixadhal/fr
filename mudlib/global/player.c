@@ -1,5 +1,6 @@
 /* Player.c once upon a time DW's.
  * messed with by a lot of people.
+ *  > Mostly Timion <
  * Oct '95: Baldrick added the external command handler by Chrisy and
  * removed a lot from this file.
  */
@@ -43,8 +44,10 @@ inherit "/global/henchmen";  // Raskolnikov (for Radix) Oct 96
 #define LOGINLOCK 20
 #define START_POS "/d/ss/daggerford/ladyluck"
 #define STD_RACE "/std/races/human"
+// OMIQ handler added by Timion to prevent Con Loss and Immort login.
 #define OMIQ_HAND "/global/omiq"
 #define FLAG_GAME "/d/omiq/flag/master_control"
+#define IDENTD "/net/identd"
 
 static int last_command, net_dead;
 static int save_counter, hp_counter, combat_counter;
@@ -60,7 +63,6 @@ static object snoopee;
 int registrated;
 static int no_heal;  /* Hamlet */
 string ident;  /* Hamlet */
-object identd; /* Hamlet */
 static int ontime; /* Hamlet */
 string *henchmen_load; //Raskolnikov
 
@@ -81,19 +83,59 @@ int query_level();
 int really_quit();
 int set_invis(int i);
 static string *attackers,*attacked;
+// Taniwha 1997 userp() *spits*
+int query_player() { return 1;}
 
 int test_add(object ob,int flag)
 {
+    string prop;
     if( !::test_add(ob,flag)) return 0;
     if(this_object()->query_creator()) return 1;
+    // Please forgive this next one....
+    if( explode(file_name(ob),"/")[1] == "grimbrand") return 1;
     if( explode(file_name(ob),"/")[0] == "w") return 0;
     if(ob->query_spell()) return 1; // so spell effect items will still work. 
-    if(sizeof(deep_inventory(this_object())) > 50) 
+    if(sizeof(deep_inventory(TO)) + sizeof(deep_inventory(ob)) > 50)
     {
 	tell_object(this_object(),"You are carrying too much and overbalance.\n");
 	return 0;
     }
+    if(query_property("NOMULTI")) // "bad site" check
+    {
+	prop = ob->query_property("NOMULTI");
+	if(stringp(prop) && prop != query_name())
+	    return 0;
+	ob->add_static_property("NOMULTI",query_name());
+    }
     return 1;
+}
+
+// Taniwha 1997.
+// Nasty code to take care of multiplayers
+void attack()
+{
+    int i;
+    object ob,*olist;
+    string ip;
+    ::attack();
+    ip = query_property("NOMULTI");
+    if(!stringp(ip)) return;
+    if(this_object()->query_dead()) return;
+    if(TO->query_property("pacified") || TO->query_level() < 5) return;
+    if(!ETO->query_property("nocast"))
+    {
+	olist = all_inventory(ETO);
+	for(i = 0; i < sizeof(olist); i++)
+	{
+	    ob = olist[i];
+	    if(ob && ob->query_property("NOMULTI") == ip)
+	    {
+		if(ob->query_property("pacified")) continue;
+                if(ob->query_dead()) continue;
+		attack_ob(ob);
+	    }
+	}
+    }
 }
 void attack_ob(object ob)
 {
@@ -207,7 +249,14 @@ void move_player_to_start(string bong, int newp, int going_invis) {
 	log_file("ENTER", sprintf("Enter : %15-s %s[%d]\n",
 		   name, ctime(time()), time()));
     */
-    restore_object("/players/"+name[0..0]+"/"+name,1);
+    if(OMIQ_HAND->flag_in_progress() && 
+       (file_size("/save/playertmp/"+name+".o") > 0)) {
+      tell_object(this_object(), "Restoring your flag game temporary" 
+                                 "character...\n");
+      restore_object("/save/playertmp/"+name,1);
+    }
+    else
+      restore_object("/players/"+name[0..0]+"/"+name,1);
 
     /* Hamlet added this.  For logging on invis */
     if(going_invis != -1)
@@ -249,6 +298,8 @@ void move_player_to_start(string bong, int newp, int going_invis) {
     if(file_size("/doc/NEWS.OMIQ") > 0)
 	cat("/doc/NEWS.OMIQ");
 
+    "/global/do_chat"->init_player_channels(query_property("channels"));
+
     if (!last_pos || (my_file_name == "/global/player" && last_pos[0..1] == "/w")
       || catch(call_other(last_pos, "??")))
     {
@@ -266,11 +317,23 @@ void move_player_to_start(string bong, int newp, int going_invis) {
 	    last_pos->set_co_ord(saved_co_ords);
     }
     event(users(), "inform", query_cap_name() +
-      " enters " + (query_property("guest")?"as a guest of ":"") + "FR-MUD"+
-      (newp ? " (%^BLUE%^BOLD%^New player%^RESET%^)":""),
+     " enters " + (query_property("guest")?"as a guest of ":"") + mud_name() +
+         (newp ? " (%^BLUE%^BOLD%^New player%^RESET%^)":""),
       "logon");
+
+    if(this_object()->query_creator())    
+	event(users(), "inform", query_cap_name() +
+	  " enters " + (query_property("guest")?"as a guest of ":"") + mud_name()+
+	  (newp ? " (%^BLUE%^BOLD%^New player%^RESET%^)":""),
+	  "immort_logon");
+
     if(this_object()->query_invis() < 2)
+    {
+// Unless you pass WHO logged on, this is useless
+	event(environment(this_object()),"login",this_object());
+	//event(environment(this_object()),"login");
 	say(query_cap_name()+" enters the game.\n", 0);
+    }
     if (verbose)
 	command("look");
     else
@@ -290,7 +353,7 @@ void move_player_to_start(string bong, int newp, int going_invis) {
 	money = clone_object(DEATH_SHADOW);
 	money->setup_shadow(this_object());
     }
-    if(query_property("noregen"))
+    if(query_old_property("noregen"))
 	DEATH_CHAR->person_died(query_name());
     exec_alias("login","");
     last_log_on = time();
@@ -302,9 +365,8 @@ void move_player_to_start(string bong, int newp, int going_invis) {
 	    write("You have ERRORS in /w/"+name+"/"+PLAYER_ERROR_LOG+"\n");
 
 	/* ident stuff.  -- Hamlet */
-    identd = clone_object("/secure/identd");
-    if(identd)
-	identd->do_ident(this_object(),this_object());
+    if(!catch(load_object("/net/identd")))
+	IDENTD->do_ident(this_object(), this_object());
 } /* move_player_to_start() */
 
 void setup_money();
@@ -615,6 +677,7 @@ int save_me()
 	write("But not saving for guests... sorry.\n");
 	return ;
     }
+
     // Fix by Wonderflug.  Saving object is a bad idea.
     if ( name == "object" )
 	return ;
@@ -639,7 +702,15 @@ int save_me()
     guild_joined -= time();
     // ntime_last_saved -= time();
     seteuid("Root");
-    catch(save_object("/players/"+name[0..0]+"/"+name,1));
+    if(OMIQ_HAND->flag_in_progress() &&
+//          OMIQ_HAND->is_playing_flag(this_object())) {
+            1) {
+      tell_object(this_object(), "Saves during the flag game are" 
+                                 "temporary...\n");
+      catch(save_object("/save/playertmp/"+name,1));
+    }
+    else
+      catch(save_object("/players/"+name[0..0]+"/"+name,1));
     seteuid(old);
     time_on += time();
     guild_joined += time();
@@ -702,7 +773,13 @@ int really_quit()
     if(this_object()->query_invis() < 2)
 	say(query_cap_name()+" left the game.\n");
     if(query_name() != "object")
+    {
 	event(users(), "inform", query_cap_name() + " left the MUD", "logon");
+	if ( this_object()->query_creator() )
+	    event(users(), "inform", query_cap_name() + 
+	      " left the MUD", "immort_logon");
+    }
+
     LOGIN_HANDLER->player_logout(query_name());
     if (race_ob)
 	catch(race_ob->player_quit(this_object()));
@@ -851,7 +928,7 @@ int second_life()
 		attacker_list[i]->stop_fight(this_object());
 		no_dec += interactive(attacker_list[i]);
 	    }
-    log_file("DEATH", ctime(time())+": "+str + "\n");
+    secure_log_file("DEATH", ctime(time())+": "+str + "\n");
     // log_file("DEATH2",str+" : "+sprintf("%O\n",previous_object(-1)));
     event(users(), "inform", str, "death");
     attacker_list = ({ });
@@ -934,15 +1011,15 @@ static int hb_num;
 
 void heal_hp(int i)
 {
-   if(i && query_hp() < query_max_hp() && query_hp() >= 0 && !no_heal)
-      hp++;
-   return;
+    if(i && query_hp() < query_max_hp() && query_hp() >= 0 && !no_heal)
+	hp++;
+    return;
 }
 void heal_gp(int i, int intox)
 {
-   if(i && intox < 200 && query_gp() < query_max_gp() && !no_heal)
-      gp++;
-   return;
+    if(i && intox < 200 && query_gp() < query_max_gp() && !no_heal)
+	gp++;
+    return;
 }
 void heart_beat() 
 {
@@ -951,6 +1028,10 @@ void heart_beat()
     flush_queue();
     intox = query_volume(D_ALCOHOL);
     hb_counter++;
+    // Taniwha 1997, racial effects
+    if(race_ob && !(hb_counter & 31) ) race_ob->race_heartbeat(TO);
+// Quark, adding heart beat to curses.
+    if(!(hb_counter & 31)) TO->curses_heart_beat();
 
     /* Added a combat_counter, so the combat aren't that quick. */
     if (drunk_heart_beat(intox) && time_left > 0 && combat_counter >= 2) 
@@ -985,6 +1066,7 @@ void heart_beat()
 	    */
 	    net_dead = 1;
 	}
+     /*  Idling out annoys me.  Removing it.   Benedick -- Feb. 4, 1998
     } else {
 	net_dead = 0;
 	if (query_idle(this_object()) > MAX_IDLE)
@@ -1003,51 +1085,67 @@ void heart_beat()
 		    tell_object(this_object(),"You've idled too long, setting you"
 		      " to invis 2.\n");
 		this_object()->set_invis(2);
+
 	    }
+        End of Idle Code, I hope.  */
 	last_command = time() - query_idle(this_object());
     }
 
 
-   /* I've made this to hopefully be easier to add to later 
-      - Radix : Dec 29, 1996
-      Drow and duergar on surface heal 1/2 as fast if light < 20 
-      no heal if light > 20
-   */
-   if(hp_counter >= 15)
-   {
-      if(query_race() != "drow" && query_race() != "duergar")
-      {
-         heal_hp(1);
-         heal_gp(1, intox);
-         hp_counter = 0;
-      }
-      else
-      {
-         if(!environment()->query_underground())
-//       if(member_array(domain_origin(ENV(TO)), ({"bf","newbie"})) <0)
-         {
-            if(environment()->query_light() < 20)
-            {   
-               heal_hp(1);
-               heal_gp(1, intox);
-               hp_counter = -15;
-            }
-            else 
-            {
-               heal_hp(0);
-               heal_gp(0, intox);
-               hp_counter = -15;
-            }
-         }
-         else
-         {
-            heal_hp(1);
-            heal_gp(1, intox);
-            hp_counter = 0;
-         }
-      }
-   }
-   hp_counter++;
+if(hp_counter >= 4 && "/global/omiq.c"->omiq_in_progress())
+{
+	heal_hp(1);
+	heal_gp(1, intox);
+}
+    /* I've made this to hopefully be easier to add to later 
+       - Radix : Dec 29, 1996
+       Drow and duergar on surface heal 1/2 as fast if light < 20 
+       no heal if light > 20
+	- Timion : November 08, 1997
+	All players heal faster during Capture the Flag.
+    */
+    if(hp_counter >= 15)
+    {
+	if("/global/omiq.c"->flag_in_progress())
+	{
+	  heal_hp(5);
+	  heal_gp(5, intox);
+	  hp_counter = -15;
+	}
+	else
+	if(query_race() != "drow" && query_race() != "duergar")
+	{
+	    heal_hp(1);
+	    heal_gp(1, intox);
+	    hp_counter = 0;
+	}
+	else
+	{
+	    if(!environment()->query_underground())
+		//       if(member_array(domain_origin(ENV(TO)), ({"bf","newbie"})) <0)
+	    {
+		if(environment()->query_light() < 20)
+		{   
+		    heal_hp(1);
+		    heal_gp(1, intox);
+		    hp_counter = -15;
+		}
+		else 
+		{
+		    heal_hp(0);
+		    heal_gp(0, intox);
+		    hp_counter = -15;
+		}
+	    }
+	    else
+	    {
+		heal_hp(1);
+		heal_gp(1, intox);
+		hp_counter = 0;
+	    }
+	}
+    }
+    hp_counter++;
 
     /* handle intoxication dispersion by our selves...
      * they just handle hp recival and sp recival...
@@ -1095,7 +1193,7 @@ void display_monitor(int i)
     string COLOR = "%^RED%^";
     if(!monitor) return;
     if(i) COLOR = "%^GREEN%^";
-    tell_object(this_object(),COLOR+sprintf("HP: %d GP %d\n",hp,gp)+
+    tell_object(this_object(),COLOR+sprintf("HP: %d GP: %d\n",hp,gp)+
       "%^RESET%^\n");
     return;
 }
@@ -1253,7 +1351,7 @@ int check_dark(int light)
     int i;
 
     if(this_object()->query_dead())
-       return 0;
+	return 0;
     if (race_ob)
 	return (int)race_ob->query_dark(light);
     return 0;
@@ -1273,6 +1371,8 @@ int restart_heart_beat()
 	adjust_gp(-(level / 2));
 	return 1;
     }
+// Taniwha, avoids the lockup case. HB restarts, buggy spell/command kills it again
+   catch(this_object()->flush_spell_effects());
     set_heart_beat(1);
     write("Ok, heart_beat restarted.\n");
     return 1;
@@ -1498,10 +1598,13 @@ int do_retire()
 
 void receive_message( string str, string mclass)
 {
-// Taniwha 1996, allows ansi anywhere
-   if(strsrch(str,"%^") != -1) str = fix_string(str);
-    strlen( mclass ) ? receive( sprintf("%s%*=-s\n", mclass,
-	cols-strlen(mclass), str) ) : receive( str );
+    strlen(mclass) ?
+    receive("\n"+this_object()->fix_string(mclass + str + "\n",strlen(mclass))):
+    receive("\n"+TO->fix_string(str+"\n"));
+    /*
+	strlen( mclass ) ? receive( sprintf("%s%*=-s\n", mclass,
+	    cols-strlen(mclass), str) ) : receive( str );
+    */
 } /* recieve_message */
 
 
@@ -1568,15 +1671,11 @@ void give_me_armband() {
 }
 
 /* Hamlet, Jan 1996.  The two hooks needed it internalize identd stuff */
-int ip_port() {
-    return query_ip_port();
-}
-
 void receive_ident_data(string id, string hosttype) {
-    if(file_name(previous_object())[0..13] != "/secure/identd")
+    if(file_name(previous_object())[0..10] != "/net/identd")
 	return;
 
-    if( (id != "none") || (hosttype != "available") )
+    if( id != "!error!" )
 	ident = id;
     else
 	ident = 0;

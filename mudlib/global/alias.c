@@ -22,6 +22,8 @@ mixed *compile_alias(string str)
   int num, tmp, gumby, nodollar;
   mixed *ifargs;
 
+// Quicker hack, taniwha.
+   str = implode(explode(str," ")," ");
   /* Quick hack.. Baldrick. */
   //if (!this_player()->query_creator())
    if(0)

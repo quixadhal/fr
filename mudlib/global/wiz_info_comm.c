@@ -66,7 +66,7 @@ if(this_player()->query_lord())
          notify_fail("Cannot find "+str+" to quiet snoop.\n");
          return 0;
         }
-      if(targ->query_god())
+      if(targ->query_lord())
         {
          tell_object(targ,"A demonic voice echo's within your head saying:\n"+
                      " \n"+

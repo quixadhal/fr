@@ -68,7 +68,7 @@ int finger(string str) {
     return 1;
   } else {
     notify_fail("Noone going by the name of " + str + " has ever visited " +
-      "Final Realms MUD.\n");
+      mud_name() + ".\n");
     return 0;
   }
 } /* finger() */

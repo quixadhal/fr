@@ -14,3 +14,5 @@
 #define ENTER_PASSWORD_AGAIN  "Your word of passage again? "
 #define LOADING_PLAYER "Cold darkness surrounds you as you enter our realms...\n"
 #define NOT_PROPER_NAME "That is an illegal name, pick another.\n"
+
+#define WHO_HANDLER "/obj/handlers/who"

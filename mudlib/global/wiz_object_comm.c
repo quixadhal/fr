@@ -27,7 +27,6 @@ static void app_commands() {
     add_action("get_pathof","pat*hof");
     add_action("get_creator","coder");
     add_action("get_inv","inv");
-    add_action("teleport","go*to");
     add_action("goback","gob*ack");
     add_action("upgrade_player", "upg*rade");
     add_action("find_shadows", "sh*adows");
@@ -49,6 +48,12 @@ int whereis(string str) {
 
     for (i = 0; i < sizeof(ov); i++) {
 	if (ov[i]->query_invis() > 1) continue;
+	if(interactive(ov[i]))
+        if(!(this_player()->query_lord() || this_player()->query_thane()))
+	   { log_file("LOCATE",this_player()->query_cap_name()+" attempted to locate interactive: "+ov[i]->query_cap_name()+".\n");
+	  write("Sorry, Locating players is not allowed for you.\n");
+	continue;
+	}
 	write(desc_object(ov[i]) + " is : \n");
 	e = ov[i];
 	while (e = environment(e))
@@ -83,62 +88,6 @@ int goback() {
     return 1;
 }
 
-int teleport(string str) {
-    object dest;
-    string *names, nick;
-
-    if (!str) {
-	notify_fail("Teleport where?\n");
-	return 0;
-    }
-    nick = (string)this_player()->expand_nickname(str);
-    dest = find_living(nick);
-    if (dest) {
-        if(interactive(dest) && this_object()->query_invis() >0)
-           if(!dest->query_creator())
-           log_file("testing",this_player()->query_cap_name()+" "
-               "transed to "+dest->query_cap_name()+" : "+
-                 sprintf("%O : ",real_filename(environment(dest)))+
-               ctime(time())+"\n");
-	if(dest = environment(dest)) {
-	    if (dest == environment()) {
-		notify_fail("You look around and realise you are already there.\n");
-		return 0;
-	    }
-	    this_player()->move_player("X", dest);
-	    return 1;
-	} else {
-	    notify_fail(capitalize(nick) + " is not standing in a location.\n");
-	    return 0;
-	}
-    } else {
-	names = (string *)this_object()->get_cfiles(str);
-	if(sizeof(names)) {
-	    str = names[0];
-	} else {
-	    notify_fail("No such room.\n");
-	    return 0;
-	}
-	if (!(dest = find_object(str))) {
-	    catch(str->come_and_see_the_stars());
-	    dest = find_object(str);
-	}
-	if (!dest) {
-	    notify_fail("Failed to load " + str + "\n");
-	    return 0;
-	} else if(!dest->query_property("location")) {
-	    notify_fail("Not a room: " + str + "\n");
-	    return 0;
-	} else {
-	    if (dest == environment()) {
-		notify_fail("You look around and realise you are already there.\n");
-		return 0;
-	    }
-	    this_player()->move_player("X", dest);
-	    return 1;
-	}
-    }
-} /* teleport() */
 
 int get_pathof(string str) {
     object *ov;
@@ -179,6 +128,14 @@ int get_inv(string str) {
 
     for (i = 0; i < sizeof(ov); i++) {
 	if (!ov[i]) continue;
+/*
+	if( (interactive(ov[i])) && !(this_player()->query_lord() || this_player()->query_thane()) && !(ov[i]==this_player()))
+	{
+		log_file("LOCATE",this_player()->query_cap_name()+" attempted to find the inventory of interactive: "+ov[i]->query_cap_name()+".\n");
+		write("Sorry, You are not permitted to chcek the inventory of "+ov[i]->query_cap_name()+".\n");
+	continue;
+	}
+*/
 	write("Inv of " + desc_object(ov[i]) + " in " + 
 	  desc_object(environment(ov[i])) + ":\n");
 	obj = first_inventory(ov[i]);
@@ -276,6 +233,8 @@ int dest(string str) {
 
     dest_obj = ({ });
 
+    if (!str) {return 0;}
+
     notify_fail("Can't find " + str + " to dest.\n");
 
     if (sscanf(str, "query %s", qstr) == 1) {
@@ -296,6 +255,11 @@ int dest(string str) {
 	{
 	    write("You DON'T destruct " + ob[i]->query_cap_name() + ".\n");
 	    continue;
+	}
+	if(interactive(ob[i]) && !(this_player()->query_lord() || this_player()->query_thane()))
+	{ log_file("BUSTED",this_player()->query_cap_name()+" attempted to dest interactive "+ob[i]->query_cap_name()+".\n");
+	write("Sorry, you are not permitted to dest "+ob[i]->query_cap_name()+".\n");
+	continue;
 	}
 	catch(shrt = (string)ob[i]->short());
 	dobj = desc_object(ob[i]);
@@ -435,6 +399,7 @@ varargs object *wiz_present(string str, object onobj, int nogoout) {
     }
 
     /* handle "fish on fish2" */
+	/* Hmm....sounds fishy to me.  Timion 97 */
 
     if (sscanf(str,"%s on %s",s1,s2) == 2 ||
       sscanf(str,"%s in %s",s1,s2) == 2) {
@@ -794,6 +759,14 @@ int show_stats(string str) {
 	return 1;
     }
     for (j=0;j<sizeof(ob);j++) {
+/*
+         if(interactive(ob[j]) && !(this_player()->query_lord() || this_player()->query_thane()) && !(this_player() == obj(j))
+	{
+		log_file("LOCATE",this_player()->query_cap_name()+" tried to Stat "+ob[j]->query_cap_name()+".\n");
+		write("You are not allowed to stat "+ob[j]->query_cap_name()+".\n");
+	continue;
+	}
+*/
 	ob1 =ob[j]->stats();
 	if (!pointerp(ob1))
 	    continue;
@@ -807,35 +780,6 @@ int show_stats(string str) {
     this_object()->more_string(bing);
     return 1;
 } /* show_stats() */
-
-
-/* This was the buggy one */
-/*int show_stats(string str) {
-  object *ob;
-  mixed ob1;
-  string s,str2,bing;
-  int i, j;
-
-    bing = "";
-    ob = wiz_present(str, this_object());
-    if (!sizeof(ob)) {
-      write("No such object.\n");
-      return 1;
-    }
-    for (j=0;j<sizeof(ob);j++) {
-      ob1 = ob[j]->stats();
-      if (!pointerp(ob1))
-	continue;
-      for (i=0;i<sizeof(ob1)-1;i++) 
-	if(!pointerp(ob1[i][0]))
-	   if(ob1[i][0]!=0)  
-	      s += ob1[i][0] +": "+ob1[i][1]+"\n";
-      bing += sprintf("%-*#s\n\n\n", this_object()->query_cols(), s);
-    }
-    this_object()->more_string(bing);
-    return 1;
-}*/ /*  show_stats() buggy*/
-
 
 int trans(string str) {
     object *obs;
@@ -851,6 +795,14 @@ int trans(string str) {
 	    write(desc_object(obs[i])+" is already here.\n");
 	    continue;
 	}
+/*
+  if( interactive(obs[i]) && !(this_player()->query_thane() || this_player()->query_lord()) && !(obs[i]->query_property("test_char"))
+	{
+	log_file("BUSTED",this_player()->query_cap_name()+" tried to illegally trans "+obs[i]->query_cap_name()+".\n");
+	write("Sorry, You are not powerful enough to trans "+obs[i]->query_cap_name()+".  Ask a higher ranking immortal.\n");
+	continue;
+	}
+*/
     if(environment(obs[i]))
 	log_file("MISC",(string)this_player(1)->query_cap_name()+" trans'd "+
 	  obs[i]->query_cap_name()+" from "+file_name(environment(obs[i]))+

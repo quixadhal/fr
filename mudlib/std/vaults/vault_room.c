@@ -111,6 +111,15 @@ void do_deposit(string str)
    object ob, *all;
    int i,j;
  
+/* Added by Timion, 06 NOV 97
+   To prevent deposits in vault during CTF */
+ if("/global/omiq.c"->flag_in_progress())
+   {
+   notify_fail("Sorry, you may not deposit items during a Flag Game.\n");
+   vault->dest_me();
+     return 0;
+}
+ 
    if(query_property("vault_using"))
    {
       notify_fail("Vault is being used, try again in a minute.\n");
@@ -215,6 +224,7 @@ void do_list()
    object *all;
    int i;
    string *list;
+   string tmp;   // Radix Nov 29, 1997
 
    if(query_property("vault_using"))
    {
@@ -229,8 +239,10 @@ void do_list()
    {
       write("There are "+sizeof(all)+" items stored in this vault:  \n\n");
       list = (string *)vault->list_contents();
+      tmp="";
       for(i=0; i<sizeof(list); i++)
-         write(list[i]+"\n");
+         tmp += list[i]+"\n";
+      this_player()->more_string(tmp);
       write("\nMax amount:  "+FILE_SIZE+"\n"
             "Current amount:  "+file_size(query_save_file()+".o")+
             "\n\n");

@@ -126,6 +126,10 @@ int do_extinguish(object *indir, string s1, string s2, string prep) {
   set_light(0);
   return 1;
 } 
+int query_lit()
+{
+   return is_lighted;
+}
 
 void dest_me()
 {

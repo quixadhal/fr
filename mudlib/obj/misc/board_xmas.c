@@ -28,8 +28,8 @@ void setup() {
     "And maybe 'study' the interesting ones.\n");
   set_main_plural("trees");
   reset_get();
-  board_name = "Christmas";
-  this_object()->set_datafile("Christmas");
+  board_name = "christmas";
+  this_object()->set_datafile("christmas");
   being_written = ([ ]);
   action_pri = 0;
 } /* setup() */

@@ -9,6 +9,23 @@ string *query_nicknames() { return keys(map_nicknames) + ({ }); }
 void nickname_commands() {
   add_action("delete_nickname", "dn*ickname");
   add_action("nickname", "ni*ckname");
+add_action("flushnicknames","flushnicknames");
+}
+int flushnicknames(string str)
+{
+  write("This will remove All your nicknames. Are you sure? (Y/N)\n");
+input_to("flushnicks",0);
+return 1;
+}
+int flushnicks(string str)
+{
+if(str=="Y"||str=="y")
+  {
+map_nicknames=0;
+write ("Nicknames removed.\n");
+}
+else write("Some other time then\n");
+return 1;
 }
  
 int add_nickname(string str) {

@@ -1,6 +1,7 @@
 //
 // Money matters in living objects
 //
+#include "money_adjust.h"
 #include "money.h"
 
 // This function is the easiest way of giving or taking money to/from a
@@ -17,7 +18,7 @@ varargs int
 adjust_money(mixed i, string type) {
 
   object ob;
-  int val;
+  int val,tmp;
 
   // This is the actual money object that keeps track of how
   // much money the living has.
@@ -36,6 +37,14 @@ adjust_money(mixed i, string type) {
   val = (int)ob->query_value();
   ob->adjust_money(i, type);
   val = (int)ob->query_value()-val;
+  if(ob->query_npc()) {
+    tmp=val*catch(MONEY_TRACKER->query_adj_fact(MONFLAG))/1000;
+    if(tmp&&tmp!=val) 
+   {
+    ob->adjust_money(tmp-val,"copper");
+     val=tmp;
+   }
+  }
 
   // Return how much was actually given to/taken from the player/npc
   return val;

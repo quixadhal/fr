@@ -41,6 +41,7 @@ int hide_in_shadows(string str,object hider)
     }
     me->adjust_gp(-COST);
     sk_bon = (int)me->query_level() + hide_skill_bonus();
+   me->add_timed_property("noguild",1,1); /* Spam lock DO NOT REMOVE */
 
     if (sk_bon > random(HIDE_SKILL) && !me->query_hide_shadow())
     {

@@ -38,7 +38,7 @@ void locate_iou(string str) {
 	    ious += ({ pinv[i] });
     for(i=0;i<sizeof(ious);i++) {
 	iou_path = ious[i]->query_path();
-	switched_dirs = read_file("/log/SWITCHED_DIRS");
+	switched_dirs = read_file("/open/SWITCHED_DIRS");
 	oldnew_paths = explode(switched_dirs, "\n");
 	for(j=0;j<sizeof(oldnew_paths);j++) {
 	    temp_exp = explode(oldnew_paths[j], " ");

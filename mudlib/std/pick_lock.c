@@ -21,8 +21,20 @@ int query_pick_skill()
    if((string)ob->query_race_name() == "elf"){
       pick_skill = pick_skill - 5;
    }
+   if((string)ob->query_race_name() == "orc"){
+      pick_skill = pick_skill - 20;
+   }
+   if((string)ob->query_race_name() == "drow"){
+      pick_skill = pick_skill - 5;
+   }
+   if((string)ob->query_race_name() == "kender"){
+      pick_skill = pick_skill + 15 + random(20);
+   }
+   if((string)ob->query_race_name() == "goblin"){
+      pick_skill = pick_skill + 10 + random(5);
+   }
    if((string)ob->query_race_name() == "gnome"){
-      pick_skill = pick_skill + 5;
+      pick_skill = pick_skill + 10 + random(5);
    }
    if((string)ob->query_race_name() == "halfling"){
       pick_skill = pick_skill + 5 + random(5);
@@ -38,10 +50,13 @@ int query_pick_skill()
          pick_skill=random(20)-40+((level*3)/2)+((stat_int+stat_dex)/2);
          break;
       case "Grimbrand":
-         pick_skill=random(10)-10+((level*3)/2)+((stat_int+stat_dex)/2);
+         pick_skill=5+random(10)+((level*3)/2)+((stat_int+stat_dex)/2);
+         break;
+      case "bard":
+         pick_skill=random(10)-20+((level*3)/2)+((stat_int+stat_dex)/2);
          break;
       default:
-         pick_skill = random(10)-40+((level*3)/2)+((stat_int+stat_dex)/2);
+         pick_skill = random(10)-50+((level*3)/2)+((stat_int+stat_dex)/2);
          break;
    }
    pick_skill = pick_skill + toolbonus;
@@ -69,6 +84,11 @@ int pick_door_lock(string direc)
   skill = query_pick_skill();
   tool_type = query_tool_type();
 
+  if(ob->query_gp() <= 1) {
+    tell_object(ob,"\n   Sorry pal, but you don't seem to have "
+        "what it takes to pick a lock at this time.\n");
+    return 1;
+  }
   if(lock_dir == 0)
   {
     tell_object(ob,"\n   Why unlock that which was never locked in"
@@ -88,6 +108,7 @@ int pick_door_lock(string direc)
     tell_object(ob,"\n  You fumble around a bit, but fail to pick"
                    " the lock... perhaps you need better"
                    " tools.\n\n");
+     ob->adjust_gp(-1);
     return(1);
   }
 
@@ -95,13 +116,15 @@ int pick_door_lock(string direc)
   {
     tell_object(ob,"\n  You fumble around a bit, but fail to pick"
                 " the lock... perhaps you just need to practice.\n\n");
+     ob->adjust_gp(-1);
     return(1);
   }
 
   if((skill >= lock_str)&&(lock_type == tool_type))
   {
-    tell_object(ob,"\n  After a few minutes of tyring to jimmy"
+    tell_object(ob,"\n  After a few minutes of trying to jimmy"
                    " the lock, it clicks open.\n\n");
+     ob->adjust_xp(random(50));
     environment(ob)->remove_lock(direc);
     return(1);
   }
@@ -219,6 +242,7 @@ varargs int box_unlock_part2(string chest, object ob2)
   {
     tell_object(ob,"\n  After a few minutes of trying to"
                    " jimmy the lock, it clicks open.\n\n");
+     ob->adjust_xp(random(50));
     ob2->remove_lock(chest);
     return(1);
   }

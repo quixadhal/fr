@@ -5,7 +5,7 @@ string query_boo(string str)
  switch(str)
  {
   case "god":
-    return "That should be removed.";
+    return "Some stuff he has to decide upon";
   default:
     return 0;
  }

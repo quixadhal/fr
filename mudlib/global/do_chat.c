@@ -1,4 +1,10 @@
-inherit "/global/remote_cre";
+/*
+ * Changed to maintain an mapping of arrays of everyone on a channel
+ * Also performed so major cleanups...more than doubled the efficiency
+ *    -- Wahooka April '97
+ */
+
+//inherit "/global/remote_cre";
 #include "standard.h"
 #include <network.h>
 
@@ -6,245 +12,266 @@ inherit "/global/remote_cre";
 #define GROUP this_player()->query_group_ob()
 #define RACEG this_player()->query_race_group_ob()  
 
-#define GOD children( "global/god" )
-#define LORD children( "global/lord" ) + GOD
-#define THANE children( "global/thane" ) + LORD
-#define PATRON children( "global/patron" ) + THANE
-#define CRE children( "global/creator" ) + PATRON
+#define MAX_CHAN_HIST 20
+
+#define HAND_ESOB "/w/radix/mine/esobs"
+
+mapping channels = ([ ]),
+        history = ([ ]);
+
+int query_channel_on(object ob, string chan);
+int query_channel_permission(object ob, string chan);
+varargs void do_channel(string verb, string str, string name, string mud, int flg);
 
 void create() {
     call_out("do_sockets",1);
 }
 
-static nomask varargs mixed *filter_check( string verb, string str,
-  object *checks, string rname,
-  string mudname )
-{
+void init_player_channels(string *chans) {
     int i;
-    object *tmp;
-
-    if( !sizeof(checks) ) checks = users();
-    tmp = checks;
-    switch( str[0] )
-    {
-    case '!' :
-	str = str[1..strlen(str)-1];
-	if(!rname) {
-	    message(str,"You force-"+verb+"-tell: ", TP);
-	    verb = CNAME+" [Forced-"+CAP(verb)+"]: ";
-	}
-	else if(!mudname)
-	    verb = capitalize(rname)+" (Forced-"+CAP(verb)+"): ";
-	else
-	    verb = capitalize(rname)+"@"+mudname+" ("+CAP(verb)+"): ";
-
-	return ({ tmp, verb, str });
-    case '@' :
-	for( i = 0; i<sizeof(checks); i++ )
-	{
-	    if( !checks[i]->query_property("chan_"+verb) )
-		tmp -= ({ checks[i] });
-	}
-	if(!rname) {
-	    str = CNAME+" "+str[1..strlen(str)-1];
-	    verb = "["+CAP(verb)+"] ";
-	    message( str, verb, TP );
-	}
-	else if(!mudname) {
-	    str = capitalize(rname)+" "+str[1..strlen(str)-1];
-	    verb = "("+CAP(verb)+") ";
-	}
-	else {
-	    str = capitalize(rname)+"@"+mudname+" "+str[1..strlen(str)-1];
-	    verb = "("+CAP(verb)+") ";
-	}
-
-	return ({ tmp, verb, str });
-    default  :
-	for( i = 0; i<sizeof(checks); i++ )
-	{
-	    if( !checks[i]->query_property( "chan_"+verb ) )
-		tmp -= ({ checks[i] });
-	}
-	if(!rname) {
-	    message(str, "You "+verb+"-tell: ", TP );
-	    verb = CNAME+" ["+CAP(verb)+"]: ";
-	}
-	else if(!mudname) {
-	    verb = capitalize(rname)+" ("+CAP(verb)+"): ";
-	}
-	else {
-	    verb = capitalize(rname)+"@"+mudname+" ("+CAP(verb)+"): ";
-	}
-	return ({ tmp, verb, str });
+    for(i=0;i<sizeof(chans);i++) {
+	if(!query_channel_permission(this_player(), chans[i])) continue;
+	if(!channels[chans[i]]) channels[chans[i]] = ({ });
+	if(query_channel_on(this_player(), chans[i])) continue;
+	channels[chans[i]] += ({ this_player() });
+    }
+    if(this_player()->query_creator() &&
+      !query_channel_on(this_player(), "emergency")) {
+	if(!channels["emergency"]) channels["emergency"] = ({ });
+	channels["emergency"] += ({ this_player() });
     }
 }
 
-int do_chat( string str ) {
-    string verb;
-    mixed *Gval;
+int query_channel_on(object ob, string chan) {
+  return member_array(ob, channels[chan]) != -1;
+}
 
-    verb = query_verb();
-    if(!str || str =="")
-    {
+int query_channel_permission(object ob, string chan) {
+    switch(chan) {
+    case "cre":
+    case "dwcre":
+    case "geek":
+    case "sport":
+	if(ob->query_creator()) return 1;
+    case "thane":
+	if(ob->query_thane()) return 1;
+    case "demi":
+    case "dwadmin":
+	if(ob->query_lord()) return 1;
+	return 0;
+    default: return 1;
+    case "esob":
+        return HAND_ESOB->query_member(ob->query_name());
+    }
+}
+
+object *query_who_on(string chan) {
+    object *ret = channels[chan];
+    if(!this_player()->query_lord()) {
+	int i;
+	for(;i<sizeof(ret);i++)
+	    if(ret[i]->query_invis() == 2) {
+		ret -= ret[i..i];
+		i--;
+	    }
+    }
+    return ret;
+}
+
+static void add_history(string chan, string mess) {
+  if(!history[chan]) {
+    history[chan] = ({ mess });
+    return;
+  }
+  if(sizeof(history[chan]) >= MAX_CHAN_HIST) {
+    history[chan] = history[chan][1..] + ({ mess });
+    return;
+  }
+  history[chan] += ({ mess });
+}
+
+string get_history(string chan) {
+  if(!history[chan]) return 0;
+  return implode(history[chan], "\n");
+}
+
+int do_chat( string str ) {
+    string verb = query_verb();
+    if(!str || str =="") {
 	message("You must have a message too.\n","",TP);
 	return 1;
     }
-    if(str[0]=='!' && (verb=="group"||verb=="guild"||verb=="race"))
-	str = " "+str;
-    if(verb == "guild")
-    {
-	if(!GUILD)
-	{
+    if(verb == "emergency") {
+	do_channel(verb, str, this_player()->query_cap_name());
+	return 1;
+    }
+    if(verb == "guild") {
+	if(!GUILD) {
 	    message("You are not a member of any guild.\n","",TP);
 	    return 1;
 	}
-	if(!GUILD->query_channel())
-	{
+	if(!GUILD->query_channel()) {
 	    message("Your guild does not have that ability.\n","",TP);
 	    return 1;
 	}
 	verb = (string)GUILD->query_name();
     }
-    if(verb == "group")
-    {
-	if(!GROUP)
-	{
+    if(verb == "group") {
+	if(!GROUP) {
 	    message("You are not a member of any group.\n","",TP);
 	    return 1;
 	}
-	if(!GROUP->query_channel())
-	{
+	if(!GROUP->query_channel()) {
 	    message("Your group does not have that ability.\n","",TP);
 	    return 1;
 	}
 	verb = (string)GROUP->query_name();
     }
-    if(verb == "race")
-    {
-	if(!RACEG)
-	{
+    if(verb == "race") {
+	if(!RACEG) {
 	    message("You are not a member of any race group.\n","",TP);
 	    return 1;
 	}
-	if(!RACEG->query_channel())
-	{
+	if(!RACEG->query_channel()) {
 	    message("Your race group does not have that ability.\n","",TP);
 	    return 1;
 	}
 	verb = (string)RACEG->query_name();
     }
 
-    if(this_player()->query_property("chan_"+verb) == "nope")
-    {
+    if(this_player()->query_property("chan_"+verb) == "nope") {
 	message("Your channel has been removed.\n","",TP);
 	return 1;
     }
-    if(str == "off" || str == "on")
-    {
-	switch( str )
-	{
-	case "off" :
-	    message("Ok, you turn off the "+verb+"-channel.\n","",TP);
-	    TP->remove_property("chan_"+verb);
-	    return 1;
-	    break;
-	case "on" :
-	    message("Ok, you turn on the "+verb+"-channel.\n","",TP);
-	    TP->add_property( "chan_"+verb, 1 );
-	    return 1;
-	    break;
-	default : message("Something bad just happened, " +
-	      "contact an immortal.\n","",TP  );
-	}
+
+    if(!query_channel_permission(this_player(), verb)) {
+	message("You are not permitted to use the "+verb+"-channel.\n","",this_player());
+	return 0;
     }
 
-    if(!TP->query_property("chan_"+verb))
-    {
+    switch( str ) {
+    case "off" :
+	if(!query_channel_on(this_player(), verb)) {
+	    message("The "+verb+"-channel is already off!\n","",this_player());
+	    return 0;
+	}
+	message("Ok, you turn off the "+verb+"-channel.\n","",TP);
+	this_player()->adjust_property("channels",({verb}),-1);
+	channels[verb] -= ({ this_player() });
+	return 1;
+    case "on" :
+	if(query_channel_on(this_player(), verb)) {
+	    message("The "+verb+"-channel is already on!\n","",this_player());
+	    return 0;
+	}
+	if(!channels[verb]) channels[verb] = ({ });
+	message("Ok, you turn on the "+verb+"-channel.\n","",TP);
+	if(member_array(verb,this_player()->query_property("channels")) == -1)
+	    this_player()->adjust_property("channels",({verb}));
+	channels[verb] += ({ this_player() });
+	return 1;
+    }
+
+    if(!query_channel_on(this_player(), verb)) {
 	message("You don't have that channel on.\n","",TP);
 	return 1;
     }
-    switch(verb)
-    {
-    case "demi"  :
-	Gval = filter_check( verb, str, LORD );
-	break;
-    case "dwadmin" :
-	Gval = filter_check( verb, str, LORD );
-	break;
-    case "patron":
-	Gval = filter_check( verb, str, PATRON );
-	break;
-    case "thane" :
-	Gval = filter_check( verb, str, THANE );
-	break; 
-    case "cre" :
-	Gval = filter_check( verb, str, CRE );
-	break;
-    case "dwcre" :
-	Gval = filter_check( verb, str, CRE );
-	break;
-    case "intercre" :
-	Gval = filter_check( verb, str, CRE );
-	break;
-    case "sport" :
-	Gval = filter_check( verb, str, CRE );
-	break;
-    case "emergency" :
-	Gval = filter_check( verb, str, CRE );
-	break;
-    default      :
-	Gval = filter_check( verb, str );
-    }
-   if(sizeof(Gval[0]))
-       message( Gval[2], Gval[1], Gval[0], TP );
 
-    if( verb == "cre" || verb == "thane" || verb == "demi" )
-    {
-	add_send_mess(verb+" "+this_player()->query_name()+" "+
-	  implode(explode(mud_name()," "),"_")+
-	  " "+str);
+    do_channel(verb, str, this_player()->query_cap_name());
+
+    /* not on this mud. Baldrick
+    if( verb == "cre" || verb == "thane" || verb == "demi" ) {
+	add_send_mess(verb+" "+this_player()->query_cap_name()+" "+
+	  implode(explode(mud_name()," "),"_")+" "+str);
 	transmit();
     }
-    if( (verb == "dwcre") || (verb == "dwadmin") || (verb == "intercre" ) )
-    {
+    */
+    if( (verb == "dwcre") || (verb == "dwadmin") || (verb == "intercre" )) {
 	SERVICES_D->eventSendChannel(this_player()->query_short(), verb,
-	  Gval[2], 0, 0, 0);
+	  str, 0, 0, 0);
     }
     return 1;
 }
 
+string get_channel_help(string verb) {
+  string ret;
+  if(!verb) verb = "<channel>";
+  ret = 
+   "'"+verb+" <message>': Send a message to all people listening "
+    "to the channel.\n"
+   "'"+verb+" ?': This help message.\n"
+   "'"+verb+" @': Emote across the channel.\n"
+   "'"+verb+" !': See the last "+MAX_CHAN_HIST+" things sent to the channel.\n";
+  if(this_player()->query_creator())
+    ret += "'"+verb+" .': See a list of people listening to the channel.\n";
+  return ret;
+}   
+
+#define chan_msg() message(str, name+" "+(flg?"(":"[")+CAP(verb)+(flg?")":"]")\
+                    +": ", channels[verb]);\
+              add_history(verb, name+" "+(flg?"(":"[")+CAP(verb)+(flg?")":"]")\
+               +": "+str);
+#define check_cmd() if(strlen(str) > 1) { chan_msg(); return; }
+
+varargs void do_channel(string verb, string str, string name, string mud, int flg) {
+  if(sizeof(channels[verb])) // Taniwha 01/05/97, make sure it exists
+    channels[verb] -= ({ 0 });
+  else channels[verb] = ({ });
+  if(mud)
+    name = "@"+mud;
+  switch(str[0]) {
+    case '!':
+      check_cmd();
+      message(get_history(verb), verb+" history:\n", TP);
+      return;
+    case '?' :
+      check_cmd();
+      message(get_channel_help(verb), verb+" help:\n", TP);
+      return;
+    case '@' :
+      message(name+" "+str[1..], (flg?"(":"[")+CAP(verb)+(flg?") ":"] "), 
+        channels[verb]);
+      add_history(verb,
+        (flg?"(":"[")+CAP(verb)+(flg?") ":"] ")+name+" "+str[1..]);
+      break;
+    case '.' :
+      check_cmd();
+      if(!this_player() || !this_player()->query_creator()) {
+        chan_msg();
+        return;
+      }
+      message(nice_list(query_who_on(verb)->query_cap_name()), 
+        "People on the "+verb+"-channel: ", TP);
+      break;
+    default  :
+      chan_msg();
+      break;
+  }
+}
+
+/*
 varargs void received_cre(string s) {
-    object who_targ;
-    mixed *Gval;
-    string verb, str, name, mud, *cren, who_data, garb;
-    int i, j;
+    string verb, str, name, mud;
+    object *subjs;
+    int i;
 
     if(s)  received += ({ s });
 
     if (sizeof(received))
 	for(i=0;i<sizeof(received);i++) {
 	    sscanf(received[i],"%s %s %s %s", verb, name, mud, str);
-	    if(verb == "cre")
-		Gval = filter_check(verb,str,CRE,name);
-	    if(verb == "sport")
-		Gval = filter_check(verb,str,CRE,name);
-	    if(verb == "thane")
-		Gval = filter_check(verb,str,THANE,name);
-	    if(verb == "demi")
-		Gval = filter_check(verb,str,LORD,name);
-	    if(verb == "dwcre")
-		Gval = filter_check(verb,str,CRE,name,mud);
-	    if(verb == "dwadmin")
-		Gval = filter_check(verb,str,LORD,name,mud);
-	    if(verb == "intercre")
-		Gval = filter_check(verb,str,CRE,name,mud);
-
-	    if(sizeof(Gval) > 2)
-		message(Gval[2],Gval[1],Gval[0]);
-	    /* uncomment next line if you want the mudname to come back. */
-	    //    message(Gval[2],"["+mud+"]"+Gval[1],Gval[0]);
-
+	    switch(verb) {
+	    case "dwcre":
+	    case "dwadmin":
+	    case "intercre":
+		do_channel(verb, str, name, mud);
+		break;
+	    default:
+		do_channel(verb, str, name, 0, 1);
+	    }
 	}
     received = ({ });
-} /* received_cre() */
+}*/ /* received_cre() */
+
+// Radix
+int clean_up() { return 0; }

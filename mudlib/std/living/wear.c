@@ -180,6 +180,8 @@ status wear_ob(object ob)
 	size = size /5;
 	tell_object(this_object(), "You start wearing " +  
 	  (string)ob->short() + ".\n");
+	/* Dwimmerlaik 97 */
+	if(this_object()->query_creator()) return (1);
 	/* Raskolnikov 96 */
 	this_object()->add_timed_property(PASSED_OUT, "You are still "
 	  "trying to wear "+(string)ob->short()+".\n", size);

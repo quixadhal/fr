@@ -5,7 +5,9 @@ object port;
 string lifter;
 
 void init() {
+/*
 shield_it(SHIELD,"/d/ss/daggerford/ladyluck");
+*/
 ::init();
 add_action("do_overload","overload");
 }

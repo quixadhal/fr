@@ -113,10 +113,11 @@ int query_trap(mapping locks_in, string index)
 
 string lock_messages(mapping exit_map, string index)
 {
-   write("\n  The "+exit_map[index][1]+" is locked.\n\n");
-   say("\n "+TP->query_cap_name()+" attempts to leave by the "+
-      (string)exit_map[index][3]+" "+(string)exit_map[index][1]+" "
-       ", but is thwarted for it is securely locked\n\n");
+   write("\n  The "+exit_map[index][1]+" is locked.  "
+        "Yes locked...Do you have a key? No.  Find someone to help you.\n");
+   say("\n"+TP->query_cap_name()+" attempts to leave by the "+
+       (string)exit_map[index][3]+" "+(string)exit_map[index][1]+
+       ", but is thwarted for it is securely locked.\n\n");
    return "";
 }
   

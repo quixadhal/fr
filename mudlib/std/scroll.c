@@ -13,6 +13,8 @@ inherit "/std/item";
 int do_use(string str);
 int query_size() { return 1; }
 int valid_targets(string str);
+/* Allow replacement of an existing spell */
+int override = 0;
 mapping guilds = ([ 
   "wizard":5,
   "drow_wizard":5,
@@ -21,6 +23,7 @@ mapping guilds = ([
   "taniwha":10,
   "hokemj":8,
   "timion":12,
+  "Ducky":10,
   "Cyrcia":10,
   "Grimbrand":10,
   "wiz-war":5,
@@ -57,7 +60,7 @@ int query_enchant()
 {
     return 1;
 }
-set_guilds(mapping map)
+void set_guilds(mapping map)
 {
     string *inds;
     inds = keys(map);
@@ -68,12 +71,12 @@ set_guilds(mapping map)
 	  "fighter":20,
 	  "ranger":20,
 	]);
-	return 1;
+	return ;
     }
     if( !guilds) guilds = map;
     else guilds = map;
 }
-set_spell(string fil,string fun,int lock,int gpuse,int dds)
+void set_spell(string fil,string fun,int lock,int gpuse,int dds)
 {
     file = fil;
     func = fun;
@@ -102,6 +105,11 @@ int do_use(string str)
 	notify_fail("You have to hold scrolls to use them!.\n");
 	return 0;
     }
+    if(who->query_property("BLIND"))
+    {
+	notify_fail("A blind person reading a scroll ?, perhaps not.\n");
+	return 0;
+    }
     if(sizeof(guilds))
     {
 	if(!guild) 
@@ -126,7 +134,7 @@ int do_use(string str)
 	tell_object(who,"You wave a "+QN+" at "+str+".\n");
 	call_other(file,func,str,who,1);
 	who->adjust_gp(gp);
-	call_out("dest_me",0);
+	call_out("move",0,"/room/rubbish");
     }
     return 1;
 }
@@ -135,6 +143,11 @@ int do_help(string str)
     int i;
     if( str == "scroll")
     {
+	if(TP->query_property("BLIND"))
+	{
+	    notify_fail("A blind person reading a scroll ?, perhaps not.\n");
+	    return 0;
+	}
 	write(file->help());
 	write("\"scroll target\" to use the scroll.\n");
 	if(sizeof(learnable))
@@ -150,6 +163,7 @@ int valid_targets(string str)
     object *olist;
     int i;
     olist = find_match(str,ETP);
+    if(deads) olist += find_match(str,TP);
     if(ETP->query_property("nocast") || TP->query_property("nocast"))
     {
 	write("Something blocks the magic!\n");
@@ -172,7 +186,9 @@ int valid_targets(string str)
 		write("You reconsider blasting an immortal with the scroll.\n");
 		return 0;
 	    }
-	    if( !olist[i]->query_alive() || olist[i]->query_pacify_shadow() )
+	    if( (!olist[i]->query_alive() &&
+		!file->query_allowed_on_ghosts()  ) ||
+	      olist[i]->query_pacify_shadow() )
 	    {
 		write("You can't target "+olist[i]->query_cap_name()+".\n");
 		return 0;
@@ -207,6 +223,11 @@ int do_xread(string str)
 	notify_fail("You aren't holding the scroll.\n");
 	return 0;
     }
+    if(who->query_property("BLIND"))
+    {
+	notify_fail("A blind person reading a scroll ?, perhaps not.\n");
+	return 0;
+    }
     if(!sizeof(learnable))
     {
 	write("This scroll is not clear enough to learn the spell from.\n");
@@ -222,11 +243,12 @@ int do_xread(string str)
 	write("You can not memorize this scroll at your level.\n");
 	return 1;
     }
-    if( TP->query_spell(spellname) )
-    {
-	write("You already know this spell.\n");
-	return 1;
-    }
+    if(!override)
+	if( TP->query_spell(spellname) )
+	{
+	    write("You already know this spell.\n");
+	    return 1;
+	}
     if( !TP->query_property("read_magic"))
     {
 	write("You have to cast read magic before learning the spell.\n");
@@ -244,7 +266,7 @@ int do_xread(string str)
     TP->add_timed_property("nocast",1,1800);
     TP->add_spell(spellname,which);
     say("The scroll crumbles into dust as the magic in it disappears.\n");
-    call_out("dest_me",0);
+    call_out("move",0,"/room/rubbish");
     return 1;
 }
 

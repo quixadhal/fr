@@ -1,4 +1,4 @@
-#global/lord.c
+#global/god.c
 editor "menu"
 social_points 10
 max_social_points 10
@@ -90,7 +90,7 @@ home_dir "/w/god"
 hb_counter 366
 auto_load ({1,"/obj/money",({([]),(["read mess":0,"properties":(["money":1,"determinate":"","no one":1,]),"cloned by":"god",]),}),})
 last_on_from "castle (158.36.33.52)"
-last_pos "/d/ss/daggerford/board_room"
+last_pos "/w/god/workroom"
 money_array ({})
 title 0
 extra_title 0

@@ -5,7 +5,7 @@
 string *immorts_allowed = ({
   "santino",
   "messier",
-  "rathburn",
+  "titan",
   "arclight",
   "kodiak",
   "raskolnikov",
@@ -26,13 +26,19 @@ mixed lookup_valid_forms(object player, mixed form) {
     */
     if(player->query_name() == "raskolnikov")
 	valid_forms += ({ "player" });
+   if(player->query_property("KEEP"))
+	valid_forms+=({ "skunk" });
+   if(player->query_property("CITADEL"))
+	valid_forms+=({ "skunk" });
     level = player->query_level();
     switch(level) {
-    case 26..1000:
+    case 25..1000:
+/*
     case 25:
 	valid_forms += ({
 	  "race",
 	});
+*/
     case 24:
 	valid_forms += ({
 	  "demon",
@@ -105,11 +111,13 @@ mixed lookup_valid_forms(object player, mixed form) {
 	valid_forms += ({
 	  "bumblebee",
 	});
+/*
     case 6:
 	valid_forms += ({
 	  "rock",
 	});
-    case 5:
+*/
+    case 5..6:
 	valid_forms += ({
 	  "mosquito",
 	});

@@ -1,6 +1,9 @@
 /**** Written by Eerevan for spell_damage routine ***/
 /*** introducing damage types to spells ***/
 
+// Cailet 1998 -- Updating docs.  Add Resists with timed_properties
+   now... i.e. add_timed_property("air",1,5000000);
+
 Legal Damage Types for Spells
  -when added as a property do as such...
         add_property("type",value)

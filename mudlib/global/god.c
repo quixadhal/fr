@@ -8,10 +8,10 @@ string query_gtitle()
   patronage = "/secure/gods"->query_boo(name);
   /* I don't think it is a female Thane.. title..
   if(query_female())
-    return "the Thane of "+patronage;
-   return "the God of "+patronage;
+    return "the Master of "+patronage;
+   return "the Dean of "+patronage;
    */
-   return "the God";
+   return "the Dean";
    
 }
 

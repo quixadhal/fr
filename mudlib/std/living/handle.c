@@ -74,20 +74,23 @@ int give(string str, string verb, object *bing, string bing2, int blue)
 	fail = ({ });
 	for (i=0;i<sizeof(obs);i++)
 	{
-	    if (obs[i]->query_in_use() && obs[i]->query_holdable() )
-		this_object()->unhold_ob(obs[i]);
-
-	    if ( obs[i]->query_in_use() && obs[i]->query_wearable() )
-		this_object()->unwear_ob(obs[i]);
-	    if( obs[i]->query_in_use() )
+	    if(!obs[i]->query_property("cursed"))
 	    {
-			fail += ({ obs[i] });
+		if (obs[i]->query_in_use() && obs[i]->query_holdable() )
+		    this_object()->unhold_ob(obs[i]);
+
+		if ( obs[i]->query_in_use() && obs[i]->query_wearable() )
+		    this_object()->unwear_ob(obs[i]);
+	    }
+	    if( obs[i]->query_in_use() || obs[i]->query_property("cursed") )
+	    {
+		fail += ({ obs[i] });
 	    }
 	    else
 	    if( ((int)obs[i]->move(per[j])) == MOVE_OK )
 	    {
-			if(!interactive(per[j]) && interactive(this_object())) {
-		    	obs[i]->add_static_property("pc_gave_npc",1);
+		if(!interactive(per[j]) && interactive(this_object())) {
+		    obs[i]->add_static_property("pc_gave_npc",1);
 		}
 		ret += ({ obs[i] });
 		tot += (int)obs[i]->query_weight();
@@ -106,44 +109,45 @@ int give(string str, string verb, object *bing, string bing2, int blue)
 	      sh+con+(string)per[j]->short()+".\n", ({ per[j] }) );
 	    per[j]->event_say(this_object(), capitalize((string)this_object()->short())+
 	      " "+query_verb()+"s "+sh+con+"you.\n", ({ }));
-	   max = (int)per[j]->query_max_weight();
+	    max = (int)per[j]->query_max_weight();
 
-		if(max > 0)
+	    if(max > 0)
+	    {
+		if(tot > max) tot = max;
+		max = (tot * 100)/max;
+
+		switch(max)
 		{
-			if(tot > max) tot = max;
-			max = (tot * 100)/max;
-			
-			switch(max)
-			{
-				case 0..25:		    
-				break;
-				case 95..100:
-					tell_room(environment(),
-			  			per[j]->short()+" staggers under a weight "+
-			  			per[j]->query_pronoun()+" can only just carry.\n", ({ per[j] }) );
-						tell_object(per[j], 
-			  				"You stagger under a weight you can only just carry.\n");
-		    	default:
-					tell_room(environment(),
-			  			per[j]->short()+ ({
-			    		" is only mildly discomforted by the additional weight.\n",
-			    		" braces "+per[j]->query_objective()+"self to take the load.\n",
-			    		" stumbles as "+per[j]->query_pronoun()+" takes the load.\n"
-			  			})[(max/25)-1], ({ per[j] }) );
-						tell_object(per[j], "You"+ ({
-			    		" are only mildly discomforted by the additional weight.\n",
-			    		" brace yourself under the load.\n",
-			    		" stumble as you take the load.\n"
-			  			})[(max/25)-1]);
-		    }
-			 this_object()->add_timed_property(PASSED_OUT,"You are still struggling with your load.\n",max/TIME_DIV);
-	   }
-/* Taniwha, I *think* this locks the whole mud 
-  		this_object()->adjust_time_left(-tot/TIME_DIV);
-  		if (this_object()->query_time_left() < 0)
-			this_object()->set_interupt_command("get_put_interupt", this_object(),
-		  ({ tot, ret, query_verb(), con, per, j, thing }));
-*/	
+		case 0..25:		    
+		    break;
+		case 95..100:
+		    tell_room(environment(),
+		      per[j]->short()+" staggers under a weight "+
+		      per[j]->query_pronoun()+" can only just carry.\n", ({ per[j] }) );
+		    tell_object(per[j], 
+		      "You stagger under a weight you can only just carry.\n");
+		    break;
+		default:
+		    tell_room(environment(),
+		      per[j]->short()+ ({
+			" is only mildly discomforted by the additional weight.\n",
+			" braces "+per[j]->query_objective()+"self to take the load.\n",
+			" stumbles as "+per[j]->query_pronoun()+" takes the load.\n"
+		      })[(max/25)-1], ({ per[j] }) );
+		    tell_object(per[j], "You"+ ({
+			" are only mildly discomforted by the additional weight.\n",
+			" brace yourself under the load.\n",
+			" stumble as you take the load.\n"
+		      })[(max/25)-1]);
+		}
+		this_object()->add_timed_property(PASSED_OUT,"You are still struggling with your load.\n",max/TIME_DIV);
+	    }
+	    /* Taniwha, I *think* this locks the whole mud 
+			    this_object()->adjust_time_left(-tot/TIME_DIV);
+			    if (this_object()->query_time_left() < 0)
+				    this_object()->set_interupt_command("get_put_interupt", this_object(),
+			      ({ tot, ret, query_verb(), con, per, j, thing }));
+	    */	
 	}
 
 	if (sizeof(fail))
@@ -185,11 +189,21 @@ int drop_ob(string str)
 	 * This method is *NOT* good, but faster than the hard way.. 
 	 * but we should do it the hard way, later. 
 	 */
-	if (ob[i]->query_in_use() && ob[i]->query_holdable() )
-	    this_object()->unhold_ob(ob[i]);
-	if ( ob[i]->query_in_use() && ob[i]->query_wearable() )
-	    this_object()->unwear_ob(ob[i]);
-	if( !ob[i]->query_in_use() && ob[i]->move(environment()) == MOVE_OK)
+	if(!ob[i]->query_property("cursed"))
+	{
+	    if (ob[i]->query_in_use() && ob[i]->query_holdable() )
+	    {
+		this_object()->unhold_ob(ob[i]);
+	    }
+
+	    if ( ob[i]->query_in_use() && ob[i]->query_wearable() )
+	    {
+		this_object()->unwear_ob(ob[i]);
+	    }
+
+	}
+	if( !ob[i]->query_property("cursed") && !ob[i]->query_in_use() &&
+	  ob[i]->move(environment()) == MOVE_OK)
 	    ret += ({ ob[i] });
 	else
 	    fail += ({ ob[i] });
@@ -284,20 +298,20 @@ int take(string str, string verb, object *bing, string bing2, int blue) {
 		num += sizeof(ret[j]);
 	    }
 	if (tot) {
-/*
-	    this_object()->adjust_time_left(-tot/TIME_DIV);
-	    if (this_object()->query_time_left() < 0) {
-		this_object()->set_interupt_command("get_put_interupt", this_object(),
-		  ({ tot, ret_a, "get", "from", dest, i, str }));
+	    /*
+			this_object()->adjust_time_left(-tot/TIME_DIV);
+			if (this_object()->query_time_left() < 0) {
+			    this_object()->set_interupt_command("get_put_interupt", this_object(),
+			      ({ tot, ret_a, "get", "from", dest, i, str }));
+			}
+	    */
+	    max = (int)this_object()->query_max_weight();
+	    if(max && tot)
+	    {
+		if(tot > max) tot = max;
+		tot = (tot * 100)/max;
+		this_object()->add_timed_property(PASSED_OUT,"You are still struggling with your load.\n",tot/TIME_DIV);
 	    }
-*/
-	   max = (int)this_object()->query_max_weight();
-		if(max && tot)
-		{
-			if(tot > max) tot = max;
-			tot = (tot * 100)/max;
-		   this_object()->add_timed_property(PASSED_OUT,"You are still struggling with your load.\n",tot/TIME_DIV);
-	   }
 	}
 	if (sizeof(fail))
 	    write("You cannot get "+query_multiple_short(fail)+".\n");

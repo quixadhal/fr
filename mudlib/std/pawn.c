@@ -3,6 +3,7 @@
 
 inherit "std/room";
 
+#include "money_adjust.h"
 #include "shop.h"
 #include "money.h"
 #include "move_failures.h"
@@ -206,6 +207,7 @@ int value_item(string str) {
   }
   for(loop = 0; loop < sizeof(ob); loop ++) {
     real_val = "/std/shop"->scaled_value((int)ob[loop]->query_value())*4/5;
+    real_val=real_val*MONEY_TRACKER->query_adj_fact(SBFLAG)/1000;
     real_val = real_val*query_multiplier(ob[loop])/1000;
         real_val = do_weight_min(real_val,ob[loop]->query_weight(),
                      ob[loop]->query_material(),1);
@@ -245,6 +247,7 @@ int leave_item(string str) {
 
     temp = (int)"/std/shop"->scaled_value((int)ob[loop]->
            query_value()) * 4 / 5;
+    temp=temp*MONEY_TRACKER->query_adj_fact(SBFLAG)/1000;
     temp = temp*query_multiplier(ob[loop])/1000;
     temp = do_weight_min(temp,ob[loop]->query_weight(),
                      ob[loop]->query_material(),1);
@@ -313,6 +316,7 @@ int reclaim_item(string str) {
     if(pos != -1) {
       amt = (int)this_player()->query_value();
       ob_amt = (int)"/std/shop"->scaled_value((int)ob[loop]->query_value());
+    ob_amt=ob_amt*MONEY_TRACKER->query_adj_fact(SSFLAG)/1000;
       ob_amt = ob_amt*query_multiplier(ob[loop])/1000;
       ob_amt = do_weight_min(ob_amt,ob[loop]->query_weight(),
                      ob[loop]->query_material(),0);
@@ -360,6 +364,7 @@ int list_items() {
       flag = 1;
       real_val = (int)"/std/shop"->scaled_value((int)objs[loop]->
                  query_value());
+    real_val=real_val*MONEY_TRACKER->query_adj_fact(SSFLAG)/1000;
       real_val = real_val*query_multiplier(objs[loop])/1000;
       real_val = do_weight_min(real_val,objs[loop]->query_weight(),
                      objs[loop]->query_material(),0);

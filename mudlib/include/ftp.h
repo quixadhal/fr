@@ -8,8 +8,7 @@
 #define MASTER "/secure/master"
 #define LOGIN_OB "/secure/login"
 
-#define FR_FTP_PORT 3005
-/* #define RDDEV_FTP_PORT 4001 */
+#define FR_FTP_PORT 3010
 #define FTP_VERSION "-Final Realms - FTPD" 
 
 #define USER_NAME	"user_name"

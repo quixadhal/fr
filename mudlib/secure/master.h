@@ -23,7 +23,10 @@
 #define GRANT_MASK 4
 
  // Command positions
+#define BUILDER_CMD 1
 #define CREATOR_CMD 1
-#define LORD_CMD 2
-#define HIGH_LORD_CMD 3
-#define GOD_CMD 4
+#define PATRON_CMD 2
+#define THANE_CMD 3
+#define DEMI_CMD 4
+#define GOD_CMD 5
+

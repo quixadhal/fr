@@ -82,7 +82,7 @@ void setup()
    //Read /doc/roomgen/exit_type_help for more info.
 
    add_exit("common","/w/common","door");
-   add_exit("tavern","/d/ss/daggerford/ladyluck.c","door");
+  add_exit("entryroom","/room/entryroom.c","door");
 
    //This is something neat, adds an exit IN the common to this room.
 

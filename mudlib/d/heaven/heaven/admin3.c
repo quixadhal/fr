@@ -4,7 +4,9 @@
 inherit"/std/room.c";
 
 void init() {
+/*
 shield_it(SHIELD,"/d/ss/daggerford/ladyluck");
+*/
 ::init();
 }
 
@@ -20,7 +22,7 @@ set_long("This is a black marble hallway.  Power flows"+
 "northern door reads: Domain control.  A identical plaque"+
 "on the southern door reads:  Site security.  A door to the"+
 " east has yet"+
-" another plaque on it that reads:  File Access security.");
+" another plaque on it that reads:  File Access security.\n");
 set_short("admin hallway 3");
 add_exit("north",ADMIN+"domain_control","door");
 add_exit("south",ADMIN+"site_control","door");

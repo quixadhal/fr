@@ -13,13 +13,11 @@
 #define HTTP_PORT        0  /* We don't have one (yet) */
 #define NNTP_PORT        0  /* We don't have one */
 
-#define MUDLIB_VERSION   "FRlib III"
-
 #define IMUD_TCP_PORT    0
 #define IMUD_UDP_PORT    0
 
 #define OPEN_STATUS      "open to players"
-#define ADMIN_EMAIL      "mudadm@fr.nrk.no"
+#define ADMIN_EMAIL      "mudadm@fr.imaginary.com"
 
 /* Below are the services we allow (and disallow) */
 #undef  SERVICE_AUTH

@@ -104,7 +104,7 @@ int query_in_move() { return in_move; }
  * no need for stupid checking to see if we are attacking something in
  * here stuff.
  */
-varargs mixed move_player(string dir, string dest, mixed message,
+varargs mixed move_player(string dir, mixed dest, mixed message,
   object followee, mixed enter) {
     int i, ret, no_see;
     string arr, leave, ppl, my_short;
@@ -350,7 +350,7 @@ int follow(string str) {
 	  "and follow someone again.\n");
 	return 0;
     }
-    obs = find_match(str, environment());
+    obs = find_match(str, environment(),1);
     if (!sizeof(obs)) {
 	notify_fail("Could not find "+str+".\n");
 	return 0;
@@ -389,7 +389,7 @@ int unfollow(string str) {
 	notify_fail("Syntax: unfollow <person>\n");
 	return 0;
     }
-    obs = find_match(str, environment());
+    obs = find_match(str, environment(),1);
     if (!sizeof(obs)) {
 	notify_fail("I cannot find "+str+" to unfollow.\n");
 	return 0;
@@ -451,8 +451,10 @@ object query_current_room() { return environment(); }
 mixed *query_followers() { return followers; }
 
 varargs int adjust_money(mixed amt, string type) {
-    return money::adjust_money(amt, type);
-} /* adjust_money() */
+   int ret = money::adjust_money(amt, type);
+   catch(MONEY_HANDLER->update_money(amt, type, this_object()));
+   return ret;
+}
 
 mixed *query_money_array() { 
     return money::query_money_array();
@@ -478,7 +480,10 @@ int query_total_ac()
 {
    int eac = this_object()->query_equip_ac();
    int bac = this_object()->query_body_ac();
-   return 100 - ( eac + bac);
+// return 100 - ( eac + bac);
+   int totac = 100 - ( eac + bac );
+   if(totac < -100) return -100;
+   return totac;
 }
 
 

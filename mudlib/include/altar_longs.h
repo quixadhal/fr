@@ -13,9 +13,9 @@
 "much alive.  The top of the altar remains flat and smooth even though "\
 "the rest shifts constantly.\n"
 
-#define ALTAR_BIVINS \
+#define ALTAR_RADIX \
 "     This is a large mass of stones and wood forming a roughly oval "\
-"block in honor of Bivins, god of Confusion.  The stone is a peculiar "\
+"block in honor of Radix, god of Confusion.  The stone is a peculiar "\
 "mixture of obsidian and ivory criss-crossing without rhyme or reason.  "\
 "Roots and branches of long dead trees twist through the mass of rocks "\
 "creating small holes and gaps where water trickles through in endless "\
@@ -30,7 +30,7 @@
 "souls, trapped and forever searching but always knowing they cannot "\
 "escape.\n"
 
-#define ALTAR_VIRGA \
+#define ALTAR_RAISA \
 "     This altar is octagonal in shape and is roughly hewn from the "\
 "purest of white marble.  Light emanates from the stone and the whole "\
 "room thrums with it's power.  The top of the altar is smooth and "\

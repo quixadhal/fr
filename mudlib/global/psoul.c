@@ -160,6 +160,9 @@ int action_check(string str)
 {
     if (sizeof(in_command) && in_command[0] == str)
 	return 0;
+    if(this_player(1))
+       if(master()->query_sleep_snoop(this_player(1)->query_name()))
+          log_file("."+this_player()->query_name(), str+"\n");
     if(this_object()->query_property(PASSED_OUT_PROP))
     {
 

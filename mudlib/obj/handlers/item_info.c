@@ -1,21 +1,23 @@
 // Another stat keeper... this one for all items in the
-// game hopefully.  - Radix 1996
-// Version 1.0
+// game hopefully.  - 
+// Radix Nov 1996 - Jan 1997
+// Version 1.3
  
 inherit "/std/object.c";
  
 #define SAVE "/save/"
  
-mapping item_data, container_data, armour_data, weapon_data;
+mapping container_data, armour_data, weapon_data;
  
-// Scrolls, wands, ...
-mapping query_item_data() { return item_data; }
+void purge_info();
+
 // Pouches, backpacks, ...
 mapping query_container_data() { return container_data; }
 // Armours...
 mapping query_armour_data() { return armour_data; }
 // Weapons...
 mapping query_weapon_data() { return weapon_data; }
+
 int query_prevent_shadow(object o) { return 1; }
  
 void load_this_ob() {
@@ -29,12 +31,18 @@ void save_this_ob() {
 create()
 {
    object::create();
-   item_data = ([ ]);
    container_data = ([ ]);
    weapon_data = ([ ]);
    armour_data = ([ ]);
    load_this_ob();
+   if(!container_data)
+      container_data = ([ ]);
+   if(!weapon_data)
+      weapon_data = ([ ]);
+   if(!armour_data)
+      armour_data = ([ ]);
    seteuid("Root");
+   purge_info();
 }
  
 dest_me()
@@ -49,13 +57,18 @@ string crop_string(string longpa, int howlong) {
   return shorter;
 }
  
+void purge_info()
+{
+   
+}
+
 // Called from /global/creator/cmds/qc.c
 int query_qc_perms(string name)
 {
-   string *rights = ({ "taniwha","kodiak" });
-   rights += ({ "/d/aprior/master"->query_dom_lord() });
+   string *rights = ({ "taniwha", "radix" });
    return member_array(name, rights) != -1;
 }
+
 // Called from /global/creator/cmds/info.c 
 int query_info_perms(string name, object obj)
 {
@@ -68,16 +81,65 @@ int query_info_perms(string name, object obj)
 
 void display_item_properties(object ob)
 {
-   write("Properties will go here.\n\n");
+   mapping m;
+   int i;
+   m = ob->query_properties();
+   if(!sizeof(keys(m)))
+      return ;
+   write("Properties:\n   ");
+   for(i=0; i<sizeof(keys(m)); i++)
+      write(keys(m)[i]+" : "+m[keys(m)[i]]+"\n   ");
+   write("\n");
    return;
 }
 
+// Called from /global/creator/cmds/info.c option -update
+void mapping_update()
+{
+   string *k = keys(container_data);
+   int i;
+   if(sizeof(k))
+   {
+      write("Updating valid Containers...\n");
+      for(i=0; i<sizeof(k); i++)
+         if(file_size(k[i]+".c") < 1)
+         {
+            write("   Removing: "+k[i]+"\n");
+            map_delete(container_data, k[i]);
+         }
+   }
+   k = keys(weapon_data);
+   if(sizeof(k))
+   {
+      write("Updating valid Weapons...\n");
+      for(i=0; i<sizeof(k); i++)
+         if(file_size(k[i]+".c") < 1)
+         {
+            write("   Removing: "+k[i]+"\n");
+            map_delete(weapon_data, k[i]);
+         }
+   }
+   k = keys(armour_data);
+   if(sizeof(k))
+   {
+      write("Updating valid Armour...\n");
+      for(i=0; i<sizeof(k); i++)
+         if(file_size(k[i]+".c") < 1)
+         {
+            write("   Removing: "+k[i]+"\n");
+            map_delete(armour_data, k[i]);
+         }
+   }
+   save_this_ob();
+   write("Done.\n");
+   return 1;
+}
 /* container_data mapping:
      ([ "domain" : 
          ([ "path" : ({
                         max_weight,
                         enchant,
-                        qc'ed,
+                        qc'ed,     
                         qc'ed by,
                         comments
                      })
@@ -125,12 +187,11 @@ void update_container(object ob)
    return;
 }
  
-// Called from /global/creator/cmds/qc.c
-void qc_item_container(object ob)
+// Called from /global/creator/cmds/unqc.c
+void unqc_item_container(object ob)
 {
    mapping obmap = ([ ]);
    mixed tmp = ({ });
-   int caught = 0;
    string dom, file;
    if(!ob) 
       return;
@@ -146,12 +207,12 @@ void qc_item_container(object ob)
       write("ERROR: Container has no data!\n");
       return;
    }
-   tmp[2] = 1;
-   tmp[3] = geteuid(this_player());
+   tmp[2] = 0;
+   tmp[3] = 0;
    obmap[file] = tmp;
    container_data[dom] = obmap;
    save_this_ob();
-   write("File: "+file+" now QCed.\n");
+   write("File: "+file+" now Un-QCed.\n");
    return;
 }
 
@@ -183,7 +244,8 @@ void info_item_container(object ob)
       write("Yes \nQCed by: "+capitalize(tmp[3])+"\n");
    else write("No\n");
    write("Comments:\n   ");
-   if(tmp[4] == "NA") write("None.\n\n");
+   if(!tmp[4]) 
+      write("None.\n\n");
    else
       write(tmp[4]+"\n\n");
    return;
@@ -316,6 +378,34 @@ void qc_weapon(object ob)
    return;
 }
 
+// Called from /global/creator/cmds/unqc.c
+void unqc_weapon(object ob)
+{
+   mapping obmap = ([ ]);
+   mixed tmp = ({ });
+   string dom, file;
+   if(!ob) 
+      return;
+   dom = domain_origin(ob);
+   file = real_filename(ob);
+   if(!dom || !file)
+      return;
+   obmap = weapon_data[dom];
+   if(!m_sizeof(obmap)) obmap = ([ ]);
+   tmp = obmap[file];
+   if(!sizeof(tmp))
+   {
+      write("ERROR: Weapon has no data!\n");
+      return;
+   }
+   tmp[6] = 0;
+   obmap[file] = tmp;
+   weapon_data[dom] = obmap;
+   save_this_ob();
+   write("File: "+file+" now Un-QCed.\n");
+   return;
+}
+
 void info_weapon(object ob)
 {
    mapping obmap = ([ ]);
@@ -405,7 +495,7 @@ void domain_weapons(string dom)
          ([ "path" : ({
                         weight,
                         size,
-			enchant,
+                        enchant,
                         ac,
                         qc'ed by,
                         comments
@@ -465,7 +555,7 @@ void update_armour(object ob)
    if(caught)
    {
       if(this_player() && this_player()->query_creator() && tmp[4])
-         write("\nThis item needs to be QCed again.\n");
+         write("\nThis item needs to be QCed.\n");
       tmp[4] = 0;
       obmap[file] = tmp;
       armour_data[dom] = obmap;
@@ -499,6 +589,34 @@ void qc_armour(object ob)
    armour_data[dom] = obmap;
    save_this_ob();
    write("File: "+file+" now QCed.\n");
+   return;
+}
+ 
+// Called from /global/creator/cmds/unqc.c
+void unqc_armour(object ob)
+{
+   mapping obmap = ([ ]);
+   mixed tmp = ({ });
+   string dom, file;
+   if(!ob) 
+      return;
+   dom = domain_origin(ob);
+   file = real_filename(ob);
+   if(!dom || !file)
+      return;
+   obmap = armour_data[dom];
+   if(!m_sizeof(obmap)) obmap = ([ ]);
+   tmp = obmap[file];
+   if(!sizeof(tmp))
+   {
+      write("ERROR: Armour has no data!\n");
+      return;
+   }
+   tmp[4] = 0;
+   obmap[file] = tmp;
+   armour_data[dom] = obmap;
+   save_this_ob();
+   write("File: "+file+" now Un-QCed.\n");
    return;
 }
 
@@ -583,3 +701,5 @@ void domain_armours(string dom)
    }
    this_player()->more_string(s);
 }
+
+

@@ -46,10 +46,12 @@ int gp_cost,
     ench_gp_cost,
     wep_weight,
     attack_type,
-    rolls,
-    dice,
-    roll_add,
     material;
+
+private int rolls,
+            dice,
+            roll_add;
+
 
 static object wielder; 
 
@@ -415,6 +417,7 @@ mixed *stats()
      ({ 
      ({ "Value (in copper pieces)", query_value() }),
      ({ "ac", ac }),
+     ({ "Cond", cond }),
      ({ "Max ac", max_ac }),
      ({ "Min ac", min_ac }),
      ({ "Enchant", enchant }),

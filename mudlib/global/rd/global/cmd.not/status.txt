@@ -1,4 +1,0 @@
-wiz_file_comm.c
-   Maui: Stripped down to component parts, /w/maui/cmd
-
-

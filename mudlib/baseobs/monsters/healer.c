@@ -8,7 +8,7 @@
 
 inherit "/obj/monster";
 
-setup()
+void setup()
   {
 //set_name("james");
   set_short("james");

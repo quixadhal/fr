@@ -29,8 +29,10 @@ int valid_read(string path, mixed euid, string func)
   switch (bing[0]) {
     case "players" :
       return (sizeof(bing) < 3) || check_permission(euid, bing, READ_MASK);
-    case "ims" :
-      return (euid == "ims") || check_permission(euid, bing, READ_MASK);
+    case "immorts" :
+      return (euid == "immorts") || check_permission(euid, bing, READ_MASK);
+    case "secure" :
+      return (euid == "secure") || check_permission(euid, bing, READ_MASK);
     case "d" :
     // /d open read for Thanes...
        if("/secure/thanes"->query_of(euid)) return 1;

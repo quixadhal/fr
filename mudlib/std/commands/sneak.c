@@ -1,4 +1,4 @@
-// #define SAFE_SNEAK
+#define SAFE_SNEAK
 // uncomment if rooms break
 /**** Original code by Unknown ****/
 /**** First mod for new FR by Baldrick ****/

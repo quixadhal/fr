@@ -19,6 +19,7 @@ varargs mixed creator_file(string file, int author) {
    case "baseobs" :
    case "items":
    case "room" :
+   case "cmds" :
      return get_bb_uid();
    case "net" :
      return "Network stuff";

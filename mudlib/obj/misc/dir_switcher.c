@@ -45,7 +45,7 @@ void path_check(string str) {
     switch(str) {
     case "y":
     case "yes":
-	log_file("SWITCHED_DIRS", 
+   write_file("/open/SWITCHED_DIRS",
 	  old_path+" "+new_path+"\n", 0);
 	tell_object(this_player(), "Ok.\n");
 	break;

@@ -156,10 +156,10 @@ string query_gtitle()
 { 
 /*
   if (query_female())
-    return "the Builderess"; 
+    return "the Student"; 
    else
 */
-    return "the Builder"; 
+    return "the Student"; 
 }
 
 string query_object_type() {

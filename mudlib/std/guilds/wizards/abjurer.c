@@ -11,14 +11,14 @@ void setup()
 
 int query_legal_race(string race)
 {
-	switch(race)
-	{
-	 case "human":
-	  return 1;
+        switch(race)
+        {
+         case "human":
+          return 1;
 
-	 default:
-	  return 0;
-	}
+         default:
+          return 0;
+        }
 }
 
 mixed query_legal_spheres()

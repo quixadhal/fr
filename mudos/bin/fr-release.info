@@ -7,7 +7,7 @@
 MUDNAME=fr-release
 
 # directory containing driver-related log files
-LOGDIR=/where/ever/mudlib/log/driver
+LOGDIR=/where/ever/frmudlib3.4/mudlib/log/driver
 
 # name of the driver binary (don't specify the full path)
 DRIVER=driver

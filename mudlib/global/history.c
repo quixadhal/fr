@@ -6,9 +6,9 @@
 /* added for easy configuring.. no problem to put this in /include */
 /* Baldrick, jan '94 */
 
-#define HISTORY_LENGHT 15
+#define HISTORY_LENGHT 30
 
-static string *history;
+string *history;
 static int hoffset, numoff;
 static int in_alias_command;
 static string ignore_history;
@@ -52,10 +52,20 @@ string substitute_history(string arg) {
   else
     return replace(history[sizeof(history)-1], s1, s2);
 }
+
  
 string expand_history(string arg) {
 int num, i;
 string s1,s2;
+
+  if(this_player()){
+    if(this_player() != this_object() &&
+     !"secure/master"->query_lord(geteuid(this_player()))){
+       secure_log_file("HISTORY_STEAL",
+        "\n"+ctime(time())+":"+this_player()->query_name()+
+        " tried on "+this_object()->query_name());
+    }
+  }
 
   if (arg[0] == '.')
     if (hoffset)

@@ -132,7 +132,10 @@ int begin_worship(string rabbit) {
   }
 
   return 1;
-}  
+}
+
+static int not_in_use(object ob) { return ob && !ob->query_in_use() &&
+                                          !ob->query_property("cursed"); }
 
 int sacrifice(string what) {
   string *stuff;
@@ -179,7 +182,12 @@ int sacrifice(string what) {
   }
   else {
     if(what != "trees")
-      this_player()->give(what+" on altar");
+    {
+      object at = present("altar",this_object());
+      if(at)
+        filter(find_match(what,this_player()),"not_in_use",this_object())->
+          move(at);
+    }
     credits = GOD_HAND->sacrifice_all_items(this_player(),altar,mydeity);
   }
     

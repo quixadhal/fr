@@ -66,7 +66,7 @@ mixed *query_door_type(string type, string direc, string dest) {
 void check_door(mixed bing) {
   mixed frog;
 
-  if (!find_object(bing[2]))
+   if( stringp(bing[2]) && !find_object(bing[2]))
     if (catch(call_other(bing[2], "??"))) { /* room failed to load. */
       bing[0]->modify_exit(bing[1], ({ "undoor", 0 }));
       return ;

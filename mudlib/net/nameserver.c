@@ -287,7 +287,7 @@ void lookup_mud(string name, string finitio, mixed args, string *ser) {
       call_other(previous_object(), finitio, name, host, args);
     else
 /* Stick junk on the end.  They must know what they are doing... */
-      call_other(previous_object(), finitio, name, host+" 4242", args);
+      call_other(previous_object(), finitio, name, host+" 4001", args);
     return ;
   }
 /* Ok, ask any name servers we know about */

@@ -1,11 +1,12 @@
-// Pray command, first draft.
+// Pray command.  Coded by Timion.
+// Updated by Timion 12 May 97
  
 object me;
 int x;
  
 
  
-check_pray(object me, string str)
+int check_pray(object me, string str)
 {
   string god;
   int num;
@@ -17,6 +18,11 @@ check_pray(object me, string str)
   }
 
   god=me->query_deity();
+    if(!(god) || god=="none" || god == "None")
+	{
+	tell_object(me,"You call out to noone, and noone answers.\n");
+	return 0;
+	}
   switch( lower_case(str) )
   {
     case "healing":
@@ -44,7 +50,8 @@ check_pray(object me, string str)
       break;
 
     case "experience":
-      if(god=="virga")
+	if(god=="virga" || god=="raisa")
+//    if(1)
       {
         tell_object(me,"Your Diety refuses to hear a prayer for "
           "Experience.\n");
@@ -54,7 +61,7 @@ check_pray(object me, string str)
 
     case "bless":
     case "blessing":
-      if(god=="bivins"||god=="grimbrand")
+	if(god=="bivins" || god=="grimbrand" || god=="radix")
       {
         tell_object(me,"Your Diety refuses to hear a prayer for Blessing.\n");
         return 0;
@@ -79,6 +86,9 @@ check_pray(object me, string str)
 
   }
  
+if(god=="timion"||god=="hokemj"||god=="taniwha"||god=="virga"||god=="raisa")
+  num=300+(me->query_time_remaining("prayed"));
+else
   num=500+(me->query_time_remaining("prayed"));
   if( (num>=5000) && (num<=8000) )
   {

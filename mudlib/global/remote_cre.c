@@ -1,5 +1,3 @@
-
-
 #include <socket.h>
 #include <socket_errors.h>
 
@@ -8,15 +6,17 @@ int cs, rs, reset, local_port, remote_port;
  
 void do_cre_socket();
 void do_remote_socket();
+
 string *query_to_send() { return to_send; }
 string *query_received() { return received; }
+
 void do_sockets() {
 int error;
              
   received = ({ });
   to_send = ({ });
  
-  if(mud_name() == "FR") {
+  if(mud_name() == "FR:Illumitech") {
     local_port = 3010;
     remote_port = 4010;
   } else {
@@ -61,6 +61,7 @@ int error;
     return;
   }
 } /* do_remote_socket() */
+
 void read_callback(int fd, string data) {
   received += ({ data });
    this_object()->received_cre();

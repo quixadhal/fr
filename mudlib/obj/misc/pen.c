@@ -60,7 +60,7 @@ finished_writing() {
   string str, s1, s2;
 
   if (!text) {
-    write("Quiting....\n");
+    write("Quitting....\n");
     ob_write = 0;
     return 1;
   }

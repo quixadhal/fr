@@ -4,7 +4,9 @@
 inherit"/std/room.c";
 
 void init() {
+/*
 shield_it(SHIELD,"/d/ss/daggerford/ladyluck");
+*/
 ::init();
 }
 

@@ -5,6 +5,7 @@
 #ifndef __STD_HEADER__
 #define __STD_HEADER__
 
+#define MUDLIB_VERSION   "FRlib IIIR4"
 
 #define TP           this_player()
 #define NAME         (string)TP->query_name()

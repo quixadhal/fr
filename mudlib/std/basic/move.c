@@ -17,6 +17,7 @@ void set_drop() { move_flag &= ~DROP; }    /* can be dropped */
 /* these should have been called "query...", but they're not */
 int drop() { return move_flag & DROP; }
 int get() { return move_flag & GET; }
+int gettable() { return !get(); }
 
 void set_move_flag(int i) { move_flag = i; }
 

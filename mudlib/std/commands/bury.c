@@ -16,6 +16,10 @@ int bury(string str,object x)
   if (!str || str == "") 
     str = "corpse";
 
+  if("/global/omiq.c"->flag_in_progress()){
+    tell_object(me,"You can't bury during capture the flag.\n");
+    return 0;
+  }
   if(me->query_dead())
   {
     tell_object(me,"You, a disembodied ghost, expect to bury your own "
