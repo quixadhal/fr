@@ -95,7 +95,7 @@ status wear_ob(object ob)
   /* Rings and amulets can be multipple worn.
    * that's type 5 & 7 
    */
-  if ( (a_type != 5) || (a_type != 7) )
+  if ( (a_type != 5) && (a_type != 7) )
     {
     if (armour_types[a_type]) 
       occupied = 1;
