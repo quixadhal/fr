@@ -8,10 +8,10 @@
 
 #define HISTORY_LENGHT 15
 
-static string *history;
-static int hoffset, numoff;
-static int in_alias_command;
-static string ignore_history;
+nosave string *history;
+nosave int hoffset, numoff;
+nosave int in_alias_command;
+nosave string ignore_history;
 
 void history_commands() {
   //add_action("print_history", "history");

@@ -8,7 +8,7 @@ setup()
 }
 
 
-static int cmd(mixed name, object me) {
+protected int cmd(mixed name, object me) {
 // Quick hack of a frooble for auto_load IOUs...
 // Radix May 1, 1996
    int i;

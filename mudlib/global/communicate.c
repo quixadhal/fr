@@ -4,7 +4,7 @@
 #include <network.h>
 int social_points, max_social_points;
 int guild_flag;
-static string my_file_name;
+nosave string my_file_name;
 string *languages,
 cur_lang;
 

@@ -152,7 +152,7 @@ string rnfr;
 void setup_ftp(int port);
 void finish_lookup(string host, string number);
 string get_path(int fd, string str);
-static void do_update(string name, int fd);
+protected void do_update(string name, int fd);
  
 mixed *query_connections()
 /* returns an array of users connected to ftpd */
@@ -463,7 +463,7 @@ void data_write_callback(int fd) {
   }
 } /* data_write_callback() */
 
-static void data_conn(int fd, string mess, string name, int type) {
+protected void data_conn(int fd, string mess, string name, int type) {
   int new_fd, ret, data_mode;
   string data_mode_name;
 
@@ -516,7 +516,7 @@ static void data_conn(int fd, string mess, string name, int type) {
       "(%d bytes).\r\n", data_mode_name, name, socket_info[new_fd][LEN]));
 }  /* data_conn() */ 
 
-static void read_connection(int fd, string path, int append) {
+protected void read_connection(int fd, string path, int append) {
   int new_fd, ret, data_mode;
   string data_mode_name;
 
@@ -1409,7 +1409,7 @@ string get_cfile(string str) {
   return str;
 } /* get_cfile() */
 
-static void do_update(string name, int fd) {
+protected void do_update(string name, int fd) {
    string pname, err;
    int i, j;
    object *invent, rsv, env, dup, loaded, ov;

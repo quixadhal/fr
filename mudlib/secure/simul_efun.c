@@ -107,6 +107,7 @@ varargs mapping filter_mapping(mapping map, string func, mixed ob, mixed extra)
 #include "/secure/simul_efun/format_page.c"
 
 #include "/secure/simul_efun/pretty_time.c"
+#include "/secure/simul_efun/yymmdd.c"
 #include "/secure/simul_efun/wrap.c"
 
 // Added by Radix
@@ -148,5 +149,6 @@ varargs mapping filter_mapping(mapping map, string func, mixed ob, mixed extra)
 
 /* Tail.c, needed after the v22.1 upgrade, Baldrick. */
 #include "/secure/simul_efun/tail.c"
+
 
 //#include "/secure/simul_efun/command.c"

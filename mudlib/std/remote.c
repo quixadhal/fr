@@ -8,11 +8,11 @@
 #define MASTER "/secure/master"
 #define STD_REMOTE "/std/remote"
  
-private static string Directory, Home;
+private nosave string Directory, Home;
  
 int eventDestruct();
  
-static void create() {
+protected void create() {
     Directory = Home = "/" +
       implode(explode(file_name(this_object()), "/")[0..<3], "/");
     if( strsrch(Directory, "/w") ) call_out( "dest_me", 1 );

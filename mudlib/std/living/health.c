@@ -14,7 +14,7 @@ int hp,
 xp,
 gp;
 private int *drink_info;
-static mapping damage_done;
+nosave mapping damage_done;
 
 void create() {
     damage_done = ([ ]);

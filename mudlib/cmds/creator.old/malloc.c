@@ -7,7 +7,7 @@ void setup()
 position = 1;
 }
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   tell_object(me,malloc_status());
   return 1;
 } /* do_malloc() */

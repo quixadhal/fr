@@ -155,7 +155,8 @@ void leave_guild()
 /* What happens when you advance in level */
 void new_levels(int lvl, object ob) 
 {
-  int i,skill_index,bonus,stat;
+int i,bonus,stat;
+//int skill_index;
   level = lvl;
 
   if (!(lvl%5))

@@ -30,9 +30,9 @@
 #define TP(STR)
 #endif
  
-static mixed mqi;
-static mixed outgoing;
-static int conn;
+nosave mixed mqi;
+nosave mixed outgoing;
+nosave int conn;
  
 mixed mail_queue;
 int date_last_flushed;

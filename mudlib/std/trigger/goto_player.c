@@ -20,7 +20,7 @@ void create() {
   been = ([ ]);
 } /* create() */
 
-static mixed get_co_ord(mixed ob) {
+protected mixed get_co_ord(mixed ob) {
   mixed bing;
   bing = (mixed)ob->query_co_ord();
   if (bing)
@@ -29,7 +29,7 @@ static mixed get_co_ord(mixed ob) {
   return (mixed)ob->query_co_ord();
 } /* get_co_ord() */
 
-static int distance(mixed *co_ord, mixed *co_ord2) {
+protected int distance(mixed *co_ord, mixed *co_ord2) {
   int i, ret;
 
   if (!co_ord || !co_ord2)
@@ -43,7 +43,7 @@ static int distance(mixed *co_ord, mixed *co_ord2) {
   return ret;
 } /* distance() */
 
-static void finitio(int bing) {
+protected void finitio(int bing) {
   mixed *bit;
   int i;
   mixed dest;

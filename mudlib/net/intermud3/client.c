@@ -9,9 +9,9 @@
 #include "client.h"
 #include "intermud_cfg.h"
 
-private static int DestructOnClose, SocketType = -1;
-private static function Read;
-private static class client Socket;
+private nosave int DestructOnClose, SocketType = -1;
+private nosave function Read;
+private nosave class client Socket;
 
 void create() {
   seteuid(getuid());
@@ -44,20 +44,20 @@ int eventCreateSocket(string host, int port) {
     }
 }
 
-static void eventAbortCallback(int fd) {
+protected void eventAbortCallback(int fd) {
     if( !Socket ) return;
     if( fd != Socket->Descriptor ) return;
     eventClose(Socket);
 }
 
-static void eventReadCallback(int fd, mixed val) {
+protected void eventReadCallback(int fd, mixed val) {
     if( functionp(Read) ) evaluate(Read, val);
       else eventRead(val); // Taniwha, in an attempt to shut the damn thing up
 }
 
-static void eventRead(mixed val) { }
+protected void eventRead(mixed val) { }
 
-static void eventWriteCallback(int fd) {
+protected void eventWriteCallback(int fd) {
     int x;
 
     if( !Socket ) return;
@@ -96,7 +96,7 @@ void eventWrite(mixed val) {
     else eventWriteCallback(Socket->Descriptor);
 }
 
-static void eventClose(class client sock) {
+protected void eventClose(class client sock) {
     if( !sock ) return;
     socket_close(sock->Descriptor);
     sock = 0;
@@ -104,13 +104,13 @@ static void eventClose(class client sock) {
     if( DestructOnClose ) destruct(this_object());
 }
 
-static void eventSocketClose() { }
+protected void eventSocketClose() { }
 
 int dest_me() {
     eventClose(Socket);
 }
 
-static void eventSocketError(string str, int x) { 
+protected void eventSocketError(string str, int x) { 
     if( LOGFILE ) 
       log_file(LOGFILE, ctime(time()) + socket_error(x) + "\n");
 }

@@ -23,22 +23,22 @@ inherit "/std/add_clone.c";
 
 //#define FAST_CLEAN_UP 6
 //#define SLOW_CLEAN_UP 480
-private static int room_create_time;    // time of creation
-private static int room_init_time;      // time of previous init
-private static int room_stabilize;      // don't bother call_out
+private nosave int room_create_time;    // time of creation
+private nosave int room_init_time;      // time of previous init
+private nosave int room_stabilize;      // don't bother call_out
 
 
 object *query_hidden_objects();
 string query_dirs_string();
 
-static mapping items,
+nosave mapping items,
 exit_map,
 move_commands,
 door_locks,
 door_map,
 door_control;
 
-static string exit_string,
+nosave string exit_string,
 short_exit_string,
 room_zone,
 dark_mess,
@@ -48,13 +48,13 @@ fail_msg,
 *dest_direc,
 *aliases;
 
-static mixed *dest_other;
+nosave mixed *dest_other;
 int *co_ord;
 object *destables,
 *hidden_objects;
 /* Hamlet -- I'm adding choices for colors with the exit arrays. */
-static string exit_color;
-static string loginroom;
+nosave string exit_color;
+nosave string loginroom;
 
 void add_move_command(string verb);
 void remove_move_command(string verb);
@@ -692,7 +692,7 @@ int query_no_writing() { return 1; }
 
 
 object * query_destables() { return destables; }
-static int empty_room(object ob)
+protected int empty_room(object ob)
 {
     object *olist;
     object ob1;

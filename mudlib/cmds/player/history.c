@@ -22,7 +22,7 @@ string query_short_help()
 	return "Shows your history.";
 }
 
-static int cmd (string name, object me)
+protected int cmd (string name, object me)
 {
   /* This is a hack.. altho bloody effective. */
   me->print_history();

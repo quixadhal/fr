@@ -1,7 +1,7 @@
 inherit "/std/room";
 
-static string up_loc;
-static string death_loc;
+nosave string up_loc;
+nosave string death_loc;
 
 void event_enter(object target, string MESG, object FROM)
 {

@@ -9,7 +9,7 @@ position = 1;
 
 
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   string *files;
   string s1, *s2, *s3, pattern, whichfiles;
   int i, j, k, fsize;

@@ -10,7 +10,7 @@
  */
 #include "alignment.h"
 #define NOGOD "none"
-static string *gods = ({NOGOD,"baldrick","timion","raisa","taniwha","hokemj","cyrcia","radix","ducky","grimbrand"});
+nosave string *gods = ({NOGOD,"baldrick","timion","raisa","taniwha","hokemj","cyrcia","radix","ducky","grimbrand"});
 string mygod;
 int *godalign;
 int alignment;
@@ -21,7 +21,7 @@ int ethics;
 string query_align_name();
 // Tanihwa 1995 make it harder to get a wanted alignment VERY high
 // but a LOT easier to change it as well
-static int aligna(int old,int adj)
+protected int aligna(int old,int adj)
 {
     int newa,i;
     if( !old ) return adj;
@@ -76,7 +76,7 @@ int set_deity(string str)
     }
     return 0;
 }
-static int queryg()
+protected int queryg()
 {
    int i,j;
    i = sizeof(gods);

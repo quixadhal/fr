@@ -7,7 +7,7 @@ void setup(){
 position = 1;
 
 }
-static mapping blue;
+nosave mapping blue;
 
 int stats_sort_array(string str, string str2) {
   if (blue[str]["moves"] > blue[str2]["moves"])
@@ -43,7 +43,7 @@ string string_stats(mapping map) {
 } /* print_stats() */
 
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   mapping bit;
 
   if (str)

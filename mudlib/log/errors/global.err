@@ -1,0 +1,4700 @@
+---==[ error occurred at Sun Jul 26 16:14:05 1998 ]==---
+player  : baldrick [last verb: no verb]
+object  : /global/god#7
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 4.
+program : global/line_ed.c
+file    : global/line_ed.c at line 343
+   ------------------------------------
+   object   : /global/god#7
+   function : editor_do_quit
+   arguments: "garble
+",
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 343
+   ------------------------------------
+   object   : /global/god#7
+   function : editor_finish_ed
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 331
+   ------------------------------------
+   object   : /global/god#7
+   function : <function>
+   program  : <function>
+   file     :  at line 0
+   ------------------------------------
+   object   : /global/god#7
+   function : process_input
+   arguments: "q",
+   program  : global/player.c
+   file     : global/process_input.c at line 50
+
+
+---==[ error occurred at Sun Jul 26 16:14:33 1998 ]==---
+player  : baldrick [last verb: no verb]
+object  : /global/god#7
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 2.
+program : global/line_ed.c
+file    : global/line_ed.c at line 343
+   ------------------------------------
+   object   : /global/god#7
+   function : editor_do_quit
+   arguments: "sdf",
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 343
+   ------------------------------------
+   object   : /global/god#7
+   function : main_bit
+   arguments: "s",
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 121
+
+
+---==[ error occurred at Sun Jul 26 16:20:40 1998 ]==---
+player  : baldrick [last verb: no verb]
+object  : /global/god#29
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 6.
+program : global/line_ed.c
+file    : global/line_ed.c at line 345
+   ------------------------------------
+   object   : /global/god#29
+   function : editor_do_quit
+   arguments: "
+foo",
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 345
+   ------------------------------------
+   object   : /global/god#29
+   function : editor_loop
+   arguments: "**",
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 221
+
+
+---==[ error occurred at Sun Jul 26 16:52:27 1998 ]==---
+player  : baldrick [last verb: no verb]
+object  : /global/god#7
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 14.
+program : global/line_ed.c
+file    : global/line_ed.c at line 342
+   ------------------------------------
+   object   : /global/god#7
+   function : editor_do_quit
+   arguments: "
+Error handling is now taken par by a handler and the logs can be found in /log/errors
+
+pretty extensive
+
+B.",
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 342
+   ------------------------------------
+   object   : /global/god#7
+   function : main_bit
+   arguments: "s",
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 122
+
+
+---==[ error occurred at Thu Jul 30 04:57:05 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Goldberg@Split_Infinity", "Split_Infinity", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Goldberg Split_Infinity ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Split Infinity",
+  "goldberg",
+  0,
+  0,
+  "imud_gossip",
+  "Goldberg",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Split Infinity",
+  "goldberg",
+  0,
+  0,
+  "imud_gossip",
+  "Goldberg",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Split Infinity",
+  "goldberg",
+  0,
+  0,
+  "imud_gossip",
+  "Goldberg",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Fri Jul 31 07:02:16 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Tarken@Shades_of_Darkness", "Shades_of_Darkness", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Tarken Shades_of_Darkness ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Shades of Darkness",
+  "tarken",
+  0,
+  0,
+  "imud_gossip",
+  "Tarken",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Shades of Darkness",
+  "tarken",
+  0,
+  0,
+  "imud_gossip",
+  "Tarken",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Shades of Darkness",
+  "tarken",
+  0,
+  0,
+  "imud_gossip",
+  "Tarken",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Fri Jul 31 21:42:13 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 3 to message()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "!", "Zakk@Lima_Bean", "Lima_Bean", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Zakk Lima_Bean !",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Sat Aug  1 16:27:24 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intercre",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intercre", "?", "Moonlight@Insomnia", "Insomnia", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intercre Moonlight Insomnia ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Insomnia",
+  "moonlight",
+  0,
+  0,
+  "imud_code",
+  "Moonlight",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Insomnia",
+  "moonlight",
+  0,
+  0,
+  "imud_code",
+  "Moonlight",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Insomnia",
+  "moonlight",
+  0,
+  0,
+  "imud_code",
+  "Moonlight",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Sat Aug  1 23:17:35 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 3 to message()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "!", "Zakk@Lima_Bean", "Lima_Bean", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Zakk Lima_Bean !",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Mon Aug  3 17:13:11 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 3 to message()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "!", "Zakk@Lima_Bean", "Lima_Bean", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Zakk Lima_Bean !",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Mon Aug  3 17:16:57 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 3 to message()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "!", "Zakk@Lima_Bean", "Lima_Bean", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Zakk Lima_Bean !",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Mon Aug  3 19:22:52 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 3 to message()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "!", "Zakk@Lima_Bean", "Lima_Bean", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Zakk Lima_Bean !",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Mon Aug  3 19:35:23 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Threed@Discworld", "Discworld", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Threed Discworld ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Discworld",
+  "threed",
+  0,
+  0,
+  "imud_gossip",
+  "Threed",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Discworld",
+  "threed",
+  0,
+  0,
+  "imud_gossip",
+  "Threed",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Discworld",
+  "threed",
+  0,
+  0,
+  "imud_gossip",
+  "Threed",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Mon Aug  3 20:43:08 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Lurk@Split_Infinity", "Split_Infinity", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Lurk Split_Infinity ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Split Infinity",
+  "lurk",
+  0,
+  0,
+  "imud_gossip",
+  "Lurk",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Split Infinity",
+  "lurk",
+  0,
+  0,
+  "imud_gossip",
+  "Lurk",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Split Infinity",
+  "lurk",
+  0,
+  0,
+  "imud_gossip",
+  "Lurk",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Mon Aug  3 23:32:31 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 3 to message()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "!", "Zakk@Lima_Bean", "Lima_Bean", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Zakk Lima_Bean !",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Tue Aug  4 17:42:12 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 3 to message()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "!", "Zakk@Lima_Bean", "Lima_Bean", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Zakk Lima_Bean !",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Wed Aug  5 05:19:46 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 3 to message()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "!", "Zakk@Lima_Bean", "Lima_Bean", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Zakk Lima_Bean !",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Wed Aug  5 05:20:44 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Scrub@Fallen_Earth", "Fallen_Earth", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Scrub Fallen_Earth ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Fallen Earth",
+  "scrub",
+  0,
+  0,
+  "imud_gossip",
+  "Scrub",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Fallen Earth",
+  "scrub",
+  0,
+  0,
+  "imud_gossip",
+  "Scrub",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Fallen Earth",
+  "scrub",
+  0,
+  0,
+  "imud_gossip",
+  "Scrub",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Wed Aug  5 07:05:13 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intercre",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intercre", "?", "Tarken@Shades_of_Darkness", "Shades_of_Darkness", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intercre Tarken Shades_of_Darkness ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Shades of Darkness",
+  "tarken",
+  0,
+  0,
+  "imud_code",
+  "Tarken",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Shades of Darkness",
+  "tarken",
+  0,
+  0,
+  "imud_code",
+  "Tarken",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Shades of Darkness",
+  "tarken",
+  0,
+  0,
+  "imud_code",
+  "Tarken",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Thu Aug  6 04:22:53 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 3 to message()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "!", "Zakk@Lima_Bean", "Lima_Bean", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Zakk Lima_Bean !",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Thu Aug  6 09:24:18 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 3 to message()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "!", "Zakk@Lima_Bean", "Lima_Bean", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Zakk Lima_Bean !",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Fri Aug  7 04:02:09 1998 ]==---
+player  : aragorn [last verb: no verb]
+object  : /global/lord#253
+error   : *query_idle() of non-interactive object.
+program : global/player.c
+file    : global/player.c at line 1075
+   ------------------------------------
+   object   : /global/lord#253
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1075
+
+
+---==[ error occurred at Fri Aug  7 14:00:43 1998 ]==---
+player  : thulsa [last verb: post]
+object  : /global/creator#353
+error   : *Bad argument 1 to switch
+Expected: string Got: ({ }).
+program : global/line_ed.c
+file    : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /global/creator#353
+   function : do_edit
+   arguments: "", "end_of_thing", 0,
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /obj/misc/board_mas4#361
+   function : post
+   arguments: "prompt",
+   program  : obj/misc/board_mas4.c
+   file     : obj/misc/board_mas4.c at line 185
+   ------------------------------------
+   object   : /global/creator#353
+   function : aq_add
+   arguments: "post prompt",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 288
+   ------------------------------------
+   object   : /global/creator#353
+   function : action_check
+   arguments: "post prompt",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 616
+   ------------------------------------
+   object   : /global/creator#353
+   function : process_input
+   arguments: "post prompt",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Fri Aug  7 14:02:11 1998 ]==---
+player  : thulsa [last verb: post]
+object  : /global/creator#353
+error   : *Bad argument 1 to switch
+Expected: string Got: ({ }).
+program : global/line_ed.c
+file    : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /global/creator#353
+   function : do_edit
+   arguments: "", "end_of_thing", /obj/misc/board#355,
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /obj/misc/board#355
+   function : post
+   arguments: "prompt",
+   program  : obj/misc/board.c
+   file     : obj/misc/board.c at line 181
+   ------------------------------------
+   object   : /global/creator#353
+   function : aq_add
+   arguments: "post prompt",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 288
+   ------------------------------------
+   object   : /global/creator#353
+   function : action_check
+   arguments: "post prompt",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 616
+   ------------------------------------
+   object   : /global/creator#353
+   function : process_input
+   arguments: "post prompt",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Fri Aug  7 14:03:03 1998 ]==---
+player  : thulsa [last verb: post]
+object  : /global/creator#353
+error   : *Bad argument 1 to switch
+Expected: string Got: ({ }).
+program : global/line_ed.c
+file    : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /global/creator#353
+   function : do_edit
+   arguments: "", "end_of_thing", /obj/misc/board#355,
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /obj/misc/board#355
+   function : post
+   arguments: "prompt",
+   program  : obj/misc/board.c
+   file     : obj/misc/board.c at line 181
+   ------------------------------------
+   object   : /global/creator#353
+   function : aq_add
+   arguments: "post prompt",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 288
+   ------------------------------------
+   object   : /global/creator#353
+   function : action_check
+   arguments: "post prompt",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 616
+   ------------------------------------
+   object   : /global/creator#353
+   function : process_input
+   arguments: "post prompt",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sat Aug 15 01:56:29 1998 ]==---
+player  : randor [last verb: followup]
+object  : /global/lord#644
+error   : *Bad argument 1 to switch
+Expected: string Got: ({ }).
+program : global/line_ed.c
+file    : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /global/lord#644
+   function : do_edit
+   arguments: "", "end_of_thing", 0,
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /obj/misc/board_mas4#652
+   function : followup
+   arguments: "55",
+   program  : obj/misc/board_mas4.c
+   file     : obj/misc/board_mas4.c at line 237
+   ------------------------------------
+   object   : /global/lord#644
+   function : aq_add
+   arguments: "followup 55",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 288
+   ------------------------------------
+   object   : /global/lord#644
+   function : action_check
+   arguments: "followup 55",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 616
+   ------------------------------------
+   object   : /global/lord#644
+   function : process_input
+   arguments: "followup 55",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sat Aug 15 01:59:55 1998 ]==---
+player  : randor [last verb: post]
+object  : /global/lord#644
+error   : *Bad argument 1 to switch
+Expected: string Got: ({ }).
+program : global/line_ed.c
+file    : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /global/lord#644
+   function : do_edit
+   arguments: "", "end_of_thing", 0,
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /obj/misc/board_mas4#652
+   function : post
+   arguments: "re: ed_setup",
+   program  : obj/misc/board_mas4.c
+   file     : obj/misc/board_mas4.c at line 185
+   ------------------------------------
+   object   : /global/lord#644
+   function : aq_add
+   arguments: "post re: ed_setup",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 288
+   ------------------------------------
+   object   : /global/lord#644
+   function : action_check
+   arguments: "post re: ed_setup",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 616
+   ------------------------------------
+   object   : /global/lord#644
+   function : process_input
+   arguments: "post re: ed_setup",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Wed Aug 19 22:24:50 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Sinistrad@VargonMUD", "VargonMUD", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Sinistrad VargonMUD ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "VargonMUD",
+  "sinistrad",
+  0,
+  0,
+  "imud_gossip",
+  "Sinistrad",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "VargonMUD",
+  "sinistrad",
+  0,
+  0,
+  "imud_gossip",
+  "Sinistrad",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "VargonMUD",
+  "sinistrad",
+  0,
+  0,
+  "imud_gossip",
+  "Sinistrad",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Fri Aug 21 16:15:35 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Spoo@Nanvaent", "Nanvaent", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Spoo Nanvaent ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Nanvaent",
+  "Spoo",
+  0,
+  0,
+  "imud_gossip",
+  "Spoo",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Nanvaent",
+  "Spoo",
+  0,
+  0,
+  "imud_gossip",
+  "Spoo",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Nanvaent",
+  "Spoo",
+  0,
+  0,
+  "imud_gossip",
+  "Spoo",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Fri Aug 21 17:12:12 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Spoo@Nanvaent", "Nanvaent", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Spoo Nanvaent ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Nanvaent",
+  "Spoo",
+  0,
+  0,
+  "imud_gossip",
+  "Spoo",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Nanvaent",
+  "Spoo",
+  0,
+  0,
+  "imud_gossip",
+  "Spoo",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Nanvaent",
+  "Spoo",
+  0,
+  0,
+  "imud_gossip",
+  "Spoo",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Tue Aug 25 18:19:06 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intercre",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intercre", "?", "Wodan@Discworld", "Discworld", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intercre Wodan Discworld ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Discworld",
+  "wodan",
+  0,
+  0,
+  "imud_code",
+  "Wodan",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Discworld",
+  "wodan",
+  0,
+  0,
+  "imud_code",
+  "Wodan",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Discworld",
+  "wodan",
+  0,
+  0,
+  "imud_code",
+  "Wodan",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Tue Aug 25 18:46:31 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 3 to message()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "!", "Moonie@Act_of_[e]", "Act_of_[e]", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Moonie Act_of_[e] !",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Act of [e]",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "!"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Act of [e]",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "!"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Act of [e]",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "!"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Tue Aug 25 19:08:28 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 3 to message()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "!", "Zakk@Lima_Bean", "Lima_Bean", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Zakk Lima_Bean !",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_gossip",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Wed Aug 26 20:02:24 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Ananda@The_Dreaming", "The_Dreaming", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Ananda The_Dreaming ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "The Dreaming",
+  "ananda",
+  0,
+  0,
+  "imud_gossip",
+  "Ananda",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "The Dreaming",
+  "ananda",
+  0,
+  0,
+  "imud_gossip",
+  "Ananda",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "The Dreaming",
+  "ananda",
+  0,
+  0,
+  "imud_gossip",
+  "Ananda",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Fri Aug 28 00:34:46 1998 ]==---
+player  : spongebath [last verb: post hmm]
+object  : /global/creator#46
+error   : *Bad argument 1 to switch
+Expected: string Got: ({ }).
+program : global/line_ed.c
+file    : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /global/creator#46
+   function : do_edit
+   arguments: "", "end_of_thing", 0,
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /obj/misc/board_mas4#52
+   function : post
+   arguments: "hmm",
+   program  : obj/misc/board_mas4.c
+   file     : obj/misc/board_mas4.c at line 185
+   ------------------------------------
+   object   : /global/creator#46
+   function : aq_add
+   arguments: "post hmm",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/creator#46
+   function : action_check
+   arguments: "post hmm",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#46
+   function : process_input
+   arguments: "post hmm",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Tue Sep  1 18:08:21 1998 ]==---
+player  : thom [last verb: quit]
+object  : /global/player#191
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#191
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#191
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#191
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Tue Sep  1 18:08:25 1998 ]==---
+player  : thom [last verb: quit]
+object  : /global/player#191
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#191
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Wed Sep  2 12:07:55 1998 ]==---
+player  : dagar [last verb: no verb]
+object  : /global/player#191
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Wed Sep  9 15:16:59 1998 ]==---
+player  : kreark [last verb: no verb]
+object  : /global/player#191
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Wed Sep  9 15:18:03 1998 ]==---
+player  : kreark [last verb: no verb]
+object  : /global/player#191
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Fri Sep 11 21:58:58 1998 ]==---
+player  : xeric [last verb: no verb]
+object  : /global/creator#425
+error   : *Bad argument 1 to switch
+Expected: string Got: ({ }).
+program : global/line_ed.c
+file    : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /global/creator#425
+   function : do_edit
+   arguments: "", "get_text", /obj/handlers/post#431,
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /obj/handlers/post#431
+   function : do_reply
+   arguments: "r", "",
+   program  : obj/handlers/post.c
+   file     : obj/handlers/post.c at line 638
+   ------------------------------------
+   object   : /obj/handlers/post#431
+   function : postal_cmd
+   arguments: "r",
+   program  : obj/handlers/post.c
+   file     : obj/handlers/post.c at line 144
+
+
+---==[ error occurred at Fri Sep 11 21:59:42 1998 ]==---
+player  : xeric [last verb: no verb]
+object  : /global/creator#425
+error   : *Bad argument 1 to switch
+Expected: string Got: ({ }).
+program : global/line_ed.c
+file    : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /global/creator#425
+   function : do_edit
+   arguments: "", "get_text", /obj/handlers/post#432,
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /obj/handlers/post#432
+   function : do_reply
+   arguments: "r", "",
+   program  : obj/handlers/post.c
+   file     : obj/handlers/post.c at line 638
+   ------------------------------------
+   object   : /obj/handlers/post#432
+   function : postal_cmd
+   arguments: "r",
+   program  : obj/handlers/post.c
+   file     : obj/handlers/post.c at line 144
+
+
+---==[ error occurred at Fri Sep 11 22:00:26 1998 ]==---
+player  : xeric [last verb: no verb]
+object  : /global/creator#425
+error   : *Bad argument 1 to switch
+Expected: string Got: ({ }).
+program : global/line_ed.c
+file    : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /global/creator#425
+   function : do_edit
+   arguments: "", "get_text", /obj/handlers/post#433,
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /obj/handlers/post#433
+   function : get_subject
+   arguments: "System V driver.. and reply on mail",
+   program  : obj/handlers/post.c
+   file     : obj/handlers/post.c at line 523
+
+
+---==[ error occurred at Fri Sep 11 22:00:52 1998 ]==---
+player  : xeric [last verb: no verb]
+object  : /global/creator#425
+error   : *Bad argument 1 to switch
+Expected: string Got: ({ }).
+program : global/line_ed.c
+file    : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /global/creator#425
+   function : do_edit
+   arguments: "", "get_text", /obj/handlers/post#435,
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /obj/handlers/post#435
+   function : get_subject
+   arguments: "[No subject]",
+   program  : obj/handlers/post.c
+   file     : obj/handlers/post.c at line 523
+
+
+---==[ error occurred at Fri Sep 11 22:00:58 1998 ]==---
+player  : xeric [last verb: no verb]
+object  : /global/creator#425
+error   : *Bad argument 1 to switch
+Expected: string Got: ({ }).
+program : global/line_ed.c
+file    : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /global/creator#425
+   function : do_edit
+   arguments: "", "get_text", /obj/handlers/post#436,
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /obj/handlers/post#436
+   function : get_subject
+   arguments: "[No subject]",
+   program  : obj/handlers/post.c
+   file     : obj/handlers/post.c at line 523
+
+
+---==[ error occurred at Fri Sep 11 22:40:21 1998 ]==---
+player  : xeric [last verb: no verb]
+object  : /global/creator#439
+error   : *Bad argument 1 to switch
+Expected: string Got: ({ }).
+program : global/line_ed.c
+file    : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /global/creator#439
+   function : do_edit
+   arguments: "", "get_text", /obj/handlers/post#450,
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /obj/handlers/post#450
+   function : do_reply
+   arguments: "r", "",
+   program  : obj/handlers/post.c
+   file     : obj/handlers/post.c at line 638
+   ------------------------------------
+   object   : /obj/handlers/post#450
+   function : postal_cmd
+   arguments: "r",
+   program  : obj/handlers/post.c
+   file     : obj/handlers/post.c at line 144
+
+
+---==[ error occurred at Fri Sep 18 17:49:25 1998 ]==---
+player  : errante [last verb: man ed]
+object  : /global/creator#666
+error   : *Value being indexed is zero.
+program : global/play_parse_com.c
+file    : global/play_parse_com.c at line 185
+   ------------------------------------
+   object   : /global/creator#666
+   function : parse_comm
+   arguments: 0,
+   program  : global/play_parse_com.c
+   file     : global/play_parse_com.c at line 185
+   ------------------------------------
+   object   : /global/creator#666
+   function : aq_add
+   arguments: "man ed",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 309
+   ------------------------------------
+   object   : /global/creator#666
+   function : action_check
+   arguments: "man ed",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#666
+   function : process_input
+   arguments: "man ed",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Fri Sep 18 17:49:29 1998 ]==---
+player  : errante [last verb: man ed]
+object  : /global/creator#666
+error   : *Value being indexed is zero.
+program : global/play_parse_com.c
+file    : global/play_parse_com.c at line 185
+   ------------------------------------
+   object   : /global/creator#666
+   function : parse_comm
+   arguments: 0,
+   program  : global/play_parse_com.c
+   file     : global/play_parse_com.c at line 185
+   ------------------------------------
+   object   : /global/creator#666
+   function : aq_add
+   arguments: "man ed",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 309
+   ------------------------------------
+   object   : /global/creator#666
+   function : action_check
+   arguments: "man ed",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#666
+   function : process_input
+   arguments: "man ed",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Wed Sep 23 00:20:48 1998 ]==---
+player  : sabin [last verb: no verb]
+object  : /global/player#191
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Wed Sep 23 00:43:40 1998 ]==---
+player  : cosmo [last verb: no verb]
+object  : /global/player#191
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Fri Sep 25 01:54:41 1998 ]==---
+player  : alenara [last verb: no verb]
+object  : /global/player#191
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Wed Sep 30 02:01:53 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Moonie@Alkaria", "Alkaria", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Moonie Alkaria ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Alkaria",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Alkaria",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 24, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Alkaria",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Thu Oct  1 08:20:20 1998 ]==---
+player  : xevious [last verb: no verb]
+object  : /global/player#191
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Thu Oct  1 08:20:50 1998 ]==---
+player  : xevious [last verb: no verb]
+object  : /global/player#191
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Fri Oct  2 19:41:38 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Chelle@Discworld", "Discworld", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Chelle Discworld ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Discworld",
+  "chelle",
+  0,
+  0,
+  "imud_gossip",
+  "Chelle",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Discworld",
+  "chelle",
+  0,
+  0,
+  "imud_gossip",
+  "Chelle",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 24, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Discworld",
+  "chelle",
+  0,
+  0,
+  "imud_gossip",
+  "Chelle",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Fri Oct  2 23:13:04 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Icebird@Elveszett_Vilag_2", "Elveszett_Vilag_2", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Icebird Elveszett_Vilag_2 ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Elveszett Vilag 2",
+  "icebird",
+  0,
+  0,
+  "imud_gossip",
+  "Icebird",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Elveszett Vilag 2",
+  "icebird",
+  0,
+  0,
+  "imud_gossip",
+  "Icebird",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 24, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Elveszett Vilag 2",
+  "icebird",
+  0,
+  0,
+  "imud_gossip",
+  "Icebird",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Sat Oct  3 04:05:29 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Murphy@TTWater", "TTWater", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Murphy TTWater ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "TTWater",
+  "murphy",
+  0,
+  0,
+  "imud_gossip",
+  "Murphy",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "TTWater",
+  "murphy",
+  0,
+  0,
+  "imud_gossip",
+  "Murphy",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 24, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "TTWater",
+  "murphy",
+  0,
+  0,
+  "imud_gossip",
+  "Murphy",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Sat Oct  3 18:53:30 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intercre",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intercre", "?", "Epimetrias@Alkaria", "Alkaria", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intercre Epimetrias Alkaria ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Alkaria",
+  "epimetrias",
+  0,
+  0,
+  "imud_code",
+  "Epimetrias",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Alkaria",
+  "epimetrias",
+  0,
+  0,
+  "imud_code",
+  "Epimetrias",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 24, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Alkaria",
+  "epimetrias",
+  0,
+  0,
+  "imud_code",
+  "Epimetrias",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Sun Oct  4 05:04:03 1998 ]==---
+player  : teel [last verb: no verb]
+object  : /global/player#191
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Sun Oct  4 17:02:10 1998 ]==---
+player  : haval [last verb: no verb]
+object  : /global/player#191
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Sun Oct  4 17:03:32 1998 ]==---
+player  : haval [last verb: no verb]
+object  : /global/player#1058
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#1058
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#1058
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1058
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Sun Oct  4 17:03:46 1998 ]==---
+player  : haval [last verb: no verb]
+object  : /global/player#191
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Sun Oct  4 17:05:50 1998 ]==---
+player  : haval [last verb: no verb]
+object  : /global/player#1058
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#1058
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#1058
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1058
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Sun Oct  4 20:59:49 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Moonie@AD&DMud", "AD&DMud", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Moonie AD&DMud ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "AD&DMud",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "AD&DMud",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 24, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "AD&DMud",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Wed Oct  7 20:15:32 1998 ]==---
+player  : rumplukt [last verb: no verb]
+object  : /global/player#191
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Thu Oct  8 00:43:28 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intercre",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intercre", "?", "Rust@Lima_Bean", "Lima_Bean", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intercre Rust Lima_Bean ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "rust",
+  0,
+  0,
+  "imud_code",
+  "Rust",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "rust",
+  0,
+  0,
+  "imud_code",
+  "Rust",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 24, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "rust",
+  0,
+  0,
+  "imud_code",
+  "Rust",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Fri Oct  9 02:02:10 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Murphy@TTWater", "TTWater", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Murphy TTWater ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "TTWater",
+  "murphy",
+  0,
+  0,
+  "imud_gossip",
+  "Murphy",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "TTWater",
+  "murphy",
+  0,
+  0,
+  "imud_gossip",
+  "Murphy",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 24, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "TTWater",
+  "murphy",
+  0,
+  0,
+  "imud_gossip",
+  "Murphy",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Fri Oct  9 18:33:44 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Sinistrad@VargonMUD", "VargonMUD", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Sinistrad VargonMUD ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "VargonMUD",
+  "sinistrad",
+  0,
+  0,
+  "imud_gossip",
+  "Sinistrad",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "VargonMUD",
+  "sinistrad",
+  0,
+  0,
+  "imud_gossip",
+  "Sinistrad",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 24, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "VargonMUD",
+  "sinistrad",
+  0,
+  0,
+  "imud_gossip",
+  "Sinistrad",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Fri Oct  9 22:25:39 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Moonie@DreamGate", "DreamGate", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Moonie DreamGate ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "DreamGate",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "DreamGate",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 24, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "DreamGate",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Sat Oct 10 07:44:09 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Moonie@DreamGate", "DreamGate", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Moonie DreamGate ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "DreamGate",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "DreamGate",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 24, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "DreamGate",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Mon Oct 12 02:19:10 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intercre",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intercre", "?", "Kriton@Emerald", "Emerald", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intercre Kriton Emerald ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Emerald",
+  "kriton",
+  0,
+  0,
+  "imud_code",
+  "Kriton",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Emerald",
+  "kriton",
+  0,
+  0,
+  "imud_code",
+  "Kriton",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 24, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Emerald",
+  "kriton",
+  0,
+  0,
+  "imud_code",
+  "Kriton",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Tue Oct 13 16:45:08 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 3 to message()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intercre", "!", "Zakk@Lima_Bean", "Lima_Bean", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 221
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intercre Zakk Lima_Bean !",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_code",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_code",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 24, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Lima Bean",
+  "zakk",
+  0,
+  0,
+  "imud_code",
+  "Zakk",
+  "!"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Sat Oct 17 06:13:26 1998 ]==---
+player  : paradox [last verb: no verb]
+object  : /global/player#191
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Sat Oct 17 19:02:39 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Moonie@DreamGate", "DreamGate", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Moonie DreamGate ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "DreamGate",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "DreamGate",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 24, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "DreamGate",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Sun Oct 18 07:02:33 1998 ]==---
+player  : paradox [last verb: no verb]
+object  : /global/player#191
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Sun Oct 18 07:06:30 1998 ]==---
+player  : paradox [last verb: quit]
+object  : /global/player#1369
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#1369
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#1369
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1369
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#1369
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#1369
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sun Oct 18 07:06:36 1998 ]==---
+player  : paradox [last verb: quit]
+object  : /global/player#1369
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#1369
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#1369
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1369
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Sun Oct 18 19:31:00 1998 ]==---
+player  : paradox [last verb: quit]
+object  : /global/player#191
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#191
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Sun Oct 18 19:31:06 1998 ]==---
+player  : paradox [last verb: quit]
+object  : /global/player#1369
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#1369
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#1369
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1369
+   function : perform_next_action
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 461
+   ------------------------------------
+   object   : /global/player#1369
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 649
+   ------------------------------------
+   object   : /global/player#1369
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sun Oct 18 19:31:20 1998 ]==---
+player  : paradox [last verb: quit]
+object  : /global/player#1369
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#1369
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#1369
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1369
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#1369
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#1369
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sun Oct 18 19:31:24 1998 ]==---
+player  : paradox [last verb: quit]
+object  : /global/player#1369
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#1369
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#1369
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1369
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Mon Oct 19 07:08:17 1998 ]==---
+player  : benedick [last verb: quit]
+object  : /global/god#1379
+error   : *Bad argument 1 to switch
+Expected: string Got: ({ }).
+program : global/line_ed.c
+file    : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /global/god#1379
+   function : do_edit
+   arguments: "", "get_text", /obj/handlers/post#1396,
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /obj/handlers/post#1396
+   function : do_reply
+   arguments: "r", "65",
+   program  : obj/handlers/post.c
+   file     : obj/handlers/post.c at line 638
+   ------------------------------------
+   object   : /obj/handlers/post#1396
+   function : postal_cmd
+   arguments: "reply 65",
+   program  : obj/handlers/post.c
+   file     : obj/handlers/post.c at line 144
+
+
+---==[ error occurred at Mon Oct 19 07:08:55 1998 ]==---
+player  : benedick [last verb: quit]
+object  : /global/god#1379
+error   : *Bad argument 1 to switch
+Expected: string Got: ({ }).
+program : global/line_ed.c
+file    : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /global/god#1379
+   function : do_edit
+   arguments: "", "get_text", /obj/handlers/post#1397,
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 53
+   ------------------------------------
+   object   : /obj/handlers/post#1397
+   function : get_subject
+   arguments: "Well, that didn't seem to work...",
+   program  : obj/handlers/post.c
+   file     : obj/handlers/post.c at line 523
+
+
+---==[ error occurred at Thu Oct 22 22:14:10 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Moonie@Time_in_Darkness", "Time_in_Darkness", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Moonie Time_in_Darkness ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Time in Darkness",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Time in Darkness",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "Time in Darkness",
+  "moonie",
+  0,
+  0,
+  "imud_gossip",
+  "Moonie",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Wed Oct 28 18:32:22 1998 ]==---
+player  : gildan [last verb: quit]
+object  : /global/player#108
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#108
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#108
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#108
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#108
+   function : queue_action
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 507
+   ------------------------------------
+   object   : /global/player#108
+   function : exec_alias
+   arguments: "q", "",
+   program  : global/alias.c
+   file     : global/alias.c at line 460
+   ------------------------------------
+   object   : /global/player#108
+   function : process_input
+   arguments: "q",
+   program  : global/player.c
+   file     : global/process_input.c at line 91
+
+
+---==[ error occurred at Wed Oct 28 18:32:44 1998 ]==---
+player  : gildan [last verb: quit]
+object  : /global/player#108
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#108
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#108
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#108
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Wed Oct 28 18:40:34 1998 ]==---
+player  : ninive [last verb: no verb]
+object  : /global/player#108
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#108
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#108
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Mon Nov  2 17:30:33 1998 ]==---
+player  : deek [last verb: ed curses_menu.c]
+object  : /global/creator#48
+error   : *Value being indexed is zero.
+program : global/play_parse_com.c
+file    : global/play_parse_com.c at line 185
+   ------------------------------------
+   object   : /global/creator#48
+   function : parse_comm
+   arguments: 0,
+   program  : global/play_parse_com.c
+   file     : global/play_parse_com.c at line 185
+   ------------------------------------
+   object   : /global/creator#48
+   function : aq_add
+   arguments: "ed curses_menu.c",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 309
+   ------------------------------------
+   object   : /global/creator#48
+   function : action_check
+   arguments: "ed curses_menu.c",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#48
+   function : process_input
+   arguments: "ed curses_menu.c",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Mon Nov  2 17:33:15 1998 ]==---
+player  : deek [last verb: q]
+object  : /global/creator#48
+error   : *Value being indexed is zero.
+program : global/play_parse_com.c
+file    : global/play_parse_com.c at line 185
+   ------------------------------------
+   object   : /global/creator#48
+   function : parse_comm
+   arguments: 0,
+   program  : global/play_parse_com.c
+   file     : global/play_parse_com.c at line 185
+   ------------------------------------
+   object   : /global/creator#48
+   function : aq_add
+   arguments: "q",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 309
+   ------------------------------------
+   object   : /global/creator#48
+   function : action_check
+   arguments: "q",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#48
+   function : process_input
+   arguments: "q",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Mon Nov  2 17:34:44 1998 ]==---
+player  : deek [last verb: read]
+object  : /global/creator#48
+error   : *Value being indexed is zero.
+program : global/play_parse_com.c
+file    : global/play_parse_com.c at line 185
+   ------------------------------------
+   object   : /global/creator#48
+   function : parse_comm
+   arguments: 0,
+   program  : global/play_parse_com.c
+   file     : global/play_parse_com.c at line 185
+   ------------------------------------
+   object   : /global/creator#48
+   function : aq_add
+   arguments: "read",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 309
+   ------------------------------------
+   object   : /global/creator#48
+   function : action_check
+   arguments: "read",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#48
+   function : process_input
+   arguments: "read",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Wed Nov  4 12:50:45 1998 ]==---
+player  : lalal [last verb: quit]
+object  : /global/player#128
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#128
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#128
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#128
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Wed Nov  4 12:51:03 1998 ]==---
+player  : lalal [last verb: quit]
+object  : /global/player#128
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#128
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Thu Nov  5 19:12:42 1998 ]==---
+player  : werner [last verb: quit]
+object  : /global/player#128
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Thu Nov  5 19:13:08 1998 ]==---
+player  : werner [last verb: quit]
+object  : /global/player#128
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Fri Nov  6 14:37:05 1998 ]==---
+player  : timion [last verb: no verb]
+object  : /global/player#128
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Sat Nov  7 00:53:43 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /global/do_chat
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : global/do_chat.c
+file    : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : get_channel_help
+   arguments: "intergossip",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 197
+   ------------------------------------
+   object   : /global/do_chat
+   function : do_channel
+   arguments: "intergossip", "?", "Sinistrad@VargonMUD", "VargonMUD", 0,
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 225
+   ------------------------------------
+   object   : /global/do_chat
+   function : received_cre
+   arguments: "intergossip Sinistrad VargonMUD ?",
+   program  : global/do_chat.c
+   file     : global/do_chat.c at line 259
+   ------------------------------------
+   object   : /net/intermud3/services
+   function : eventReceiveChannelMessage
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "VargonMUD",
+  "sinistrad",
+  0,
+  0,
+  "imud_gossip",
+  "Sinistrad",
+  "?"
+}),
+   program  : net/intermud3/services.c
+   file     : net/intermud3/services/channel.c at line 78
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventRead
+   arguments: ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "VargonMUD",
+  "sinistrad",
+  0,
+  0,
+  "imud_gossip",
+  "Sinistrad",
+  "?"
+}),
+   program  : net/intermud3/intermud.c
+   file     : net/intermud3/intermud.c at line 99
+   ------------------------------------
+   object   : /net/intermud3/intermud
+   function : eventReadCallback
+   arguments: 1, ({ /* sizeof() == 9 */
+  "channel-m",
+  5,
+  "VargonMUD",
+  "sinistrad",
+  0,
+  0,
+  "imud_gossip",
+  "Sinistrad",
+  "?"
+}),
+   program  : net/intermud3/client.c
+   file     : net/intermud3/client.c at line 55
+
+
+---==[ error occurred at Sat Nov  7 15:27:23 1998 ]==---
+player  : foerk [last verb: no verb]
+object  : /global/player#128
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Sat Nov  7 15:48:46 1998 ]==---
+player  : foerk [last verb: no verb]
+object  : /global/player#128
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Sat Nov  7 16:10:09 1998 ]==---
+player  : foerk [last verb: no verb]
+object  : /global/player#128
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Sat Nov  7 16:11:49 1998 ]==---
+player  : foerk [last verb: no verb]
+object  : /global/player#128
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Mon Nov  9 05:37:01 1998 ]==---
+player  : shaydz [last verb: no verb]
+object  : /global/player#216
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#216
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#216
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#216
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Mon Nov  9 09:49:55 1998 ]==---
+player  : shaydz [last verb: no verb]
+object  : /global/player#216
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#216
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#216
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#216
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Mon Nov  9 11:18:02 1998 ]==---
+player  : shaydz [last verb: no verb]
+object  : /global/player#216
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#216
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#216
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#216
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Mon Nov  9 12:41:14 1998 ]==---
+player  : shaydz [last verb: no verb]
+object  : /global/player#128
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Mon Nov  9 12:42:40 1998 ]==---
+player  : shaydz [last verb: no verb]
+object  : /global/player#128
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Mon Nov  9 12:52:35 1998 ]==---
+player  : shaydz [last verb: no verb]
+object  : /global/player#128
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#128
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+
+
+---==[ error occurred at Mon Nov  9 14:52:40 1998 ]==---
+player  : shaydz [last verb: quit]
+object  : /global/player#216
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#216
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#216
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#216
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#216
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#216
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Mon Nov  9 14:52:52 1998 ]==---
+player  : shaydz [last verb: quit]
+object  : /global/player#216
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#216
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#216
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#216
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Mon Nov  9 14:55:40 1998 ]==---
+player  : shaydz [last verb: quit]
+object  : /global/player#216
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#216
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#216
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#216
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#216
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#216
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Mon Nov  9 14:57:30 1998 ]==---
+player  : baldrick [last verb: call quit()shaydz]
+object  : /global/player#216
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#216
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/player#216
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/god#38
+   function : function2
+   arguments: "quit()shaydz",
+   program  : global/wiz_object_comm.c
+   file     : global/wiz_object_comm.c at line 467
+   ------------------------------------
+   object   : /global/god#38
+   function : perform_next_action
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 461
+   ------------------------------------
+   object   : /global/god#38
+   function : action_check
+   arguments: "call quit()shaydz",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 649
+   ------------------------------------
+   object   : /global/god#38
+   function : process_input
+   arguments: "call quit()shaydz",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Tue Nov 10 16:28:00 1998 ]==---
+player  : shaydz [last verb: no verb]
+object  : /global/creator#261
+error   : *Arguments to - do not have compatible types.
+program : global/player.c
+file    : global/player.c at line 741
+   ------------------------------------
+   object   : /global/creator#261
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 741
+   ------------------------------------
+   object   : /global/creator#261
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/creator#261
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+

@@ -34,7 +34,7 @@ string get_date() {
     return date;
 }
 
-static int cmd( string str, object me )
+protected int cmd( string str, object me )
 {
     string *files, orig, backup, date;
     int i, ver;

@@ -24,7 +24,7 @@ string query_short_help()
       "place where you are.";
 }
 
-static int cmd (string arg, object me)
+protected int cmd (string arg, object me)
 {
    object here, *ob;
    int i, dark;

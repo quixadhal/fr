@@ -1,0 +1,252 @@
+---==[ error occurred at Sun Jul 26 16:05:10 1998 ]==---
+note    : error was caught via catch().
+player  : baldrick [last verb: no verb]
+object  : /obj/handlers/money_handler
+error   : *Bad argument 2 to *
+Expected: int or mapping or float Got: "platinum".
+program : obj/handlers/money_handler.c
+file    : obj/handlers/money_handler.c at line 45
+   ------------------------------------
+   object   : /obj/handlers/money_handler
+   function : query_total_value
+   arguments: "/obj/handlers/money_handler.c line 72: Warning: Unused local variable 'n' before the end of line
+",
+   program  : obj/handlers/money_handler.c
+   file     : obj/handlers/money_handler.c at line 45
+   ------------------------------------
+   object   : /obj/money#4
+   function : query_value
+   program  : obj/money.c
+   file     : obj/money.c at line 434
+   ------------------------------------
+   object   : /obj/money#4
+   function : CATCH
+   program  : obj/money.c
+   file     : obj/money.c at line 260
+   ------------------------------------
+   object   : /obj/money#4
+   function : move
+   arguments: /global/god#3, 0, 0,
+   program  : obj/money.c
+   file     : obj/money.c at line 260
+   ------------------------------------
+   object   : /global/god#3
+   function : setup_money
+   program  : global/player.c
+   file     : global/player.c at line 431
+   ------------------------------------
+   object   : /global/god#3
+   function : start_player
+   program  : global/player.c
+   file     : global/player.c at line 409
+   ------------------------------------
+   object   : /global/god#3
+   function : move_player_to_start
+   arguments: "baldrick", 0, -1,
+   program  : global/player.c
+   file     : global/player.c at line 283
+   ------------------------------------
+   object   : /global/god#3
+   function : move_player_to_start
+   arguments: "baldrick", 0, -1,
+   program  : global/lord.c
+   file     : global/lord.c at line 25
+   ------------------------------------
+   object   : /secure/login#1
+   function : begin2
+   arguments: 0,
+   program  : secure/login.c
+   file     : secure/login.c at line 496
+   ------------------------------------
+   object   : /secure/login#1
+   function : begin
+   arguments: 0,
+   program  : secure/login.c
+   file     : secure/login.c at line 460
+   ------------------------------------
+   object   : /secure/login#1
+   function : logon4
+   arguments: 0,
+   program  : secure/login.c
+   file     : secure/login.c at line 365
+   ------------------------------------
+   object   : /secure/login#1
+   function : logon3
+   program  : secure/login.c
+   file     : secure/login.c at line 329
+   ------------------------------------
+   object   : /secure/login#1
+   function : logon2
+   arguments: "MbB1M5iqlfbYQ",
+   program  : secure/login.c
+   file     : secure/login.c at line 320
+
+
+---==[ error occurred at Sun Aug  9 00:43:44 1998 ]==---
+note    : error was caught via catch().
+player  : asmodean [last verb: no verb]
+object  : /obj/handlers/room_handler
+error   : *call_other() couldn't find object
+program : obj/handlers/room_handler.c
+file    : obj/handlers/room_handler.c at line 68
+   ------------------------------------
+   object   : /obj/handlers/room_handler
+   function : CATCH
+   program  : obj/handlers/room_handler.c
+   file     : obj/handlers/room_handler.c at line 68
+   ------------------------------------
+   object   : /obj/handlers/room_handler
+   function : check_door
+   arguments: ({ /* sizeof() == 3 */
+  /std/room/exit_handler,
+  "tavern",
+  "/d/ss/daggerford/ladyluck.c"
+}),
+   program  : obj/handlers/room_handler.c
+   file     : obj/handlers/room_handler.c at line 68
+
+
+---==[ error occurred at Thu Aug 13 03:58:37 1998 ]==---
+note    : error was caught via catch().
+player  : asmodean [last verb: no verb]
+object  : /obj/handlers/room_handler
+error   : *call_other() couldn't find object
+program : obj/handlers/room_handler.c
+file    : obj/handlers/room_handler.c at line 68
+   ------------------------------------
+   object   : /obj/handlers/room_handler
+   function : CATCH
+   program  : obj/handlers/room_handler.c
+   file     : obj/handlers/room_handler.c at line 68
+   ------------------------------------
+   object   : /obj/handlers/room_handler
+   function : check_door
+   arguments: ({ /* sizeof() == 3 */
+  /std/room/exit_handler,
+  "tavern",
+  "/d/ss/daggerford/ladyluck.c"
+}),
+   program  : obj/handlers/room_handler.c
+   file     : obj/handlers/room_handler.c at line 68
+
+
+---==[ error occurred at Tue Aug 18 01:09:17 1998 ]==---
+note    : error was caught via catch().
+player  : asmodean [last verb: no verb]
+object  : /obj/handlers/room_handler
+error   : *call_other() couldn't find object
+program : obj/handlers/room_handler.c
+file    : obj/handlers/room_handler.c at line 68
+   ------------------------------------
+   object   : /obj/handlers/room_handler
+   function : CATCH
+   program  : obj/handlers/room_handler.c
+   file     : obj/handlers/room_handler.c at line 68
+   ------------------------------------
+   object   : /obj/handlers/room_handler
+   function : check_door
+   arguments: ({ /* sizeof() == 3 */
+  /std/room/exit_handler,
+  "tavern",
+  "/d/ss/daggerford/ladyluck.c"
+}),
+   program  : obj/handlers/room_handler.c
+   file     : obj/handlers/room_handler.c at line 68
+
+
+---==[ error occurred at Mon Aug 31 23:39:24 1998 ]==---
+note    : error was caught via catch().
+player  : asmodean [last verb: no verb]
+object  : /obj/handlers/room_handler
+error   : *call_other() couldn't find object
+program : obj/handlers/room_handler.c
+file    : obj/handlers/room_handler.c at line 68
+   ------------------------------------
+   object   : /obj/handlers/room_handler
+   function : CATCH
+   program  : obj/handlers/room_handler.c
+   file     : obj/handlers/room_handler.c at line 68
+   ------------------------------------
+   object   : /obj/handlers/room_handler
+   function : check_door
+   arguments: ({ /* sizeof() == 3 */
+  /std/room/exit_handler,
+  "tavern",
+  "/d/ss/daggerford/ladyluck.c"
+}),
+   program  : obj/handlers/room_handler.c
+   file     : obj/handlers/room_handler.c at line 68
+
+
+---==[ error occurred at Thu Sep  3 09:40:57 1998 ]==---
+note    : error was caught via catch().
+player  : baldrick [last verb: no verb]
+object  : /obj/handlers/room_handler
+error   : *Error in loading object '/room/admin/site_control'
+program : obj/handlers/room_handler.c
+file    : obj/handlers/room_handler.c at line 68
+   ------------------------------------
+   object   : /obj/handlers/room_handler
+   function : CATCH
+   program  : obj/handlers/room_handler.c
+   file     : obj/handlers/room_handler.c at line 68
+   ------------------------------------
+   object   : /obj/handlers/room_handler
+   function : check_door
+   arguments: ({ /* sizeof() == 3 */
+  /std/room/exit_handler,
+  "south",
+  "/room/admin/site_control"
+}),
+   program  : obj/handlers/room_handler.c
+   file     : obj/handlers/room_handler.c at line 68
+
+
+---==[ error occurred at Fri Oct 30 02:16:10 1998 ]==---
+note    : error was caught via catch().
+player  : asmodean [last verb: no verb]
+object  : /obj/handlers/room_handler
+error   : *call_other() couldn't find object
+program : obj/handlers/room_handler.c
+file    : obj/handlers/room_handler.c at line 68
+   ------------------------------------
+   object   : /obj/handlers/room_handler
+   function : CATCH
+   program  : obj/handlers/room_handler.c
+   file     : obj/handlers/room_handler.c at line 68
+   ------------------------------------
+   object   : /obj/handlers/room_handler
+   function : check_door
+   arguments: ({ /* sizeof() == 3 */
+  /std/room/exit_handler,
+  "tavern",
+  "/d/ss/daggerford/ladyluck.c"
+}),
+   program  : obj/handlers/room_handler.c
+   file     : obj/handlers/room_handler.c at line 68
+
+
+---==[ error occurred at Tue Nov 10 12:27:17 1998 ]==---
+note    : error was caught via catch().
+player  : shaydz [last verb: no verb]
+object  : /obj/handlers/room_handler
+error   : *Error in loading object '/room/admin/site_control'
+program : obj/handlers/room_handler.c
+file    : obj/handlers/room_handler.c at line 68
+   ------------------------------------
+   object   : /obj/handlers/room_handler
+   function : CATCH
+   program  : obj/handlers/room_handler.c
+   file     : obj/handlers/room_handler.c at line 68
+   ------------------------------------
+   object   : /obj/handlers/room_handler
+   function : check_door
+   arguments: ({ /* sizeof() == 3 */
+  /std/room/exit_handler,
+  "south",
+  "/room/admin/site_control"
+}),
+   program  : obj/handlers/room_handler.c
+   file     : obj/handlers/room_handler.c at line 68
+
+

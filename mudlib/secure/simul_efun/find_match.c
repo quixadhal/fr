@@ -1,4 +1,4 @@
-static mixed *rest;
+nosave mixed *rest;
 
 /* If anyone can tell me what this does...
  * I would be most apprecative, Pinkfish... Yes yes ok i did write it.
@@ -17,7 +17,7 @@ string *parse_blocks = ({
   "things",
 });
 
-static int not_hidden(object ob) { return !ob->query_hide_shadow(); }
+protected int not_hidden(object ob) { return !ob->query_hide_shadow(); }
 
 varargs mixed find_match(string str, mixed ob, int no_hidden) 
     {

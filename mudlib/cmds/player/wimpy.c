@@ -34,7 +34,7 @@ string wimpy_str(object me)
         return "It is currently set to "+me->query_wimpy()+"%.";
 }
 
-static int cmd (string str, object me)
+protected int cmd (string str, object me)
 {
         if (!str)
         {

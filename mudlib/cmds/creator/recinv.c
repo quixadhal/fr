@@ -12,7 +12,7 @@ void setup(){
   position = 1;
 }
 
-static void format_inv(object targ, int level) {
+protected void format_inv(object targ, int level) {
   object *inv;
   string s;
 
@@ -24,7 +24,7 @@ static void format_inv(object targ, int level) {
   }
 }
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   object targ;
   object *tmp;
 

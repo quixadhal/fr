@@ -13,10 +13,10 @@ position = 1;
 }
 
 /* This is for querying about objects who don't want to be destructed */
-static object discard_obj;
+nosave object discard_obj;
 
-static object *dest_obj; 
-static int objn, majd;
+nosave object *dest_obj; 
+nosave int objn, majd;
 
 void ask_dest(object me) {
     if (!pointerp(dest_obj) || objn >= sizeof(dest_obj)) {
@@ -78,7 +78,7 @@ void dest_answer(string s, object me)
     return;
 } /* dest_answer() */
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
     object *ob;
     int i;
     string qstr, err, shrt, dobj;

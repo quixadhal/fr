@@ -1,6 +1,6 @@
 /* Player.c once upon a time DW's.
  * messed with by a lot of people.
- * Oct '95: Baldrick added the external command handler by Chrisy and
+* Oct '95: Baldrick added the external command handler by Chrisy and
  * removed a lot from this file.
  */
 #include "library.h"
@@ -35,6 +35,7 @@ inherit "/global/more_file";
 inherit "/global/path";
 inherit "/global/consent";   // Added by Wonderflug, august 95.
 inherit "/global/henchmen";  // Raskolnikov (for Radix) Oct 96
+inherit "/global/prompt";    // Wonderflug 1997, prompting system
 
 #include "money.h"
 #include "post.h"
@@ -50,9 +51,9 @@ inherit "/global/henchmen";  // Raskolnikov (for Radix) Oct 96
 #define FLAG_GAME "/d/omiq/flag/master_control"
 #define IDENTD "/net/identd"
 
-static int last_command, net_dead;
-static int save_counter, hp_counter, combat_counter;
-static int hidden;
+nosave int last_command, net_dead;
+nosave int save_counter, hp_counter, combat_counter;
+nosave int hidden;
 int hb_counter;
 string *auto_load, last_on_from, last_pos;
 mixed *money_array;
@@ -60,11 +61,11 @@ string title, extra_title;
 int headache, max_headache, time_on, monitor;
 int invis, *saved_co_ords, ed_setup, start_time;
 int creator, app_creator, last_log_on;
-static object snoopee;
+nosave object snoopee;
 int registrated;
-static int no_heal;  /* Hamlet */
+nosave int no_heal;  /* Hamlet */
 string ident;  /* Hamlet */
-static int ontime; /* Hamlet */
+nosave int ontime; /* Hamlet */
 string *henchmen_load; //Raskolnikov
 
 void set_creator(int i);
@@ -77,13 +78,13 @@ int save();
 void set_desc(string str);
 string query_title();
 int query_creator();
-static void set_name(string str);
+protected void set_name(string str);
 int check_dark(int light);
 int adjust_level(int i);
 int query_level();
 int really_quit();
 int set_invis(int i);
-static string *attackers,*attacked;
+nosave string *attackers,*attacked;
 // Taniwha 1997 userp() *spits*
 int query_player() { return 1;}
 
@@ -392,7 +393,7 @@ void start_player() {
     spell_commands();
     logging_commands();
     weather_commands();
-    editor_commands();
+    //editor_commands();
     set_living_name(name);
     set_no_check(1);
     set_con(Con);
@@ -826,7 +827,7 @@ void set_registrated(int i)
     return;
 }
 
-static void set_name(string str) {
+protected void set_name(string str) {
     if (name && name != "object")
 	return ;
     name = str;
@@ -983,7 +984,7 @@ int query_hb_diff(int oldc)
 }
 
 
-static int hb_num = 1;
+nosave int hb_num = 1;
 
 
 /*
@@ -1414,7 +1415,7 @@ varargs int move(object dest, string msgin, string msgout) {
     return i;
 }
 
-static int do_refresh(string str) 
+protected int do_refresh(string str) 
 {
     if(!this_object()->query_creator())
     {
@@ -1433,7 +1434,7 @@ static int do_refresh(string str)
     return 1;
 }
 
-static int refresh2(string str) {
+protected int refresh2(string str) {
     str = lower_case(str);
     if (str[0] != 'n' && str[0] != 'y') {
 	write("Pardon?  I do not understand.  Do you want to refresh yourself? ");
@@ -1559,7 +1560,7 @@ string query_object_type()
     return " ";
 } /* query_object_type() */
 
-static int do_clear_screen() {
+protected int do_clear_screen() {
     if( this_player(1) != this_player() )  return 0;
     tell_object(this_object(),sprintf("%c[H%c[2J",27,27));
     return 1;
@@ -1680,6 +1681,17 @@ nomask void set_ontime(int i)  {  ontime = i;  }
 nomask int query_ontime() {  return ontime;  }
 int query_prevent_reload_object() { return 1; }
 
+/* This looks interesting: 
+ * from FR:Dev
+ * */
+int query_ed_setup() { return ed_setup; }
+void set_ed_setup(int i)
+{
+    ed_setup = i;
+    write(sprintf("ed setup: %O\n", i));
+}
+
+
 mixed *query_commands() {
     /* right now, I don't give a * about the security.. :=)
      * anyway, is the commands such a secret?
@@ -1703,4 +1715,5 @@ mixed *query_commands() {
 } /* query_commands() */
 
 /* Added by Baldrick. */
+#include "/global/new_ed.c";
 #include "/global/process_input.c"

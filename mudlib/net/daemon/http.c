@@ -25,9 +25,9 @@
 
 //inherit DAEMON;
 
-static private int __SocketHTTP, request_no, current_no_reads;
-static private mapping __Sockets, __Activity, Pos;
-static string current_file;
+nosave private int __SocketHTTP, request_no, current_no_reads;
+nosave private mapping __Sockets, __Activity, Pos;
+nosave string current_file;
 mapping http_stats;
 void send_file(int fd, string str);
 void send_string(int fd, string str, int last_mod);
@@ -63,7 +63,7 @@ void create() {
   restore_object(SAVE_FILE);
 } /* create() */
 
-static void setup() {
+protected void setup() {
   if((__SocketHTTP=socket_create(STREAM,"read_callback","close_callback"))<0){
     log_file("httpd", "Failed to create socket.\n");
     return;
@@ -264,7 +264,7 @@ void resolve_incoming(string nom, string addr, int cle) {
            addr, (nom ? nom : "NOT RESOLVED")));
 } /* resolve_incoming( */
 
-static private void http_error(int fd, mapping err) {
+protected private void http_error(int fd, mapping err) {
   string str;
 
   TP("http_error"+err["error"]+", "+err["file"]+"\n");
@@ -276,7 +276,7 @@ static private void http_error(int fd, mapping err) {
         stat(err["file"])[1]);
 } /* http_error() */
 
-static private void add_activity(int fd, string act) {
+protected private void add_activity(int fd, string act) {
   if(!__Activity[fd]) __Activity[fd] = ({ act });
   else __Activity[fd] += ({ act });
 } /* add_activity() */
@@ -295,7 +295,7 @@ void close_connection(int fd) {
   socket_close(fd);
 } /* close_connection() */
 
-static void clean_sockets() {
+protected void clean_sockets() {
   int *cles;
   int i;
 
@@ -349,7 +349,7 @@ string *www_resolve(string file) {
   return ({ dir, file, normal });
 } /* www_resolve() */
 
-static private void get_file(int fd, string file) {
+protected private void get_file(int fd, string file) {
   string *parts, *tmp, *bits, dir;
   mixed str;
   string id, args;

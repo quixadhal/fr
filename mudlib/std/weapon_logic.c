@@ -34,10 +34,10 @@
 
 /* Variable Declarations */
 
-static object defender,
+nosave object defender,
               attacker;
 
-static int wm_flag;
+nosave int wm_flag;
 
 string  weapon_table,
         weapon_skill,

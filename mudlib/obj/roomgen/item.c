@@ -2,7 +2,7 @@ inherit "obj/roomgen/support";
  
 string *room_items, *room_item_descs;
 string *new_item_desc;
-static int pos;
+nosave int pos;
  
 #define ITEM_HELP "/doc/roomgen/item_help"
 #define ITEM_EXAMPLE "/doc/roomgen/item_example"

@@ -5,6 +5,7 @@
 #define version() VERSION
 #endif
 
+#define HIGHLords (["god":1, ROOT:1, ])
 
 // Objects
 

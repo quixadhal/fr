@@ -2,7 +2,7 @@
 
 inherit "/obj/monster";
 
-static int i = 0;
+nosave int i = 0;
 object cloak;
  
 void setup() {

@@ -19,9 +19,9 @@ private int Password;
 private class list MudList, ChannelList;
 private mapping Banned;
 private mixed *Nameservers;
-private static int Connected, Tries;
+private nosave int Connected, Tries;
 
-static void create() {
+protected void create() {
     client::create();
     Connected = 0;
     Password = 0;
@@ -41,7 +41,7 @@ static void create() {
     call_out( (: Setup :), 2);
 }
 
-static void Setup() {
+protected void Setup() {
     string ip;
     int port;
 
@@ -56,7 +56,7 @@ static void Setup() {
 		   (mapping)SERVICES_D->GetServices(), OTHER_SERVICES }) );
 }
 
-static void eventRead(mixed *packet) {
+protected void eventRead(mixed *packet) {
     mixed val;
     string cle;
 
@@ -161,17 +161,17 @@ static void eventRead(mixed *packet) {
     }
 }
 
-static void eventRequestMudList() {
+protected void eventRequestMudList() {
     eventWrite( ({ "mudlist-request", 5, mud_name(), 0, 
 		   Nameservers[0][0], 0, MudList->ID }) );
 }
 
-static void eventRequestChannelList() {
+protected void eventRequestChannelList() {
     eventWrite( ({ "chanlist-req", 5, mud_name(), 0, Nameservers[0][0], 0,
 		   ChannelList->ID }) );
 }
 
-static void eventSocketClose() {
+protected void eventSocketClose() {
     int extra_wait;
 
     extra_wait = (Tries++) * 20;
@@ -180,7 +180,7 @@ static void eventSocketClose() {
     call_out( (: Setup :), 20 + extra_wait);
 }
 
-static void eventConnectionFailure() {
+protected void eventConnectionFailure() {
     if( Connected ) return;
     error("Failed to find a useful name server.\n");
 }

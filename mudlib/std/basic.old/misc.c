@@ -4,7 +4,7 @@ inherit "/std/basic/light";
 inherit "/std/basic/move";
 /* this will also handle value... */
 
-static int weight;
+nosave int weight;
 int value;
 int resale_value; /* Hamlet */
 int stolen_modifier; /* Hamlet */

@@ -7,10 +7,10 @@ inherit "std/room";
 #include "timestuff.h"
 #include "money_adjust.h"
  
-static mapping menu_items, menu_aliases;
-static string menu_header;
+nosave mapping menu_items, menu_aliases;
+nosave string menu_header;
 int display_headings, last_adjust, pts_healed, gross_inc, last_sign;
-static object menu_object;
+nosave object menu_object;
 mapping prices_used, *best_prices, race_prefs;
 
 /* Taniwha 1995 , block clean_up() from removing items

@@ -17,13 +17,13 @@ void load_login();
 
  // string o_type, g_title;
 
-static string omsgin, omsgout, ommsgin, ommsgout;
-static int oxp, omax_deaths=18, odeaths;
-static mixed *oskills;
-static mapping oprop;
-static mapping ospells;
+nosave string omsgin, omsgout, ommsgin, ommsgout;
+nosave int oxp, omax_deaths=18, odeaths;
+nosave mixed *oskills;
+nosave mapping oprop;
+nosave mapping ospells;
 
-/* I wonder if I don't use static in these definitions, will it be saved in
+/* I wonder if I don't use nosave in these definitions, will it be saved in
  * player.o ? Baldrick. 
  * Yup, I'll learn.. :=)*/
 nomask int query_lord() { return 0; } // Taniwha 1995
@@ -41,7 +41,7 @@ int do_glance(string str) {
   return ::do_glance(str);
 } /* do_glance() */
 
-static void swap_entryexit() 
+protected void swap_entryexit() 
 {
   string tmin, tmout, tmmin, tmmout;
   int txp, tdeaths, tmax_deaths;
@@ -128,7 +128,7 @@ string short(int dark) {
 string short(int dark) {
   if(query_invis() == 2)
   {
-    if("/secure/gods"->query_boo(this_player()->query_name()))
+    if("/secure/gods"->query_god(this_player()->query_name()))
        return "**"+::short(dark)+"**";
     return 0;
   }
@@ -149,7 +149,7 @@ string long(string name, int dark)
 {
   if(query_invis() == 2)
   {
-    if("/secure/gods"->query_boo(this_player()->query_name()))
+    if("/secure/gods"->query_god(this_player()->query_name()))
        return "**"+::long(name, dark)+"**";
     return 0;
   }
@@ -184,7 +184,7 @@ int invisible(string str)
   }
 
   if( (query_invis() || str) 
-    && ( "/secure/gods"->query_boo(this_player()->query_name()) ) )
+    && ( "/secure/gods"->query_god(this_player()->query_name()) ) )
     {
     write("You are now truly invisible.\n");
     say(query_cap_name()+" suddenly disappears.\n", this_player());

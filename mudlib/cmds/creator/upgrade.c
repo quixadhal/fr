@@ -11,7 +11,7 @@ void setup(){
 position = 1;
 }
 
-static int cmd(string bing, object me) {
+protected int cmd(string bing, object me) {
     object ob;
 
     ob = clone_object("/secure/upgrade");

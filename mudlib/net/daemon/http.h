@@ -14,11 +14,11 @@ void listen_callback(int fd);
 void write_callback(int fd);
 void read_callback(int fd, string str);
 void resolve_incoming(string addr, string nom, int cle);
-static private void http_error(int fd, mapping err);
-static private void add_activity(int fd, string str);
+protected private void http_error(int fd, mapping err);
+protected private void add_activity(int fd, string str);
 void retry(int fd);
 void close_connection(int fd);
-static private void get_file(int fd, string file);
-static private string format_date(int x);
+protected private void get_file(int fd, string file);
+protected private string format_date(int x);
 
 #endif /* __HTTP_H */

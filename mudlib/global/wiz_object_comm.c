@@ -7,7 +7,7 @@ varargs object *wiz_present(string str, object onobj, int nogoout);
 string desc_object(mixed o);
 string desc_f_object(object o);
 
-static void wiz_commands() {
+protected void wiz_commands() {
     add_action("function2","call");
     //add_action("parse_frogs", ";");
     add_action("parse_frogs", ";");
@@ -22,7 +22,7 @@ static void wiz_commands() {
 
 
 /* This is for querying about objects who don't want to be destructed */
-static object discard_obj;
+nosave object discard_obj;
 
 int affirmative(string s) /* returns true if s is a 'yes' equiv response */
 {
@@ -38,8 +38,8 @@ void handle_error(string erm, string desc) {
 } /* handle_error() */
 
 
-static object *dest_obj; 
-static int objn, majd;
+nosave object *dest_obj; 
+nosave int objn, majd;
 
 string desc_object(mixed o){
     string str;
@@ -214,7 +214,7 @@ varargs object *wiz_present(string str, object onobj, int nogoout) {
     return ({ });
 } /* wiz_present() */
 
-static mixed *parse_args(string str, string close) {
+protected mixed *parse_args(string str, string close) {
     mixed *args, *m, *m2;
     object *obs;
     string s1, s2, s3, s4, s5, s6, s7;
@@ -394,14 +394,14 @@ void inform_of_call(object ob, mixed *argv) {
      */
 } /* inform_of_call() */
 
-static mixed mapped_call(object ob, mixed *argv) {
+protected mixed mapped_call(object ob, mixed *argv) {
     inform_of_call(ob, argv);
     return call_other(ob, argv[0], argv[1],argv[2],argv[3],
       argv[4],argv[5],argv[6]);
 } /* mapped_call() */
 
 /* Free form parse_args code */
-static int parse_frogs(string str) {
+protected int parse_frogs(string str) {
     mixed junk;
 
     if ( this_player()->query_current_action_forced() )
@@ -417,7 +417,7 @@ static int parse_frogs(string str) {
     return 1;
 } /* parse_forgs() */
 
-static int function2(string str) {
+protected int function2(string str) {
     /* call fish(x,y,z) object */
     mixed *args;
     string *s, s1, s2;

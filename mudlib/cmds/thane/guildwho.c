@@ -13,7 +13,7 @@ return "command";
 }
 
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   object *mems;
   string g_ob, mems2;
   int cols, i;

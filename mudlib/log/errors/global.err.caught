@@ -1,0 +1,2905 @@
+---==[ error occurred at Fri Sep 25 21:15:32 1998 ]==---
+note    : error was caught via catch().
+player  : ned [last verb: quit]
+object  : /global/player#883
+error   : *Bad argument 1 to implode()
+Expected: array Got: 906750877.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#883
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#883
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#883
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#883
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#883
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#883
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#883
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sun Sep 27 22:31:59 1998 ]==---
+note    : error was caught via catch().
+player  : randor [last verb: quit]
+object  : /global/lord#892
+error   : *Bad argument 1 to implode()
+Expected: array Got: 906927993.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#892
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#892
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#892
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#892
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/lord#892
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/lord#892
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/lord#892
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Tue Sep 29 00:31:52 1998 ]==---
+note    : error was caught via catch().
+player  : xeric [last verb: quit]
+object  : /global/creator#913
+error   : *Bad argument 1 to implode()
+Expected: array Got: 907021886.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#913
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#913
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#913
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#913
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/creator#913
+   function : perform_next_action
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 461
+   ------------------------------------
+   object   : /global/creator#913
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 649
+   ------------------------------------
+   object   : /global/creator#913
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Tue Sep 29 11:57:22 1998 ]==---
+note    : error was caught via catch().
+player  : costanza [last verb: no verb]
+object  : /global/player#935
+error   : *Bad argument 1 to implode()
+Expected: array Got: 907062952.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#935
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#935
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#935
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#935
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#935
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Wed Sep 30 23:57:52 1998 ]==---
+note    : error was caught via catch().
+player  : randor [last verb: quit]
+object  : /global/lord#947
+error   : *Bad argument 1 to implode()
+Expected: array Got: 907192349.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#947
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#947
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#947
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#947
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/lord#947
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/lord#947
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/lord#947
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Thu Oct  1 02:08:35 1998 ]==---
+note    : error was caught via catch().
+player  : xeric [last verb: quit]
+object  : /global/creator#966
+error   : *Bad argument 1 to implode()
+Expected: array Got: 907200498.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#966
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#966
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#966
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#966
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/creator#966
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/creator#966
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#966
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Thu Oct  1 08:21:16 1998 ]==---
+note    : error was caught via catch().
+player  : xevious [last verb: quit]
+object  : /global/player#988
+error   : *Bad argument 1 to implode()
+Expected: array Got: 907222707.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#988
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#988
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#988
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#988
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#988
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#988
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#988
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sat Oct  3 18:09:11 1998 ]==---
+note    : error was caught via catch().
+player  : jason [last verb: quit]
+object  : /global/player#1002
+error   : *Bad argument 1 to implode()
+Expected: array Got: 907430945.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1002
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1002
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1002
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1002
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1002
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#1002
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#1002
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sun Oct  4 05:06:19 1998 ]==---
+note    : error was caught via catch().
+player  : teel [last verb: quit]
+object  : /global/player#1008
+error   : *Bad argument 1 to implode()
+Expected: array Got: 907470067.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1008
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1008
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1008
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1008
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1008
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#1008
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#1008
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sun Oct  4 08:19:41 1998 ]==---
+note    : error was caught via catch().
+player  : benedick [last verb: quit]
+object  : /global/god#1016
+error   : *Bad argument 1 to implode()
+Expected: array Got: 907481923.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/god#1016
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/god#1016
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/god#1016
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/god#1016
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/god#1016
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/god#1016
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/god#1016
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sun Oct  4 13:22:03 1998 ]==---
+note    : error was caught via catch().
+player  : skullslayer [last verb: quit]
+object  : /global/lord#1033
+error   : *Bad argument 1 to implode()
+Expected: array Got: 907499512.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#1033
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#1033
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#1033
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#1033
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/lord#1033
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/lord#1033
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/lord#1033
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sun Oct  4 16:58:02 1998 ]==---
+note    : error was caught via catch().
+player  : haval [last verb: no verb]
+object  : /global/player#1053
+error   : *Bad argument 1 to implode()
+Expected: array Got: 907513071.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1053
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1053
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1053
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1053
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1053
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Sun Oct  4 19:08:53 1998 ]==---
+note    : error was caught via catch().
+player  : randor [last verb: quit]
+object  : /global/lord#1067
+error   : *Bad argument 1 to implode()
+Expected: array Got: 907520609.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#1067
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#1067
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#1067
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#1067
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/lord#1067
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/lord#1067
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/lord#1067
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sun Oct  4 19:28:21 1998 ]==---
+note    : error was caught via catch().
+player  : xeric [last verb: quit]
+object  : /global/creator#1082
+error   : *Bad argument 1 to implode()
+Expected: array Got: 907522017.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#1082
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#1082
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#1082
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#1082
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/creator#1082
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/creator#1082
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#1082
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Mon Oct  5 18:28:23 1998 ]==---
+note    : error was caught via catch().
+player  : errante [last verb: no verb]
+object  : /global/creator#1100
+error   : *Bad argument 1 to implode()
+Expected: array Got: 907604805.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#1100
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#1100
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#1100
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+
+
+---==[ error occurred at Tue Oct  6 01:17:54 1998 ]==---
+note    : error was caught via catch().
+player  : klop [last verb: no verb]
+object  : /global/player#1118
+error   : *Bad argument 1 to implode()
+Expected: array Got: 907629419.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1118
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1118
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1118
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1118
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1118
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Wed Oct  7 01:08:28 1998 ]==---
+note    : error was caught via catch().
+player  : randor [last verb: quit]
+object  : /global/lord#1125
+error   : *Bad argument 1 to implode()
+Expected: array Got: 907715059.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#1125
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#1125
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#1125
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#1125
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/lord#1125
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/lord#1125
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/lord#1125
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Wed Oct  7 20:16:20 1998 ]==---
+note    : error was caught via catch().
+player  : rumplukt [last verb: no verb]
+object  : /global/player#1146
+error   : *Bad argument 1 to implode()
+Expected: array Got: 907784109.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1146
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1146
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1146
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1146
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1146
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Fri Oct  9 01:28:50 1998 ]==---
+note    : error was caught via catch().
+player  : xeric [last verb: quit]
+object  : /global/creator#1155
+error   : *Bad argument 1 to implode()
+Expected: array Got: 907889256.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#1155
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#1155
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#1155
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#1155
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/creator#1155
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/creator#1155
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#1155
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Fri Oct  9 01:53:45 1998 ]==---
+note    : error was caught via catch().
+player  : xeric [last verb: quit]
+object  : /global/creator#1175
+error   : *Bad argument 1 to implode()
+Expected: array Got: 907890720.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#1175
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#1175
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#1175
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#1175
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/creator#1175
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/creator#1175
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#1175
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Fri Oct  9 14:10:09 1998 ]==---
+note    : error was caught via catch().
+player  : spongebath [last verb: quit]
+object  : /global/creator#1187
+error   : *Bad argument 1 to implode()
+Expected: array Got: 907934867.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#1187
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#1187
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#1187
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#1187
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/creator#1187
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/creator#1187
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#1187
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sat Oct 10 02:13:43 1998 ]==---
+note    : error was caught via catch().
+player  : skullslayer [last verb: quit]
+object  : /global/lord#1212
+error   : *Bad argument 1 to implode()
+Expected: array Got: 907978392.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#1212
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#1212
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#1212
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#1212
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/lord#1212
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/lord#1212
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/lord#1212
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Mon Oct 12 12:27:02 1998 ]==---
+note    : error was caught via catch().
+player  : kent [last verb: quit]
+object  : /global/player#1232
+error   : *Bad argument 1 to implode()
+Expected: array Got: 908187970.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1232
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1232
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1232
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1232
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1232
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#1232
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#1232
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Mon Oct 12 13:19:08 1998 ]==---
+note    : error was caught via catch().
+player  : skullslayer [last verb: quit]
+object  : /global/lord#1240
+error   : *Bad argument 1 to implode()
+Expected: array Got: 908190961.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#1240
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#1240
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#1240
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#1240
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/lord#1240
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/lord#1240
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/lord#1240
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Wed Oct 14 01:02:30 1998 ]==---
+note    : error was caught via catch().
+player  : xeric [last verb: quit]
+object  : /global/creator#1258
+error   : *Bad argument 1 to implode()
+Expected: array Got: 908319710.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#1258
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#1258
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#1258
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#1258
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/creator#1258
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/creator#1258
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#1258
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Thu Oct 15 12:33:11 1998 ]==---
+note    : error was caught via catch().
+player  : who [last verb: no verb]
+object  : /global/player#1285
+error   : *Bad argument 1 to implode()
+Expected: array Got: 908447565.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1285
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1285
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1285
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1285
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1285
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Fri Oct 16 03:53:23 1998 ]==---
+note    : error was caught via catch().
+player  : xeric [last verb: quit]
+object  : /global/creator#1293
+error   : *Bad argument 1 to implode()
+Expected: array Got: 908502739.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#1293
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#1293
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#1293
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#1293
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/creator#1293
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/creator#1293
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#1293
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sat Oct 17 04:58:45 1998 ]==---
+note    : error was caught via catch().
+player  : thulsa [last verb: quit]
+object  : /global/creator#1318
+error   : *Bad argument 1 to implode()
+Expected: array Got: 908592173.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#1318
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#1318
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#1318
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#1318
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/creator#1318
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/creator#1318
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#1318
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sat Oct 17 06:34:42 1998 ]==---
+note    : error was caught via catch().
+player  : paradox [last verb: quit]
+object  : /global/player#1333
+error   : *Bad argument 1 to implode()
+Expected: array Got: 908597250.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1333
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1333
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1333
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1333
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1333
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#1333
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#1333
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sat Oct 17 15:53:14 1998 ]==---
+note    : error was caught via catch().
+player  : paradox [last verb: quit]
+object  : /global/player#1341
+error   : *Bad argument 1 to implode()
+Expected: array Got: 908631903.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1341
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1341
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1341
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1341
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1341
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#1341
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#1341
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sat Oct 17 16:53:21 1998 ]==---
+note    : error was caught via catch().
+player  : paradox [last verb: quit]
+object  : /global/player#1349
+error   : *Bad argument 1 to implode()
+Expected: array Got: 908635981.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1349
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1349
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1349
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1349
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1349
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#1349
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#1349
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sat Oct 17 20:17:58 1998 ]==---
+note    : error was caught via catch().
+player  : paradox [last verb: quit]
+object  : /global/player#1353
+error   : *Bad argument 1 to implode()
+Expected: array Got: 908648268.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1353
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1353
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1353
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1353
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1353
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#1353
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#1353
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sun Oct 18 05:00:48 1998 ]==---
+note    : error was caught via catch().
+player  : paradox [last verb: quit]
+object  : /global/player#1361
+error   : *Bad argument 1 to implode()
+Expected: array Got: 908679524.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1361
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1361
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1361
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1361
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1361
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#1361
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#1361
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Mon Oct 19 07:09:13 1998 ]==---
+note    : error was caught via catch().
+player  : benedick [last verb: quit]
+object  : /global/god#1379
+error   : *Bad argument 1 to implode()
+Expected: array Got: 908773647.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/god#1379
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/god#1379
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/god#1379
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/god#1379
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/god#1379
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/god#1379
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/god#1379
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Tue Oct 20 01:34:32 1998 ]==---
+note    : error was caught via catch().
+player  : randor [last verb: quit]
+object  : /global/lord#1401
+error   : *Bad argument 1 to implode()
+Expected: array Got: 908839746.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#1401
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#1401
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#1401
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#1401
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/lord#1401
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/lord#1401
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/lord#1401
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Tue Oct 20 10:20:58 1998 ]==---
+note    : error was caught via catch().
+player  : skullslayer [last verb: quit]
+object  : /global/lord#1420
+error   : *Bad argument 1 to implode()
+Expected: array Got: 908871633.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#1420
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#1420
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#1420
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#1420
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/lord#1420
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/lord#1420
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/lord#1420
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Tue Oct 20 12:17:32 1998 ]==---
+note    : error was caught via catch().
+player  : amularae [last verb: quit]
+object  : /global/player#1438
+error   : *Bad argument 1 to implode()
+Expected: array Got: 908878510.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1438
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1438
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1438
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1438
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1438
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#1438
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#1438
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Wed Oct 21 17:09:53 1998 ]==---
+note    : error was caught via catch().
+player  : karnaq [last verb: no verb]
+object  : /global/player#1442
+error   : *Bad argument 1 to implode()
+Expected: array Got: 908978276.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1442
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#1442
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1442
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#1442
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#1442
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Fri Oct 23 08:24:41 1998 ]==---
+note    : error was caught via catch().
+player  : bean [last verb: quit]
+object  : /global/player#17
+error   : *Bad argument 1 to implode()
+Expected: array Got: 909123797.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#17
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#17
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#17
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#17
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#17
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#17
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#17
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Fri Oct 23 13:40:02 1998 ]==---
+note    : error was caught via catch().
+player  : skullslayer [last verb: quit]
+object  : /global/lord#22
+error   : *Bad argument 1 to implode()
+Expected: array Got: 909142660.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#22
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#22
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#22
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#22
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/lord#22
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/lord#22
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/lord#22
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Mon Oct 26 02:50:38 1998 ]==---
+note    : error was caught via catch().
+player  : xeric [last verb: quit]
+object  : /global/creator#67
+error   : *Bad argument 1 to implode()
+Expected: array Got: 909366613.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#67
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#67
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#67
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#67
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/creator#67
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/creator#67
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#67
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Wed Oct 28 18:41:10 1998 ]==---
+note    : error was caught via catch().
+player  : ninive [last verb: quit]
+object  : /global/player#114
+error   : *Bad argument 1 to implode()
+Expected: array Got: 909596396.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#114
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#114
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#114
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#114
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#114
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#114
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#114
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Fri Oct 30 02:16:21 1998 ]==---
+note    : error was caught via catch().
+player  : asmodean [last verb: quit]
+object  : /global/lord#123
+error   : *Bad argument 1 to implode()
+Expected: array Got: 909710170.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#123
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#123
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#123
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#123
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/lord#123
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/lord#123
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/lord#123
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Fri Oct 30 08:38:11 1998 ]==---
+note    : error was caught via catch().
+player  : skullslayer [last verb: quit]
+object  : /global/lord#144
+error   : *Bad argument 1 to implode()
+Expected: array Got: 909733078.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#144
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/lord#144
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#144
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/lord#144
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/lord#144
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/lord#144
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/lord#144
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Fri Oct 30 20:58:24 1998 ]==---
+note    : error was caught via catch().
+player  : spongebath [last verb: quit]
+object  : /global/creator#168
+error   : *Bad argument 1 to implode()
+Expected: array Got: 909777480.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#168
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#168
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#168
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#168
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/creator#168
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/creator#168
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#168
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sun Nov  1 21:04:11 1998 ]==---
+note    : error was caught via catch().
+player  : xeric [last verb: quit]
+object  : /global/creator#210
+error   : *Bad argument 1 to implode()
+Expected: array Got: 909950639.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#210
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#210
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#210
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#210
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/creator#210
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/creator#210
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#210
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Mon Nov  2 15:16:23 1998 ]==---
+note    : error was caught via catch().
+player  : baldrick [last verb: quit]
+object  : /global/god#8
+error   : *Bad argument 1 to implode()
+Expected: array Got: 910006546.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/god#8
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/god#8
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/god#8
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/god#8
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/god#8
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/god#8
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/god#8
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Mon Nov  2 17:49:32 1998 ]==---
+note    : error was caught via catch().
+player  : deek [last verb: quit]
+object  : /global/creator#48
+error   : *Bad argument 1 to implode()
+Expected: array Got: 910023747.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#48
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#48
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#48
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#48
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/creator#48
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/creator#48
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#48
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Mon Nov  2 18:46:38 1998 ]==---
+note    : error was caught via catch().
+player  : lothor [last verb: quit]
+object  : /global/player#61
+error   : *Bad argument 1 to implode()
+Expected: array Got: 910028738.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#61
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#61
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#61
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#61
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#61
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#61
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#61
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Mon Nov  2 20:08:26 1998 ]==---
+note    : error was caught via catch().
+player  : spongebath [last verb: quit]
+object  : /global/creator#71
+error   : *Bad argument 1 to implode()
+Expected: array Got: 910033446.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#71
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#71
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#71
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#71
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/creator#71
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/creator#71
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#71
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Tue Nov  3 20:53:41 1998 ]==---
+note    : error was caught via catch().
+player  : opprompadi [last verb: quit]
+object  : /global/player#101
+error   : *Bad argument 1 to implode()
+Expected: array Got: 910122667.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#101
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#101
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#101
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#101
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#101
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#101
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#101
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Tue Nov  3 21:04:23 1998 ]==---
+note    : error was caught via catch().
+player  : werner [last verb: quit]
+object  : /global/player#113
+error   : *Bad argument 1 to implode()
+Expected: array Got: 910122995.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#113
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#113
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#113
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#113
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#113
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#113
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#113
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Thu Nov  5 19:59:39 1998 ]==---
+note    : error was caught via catch().
+player  : werner [last verb: no verb]
+object  : /global/player#144
+error   : *Bad argument 1 to implode()
+Expected: array Got: 910289562.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#144
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#144
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#144
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#144
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#144
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Fri Nov  6 14:38:01 1998 ]==---
+note    : error was caught via catch().
+player  : timion [last verb: quit]
+object  : /global/player#154
+error   : *Bad argument 1 to implode()
+Expected: array Got: 910359257.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#154
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#154
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#154
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#154
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#154
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#154
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#154
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sat Nov  7 15:27:28 1998 ]==---
+note    : error was caught via catch().
+player  : foerk [last verb: quit]
+object  : /global/player#163
+error   : *Bad argument 1 to implode()
+Expected: array Got: 910448793.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#163
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#163
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#163
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#163
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#163
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#163
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#163
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sat Nov  7 15:48:56 1998 ]==---
+note    : error was caught via catch().
+player  : foerk [last verb: quit]
+object  : /global/player#168
+error   : *Bad argument 1 to implode()
+Expected: array Got: 910450126.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#168
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#168
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#168
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#168
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#168
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#168
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#168
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sat Nov  7 16:15:11 1998 ]==---
+note    : error was caught via catch().
+player  : foerk [last verb: quit]
+object  : /global/player#172
+error   : *Bad argument 1 to implode()
+Expected: array Got: 910451409.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#172
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#172
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#172
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#172
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#172
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#172
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#172
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sat Nov  7 20:47:53 1998 ]==---
+note    : error was caught via catch().
+player  : xeric [last verb: quit]
+object  : /global/creator#179
+error   : *Bad argument 1 to implode()
+Expected: array Got: 910468016.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#179
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#179
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#179
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#179
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/creator#179
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/creator#179
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#179
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Mon Nov  9 05:06:46 1998 ]==---
+note    : error was caught via catch().
+player  : shaydz [last verb: no verb]
+object  : /global/player#211
+error   : *Bad argument 1 to implode()
+Expected: array Got: 910580206.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#211
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#211
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#211
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#211
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#211
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Mon Nov  9 21:04:45 1998 ]==---
+note    : error was caught via catch().
+player  : shaydz [last verb: no verb]
+object  : /global/creator#238
+error   : *Bad argument 1 to implode()
+Expected: array Got: 910619880.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#238
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#238
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#238
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#238
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/creator#238
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Mon Nov  9 23:21:19 1998 ]==---
+note    : error was caught via catch().
+player  : shaydz [last verb: no verb]
+object  : /global/creator#243
+error   : *Bad argument 1 to implode()
+Expected: array Got: 910648600.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#243
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#243
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#243
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#243
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/creator#243
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Tue Nov 10 14:17:51 1998 ]==---
+note    : error was caught via catch().
+player  : thulsa [last verb: no verb]
+object  : /global/creator#288
+error   : *Bad argument 1 to implode()
+Expected: array Got: 910703645.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#288
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#288
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#288
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#288
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/creator#288
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1046
+
+
+---==[ error occurred at Tue Nov 10 15:23:37 1998 ]==---
+note    : error was caught via catch().
+player  : thulsa [last verb: quit]
+object  : /global/creator#300
+error   : *Bad argument 1 to implode()
+Expected: array Got: 910703893.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#300
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/creator#300
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#300
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/creator#300
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/creator#300
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/creator#300
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#300
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Tue Nov 10 17:02:55 1998 ]==---
+note    : error was caught via catch().
+player  : roy [last verb: quit]
+object  : /global/player#312
+error   : *Bad argument 1 to implode()
+Expected: array Got: 910713717.
+program : global/line_ed.c
+file    : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#312
+   function : editor_check_do_quit
+   program  : global/line_ed.c
+   file     : global/line_ed.c at line 399
+   ------------------------------------
+   object   : /global/player#312
+   function : CATCH
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#312
+   function : really_quit
+   program  : global/player.c
+   file     : global/player.c at line 751
+   ------------------------------------
+   object   : /global/player#312
+   function : quit
+   program  : global/player.c
+   file     : global/player.c at line 727
+   ------------------------------------
+   object   : /global/player#312
+   function : aq_add
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#312
+   function : action_check
+   arguments: "quit",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#312
+   function : process_input
+   arguments: "quit",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+

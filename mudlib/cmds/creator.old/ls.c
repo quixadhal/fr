@@ -277,7 +277,7 @@ int is_dir(mixed arg, string path) {
     return (file_size(tp->get_path(sprintf("%s/%s", path, arg))) == -2);
 }
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
 string flags;
 int mask, i;
 

@@ -32,17 +32,17 @@ private mapping path_files;
 
 /* This is used to keep work-in-progress during startup. */
 private string *todo;
-private static mapping global_aliases;
+private nosave mapping global_aliases;
 
-private static string index_root;    /* "Root directory" */
-private static string *mergedirs;    /* Dirs under root to be merged */
-private static string save_file;     /* For save_object() */
-private static int no_file_security; /* All docs will be readable by all */
-private static string g_alias_file;  /* Holds global aliases */
+private nosave string index_root;    /* "Root directory" */
+private nosave string *mergedirs;    /* Dirs under root to be merged */
+private protected string save_file;     /* For save_object() */
+private nosave int no_file_security; /* All docs will be readable by all */
+private nosave string g_alias_file;  /* Holds global aliases */
 
-private static void sort_manual_dirs();
+private protected void sort_manual_dirs();
 private mapping get_doc_dir(string dirname);
-private static varargs void create(int recreate);
+private protected varargs void create(int recreate);
 varargs int readable(string file, string path);
 
 /* ****** These should be set in setup() of an inheritor. ****** */
@@ -408,7 +408,7 @@ private nomask void sort_manual_dirs() {
   }
 } 
 
-private static varargs void create(int recreate) {
+private protected varargs void create(int recreate) {
   if(!recreate) {
     seteuid(master()->creator_file(file_name(this_object())));
     this_object()->setup();

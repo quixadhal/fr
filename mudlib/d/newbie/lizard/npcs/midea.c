@@ -2,7 +2,7 @@ inherit "/obj/monster";
 #include "path.h";
 
 
-static int i = 0;
+nosave int i = 0;
 
 void init()
 {

@@ -24,18 +24,18 @@ inherit "std/object";
 int test_add(object ob, int flag) { return 1; }
 int test_remove(object ob, int flag) { return 1; }
 
-static object new_copy, other_copy;
+nosave object new_copy, other_copy;
 string password, title, al_title;
 int cols;
 int Str, Dex, gender, creator, app_creator;
 string ident;
 
-static int no_times;
-static string player_ob;
-static int invis_wish;
+nosave int no_times;
+nosave string player_ob;
+nosave int invis_wish;
 
-static void begin2(int new_pl);
-static void begin(int new_pl);
+protected void begin2(int new_pl);
+protected void begin(int new_pl);
 void logon3();
 void logon4(int bing);
 void logon5(int new_pl);
@@ -283,7 +283,7 @@ int test_password(string name, string pass) {
   return crypt(pass, password) == password;
 } /* test_password() */
 
-static void logon2(string str) {
+protected void logon2(string str) {
   write("\n");
   if (str == "") {
     write(COME_BACK);
@@ -320,7 +320,7 @@ static void logon2(string str) {
   logon3();
 } /* logon2() */
 
-static void logon3() {
+protected void logon3() {
   if (gender == -1) {
     write("Are you male or female ? ");
     input_to("get_sex");
@@ -329,7 +329,7 @@ static void logon3() {
   logon4(0);
 } /* logon3() */
 
-static void get_sex(string str) {
+protected void get_sex(string str) {
   str = lower_case(str);
   if (str != "")
   if (str[0] == 'm')
@@ -347,7 +347,7 @@ static void get_sex(string str) {
     logon4(!query_property("guest"));
   } /* get_sex() */
 
-static void logon4(int new_pl) {
+protected void logon4(int new_pl) {
   if (name != "root" && name != "guest")
   {
     other_copy = find_player(name);
@@ -413,7 +413,7 @@ void guest_login2(string str) {
   input_to("get_sex");
 } /* guest_login2() */
 
-static void try_throw_out(string str) {
+protected void try_throw_out(string str) {
   object tmp, ob;
 
   if (str == "restart") {
@@ -450,7 +450,7 @@ static void try_throw_out(string str) {
   destruct(this_object());
 } /* try_throw_out() */
 
-static void begin(int new_pl) {
+protected void begin(int new_pl) {
   player_ob = (string)"/secure/bastards"->query_player_ob(name);
   if (!find_object(player_ob)) {
     write(LOADING_PLAYER);
@@ -460,7 +460,7 @@ static void begin(int new_pl) {
     begin2(new_pl);
 } /* begin() */
 
-static void begin2(int new_player) {
+protected void begin2(int new_player) {
   object tp;
 
   /* clone the player object */

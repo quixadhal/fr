@@ -120,7 +120,7 @@ void select_domain_stats(string realdom) {
   int ttl15t,gtl15t;
   int gtt,ttt,gtlt,ttlt;
   int tt, ttl,ttl15,gt,gtl,gtl15;
-  float ratio;
+// float ratio;
   string dom, outgoing;
   string *ind, *tmp;
   load_this_ob();
@@ -201,7 +201,7 @@ void full_domain_stats(string realdom) {
   int ttl15t,gtl15t;
   int gtt,ttt,gtlt,ttlt;
   int tt, ttl,ttl15,gt,gtl,gtl15;
-  float ratio;
+//float ratio;
   string dom, outgoing;
   string *ind, *tmp;
   load_this_ob();
@@ -365,10 +365,12 @@ int query_adj_fact(int arg) {
 float update_money_given(int amount, object player)
 {
    mixed vals;
-   string domname, obname;
-   int i, temp,plev;
+string domname;
+//string obname;
+int temp,plev;
+//int i;
    int time_now, time_since, total_time, time_extra;
-   float rateret;
+//float rateret;
 
    if(!(domname = environment_path(player)))
       return 1;
@@ -422,8 +424,10 @@ float update_money_given(int amount, object player)
 void update_money_taken(int amount, object player)
 {
    mixed vals;
-   string domname, obname;
-   int i, temp,plev;
+string domname;
+//string obname;
+//int i;
+int temp,plev;
    int time_now, time_since, total_time, time_extra;
 
    if( player->query_creator() || 

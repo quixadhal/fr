@@ -1,4 +1,4 @@
-static mixed *room_clones;
+nosave mixed *room_clones;
 void clonem()
 {
     int flags;

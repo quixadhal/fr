@@ -22,7 +22,7 @@
 #include <cmd.h>
 inherit CMD_BASE;
 
-static string *races =
+nosave string *races =
 ({ "drow","duergar","dwarf","elf","gnome","goblin","half-elf",
   "ilythiiri","duck","giant","kender","troll","frog","varniad",
   "half-orc","halfling","human","lizard-man","orc" });
@@ -244,7 +244,7 @@ string who_string(int width, int cre, string str, object me)
     return prt;
 } /* who_string() */
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
     me->do_efun_write(who_string((int)me->query_cols(),
 	(int)me->query_creator(),str, me));
     me->set_trivial_action();

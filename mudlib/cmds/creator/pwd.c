@@ -11,7 +11,7 @@ void setup(){
 position = 1;
 }
 
-static int cmd(string str, object me) 
+protected int cmd(string str, object me) 
   {
   write(me->query_path()+"\n");
   this_object()->set_trivial_action();

@@ -1,6 +1,6 @@
 // Henchmen - Radix, June 1996
 
-static object *henchmen;
+nosave object *henchmen;
 
 create()
 {

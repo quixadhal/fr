@@ -14,16 +14,16 @@
 
 inherit "/std/basic/light";
 
-static int weight=0;     /* weight of the object */
-static int droppable=1;  /* whether the object may be dropped */
-static int gettable=1;   /* whether the object may be picked up */
+nosave int weight=0;     /* weight of the object */
+nosave int droppable=1;  /* whether the object may be dropped */
+nosave int gettable=1;   /* whether the object may be picked up */
 
 int value=0;             /* value of the object */
 int resale_value=0;      /* resale value of the object */
 int stolen_modifier=0;   /* devaluation when stolen */
 
 /****** Some misc garbage */
-static object prev;      /* last location visited by the object.. really 
+nosave object prev;      /* last location visited by the object.. really 
                           * this isn't necessary in EVERY object, should
                           * be in player.c or creator.c
                           */

@@ -10,12 +10,12 @@
 #include "socket_errors.h"
 #include "server.h"
 
-private static int DestructOnClose;
-private static function Read;
-private static mapping Listen;
-private static mapping Sockets;
+private nosave int DestructOnClose;
+private nosave function Read;
+private nosave mapping Listen;
+private nosave mapping Sockets;
 
-static void create() {
+protected void create() {
     Sockets = ([]);
 }
 
@@ -52,7 +52,7 @@ int eventCreateSocket(int port) {
     }
 }
 
-static void eventServerListenCallback(int fd) {
+protected void eventServerListenCallback(int fd) {
     int x;
     x = socket_accept(fd, "eventServerReadCallback",
                       "eventServerWriteCallback");
@@ -63,19 +63,19 @@ static void eventServerListenCallback(int fd) {
     eventNewConnection(x);
 }
 
-static void eventServerAbortCallback(int fd) {
+protected void eventServerAbortCallback(int fd) {
     if( Listen && Listen["Descriptor"] == fd) eventClose(Listen);
     else if( Sockets[fd] ) eventClose(Sockets[fd]);
 }
 
-static void eventServerReadCallback(int fd, string str) {
+protected void eventServerReadCallback(int fd, string str) {
     if( functionp(Read) ) evaluate(Read, fd, str);
     else eventRead(fd, str);
 }
 
-static void eventRead(int fd, string str) { }
+protected void eventRead(int fd, string str) { }
 
-static void eventServerWriteCallback(int fd) {
+protected void eventServerWriteCallback(int fd) {
     mapping sock;
     int x;
     if( Listen && Listen["Descriptor"] == fd ) sock = Listen;
@@ -125,7 +125,7 @@ varargs void eventWrite(int fd, string str, int close) {
     else eventServerWriteCallback(sock["Descriptor"]);
 }
 
-static void eventClose(mapping sock) {
+protected void eventClose(mapping sock) {
     if( !sock ) return;
     if( Sockets[sock["Descriptor"]] ) map_delete(Sockets, sock["Descriptor"]);
     socket_close(sock["Descriptor"]);
@@ -134,7 +134,7 @@ static void eventClose(mapping sock) {
     if( DestructOnClose && sock == Listen ) dest_me();
 }
 
-static void eventSocketClosed(int fd) { }
+protected void eventSocketClosed(int fd) { }
 
 int dest_me() {
     eventClose(Listen);
@@ -142,13 +142,13 @@ int dest_me() {
     return !this_object();
 }
 
-static void eventNewConnection(int fd) {
+protected void eventNewConnection(int fd) {
     Sockets[fd] = createClassServer();
     (Sockets[fd])["Descriptor"] = fd;
     (Sockets[fd])["Blocking"] = 0;
 }
 
-static void eventSocketError(string str, int x) { }
+protected void eventSocketError(string str, int x) { }
 
 function SetRead(function f) { return (Read = f); }
 

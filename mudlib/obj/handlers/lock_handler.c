@@ -6,7 +6,7 @@
 // Piper [12/15/95] -initial code
 
 #define LOCK_BUGS "room_locks.bug"
-private static mapping lock_types;
+private nosave mapping lock_types;
 
 void create()
 {

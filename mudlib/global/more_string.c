@@ -15,12 +15,12 @@
               work, probably.
 */
 
-static int fsize,
+nosave int fsize,
     topl,
     used;
-static string last_search, *the_bit, more_bit, stat_line;
-static object finish_ob;
-static mixed finish_func;
+nosave string last_search, *the_bit, more_bit, stat_line;
+nosave object finish_ob;
+nosave mixed finish_func;
 
 #define ROWS ((int)this_object()->query_rows() - 1)
 #define COLS (int)this_object()->query_cols()

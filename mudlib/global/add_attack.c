@@ -1,11 +1,11 @@
 #include "weapon.h"
 
-/* static mixed  attack_name,
+/* nosave mixed  attack_name,
               attack_data; */
 
 mixed attack_name,
       attack_data;
-static string skill;
+nosave string skill;
 
 void create() 
 {
@@ -78,7 +78,7 @@ int calc_value(mixed arg, int skill, string name) {
   }
 }
 
-static object target, me;
+nosave object target, me;
 
 void do_attack(int name) {
   int i, off, hit, base, ac, skill_val;

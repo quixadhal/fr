@@ -21,7 +21,7 @@ string query_short_help()
 	return "Sets text for magic exit. Include $N.";
 }
 
-static int cmd (string str, object me)
+protected int cmd (string str, object me)
 {
 	
 

@@ -49,7 +49,7 @@ int do_halt(object per);
 int check_rules(object per);
 string show_findfile_users();
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   object findfile_ob;
   string *args;
   string path, fname;

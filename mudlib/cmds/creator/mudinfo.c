@@ -26,7 +26,7 @@ void setup()
 
 #define PAD(x,y)      sprintf("%-*s: %s\n", WIDTH, x,"" + y)
 
-static int cmd(string str, object me)
+protected int cmd(string str, object me)
 {
    mapping r;
    float cpu;

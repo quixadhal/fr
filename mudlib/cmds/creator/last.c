@@ -28,7 +28,7 @@ string ntime(int i) {
 }
 
 
-static int cmd(mixed str, object me)
+protected int cmd(mixed str, object me)
 {
   string file, s1, s2, s3, s4, s5, *sarr;
   int time, t2, i;

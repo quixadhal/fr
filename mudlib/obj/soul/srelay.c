@@ -1,11 +1,11 @@
 #include "soul.h"
 
-static string global_adj;
-static string *their_msg;
-static string *ob_msg;
-static object current_you;
-static object *all_targets;
-static string *force_cmds;
+nosave string global_adj;
+nosave string *their_msg;
+nosave string *ob_msg;
+nosave object current_you;
+nosave object *all_targets;
+nosave string *force_cmds;
 
 string filter_stuff(mixed *parts, object *targets) {
     parts = map_array(parts, "handle_part", this_object(), targets);

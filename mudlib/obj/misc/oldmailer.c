@@ -2,12 +2,12 @@ inherit "std/object";
  
 #include "mail.h"
  
-static int just_mail;
+nosave int just_mail;
 int new;
 mixed mail;
-static int *deleted, cur;
-static string subject, cc, send_to, body, from;
-static string do_this_last;
+nosave int *deleted, cur;
+nosave string subject, cc, send_to, body, from;
+nosave string do_this_last;
  
 /*
  * functions should be called on this I suppose, although I suppose

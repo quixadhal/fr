@@ -2,6 +2,7 @@
 /* Removed the #ifdefs (don't ask me why.
  * Added verb
  * Baldrick, dec '97
+ * 980702 Skullslayer - return copies of mappings, not the real things.
  */
 
 #include <standard.h>
@@ -11,7 +12,7 @@
 int cmd_make_hash(int i);
 int soul_com(string str, object me);
 
-static mapping cmd_dirs =
+nosave mapping cmd_dirs =
 ([
 	"/cmds/player/":		({0,		"Player"}),
 	"/cmds/creator/":		({BUILDER_CMD,	"Builder"}),
@@ -23,10 +24,10 @@ static mapping cmd_dirs =
 	"/cmds/handlers/cmds/":		({0,		"Command handler"}),
 ]);
 
-static mapping cmd_hash = ([ ]);  	// For commands and their objects
-static mapping cmd_aliases = ([ ]);	// For command aliases
-static string last_dir = "";      	// Last directory a command was found
-static string current_verb;		// Used by query_verb() efun
+nosave mapping cmd_hash = ([ ]);  	// For commands and their objects
+nosave mapping cmd_aliases = ([ ]);	// For command aliases
+nosave string last_dir = "";      	// Last directory a command was found
+protected string current_verb;		// Used by query_verb() efun
 
 void create()
 {
@@ -218,10 +219,10 @@ int cmd_make_hash(int verbose)
 
 ////
 
-mapping query_cmds() { return cmd_dirs; }
-mapping query_hash() { return cmd_hash; }
+mapping query_cmds() { return copy(cmd_dirs); }
+mapping query_hash() { return copy(cmd_hash); }
 string query_last_dir() { return last_dir; }
-mapping query_aliases() { return cmd_aliases; }
+mapping query_aliases() { return copy(cmd_aliases); }
 string query_alias(string verb) { return cmd_aliases[verb]; }
 
 /* Added by Baldrick.

@@ -14,7 +14,7 @@ string query_short_help()
    "hard to locate items players lose.\n";
 }
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
 
   object *obs = objects();
   int i;

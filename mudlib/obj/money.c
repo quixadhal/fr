@@ -9,7 +9,7 @@ inherit "/std/object";
 #define WEIGHTDIV 2
 
 mixed *money_array;
-static int dont_join;
+nosave int dont_join;
 
 int query_number_coins();
 

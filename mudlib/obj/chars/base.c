@@ -1,5 +1,5 @@
 inherit "/obj/monster";
-static object myfriend;
+nosave object myfriend;
 void set_friend(object friend) 
 {
     myfriend = friend;

@@ -1,5 +1,5 @@
 string password, email;
-static string tmp_password;
+nosave string tmp_password;
 string real_name, birth_day, desc, where;
 
 void finger_commands() {
@@ -137,7 +137,7 @@ void set_password(string pass) {
 
 int change_password2(mixed pass);
 
-static int change_password() {
+protected int change_password() {
   if (password) {
     write("Please enter your old password : ");
     input_to("change_password2",1);
@@ -147,7 +147,7 @@ static int change_password() {
   return 1;
 } /* change_password() */
 
-static int change_password2(mixed pass) {
+protected int change_password2(mixed pass) {
   string str;
   if (password) {
     str = crypt(pass,password);
@@ -161,16 +161,16 @@ static int change_password2(mixed pass) {
   return 1;
 } /* change_password2() */
 
-static string tmppassword;
+nosave string tmppassword;
 
-static int change_password3(string pass) {
+protected int change_password3(string pass) {
   tmppassword = pass;
   write("\nPlease enter again : ");
   input_to("change_password4",1);
   return 1;
 } /* change_password3() */
 
-static int change_password4(string pass) {
+protected int change_password4(string pass) {
   if (tmppassword != pass) {
     write("\nIncorrect.\n");
     return 1;

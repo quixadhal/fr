@@ -15,7 +15,7 @@ void setup(){
 position = 1;
 }
 
-static int cmd(string str, object me, string verb) 
+protected int cmd(string str, object me, string verb) 
   {
   if (verb == "channel")
     {

@@ -6,7 +6,7 @@ inherit "/std/living/hold.c";
 inherit "/std/living/wear.c";
 inherit "/std/living/combattest.c";
 
-private static int worn_ac;
+private nosave int worn_ac;
 mixed *stats()
 {
    return hold::stats();

@@ -36,7 +36,7 @@ string query_short_help()
       "  stat, qc\n\n";
 }
 
-static int cmd(string str, object ob)
+protected int cmd(string str, object ob)
 {
    object itm, *obs;
    string *tmp;

@@ -1,4 +1,4 @@
-static int light, int_light;
+nosave int light, int_light;
 
 int query_light() {
   return light + int_light;

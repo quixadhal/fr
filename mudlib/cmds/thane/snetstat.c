@@ -15,7 +15,7 @@ void setup()
   position = 1;
 }
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   object *players = users();
   int sz = sizeof(players);
   string *info = allocate(4 * sz);

@@ -10,7 +10,7 @@ void setup(){
 
 
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
     object *inv,*tmp;
     object targ;
     string s,result = "";

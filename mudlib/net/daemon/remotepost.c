@@ -4,12 +4,12 @@
 #define SAVE_MAILQUEUE "/net/save/remotepost"
  
 private mapping __MailQueue; 
-static private mapping __IncomingMail; 
+nosave private mapping __IncomingMail; 
  
-static private void save_mailqueue();
-static private void restore_mailqueue();
-static private string *local_targets(string *str);
-static private string *convert_names(string *noms);
+protected private void save_mailqueue();
+protected private void restore_mailqueue();
+protected private string *local_targets(string *str);
+protected private string *convert_names(string *noms);
 
 #undef DEBUG
 
@@ -169,7 +169,7 @@ TP("Incoming.\n");
     return 1; 
 } /* incoming_post() */
  
-static private string *local_targets(string *str) {
+protected private string *local_targets(string *str) {
     string a, b; 
     int i;
  
@@ -183,15 +183,15 @@ static private string *local_targets(string *str) {
     return str;
 }  /* local_targets() */
  
-static private void save_mailqueue() { 
+protected private void save_mailqueue() { 
     save_object(SAVE_MAILQUEUE); 
 } /* save_mailqueue() */
  
-static private void restore_mailqueue() { 
+protected private void restore_mailqueue() { 
     restore_object(SAVE_MAILQUEUE); 
 } /* restore_mailqueue() */
          
-static private string *convert_names(string *noms) {
+protected private string *convert_names(string *noms) {
     string a, b;
     int i;
 

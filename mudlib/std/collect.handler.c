@@ -19,7 +19,7 @@
 
 inherit "/std/room";
 
-static int bing;
+nosave int bing;
 string banker;
 
 void set_percentage(int i)

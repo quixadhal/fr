@@ -1,5 +1,5 @@
 /* the stat data for the living objects... */
-static int intbon,
+nosave int intbon,
        dexbon,
        conbon,
        strbon,
@@ -17,7 +17,7 @@ int Dex,
     wistmp,
     strtmp,
     chatmp;
-static int no_check;
+nosave int no_check;
 
 int extra_attack_bonus, extra_defend_bonus, magical, ac;
 

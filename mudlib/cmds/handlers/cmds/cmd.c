@@ -6,8 +6,8 @@
 
 inherit CMD_BASE;
 
-static mapping cmd_dirs, cmd_hash;
-static string last_dir, file;
+nosave mapping cmd_dirs, cmd_hash;
+nosave string last_dir, file;
 
 void setup()
 {
@@ -24,7 +24,7 @@ string query_short_help()
   return "Find information on a specified command.";
 }
 
-static int cmd(string tail, object thisob)
+protected int cmd(string tail, object thisob)
 {
   string str, *s;
 

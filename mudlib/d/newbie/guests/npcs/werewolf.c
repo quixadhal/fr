@@ -2,7 +2,7 @@ inherit "/obj/monster";
 object *it;
 object med;
 int x;
-static int count = 1;
+nosave int count = 1;
 void setup() {
    add_alias("wolf");
    add_alias("wolfman");

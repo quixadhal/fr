@@ -23,7 +23,7 @@ string query_short_help() {
                                           "with /w/hamlet\n";
 }
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   string *args;
   string *files;
   string path;

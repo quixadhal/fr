@@ -20,7 +20,7 @@ int check_qsnoop(object ob) {
     return 0;
 } /* check_snoop() */
  
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   object *obs, *qobs;
   int i,j;
       notify_fail("No one is being snooped by anyone.\n");

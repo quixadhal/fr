@@ -4,7 +4,7 @@ inherit "/obj/monster";
 #include "path.h"
 
 #define MONSIES 2
-static int i = 0;
+nosave int i = 0;
 
 void init()
 {

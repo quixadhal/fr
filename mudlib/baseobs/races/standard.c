@@ -7,8 +7,8 @@ inherit "/std/object";
 #define SWIM_PROP "swimmer"
 #define UBREATHE_PROP "underwater_breathing"
 
-static int min_light_limit;
-static int max_light_limit;
+nosave int min_light_limit;
+nosave int max_light_limit;
 
 int race_size;
 int limbs;
@@ -512,7 +512,7 @@ void werewolf(object player)
         }
     }  
 }
-static flushit(object player)
+protected flushit(object player)
 {
     player->remove_property("gasping");
     player->remove_timed__property("gasping");

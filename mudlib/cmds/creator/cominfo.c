@@ -20,7 +20,7 @@ void setup(){
 position = 1;
 }
 
-static string do_find_comm(string func, object ob) {
+protected string do_find_comm(string func, object ob) {
   string s, ping;
   object fish;
   s = "";
@@ -37,7 +37,7 @@ static string do_find_comm(string func, object ob) {
 } /* do_find_comm() */
 
 
-static int cmd(string str, object me) 
+protected int cmd(string str, object me) 
   {
   object on;
   string *comms, xtra, s1, s2, found_cmd;

@@ -5,9 +5,9 @@
 int *actual;                 /* permanent ability scores */
 int *effect;                 /* temporary ability scores */
 
-  /* static function declarations */
-static int check_score(int ab, int sc);
-static string query_stat_string(int sc);
+  /* protected function declarations */
+protected int check_score(int ab, int sc);
+protected string query_stat_string(int sc);
 
 void create()
 {
@@ -84,7 +84,7 @@ void reset_all_stats()
     reset_stat(i);
 }
 
-static int check_score(int ab, int sc)
+protected int check_score(int ab, int sc)
 {
   if (ab == STR && sc < 0)
     if (sc < -100)
@@ -124,7 +124,7 @@ string query_stat_string(int ab) {
   return (query_stat_string(effect[ab]));
 }
 
-static string query_stat_string(int sc)
+protected string query_stat_string(int sc)
 {
   if (sc > -100 && sc < 0)
     return ("18/" + sc + "");

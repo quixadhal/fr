@@ -5,7 +5,7 @@
  */
 
 inherit "/std/item";
-static int material;
+nosave int material;
 int clothing_type;
 
 int query_value()

@@ -73,7 +73,7 @@ object *query_who_on(string chan) {
     return ret;
 }
 
-static void add_history(string chan, string mess) {
+protected void add_history(string chan, string mess) {
   if(!history[chan]) {
     history[chan] = ({ mess });
     return;

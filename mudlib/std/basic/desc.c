@@ -1,6 +1,6 @@
 inherit "/std/basic/label"; 
 
-static string short_d,
+nosave string short_d,
        plural_d,
        long_d;
 

@@ -11,7 +11,7 @@
 string password;
 int no_times;
 
-static int put_password(string str);
+protected int put_password(string str);
 int do_retirejob(mixed name);
 
 int try_retire() 
@@ -39,7 +39,7 @@ int test_password(string name, string pass)
   return crypt(pass, password) == password;
 } /* test_password() */
 
-static int put_password(mixed str) 
+protected int put_password(mixed str) 
   {
   string playername;
 
@@ -64,11 +64,11 @@ static int put_password(mixed str)
 /* Done by putting the whole thingie in the master. */
 
 /*
- * Made this puppy static before someone else finds it!
+ * Made this puppy protected before someone else finds it!
  *  -- Wahooka
  */
 
-static int do_retirejob(string name)
+protected int do_retirejob(string name)
   {
   // write ("You made it !" + name + "\n");
   this_player()->add_property("guest",1);

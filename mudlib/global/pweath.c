@@ -1,6 +1,6 @@
 /* your very own personal weather... */
 #include "weather.h"
-static int current_thing,
+nosave int current_thing,
 light;
 int wetness;
 

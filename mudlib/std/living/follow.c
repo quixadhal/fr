@@ -2,8 +2,8 @@
    /std/living/follow.c
 */
 
-static object *followers;
-static mixed remember_follow;
+nosave object *followers;
+nosave mixed remember_follow;
 
 void follow_commands()
 {

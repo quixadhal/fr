@@ -20,7 +20,7 @@ string query_short_help()
       "See also:\n"
       "   comment, info, armours, weapons, containers, items\n\n";
 }
-static int cmd(string str, object ob)
+protected int cmd(string str, object ob)
 {
    object itm, *obs;
   if (!ob) return 0;

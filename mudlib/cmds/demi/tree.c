@@ -6,7 +6,7 @@
 
 inherit CMD_BASE;
 
- static int listrecurse(string indent, string what, object me)
+ protected int listrecurse(string indent, string what, object me)
 {
     int i;
     string *thislevel;

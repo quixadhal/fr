@@ -12,7 +12,7 @@ void setup(){
 position = 1;
 }
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
     object *ob;
     mixed *ob1;
     string s,bing;

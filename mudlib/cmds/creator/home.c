@@ -10,7 +10,7 @@ void setup() {
     position = 1;
 }
 
-static int cmd(string str,object me) {
+protected int cmd(string str,object me) {
     if(!str) {
 	me->move_player("X","/w/"+me->query_name()+
 	  "/workroom.c");

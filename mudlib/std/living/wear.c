@@ -24,9 +24,9 @@ void reset_types();
  * It won't be any problem to add new types later.
  */
 
-static private mixed *worn_objects;
-static private int worn_ac;
-static private int *armour_types;
+nosave private mixed *worn_objects;
+nosave private int worn_ac;
+nosave private int *armour_types;
 
 object *query_worn_ob() { return worn_objects; }
 

@@ -1,0 +1,45 @@
+---==[ error occurred at Fri Nov  6 14:35:17 1998 ]==---
+player  : timion [last verb: help skills]
+object  : /obj/handlers/nroff
+error   : *Bad argument 1 to restore_object()
+Expected: string Got: 0.
+program : obj/handlers/nroff.c
+file    : obj/handlers/nroff.c at line 34
+   ------------------------------------
+   object   : /obj/handlers/nroff
+   function : cat_file
+   arguments: 0, 0,
+   program  : obj/handlers/nroff.c
+   file     : obj/handlers/nroff.c at line 34
+   ------------------------------------
+   object   : /global/player#154
+   function : do_help
+   arguments: "skills",
+   program  : global/help.c
+   file     : global/help.c at line 116
+   ------------------------------------
+   object   : /global/player#154
+   function : help_func
+   arguments: "skills",
+   program  : global/player.c
+   file     : global/player.c at line 1279
+   ------------------------------------
+   object   : /global/player#154
+   function : aq_add
+   arguments: "help skills",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 301
+   ------------------------------------
+   object   : /global/player#154
+   function : action_check
+   arguments: "help skills",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#154
+   function : process_input
+   arguments: "help skills",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+

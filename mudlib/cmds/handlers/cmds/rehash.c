@@ -6,8 +6,8 @@
 
 inherit CMD_BASE;
 
-static mapping cmd_dirs, cmd_hash;
-static string last_dir, file;
+nosave mapping cmd_dirs, cmd_hash;
+nosave string last_dir, file;
 
 void setup()
 {
@@ -30,7 +30,7 @@ string query_short_help()
 		"	-v	Verbose mode.";
 }
 
-static int cmd(string tail, object thisob)
+protected int cmd(string tail, object thisob)
 {
 	int count, verbose;
 

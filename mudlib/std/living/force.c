@@ -8,8 +8,8 @@
                          "force", "kill", "gauge", "exec", "promote", \
                          "new_domain", "rmdir", "cd", "history", "echoall", "shout" })
 
-static string fname;
-static int no_force_me;
+nosave string fname;
+nosave int no_force_me;
 
 
 void force_commands() {
@@ -21,7 +21,7 @@ void force_commands() {
     add_action("no_force", "noforce");
 } /* force_commands() */
 
-static int no_force(string str) {
+protected int no_force(string str) {
   if(fname!="/global/lord")
     return 0;
   if(str == "on") {

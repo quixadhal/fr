@@ -8,7 +8,7 @@ void setup(){
   position = 1;
 }
  
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
 string *ftp_users;
  
   ftp_users = "/secure/ftpd"->query_connections();

@@ -6,7 +6,7 @@
  */
 void do_wander(int bing);
 
-static int drunkness, missing;
+nosave int drunkness, missing;
 
 int drunk_heart_beat(int intox) {
   int lvl, i, con;

@@ -24,7 +24,7 @@ void setup(){
     position = 1;
 }
 
-static int do_update(object *ov, object me) {
+protected int do_update(object *ov, object me) {
     string pname, dummy;
     int i, j;
     object *invent, rsv, env, dup, loaded;
@@ -98,7 +98,7 @@ static int do_update(object *ov, object me) {
     return 1;
 } /* do_update() */
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
     string tring, *filenames, err;
     string foo, bar;
     object ob, *val, *obs;
@@ -199,7 +199,7 @@ object xfind( string arg, object me ) {
     return 0;
 }
 
-static int recursive_update( string from, string to, object me ){
+protected int recursive_update( string from, string to, object me ){
     object from_ob, to_ob, *obs;
     int code;
 

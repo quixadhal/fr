@@ -20,7 +20,7 @@
 #include <cmd.h>
 inherit CMD_BASE;
 
-static string *races =
+nosave string *races =
    ({ "drow","duergar","dwarf","elf","gnome","goblin","half-elf",
       "half-orc","halfling","human","lizard-man","orc" });
 
@@ -228,7 +228,7 @@ int do_who(string str) {
   return 1;
 } /* do_who() */
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   efun::tell_object(me,
       (string)me->fix_string(who_string((int)me->query_cols(),
       (int)me->query_creator(),str)));

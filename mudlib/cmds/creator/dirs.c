@@ -11,7 +11,7 @@ void setup()
 
 
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   me->set_trivial_action();
   return (int)PEOPLER->do_dirs(str);
 } /* do_dirs() */

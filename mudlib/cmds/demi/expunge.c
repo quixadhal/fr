@@ -25,7 +25,7 @@ string query_short_help()
 }
 
 
-static int cmd( string values, object commander )
+protected int cmd( string values, object commander )
 {
     string name;
     string reason;

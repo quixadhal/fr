@@ -7,8 +7,8 @@ inherit "/std/object";
 #define SWIM_PROP "swimmer"
 #define UBREATHE_PROP "underwater_breathing"
 
-static int min_light_limit;
-static int max_light_limit;
+nosave int min_light_limit;
+nosave int max_light_limit;
 
 int race_size;
 int limbs;
@@ -329,7 +329,7 @@ void query_underwater_breathing(object player)
 
 // this is cumulative each race hb. So dropping encumb does help
 // but ... not a lot.
-static int adjust_stamina(object player,int stam)
+protected int adjust_stamina(object player,int stam)
 {   
    int maxe,enc;
    stam = player->query_con() * 10;

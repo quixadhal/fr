@@ -119,7 +119,7 @@ string cat_file(string fname, int update) {
   return " \n"+ret;
 }
 
-static int new_string, force_string;
+nosave int new_string, force_string;
 
 void add_array(mixed *i) {
   if (!sizeof(nroffed_file))

@@ -1,0 +1,768 @@
+---==[ error occurred at Sun Jul 26 16:03:38 1998 ]==---
+note    : error was caught via catch().
+player  : no active player [last verb: no verb]
+object  : /secure/master
+error   : *Error in loading object '/secure/crerem/remote'
+program : secure/master.c
+file    : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : CATCH
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : preload
+   arguments: "/secure/crerem/remote",
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+
+
+---==[ error occurred at Sun Jul 26 16:12:09 1998 ]==---
+note    : error was caught via catch().
+player  : no active player [last verb: no verb]
+object  : /secure/master
+error   : *Error in loading object '/secure/crerem/remote'
+program : secure/master.c
+file    : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : CATCH
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : preload
+   arguments: "/secure/crerem/remote",
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+
+
+---==[ error occurred at Sun Jul 26 16:18:29 1998 ]==---
+note    : error was caught via catch().
+player  : no active player [last verb: no verb]
+object  : /secure/master
+error   : *Error in loading object '/secure/crerem/remote'
+program : secure/master.c
+file    : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : CATCH
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : preload
+   arguments: "/secure/crerem/remote",
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+
+
+---==[ error occurred at Sun Jul 26 16:41:57 1998 ]==---
+note    : error was caught via catch().
+player  : no active player [last verb: no verb]
+object  : /secure/master
+error   : *Error in loading object '/secure/crerem/remote'
+program : secure/master.c
+file    : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : CATCH
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : preload
+   arguments: "/secure/crerem/remote",
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+
+
+---==[ error occurred at Sun Jul 26 16:51:10 1998 ]==---
+note    : error was caught via catch().
+player  : no active player [last verb: no verb]
+object  : /secure/master
+error   : *Error in loading object '/secure/crerem/remote'
+program : secure/master.c
+file    : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : CATCH
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : preload
+   arguments: "/secure/crerem/remote",
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+
+
+---==[ error occurred at Sun Jul 26 16:53:35 1998 ]==---
+note    : error was caught via catch().
+player  : no active player [last verb: no verb]
+object  : /secure/master
+error   : *Error in loading object '/secure/crerem/remote'
+program : secure/master.c
+file    : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : CATCH
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : preload
+   arguments: "/secure/crerem/remote",
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+
+
+---==[ error occurred at Tue Jul 28 13:42:12 1998 ]==---
+note    : error was caught via catch().
+player  : no active player [last verb: no verb]
+object  : /secure/master
+error   : *Error in loading object '/secure/crerem/remote'
+program : secure/master.c
+file    : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : CATCH
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : preload
+   arguments: "/secure/crerem/remote",
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+
+
+---==[ error occurred at Tue Jul 28 13:42:47 1998 ]==---
+note    : error was caught via catch().
+player  : no active player [last verb: no verb]
+object  : /secure/master
+error   : *Error in loading object '/secure/crerem/remote'
+program : secure/master.c
+file    : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : CATCH
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : preload
+   arguments: "/secure/crerem/remote",
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+
+
+---==[ error occurred at Wed Aug 19 17:42:05 1998 ]==---
+note    : error was caught via catch().
+player  : no active player [last verb: no verb]
+object  : /secure/master
+error   : *Error in loading object '/secure/crerem/remote'
+program : secure/master.c
+file    : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : CATCH
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : preload
+   arguments: "/secure/crerem/remote",
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+
+
+---==[ error occurred at Thu Aug 20 21:53:05 1998 ]==---
+note    : error was caught via catch().
+player  : no active player [last verb: no verb]
+object  : /secure/master
+error   : *Error in loading object '/secure/crerem/remote'
+program : secure/master.c
+file    : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : CATCH
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : preload
+   arguments: "/secure/crerem/remote",
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+
+
+---==[ error occurred at Fri Aug 21 15:37:38 1998 ]==---
+note    : error was caught via catch().
+player  : no active player [last verb: no verb]
+object  : /secure/master
+error   : *Error in loading object '/secure/crerem/remote'
+program : secure/master.c
+file    : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : CATCH
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : preload
+   arguments: "/secure/crerem/remote",
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+
+
+---==[ error occurred at Mon Aug 24 15:47:19 1998 ]==---
+note    : error was caught via catch().
+player  : errante [last verb: clone atlas]
+object  : /secure/simul_efun
+error   : *Error in loading object '/w/baldrick/maps/atlas'
+program : secure/simul_efun.c
+file    : secure/simul_efun/modified_efuns.c at line 75
+   ------------------------------------
+   object   : /secure/simul_efun
+   function : CATCH
+   program  : secure/simul_efun.c
+   file     : secure/simul_efun/modified_efuns.c at line 75
+   ------------------------------------
+   object   : /secure/simul_efun
+   function : clone_object
+   arguments: "/w/baldrick/maps/atlas.c",
+   program  : secure/simul_efun.c
+   file     : secure/simul_efun/modified_efuns.c at line 75
+   ------------------------------------
+   object   : /cmds/creator/clone
+   function : cmd
+   arguments: "/w/baldrick/maps/atlas.c", /global/creator#102,
+   program  : cmds/creator/clone.c
+   file     : cmds/creator/clone.c at line 35
+   ------------------------------------
+   object   : /cmds/creator/clone
+   function : _cmd
+   arguments: "atlas", /global/creator#102, "clone",
+   program  : cmds/handlers/cmd.c
+   file     : cmds/handlers/cmd.c at line 87
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "clone", "atlas", /global/creator#102,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 150
+   ------------------------------------
+   object   : /global/creator#102
+   function : aq_add
+   arguments: "clone atlas",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/creator#102
+   function : action_check
+   arguments: "clone atlas",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#102
+   function : process_input
+   arguments: "clone atlas",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Wed Aug 26 07:56:32 1998 ]==---
+note    : error was caught via catch().
+player  : no active player [last verb: no verb]
+object  : /secure/master
+error   : *Error in loading object '/secure/crerem/remote'
+program : secure/master.c
+file    : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : CATCH
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : preload
+   arguments: "/secure/crerem/remote",
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+
+
+---==[ error occurred at Thu Aug 27 09:52:57 1998 ]==---
+note    : error was caught via catch().
+player  : no active player [last verb: no verb]
+object  : /secure/master
+error   : *Error in loading object '/secure/crerem/remote'
+program : secure/master.c
+file    : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : CATCH
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : preload
+   arguments: "/secure/crerem/remote",
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+
+
+---==[ error occurred at Fri Aug 28 05:30:08 1998 ]==---
+note    : error was caught via catch().
+player  : xeric [last verb: clone /obj/misc/board_mas.c]
+object  : /secure/simul_efun
+error   : *Error in loading object '/obj/misc/board_mas'
+program : secure/simul_efun.c
+file    : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /secure/simul_efun
+   function : CATCH
+   program  : secure/simul_efun.c
+   file     : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /secure/simul_efun
+   function : clone_object
+   arguments: "/obj/misc/board_mas.c",
+   program  : secure/simul_efun.c
+   file     : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /cmds/creator/clone
+   function : cmd
+   arguments: "/obj/misc/board_mas.c", /global/creator#75,
+   program  : cmds/creator/clone.c
+   file     : cmds/creator/clone.c at line 35
+   ------------------------------------
+   object   : /cmds/creator/clone
+   function : _cmd
+   arguments: "/obj/misc/board_mas.c", /global/creator#75, "clone",
+   program  : cmds/handlers/cmd.c
+   file     : cmds/handlers/cmd.c at line 87
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "clone", "/obj/misc/board_mas.c", /global/creator#75,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 150
+   ------------------------------------
+   object   : /global/creator#75
+   function : aq_add
+   arguments: "clone /obj/misc/board_mas.c",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/creator#75
+   function : action_check
+   arguments: "clone /obj/misc/board_mas.c",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#75
+   function : process_input
+   arguments: "clone /obj/misc/board_mas.c",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sat Sep 12 22:49:59 1998 ]==---
+note    : error was caught via catch().
+player  : xeric [last verb: clone /obj/misc/board_mas.c]
+object  : /secure/simul_efun
+error   : *Error in loading object '/obj/misc/board_mas'
+program : secure/simul_efun.c
+file    : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /secure/simul_efun
+   function : CATCH
+   program  : secure/simul_efun.c
+   file     : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /secure/simul_efun
+   function : clone_object
+   arguments: "/obj/misc/board_mas.c",
+   program  : secure/simul_efun.c
+   file     : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /cmds/creator/clone
+   function : cmd
+   arguments: "/obj/misc/board_mas.c", /global/creator#506,
+   program  : cmds/creator/clone.c
+   file     : cmds/creator/clone.c at line 35
+   ------------------------------------
+   object   : /cmds/creator/clone
+   function : _cmd
+   arguments: "/obj/misc/board_mas.c", /global/creator#506, "clone",
+   program  : cmds/handlers/cmd.c
+   file     : cmds/handlers/cmd.c at line 87
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "clone", "/obj/misc/board_mas.c", /global/creator#506,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 150
+   ------------------------------------
+   object   : /global/creator#506
+   function : aq_add
+   arguments: "clone /obj/misc/board_mas.c",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/creator#506
+   function : action_check
+   arguments: "clone /obj/misc/board_mas.c",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#506
+   function : process_input
+   arguments: "clone /obj/misc/board_mas.c",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Fri Sep 18 17:49:25 1998 ]==---
+note    : error was caught via catch().
+player  : errante [last verb: man ed]
+object  : /secure/simul_efun
+error   : *Inherited file '/std/basic/wildcard' does not exist!
+program : secure/simul_efun.c
+file    : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /secure/simul_efun
+   function : CATCH
+   program  : secure/simul_efun.c
+   file     : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /secure/simul_efun
+   function : clone_object
+   arguments: "/obj/menu",
+   program  : secure/simul_efun.c
+   file     : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /cmds/creator/man
+   function : CATCH
+   program  : cmds/creator/man.c
+   file     : cmds/creator/man.c at line 62
+   ------------------------------------
+   object   : /cmds/creator/man
+   function : cmd
+   arguments: "ed", /global/creator#666,
+   program  : cmds/creator/man.c
+   file     : cmds/creator/man.c at line 62
+   ------------------------------------
+   object   : /cmds/creator/man
+   function : _cmd
+   arguments: "ed", /global/creator#666, "man",
+   program  : cmds/handlers/cmd.c
+   file     : cmds/handlers/cmd.c at line 87
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "man", "ed", /global/creator#666,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 150
+   ------------------------------------
+   object   : /global/creator#666
+   function : aq_add
+   arguments: "man ed",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/creator#666
+   function : action_check
+   arguments: "man ed",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#666
+   function : process_input
+   arguments: "man ed",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Fri Sep 18 17:49:29 1998 ]==---
+note    : error was caught via catch().
+player  : errante [last verb: man ed]
+object  : /secure/simul_efun
+error   : *Inherited file '/std/basic/wildcard' does not exist!
+program : secure/simul_efun.c
+file    : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /secure/simul_efun
+   function : CATCH
+   program  : secure/simul_efun.c
+   file     : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /secure/simul_efun
+   function : clone_object
+   arguments: "/obj/menu",
+   program  : secure/simul_efun.c
+   file     : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /cmds/creator/man
+   function : CATCH
+   program  : cmds/creator/man.c
+   file     : cmds/creator/man.c at line 62
+   ------------------------------------
+   object   : /cmds/creator/man
+   function : cmd
+   arguments: "ed", /global/creator#666,
+   program  : cmds/creator/man.c
+   file     : cmds/creator/man.c at line 62
+   ------------------------------------
+   object   : /cmds/creator/man
+   function : _cmd
+   arguments: "ed", /global/creator#666, "man",
+   program  : cmds/handlers/cmd.c
+   file     : cmds/handlers/cmd.c at line 87
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "man", "ed", /global/creator#666,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 150
+   ------------------------------------
+   object   : /global/creator#666
+   function : aq_add
+   arguments: "man ed",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/creator#666
+   function : action_check
+   arguments: "man ed",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#666
+   function : process_input
+   arguments: "man ed",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Wed Sep 23 20:31:44 1998 ]==---
+note    : error was caught via catch().
+player  : lovecraft [last verb: man call]
+object  : /secure/simul_efun
+error   : *Inherited file '/std/basic/wildcard' does not exist!
+program : secure/simul_efun.c
+file    : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /secure/simul_efun
+   function : CATCH
+   program  : secure/simul_efun.c
+   file     : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /secure/simul_efun
+   function : clone_object
+   arguments: "/obj/menu",
+   program  : secure/simul_efun.c
+   file     : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /cmds/creator/man
+   function : CATCH
+   program  : cmds/creator/man.c
+   file     : cmds/creator/man.c at line 62
+   ------------------------------------
+   object   : /cmds/creator/man
+   function : cmd
+   arguments: "call", /global/thane#807,
+   program  : cmds/creator/man.c
+   file     : cmds/creator/man.c at line 62
+   ------------------------------------
+   object   : /cmds/creator/man
+   function : _cmd
+   arguments: "call", /global/thane#807, "man",
+   program  : cmds/handlers/cmd.c
+   file     : cmds/handlers/cmd.c at line 87
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "man", "call", /global/thane#807,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 150
+   ------------------------------------
+   object   : /global/thane#807
+   function : aq_add
+   arguments: "man call",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/thane#807
+   function : action_check
+   arguments: "man call",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/thane#807
+   function : process_input
+   arguments: "man call",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Fri Oct 16 17:55:29 1998 ]==---
+note    : error was caught via catch().
+player  : baldrick [last verb: man shadows]
+object  : /secure/simul_efun
+error   : *Inherited file '/std/basic/wildcard' does not exist!
+program : secure/simul_efun.c
+file    : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /secure/simul_efun
+   function : CATCH
+   program  : secure/simul_efun.c
+   file     : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /secure/simul_efun
+   function : clone_object
+   arguments: "/obj/menu",
+   program  : secure/simul_efun.c
+   file     : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /cmds/creator/man
+   function : CATCH
+   program  : cmds/creator/man.c
+   file     : cmds/creator/man.c at line 62
+   ------------------------------------
+   object   : /cmds/creator/man
+   function : cmd
+   arguments: "shadows", /global/god#765,
+   program  : cmds/creator/man.c
+   file     : cmds/creator/man.c at line 62
+   ------------------------------------
+   object   : /cmds/creator/man
+   function : _cmd
+   arguments: "shadows", /global/god#765, "man",
+   program  : cmds/handlers/cmd.c
+   file     : cmds/handlers/cmd.c at line 87
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "man", "shadows", /global/god#765,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 150
+   ------------------------------------
+   object   : /global/god#765
+   function : aq_add
+   arguments: "man shadows",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/god#765
+   function : action_check
+   arguments: "man shadows",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/god#765
+   function : process_input
+   arguments: "man shadows",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Thu Oct 22 14:36:00 1998 ]==---
+note    : error was caught via catch().
+player  : no active player [last verb: no verb]
+object  : /secure/master
+error   : *Error in loading object '/secure/crerem/remote'
+program : secure/master.c
+file    : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : CATCH
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : preload
+   arguments: "/secure/crerem/remote",
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+
+
+---==[ error occurred at Mon Nov  2 12:27:52 1998 ]==---
+note    : error was caught via catch().
+player  : no active player [last verb: no verb]
+object  : /secure/master
+error   : *Error in loading object '/secure/crerem/remote'
+program : secure/master.c
+file    : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : CATCH
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+   ------------------------------------
+   object   : /secure/master
+   function : preload
+   arguments: "/secure/crerem/remote",
+   program  : secure/master.c
+   file     : secure/master/preload.c at line 88
+
+
+---==[ error occurred at Mon Nov  9 22:57:38 1998 ]==---
+note    : error was caught via catch().
+player  : shaydz [last verb: clone board_mas]
+object  : /secure/simul_efun
+error   : *Error in loading object '/obj/misc/board_mas'
+program : secure/simul_efun.c
+file    : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /secure/simul_efun
+   function : CATCH
+   program  : secure/simul_efun.c
+   file     : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /secure/simul_efun
+   function : clone_object
+   arguments: "/obj/misc/board_mas.c",
+   program  : secure/simul_efun.c
+   file     : secure/simul_efun/modified_efuns.c at line 73
+   ------------------------------------
+   object   : /cmds/creator/clone
+   function : cmd
+   arguments: "/obj/misc/board_mas.c", /global/creator#243,
+   program  : cmds/creator/clone.c
+   file     : cmds/creator/clone.c at line 35
+   ------------------------------------
+   object   : /cmds/creator/clone
+   function : _cmd
+   arguments: "board_mas", /global/creator#243, "clone",
+   program  : cmds/handlers/cmd.c
+   file     : cmds/handlers/cmd.c at line 87
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "clone", "board_mas", /global/creator#243,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 150
+   ------------------------------------
+   object   : /global/creator#243
+   function : aq_add
+   arguments: "clone board_mas",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/creator#243
+   function : action_check
+   arguments: "clone board_mas",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#243
+   function : process_input
+   arguments: "clone board_mas",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+

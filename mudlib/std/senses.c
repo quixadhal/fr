@@ -51,7 +51,7 @@ void remove_feel(string feel);
    variable declarations
 */
 
-static mapping smells,feels,tastes,sounds;
+nosave mapping smells,feels,tastes,sounds;
 
 /*
    End

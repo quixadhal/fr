@@ -1,6 +1,6 @@
 #define TICS_HB 5 /* cludge to get timed properties on things without heart_beats */
 /* /std/basic/property */
-/* Adding static properties. making it easer to use for spelleffetcs
+/* Adding protected properties. making it easer to use for spelleffetcs
  * and such wombles..
  * Baldrick, Jan '95
  * Hrmf.. now a hard one, a timed propertysystem. saveable
@@ -8,7 +8,7 @@
  
 mapping map_prop;
 mapping timed_prop;
-static mapping static_map_prop;
+nosave mapping static_map_prop;
  
 void create() {
   map_prop = ([ ]);
@@ -148,8 +148,8 @@ mixed query_timed_property(string str) {
 }
 
 /* Added Taniwha 1995, by popular demand, time remaining */
-/* Could do clever stuff like check for static & normals if it falls through */
-static int timeleft;
+/* Could do clever stuff like check for protected & normals if it falls through */
+nosave int timeleft;
 int query_time_remaining(string str) {
   int i;
   int val;

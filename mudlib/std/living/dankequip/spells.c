@@ -1,6 +1,6 @@
 #include "spells.h"
 
-static mixed *effects;
+nosave mixed *effects;
 
 void create() {
   effects = ({ });

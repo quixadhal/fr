@@ -2,8 +2,8 @@ inherit "obj/roomgen/support";
  
 string *room_object_names, *room_object_startpos, *room_object_files;
 mixed *room_object_funcs;
-static string object_name, setup_function_return;
-static int pos, func_pos;
+nosave string object_name, setup_function_return;
+nosave int pos, func_pos;
  
 #define OBJECT_NAME_HELP "/doc/roomgen/object_name_help"
 #define OBJECT_FILE_HELP "/doc/roomgen/object_file_help"

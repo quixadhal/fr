@@ -9,7 +9,7 @@ position = 1;
 
 
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
     int fsize,  loop;
     string *filenames;
 

@@ -8,8 +8,8 @@
 
 mapping *box_info;
 mapping my_groups;
-static mapping mud_groups;
-static string file;
+nosave mapping mud_groups;
+nosave string file;
 
 string *expand_list(string *who);
 string *expand_group(string grp);
@@ -179,7 +179,7 @@ void remove_post(string who, string id) {
     box_info = exclude_array(box_info, x);
 }
 
-static int get_post_number(string id) {
+protected int get_post_number(string id) {
     int i;
 
     i = sizeof(box_info);

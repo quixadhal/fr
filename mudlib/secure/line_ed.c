@@ -2,9 +2,9 @@
 /* cute line editor thing.  Which even a player could use!
  */
 
-static string *lines, end_func;
-static object end_object;
-static int insertion_point;
+nosave string *lines, end_func;
+nosave object end_object;
+nosave int insertion_point;
 
 void main_bit(string str);
 void editor_do_quit(string str);
@@ -174,8 +174,8 @@ void editor_loop(string str) {
   return ;
 }
 
-static int range1, range2;
-static string modify_string;
+nosave int range1, range2;
+nosave string modify_string;
 
 void editor_modify(string str) {
   int num1, num2, tmp;

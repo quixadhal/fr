@@ -14,7 +14,7 @@ void setup() {
   position = 1;
 }
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
     if( !str || str == "" ) {
       notify_fail("Locate whom?");
       return 0;

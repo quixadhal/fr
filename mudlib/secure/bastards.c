@@ -10,8 +10,8 @@
 #include "mail.h"
 #define POSTAL_D "/obj/handlers/postal_d"
 
-static string *names;
-static string def;
+nosave string *names;
+nosave string def;
 
 mapping access;  /* Site access control */
 string *preferred;
@@ -197,7 +197,7 @@ int query_access(string *address, string ident) {
     return DEFAULT;
 } /* query_access() */
 
-static mixed add_access(mixed bing, string *address, string ident,
+protected mixed add_access(mixed bing, string *address, string ident,
   int level) {
     if (!mappingp(bing))
 	bing = ([ ]);

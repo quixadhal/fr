@@ -14,7 +14,7 @@ inherit "/global/history";
 int convert();
 
 mapping aliases, map_aliases;
-static mapping doing_alias;
+nosave mapping doing_alias;
 
 mixed *compile_alias(string str) 
   {
@@ -237,7 +237,7 @@ int flushalias(string str)
     input_to("flushem",0);
     return 1;
 }
-static int flushem(string str)
+protected int flushem(string str)
 {
     if(str == "Y" || str == "y")
     {
@@ -282,7 +282,7 @@ int print_aliases() {
   return 1;
 }
 
-static int alias(string str, int bing) 
+protected int alias(string str, int bing) 
 {
   string s1, s2;
   mixed *boos;
@@ -341,7 +341,7 @@ static int alias(string str, int bing)
   return 1;
 }
 
-static int unalias(string str) {
+protected int unalias(string str) {
   if (!mappingp(aliases))
     aliases = ([ ]);
   if (map_aliases)
@@ -361,7 +361,7 @@ static int unalias(string str) {
 
 mapping query_aliases() { return aliases; }
 
-static int exec_alias(string verb, string args) {
+protected int exec_alias(string verb, string args) {
   int i, num;
   string *bits, line;
   mixed stuff;

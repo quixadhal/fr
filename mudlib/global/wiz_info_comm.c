@@ -12,7 +12,7 @@ varargs object *wiz_present(string str, object onobj, int nogoout);
 string desc_object(mixed o);
 string desc_f_object(object o);
 
-static void wiz_commands() {
+protected void wiz_commands() {
   /* Adds for new commandsystem.. */
   //add_action("comm_info","cominfo");
 } /* wiz_commands() */
@@ -24,7 +24,7 @@ static void wiz_commands() {
 ** we must be careful in what we place here
 */
  
-static void app_commands() {
+protected void app_commands() {
   add_action("do_snoop", "snoop");
   add_action("grim_snoop", "qsnoop");  /* Added on 16 March by Grimbrand */
 } /* app_commands() */
@@ -34,7 +34,7 @@ static void app_commands() {
 ** so the apparent security problems are NOT a problem
 */
  
-static void all_commands() {
+protected void all_commands() {
 } /* all_commands() */
 
 int check_snoop(object ob) {
@@ -46,7 +46,7 @@ int check_snoop(object ob) {
 
 /*  Added on 16 March 93 by Grimbrand */
 
-static int grim_snoop(string str) {
+protected int grim_snoop(string str) {
    object targ;
 
   if( this_player(1)->query_lord() )
@@ -84,7 +84,7 @@ static int grim_snoop(string str) {
    return 1;
 }
 
-static int do_snoop(string str) {
+protected int do_snoop(string str) {
   object targ;
 
   if (!str) {
@@ -120,7 +120,7 @@ int review() {
   return 1;
 } /* review() */
 
-static mapping blue;
+nosave mapping blue;
 
 int stats_sort_array(string str, string str2) {
   if (blue[str]["moves"] > blue[str2]["moves"])
@@ -161,7 +161,7 @@ string string_stats(mapping map) {
  * I'll keep it rem'ed out for now. 
  * cominfo uses it's own in the external command
  * Baldrick. dec '97.
-static string do_find_comm(string func, object ob) {
+protected string do_find_comm(string func, object ob) {
   string s, ping;
   object fish;
   s = "";

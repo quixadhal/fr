@@ -21,7 +21,7 @@ string query_short_help()
 	return "Sets text for normal exit. Include $N (name) and $F (from).";
 }
 
-static int cmd (string str, object me)
+protected int cmd (string str, object me)
 {
 	
 

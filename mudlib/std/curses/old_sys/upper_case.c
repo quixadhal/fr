@@ -49,7 +49,7 @@ int destruct_curse(string str) {
     my_player->destruct_curse(str);
 }
 
-static upper_case(string str) {
+protected upper_case(string str) {
   string ret;
   int i;
 

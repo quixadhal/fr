@@ -33,7 +33,7 @@ mapping guilds = ([ "wizard":5,
    "raisa":10,
    "shifter":30,
 ]);
-static int phrase;
+nosave int phrase;
 string file;
 string func;
 int lockout,gp;

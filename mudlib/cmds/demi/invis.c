@@ -12,7 +12,7 @@ void setup(){
     position = 1;
 }
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   if (str == "2") {
       if (me->query_invis() == 2) {
         notify_fail("You are already truly invisible.\n");

@@ -17,9 +17,9 @@
 #endif
 #define SAVE_DIR "/net/save/nntp_"
 
-static string group_name, in_message, *pending;
+nosave string group_name, in_message, *pending;
 int cur_article;
-static int last_article;
+nosave int last_article;
 
 void load_me();
 void save_me();

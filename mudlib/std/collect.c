@@ -7,7 +7,7 @@ inherit "/std/room";
 mapping accounts;
 string save_file;
 int total_made;
-static int total_account;
+nosave int total_account;
 string owner;
 int collectbox;
 

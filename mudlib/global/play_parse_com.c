@@ -4,9 +4,9 @@
  * bit which handles the add_action like things done from all the objects
  * for things such as read and so on.
  */
-static mapping commands,
+nosave mapping commands,
                cur_objects;
-static mixed   *suc_indir;
+nosave mixed   *suc_indir;
 
 string create_string(string pattern, mixed *args, int d,
                      int e, string s1, string s2);

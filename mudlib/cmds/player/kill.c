@@ -22,7 +22,7 @@ string query_short_help()
         return "Starts attacking the specified targets.";
 }
 
-static int cmd (string str, object me)
+protected int cmd (string str, object me)
 {
   int i;
   object *obs;

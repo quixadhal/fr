@@ -27,7 +27,7 @@ int add_permission(string euid, string path, int mask) {
     } else {
       permissions[path][euid] |= mask;
     }
-    save_object("/secure/master." + mud_name(),1);
+    save_object("/secure/master" ,1);
     return 1;
   }
   return 0;
@@ -68,7 +68,7 @@ int remove_permission(string euid, string path, int mask) {
         map_delete(permissions[path], euid);
       }
     }
-    save_object("/secure/master." + mud_name(),1);
+    save_object("/secure/master" ,1);
     return 1;
   }
   return 0;

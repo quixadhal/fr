@@ -3,7 +3,7 @@
  *    -- Magus@Eden, Wahooka@FR, May '97
  */
  
-static int create_path(string *path) {
+protected int create_path(string *path) {
   int i, j;
   printf("%O", path);
   for(i=0;i<sizeof(path);i++) {

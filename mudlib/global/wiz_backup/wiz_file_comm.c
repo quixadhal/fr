@@ -12,13 +12,13 @@ inherit "/global/wiz_communicate";
 
 #define MASTER "/secure/master"
 
-static mixed in_editor;
+nosave mixed in_editor;
 
 varargs object *wiz_present(string str, object onobj, int nogoout);
 string desc_object(mixed o);
 string desc_f_object(object o);
 
-static void wiz_commands() {
+protected void wiz_commands() {
     add_action("update","update");
     add_action("indent", "indent");
     /* This may not work: (baldrick) */
@@ -34,7 +34,7 @@ static void wiz_commands() {
 ** we must be careful in what we place here
 */
 
-static void app_commands() {
+protected void app_commands() {
     wiz_object_comm::app_commands();
     wiz_info_comm::app_commands();
     wiz_inter_comm::wiz_commands();
@@ -56,7 +56,7 @@ void all_commands() {
     wiz_info_comm::all_commands();
 } /* all_commands() */
 
-static int do_update(object *ov) {
+protected int do_update(object *ov) {
     string pname, dummy;
     int i, j;
     object *invent, rsv, env, dup, loaded;
@@ -226,7 +226,7 @@ int update(string str) {
 	return do_update(obs);
 } /* update() */
 
-static int edit(string str) {
+protected int edit(string str) {
     string *filenames, spam;
     object *things;
     int egg;
@@ -295,7 +295,7 @@ void fini_editor() {
     in_editor = 0;
 } /* fini_editor() */
 
-static int what_dir() {
+protected int what_dir() {
     write(current_path+"\n");
     return 1;
 } /* what_dir() */
@@ -303,7 +303,7 @@ static int what_dir() {
 // Radix - Added wis_present call to 'cd' allowing 'cd here'
 // or any other object, same as 'ed'
 // December 15, 1995
-static int change_dir(string str) {
+protected int change_dir(string str) {
     string *filenames;
     object *obs = ({ });
     string tmp = 0;
@@ -369,7 +369,7 @@ static int change_dir(string str) {
 
 string query_path() { return current_path; }
 
-static int set_home_dir(string str) {
+protected int set_home_dir(string str) {
     if (this_player(1) != this_object()) return 0;
     if (str) home_dir = get_path(str);
     write("Home directory set to "+home_dir+".\n");

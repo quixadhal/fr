@@ -1,6 +1,6 @@
 /* Standard shadow thingies */
 
-static object owner;
+nosave object owner;
 
 void start()
 {

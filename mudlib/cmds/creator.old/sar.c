@@ -19,7 +19,7 @@ position = 1;
   Modified by : Bill@Nanvaent+@Discworld Mar 93
 */
 
-static int cmd(string str, object me)
+protected int cmd(string str, object me)
 {
   int i, j, num;
   string *files, *bit;

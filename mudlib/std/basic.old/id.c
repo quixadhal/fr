@@ -1,7 +1,7 @@
 #include "parse_command.h"
 inherit "/std/basic/print_object";
 
-static string name,
+nosave string name,
        *alias,
        *adjectives,
        *plurals;

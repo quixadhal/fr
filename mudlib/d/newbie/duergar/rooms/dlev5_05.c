@@ -5,7 +5,7 @@ inherit "/std/underground";
 
 object *npcs;
 
-static int islocked = 1;
+nosave int islocked = 1;
 
 void reset() {
     int i;

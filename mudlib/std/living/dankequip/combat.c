@@ -1,15 +1,15 @@
 inherit "/std/weapon_logic";
 int *weapon_attack_out, *attack_out;                //dk
-static object attackee;
-static object *attacker_list,
+nosave object attackee;
+nosave object *attacker_list,
               *call_outed,
               protector;
 //              weapon,
 //dk I allow 2-weapons combat, so equip.c defines held_ob[0] as the primary
 //weapon, if any, and held_ob[1] as the secondary weapon, if any.
 
-static int concentrate;
-static int att_level, dodging;
+nosave int concentrate;
+nosave int att_level, dodging;
 
 #define DIV_NUM 6
 #include "money.h"
@@ -134,7 +134,7 @@ object make_corpse()
 }
 
 //? shouldnt need to call this... so make it static, just in case 
-static void actual_death() {
+protected void actual_death() {
   object ob, ob2;
 //dw if second_life returns false... do stupid things... 
   if (!((int)this_object()->second_life())) {

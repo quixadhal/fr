@@ -1,6 +1,6 @@
 #include "inet.h"
 #include "udp.h"
-static string my_file_name;
+nosave string my_file_name;
 
 void wiz_commands() {
   add_action("do_echo","echo");

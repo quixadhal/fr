@@ -1,5 +1,5 @@
 string home_dir;
-static string current_path;
+nosave string current_path;
 
 string invalid_path() {
     write("Invalid path.\n");

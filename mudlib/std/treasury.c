@@ -30,10 +30,10 @@
 inherit "/std/room";
  
   /* global variables */
-static string save_file;      /* path name of save file */
-static string log_file;       /* path name of transactions log */
+nosave string save_file;      /* path name of save file */
+nosave string log_file;       /* path name of transactions log */
 string *treasurers;    /* names of players with treasury access */
-static string *admins;        /* admins of the guild/group */
+nosave string *admins;        /* admins of the guild/group */
 int coppers;                 /* total amount of coppers in treasury */
  
   /* function declarations */

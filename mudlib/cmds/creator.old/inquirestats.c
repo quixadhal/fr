@@ -25,7 +25,7 @@ string fd_owner(int fd, int len, int strip);
 
 mapping fds, hist;
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   mixed *them;
   int i, j, pos;
   string state;

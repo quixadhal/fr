@@ -10,9 +10,9 @@ position = 1;
 
 
 /* This is for querying about objects who don't want to be destructed */
-static object discard_obj;
+nosave object discard_obj;
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   string *file_names;
   int loop;
   string err;

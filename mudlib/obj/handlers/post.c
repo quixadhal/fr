@@ -10,11 +10,11 @@ inherit "/std/object";
 
 mapping *box_info;
 mapping my_groups;
-static int current;
-static mapping mud_groups, tmp_post;
-static string owner;
-static int just_sending, fwd_flag;
-static int *delete;
+nosave int current;
+nosave mapping mud_groups, tmp_post;
+nosave string owner;
+nosave int just_sending, fwd_flag;
+nosave int *delete;
 
 void headers(int x);
 void do_mail(string str);

@@ -1,9 +1,9 @@
 #include "spells.h"
 void do_call_out_effect(mixed *params);
-static int spell_hp;
+nosave int spell_hp;
 #define SP_DIV 5
 
-static mixed *effects;
+nosave mixed *effects;
 
 void create() {
     effects = ({ });

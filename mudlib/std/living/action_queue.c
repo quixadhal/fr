@@ -35,46 +35,56 @@ private int default_time;      /* Used for non-trivial actions w/o times set */
  * ready to be plugged in though, should we be able to spare the memory,
  * and not the cpu. (the other version isn't particularly faster though)
  */
-private static mixed* actionq;
+private nosave mixed* actionq;
 
 /*
  * Security array; this is an array of flags, each corresponding to
  * an action in the action queue, indicating if the action was forced by
  * some other object or not.
  */
-private static int* action_forcedq;
+private nosave int* action_forcedq;
 
 /* If the current command was forced or not; 
  * -1 means no command is in progress (and thus, to most checks, has the
  * conservative view that the action WAS forced)
  */
-private static int curr_forced;
+private nosave int curr_forced;
 
-private static int time_left;  /* Time left for this round. */
+private nosave int time_left;  /* Time left for this round. */
 
 /* Allows prompts to be disabled after a given command completes */
-private static int show_prompt;
+private nosave int show_prompt;
 
 /* for bookkeeping purposes */
-private static string command_in_progress; /* copy of a command in progress */
-private static int time_adjusted;          /* flag if time's been adjusted  */
-private static int trivial_actions_performed;  /* number performed this hb  */
-private static int trivial_action_in_progress;  /* flag if command trivial  */
-private static int notified;
-private static int hb_command_done; 
+private nosave string command_in_progress; /* copy of a command in progress */
+private nosave int time_adjusted;          /* flag if time's been adjusted  */
+private nosave int trivial_actions_performed;  /* number performed this hb  */
+private nosave int trivial_action_in_progress;  /* flag if command trivial  */
+private nosave int notified;
+private nosave int hb_command_done; 
+
+private nosave string temp_verb; 
 
 
 /* interruptable action stuff */
-private static int ia_in_progress; /* flag indicating in the middle of an ia */
-private static mixed ia_abort;     /* function/message on abort              */
-private static mixed ia_complete;  /* function/message on complete           */
-private static string ia_message;  /* message on any command not an abort    */
+private nosave int ia_in_progress; /* flag indicating in the middle of an ia */
+private nosave mixed ia_abort;     /* function/message on abort              */
+private nosave mixed ia_complete;  /* function/message on complete           */
+private nosave string ia_message;  /* message on any command not an abort    */
 
 mixed* debug_actionq() { return actionq; }
 void debug_resetq() {  actionq = ({ }); }
 
 /* debug of course */
 int query_bits_per_beat() { return 10; }
+
+string query_verb() {
+  log_file ("balddeb", "temp_verb: " + temp_verb + "\n");
+  if ( sizeof(temp_verb) > 0)
+    return temp_verb;
+  else
+    return efun::query_verb();
+}
 
 void create() 
 {
@@ -155,8 +165,12 @@ int set_interruptable_action(
   ia_in_progress = 1;
   this_object()->adjust_time_left( -time );
 
+  /* Hmm, is this one nessesary? 
+   * give looks ugly with it at least.
+   * Baldrick.
   ia_message = "Command queued since "+message+"Type 'abort' to attempt to "
     "end prematurely.\n";
+    */
 
   ia_abort = abort;
   ia_complete = complete;
@@ -269,7 +283,6 @@ nomask private int aq_add( mixed val )
 {
   string t, verb;
 
-
   if ( !stringp( val ) && !functionp( val ) )
     return AQ_ERROR;
 
@@ -284,18 +297,19 @@ nomask private int aq_add( mixed val )
       }
     notify_fail ("");
     notified = 0;
-
+    temp_verb = val;
     if (!command( val ))
       {
       sscanf(val, "%s %s", verb, t);
       if(!verb)
         verb = val;
-      if ((!environment(this_object()) || 
-          (!environment(this_object())->do_move_command(verb, t))))
-      if (!CMD_HANDLER->cmd(verb, t, this_object()))
-        if (!this_object()->parse_comm(verb, t ))
-          hb_command_done = 2;
+      //if (!environment(this_object())->do_move_command(verb, t))
+      if (!environment(this_object())->do_move_command(val))
+        if (!CMD_HANDLER->cmd(verb, t, this_object()))
+          if (!this_object()->parse_comm(verb, t ))
+            hb_command_done = 2;
       }
+    temp_verb = "";
     if (hb_command_done == 2 && !notified)
       hb_command_done = 1;
      else
@@ -443,26 +457,28 @@ nomask private int perform_next_action()
      * Baldrick */
     notify_fail ("");
     notified = 0;
+    temp_verb = curr_act;
     if (!command( curr_act ))
       {
       sscanf(curr_act, "%s %s", verb, t);
       if(!verb)
         verb = curr_act;
-      if (!this_object()->do_gr_command(verb, t))
-      if ((!environment(this_object()) || 
-          (!environment(this_object())->do_move_command(verb, t))))
+      if (!environment(this_object())->do_move_command(curr_act))
+       if (!this_object()->do_gr_command(verb, t))
         if (!CMD_HANDLER->cmd(verb, t, this_object()))
           if (!this_object()->parse_comm(verb, t ))
             if (!CMD_HANDLER->soul_com ( curr_act, this_object() ))
               if (!notified)
-                write("The attempt to %^RED%^" + curr_act
+                write("The attempt to %^RED%^" + curr_act 
                       + "%^RESET%^ didn't really work out.\n");
-
       }
     command_in_progress = "";
   }
   else
+  {
+    temp_verb = "";
     return 0;
+  }
 
   /* if the action didn't flag itself as trivial, and it didn't adjust
    * time left, then adjust time by a default
@@ -476,6 +492,7 @@ nomask private int perform_next_action()
   if ( !ia_in_progress )
     curr_forced = -1;
 
+  temp_verb = "";
   return 1;
 } /* perform_next_action() */
 
@@ -532,6 +549,7 @@ nomask int action_check(string str)
 {
   int i;
 
+
   /* this is ridiculous.  MudOS will not show these strings as equal. */
   if ( str ==  command_in_progress )
     return 0;
@@ -565,6 +583,9 @@ nomask int action_check(string str)
         return 1;
       }
       abort_interruptable_action();
+      return 1;
+    case "flee":
+      environment(this_object())->do_random_move_command();
       return 1;
   }
       

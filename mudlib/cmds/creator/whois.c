@@ -29,7 +29,7 @@ string query_short_help() {
         "  whois -s nic.ddn.mil army.mil\n";
  }
  
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   string server;
   string *strbits;
   int SKIP_PROC;

@@ -1,7 +1,7 @@
 #include "soul.h"
 
-static string  chunk;
-static mapping soul_data;
+nosave string  chunk;
+nosave mapping soul_data;
 
 void error(string msg) {
      write(msg + "\n");

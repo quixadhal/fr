@@ -4,7 +4,7 @@
   Baldrick cleaned after them.
   Hamlet fixed timed properties.
   Radix made create_me more accurate - 7/96
-  Wonderflug cleaned up as usual.  Removed dynamic/static distinction.
+  Wonderflug cleaned up as usual.  Removed dynamic/protected distinction.
     Got rid of old init_data stuff.
 */
 

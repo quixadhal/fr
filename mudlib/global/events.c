@@ -11,11 +11,11 @@ inherit "/global/communicate";
 #include "term.h"
 
 int earmuffs, cols, rows;
-static mapping colour_map;
-static string block;
+nosave mapping colour_map;
+nosave string block;
 
 string term_name = "dumb";
-static string new_line = "";
+nosave string new_line = "";
 
 void create() {
     languages = ({ "common" });
@@ -119,7 +119,7 @@ int set_term_type(string str)
 
 void event_commands(){
     add_action("earmuffs", "earmuffs");
-    add_action("inform", "inform");
+    add_action("do_inform", "inform");
     add_action("set_our_rows", "rows");
     add_action("set_our_cols", "cols");
     add_action("set_term_type", "term");
@@ -279,13 +279,13 @@ int check_earmuffs(string type)
 
 /* This should go away!!! Baldrick... 
  */
-int inform(string str) 
+int do_inform(string str) 
 {
     string *types, *on, *frog;
     int i;
 
     if (this_object()->query_creator())
-	types = ({ "logon", "link-death", "message", "call", "person_cheat", "death", "ftp", "dest", "immort_logon" });
+	types = ({ "logon", "link-death", "message", "call", "person_cheat", "death", "ftp", "dest", "immort_logon", "error" });
     else
 	types = ({ "logon" });
     on = (string *)this_object()->query_property("inform");

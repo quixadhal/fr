@@ -1,9 +1,9 @@
-static inherit "std/object";
+nosave inherit "std/object";
  
 #define RESTORE_PATH "/save/library/"
 #include "quest_handler.h"
  
-static string player_name;
+nosave string player_name;
 string *quests, text_file, player_title;
 int *times;
  

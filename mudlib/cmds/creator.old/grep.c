@@ -9,7 +9,7 @@ void setup(){
 
 
 
-static int cmd(mixed str, object me) {
+protected int cmd(mixed str, object me) {
     int i, j, num;
     string *files, *bit;
     string s1, s2, s3, s4;

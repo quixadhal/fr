@@ -5,9 +5,9 @@
 #include <standard.h>
 #include <cmd.h>
 
-static int position = 0, dodest = 0, doclone = 0;
-static object command_giver;
-static string fail_msg;
+nosave int position = 0, dodest = 0, doclone = 0;
+nosave object command_giver;
+nosave string fail_msg;
 
 void create()
 {
@@ -38,7 +38,7 @@ void notify_fail(string fa)
   return;
 }
 
-static int cmd(string tail, object thisob, string verb) { return 0; }
+protected int cmd(string tail, object thisob, string verb) { return 0; }
 
 string query_usage() { return 0; }
 string query_short_help() { return 0; }

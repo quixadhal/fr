@@ -7,7 +7,7 @@ void setup()
 position = 1;
 }
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
 write(dump_socket_status());
   me->set_trivial_action();
   return 1;

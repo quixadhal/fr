@@ -12,27 +12,27 @@
 inherit "/secure/crerem/server";
 
 private string password;
-private static mapping Connections;
+private nosave mapping Connections;
 
-static void create() {
+protected void create() {
     server::create();
     seteuid("Root");
     Connections = ([]);
     call_out("Setup", 1);
 }
 
-static void Setup() {
+protected void Setup() {
     if( eventCreateSocket(PORT_RCP) < 0 ) {
         if( this_object() ) server::dest_me();
         return;
     }
 }
 
-static void eventSocketClosed(int fd) {
+protected void eventSocketClosed(int fd) {
     map_delete(Connections, fd);
 }
 
-static void eventRead(int fd, string str) {
+protected void eventRead(int fd, string str) {
     if( !str ) {
         eventWrite(fd, "50 Invalid command.\n", 1);
         if( Connections[fd] ) map_delete(Connections, fd);
@@ -41,7 +41,7 @@ static void eventRead(int fd, string str) {
     eventProcess(fd, str);
 }
 
-static private void eventProcess(int fd, string str) {
+protected private void eventProcess(int fd, string str) {
     string tmp, cmd, arg, file, val;
     int x;
 

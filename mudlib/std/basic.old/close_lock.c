@@ -5,10 +5,10 @@
 #define C_TRANS 2
 #define C_OPAQUE 1
 
-static int locked, stuck;
-static int closed, trans, difficulty;
-static string key, trap_open_func, trap_lock_func, unlock_skill;
-static object trap_open_ob, trap_lock_ob;
+nosave int locked, stuck;
+nosave int closed, trans, difficulty;
+nosave string key, trap_open_func, trap_lock_func, unlock_skill;
+nosave object trap_open_ob, trap_lock_ob;
 
 void set_open() { closed &= ~C_CLOSED; }
 void set_closed() { closed |= C_CLOSED; }

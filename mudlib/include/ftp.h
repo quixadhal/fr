@@ -35,7 +35,7 @@
 #define BINARY		4
 
 /* command tables */
-static mapping cmdtab=(["port": ({ "port", 1, "<port>" }),
+nosave mapping cmdtab=(["port": ({ "port", 1, "<port>" }),
                         "user": ({ "user", 1, "<user>" }),
                         "pass": ({ "pass", 1, "<password>" }),
                         "allo": ({ "allo", 1, "" }),
@@ -84,7 +84,7 @@ static mapping cmdtab=(["port": ({ "port", 1, "<port>" }),
                         "stou": ({ "stou", 0, "" }),
                       ]);
 
-static mapping sitecmdtab=(["idle": ({ "idle", 1, "<seconds>" }),
+nosave mapping sitecmdtab=(["idle": ({ "idle", 1, "<seconds>" }),
                             "time": ({ "time", 1, "" }),
                             "upd" : ({ "upd",  1, "<file>" }),
                             "help": ({ "help", 1, "[<command>]" }),

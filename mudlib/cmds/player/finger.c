@@ -16,7 +16,7 @@ string strip(string instr);
   }
 
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   string ret,mud;
 
   if (!str) {

@@ -2,7 +2,7 @@
  * Baldrick, oct '94
  */
 
-static object *protecting,
+nosave object *protecting,
               *protector;
 
 void init ()

@@ -1,8 +1,8 @@
 inherit "/obj/roomgen/support";
  
 string *room_exits, *room_exit_dests, *room_exit_types;
-static string exit_dir, exit_dest, exit_type;
-static int pos;
+nosave string exit_dir, exit_dest, exit_type;
+nosave int pos;
  
 #define EXIT_HELP "/doc/roomgen/exit_help"
 #define DIR_HELP "/doc/roomgen/dir_help"

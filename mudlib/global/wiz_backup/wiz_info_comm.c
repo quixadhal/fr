@@ -12,7 +12,7 @@ varargs object *wiz_present(string str, object onobj, int nogoout);
 string desc_object(mixed o);
 string desc_f_object(object o);
 
-static void wiz_commands() {
+protected void wiz_commands() {
   add_action("do_gauge", "gauge");
   /* Added by Jada aug '94, blame him if it won't work */
   add_action("do_title", "title");
@@ -27,7 +27,7 @@ static void wiz_commands() {
 ** we must be careful in what we place here
 */
  
-static void app_commands() {
+protected void app_commands() {
   add_action("do_snoop", "snoop");
   add_action("grim_snoop", "qsnoop");  / Added on 16 March by Grimbrand */
 } /* app_commands() */
@@ -37,7 +37,7 @@ static void app_commands() {
 ** so the apparent security problems are NOT a problem
 */
  
-static void all_commands() {
+protected void all_commands() {
 } /* all_commands() */
 
 int check_snoop(object ob) {
@@ -49,7 +49,7 @@ int check_snoop(object ob) {
 
 /*  Added on 16 March 93 by Grimbrand */
 
-static int grim_snoop(string str) {
+protected int grim_snoop(string str) {
    object targ;
 
 if(this_player()->query_lord())
@@ -87,7 +87,7 @@ if(this_player()->query_lord())
    return 1;
 }
 
-static int do_snoop(string str) {
+protected int do_snoop(string str) {
   object targ;
 
   if (!str) {
@@ -121,7 +121,7 @@ int review() {
   return 1;
 } /* review() */
 
-static int do_gauge(string str) {
+protected int do_gauge(string str) {
   int eval_cost;
 
   if (this_player(1) != this_object()) return 0;
@@ -134,7 +134,7 @@ static int do_gauge(string str) {
   return 1;
 } /* do_gauge() */
 
-static mapping blue;
+nosave mapping blue;
 
 int stats_sort_array(string str, string str2) {
   if (blue[str]["moves"] > blue[str2]["moves"])
@@ -193,7 +193,7 @@ int do_title(string str)
     return 1;
 }
 
-static string do_find_comm(string func, object ob) {
+protected string do_find_comm(string func, object ob) {
   string s, ping;
   object fish;
   s = "";

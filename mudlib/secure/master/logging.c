@@ -2,6 +2,12 @@
  * returns the owner of ob (for error logging)
  * all calls to this should call get_prg_name()
  */
+// Added modified file logging - Radix, Aug 1996
+//
+//
+#define MAX_LOG_SIZE 200000
+#define DEFAULT_LOG_DIR "/log/"
+
 string get_wiz_name(mixed file) { 
 
   if (!previous_object())
@@ -53,9 +59,9 @@ void log_error(string file, string message)
   if (name == "log") {
       log_file(name, message);
   } else if (name == "dom") {
-      write_file("/d/"+get_dom_name(file)+"/error-log", message);
+      write_file("/d/"+get_dom_name(file)+"/log/error-log", message);
 } else if (name == "root") {
-write_file("/log/root.log",message);
+    write_file("/log/root.log",message);
   } else if (name != "root") {
       write_file("/w/"+name+"/error-log", message);
   }
@@ -67,3 +73,62 @@ void do_log(string person, string text) {
   rm("/w/"+person+"/"+PLAYER_ERROR_LOG);
   write_file("/w/"+person+"/"+PLAYER_ERROR_LOG, text);
 } /* do_log() */
+
+// Radix
+void check_file_mod_time(string file, object cre)
+{
+   if(sizeof(get_dir(file,-1)) > 1)
+      if(get_dir(file,-1)[2] != cre->query_file_mod_time())
+         log_file("FILES",cre->query_cap_name()+" mod'ed "+file+" : "+
+               ctime(time())+"\n");
+}
+
+/* Grabbed fro Rod */
+
+// log with rollover.
+// called from simul_efun (see modified_efuns)
+//
+void log_roll(string logfile, string mess)
+{
+
+/* Some day this will work, Baldrick 
+
+    if (file_size(logfile) > LOG_MAX_SIZE)
+    {
+	string oldfile = logfile+".old";
+
+	unguarded((: rm, oldfile :));
+	unguarded((: rename, logfile, oldfile :));
+    }
+    unguarded((: write_file, logfile, mess :));
+ */
+
+    logfile = DEFAULT_LOG_DIR + logfile;
+    if( file_size( logfile ) > MAX_LOG_SIZE )
+        rename( logfile, logfile + ".old" );
+    write_file( logfile, mess );
+
+}
+
+
+// log with time plus date rollover.
+// called from simul_efun (see yymmdd)
+//
+void log_roll_time(string logfile, string mess)
+{
+
+  /*
+    if (file_size(logfile) > LOG_MAX_SIZE)
+    {
+	string oldfile = yymmdd_file(logfile);
+
+	unguarded((: rename, logfile, oldfile :));
+    }
+    unguarded((: write_file, logfile, ctime( time() ) + " " + mess :));
+  */
+    logfile = logfile;
+    if( file_size( logfile ) > MAX_LOG_SIZE )
+        rename( logfile, logfile + ".old" );
+    write_file( logfile, mess );
+
+}

@@ -8,8 +8,8 @@
 /* Have fun, and win awards */
 /* One other possible use for LE is for cute aliases */
 
-static int line;
-static string *cfile, cfile_name, le_last_search;
+nosave int line;
+nosave string *cfile, cfile_name, le_last_search;
 
 void print_line()
 {

@@ -33,7 +33,7 @@ string query_short_help()
    return "Returns misc information and stats on a player.";
 }
 
-static int cmd (string str, object me)
+protected int cmd (string str, object me)
 {
    int i;
    string info;

@@ -1,0 +1,696 @@
+---==[ error occurred at Sun Aug  2 14:27:48 1998 ]==---
+note    : error was caught via catch().
+player  : baldrick [last verb: no verb]
+object  : /cmds/creator/exec
+error   : *Error in loading object '/w/baldrick/exec_tmp'
+program : cmds/creator/exec.c
+file    : cmds/creator/exec.c at line 35
+   ------------------------------------
+   object   : /cmds/creator/exec
+   function : CATCH
+   program  : cmds/creator/exec.c
+   file     : cmds/creator/exec.c at line 35
+   ------------------------------------
+   object   : /cmds/creator/exec
+   function : cmd
+   arguments: "pretty_time;", /global/god#8,
+   program  : cmds/creator/exec.c
+   file     : cmds/creator/exec.c at line 35
+   ------------------------------------
+   object   : /cmds/creator/exec
+   function : _cmd
+   arguments: "pretty_time;", /global/god#8, "exec",
+   program  : cmds/handlers/cmd.c
+   file     : cmds/handlers/cmd.c at line 87
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "exec", "pretty_time;", /global/god#8,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 150
+   ------------------------------------
+   object   : /global/god#8
+   function : aq_add
+   arguments: "exec pretty_time;",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 295
+   ------------------------------------
+   object   : /global/god#8
+   function : action_check
+   arguments: "exec pretty_time;",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 616
+   ------------------------------------
+   object   : /global/god#8
+   function : process_input
+   arguments: "exec pretty_time;",
+   program  : global/player.c
+   file     : global/process_input.c at line 88
+
+
+---==[ error occurred at Sun Aug  2 14:28:41 1998 ]==---
+note    : error was caught via catch().
+player  : baldrick [last verb: no verb]
+object  : /cmds/creator/update
+error   : *Error in loading object '/global/prompt'
+program : cmds/creator/update.c
+file    : cmds/creator/update.c at line 144
+   ------------------------------------
+   object   : /cmds/creator/update
+   function : CATCH
+   program  : cmds/creator/update.c
+   file     : cmds/creator/update.c at line 144
+   ------------------------------------
+   object   : /cmds/creator/update
+   function : cmd
+   arguments: "/global/prompt.c", /global/god#8,
+   program  : cmds/creator/update.c
+   file     : cmds/creator/update.c at line 144
+   ------------------------------------
+   object   : /cmds/creator/update
+   function : _cmd
+   arguments: "prompt", /global/god#8, "update",
+   program  : cmds/handlers/cmd.c
+   file     : cmds/handlers/cmd.c at line 87
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "update", "prompt", /global/god#8,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 150
+   ------------------------------------
+   object   : /global/god#8
+   function : aq_add
+   arguments: "update prompt",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 295
+   ------------------------------------
+   object   : /global/god#8
+   function : action_check
+   arguments: "update prompt",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 616
+   ------------------------------------
+   object   : /global/god#8
+   function : process_input
+   arguments: "update prompt",
+   program  : global/player.c
+   file     : global/process_input.c at line 88
+
+
+---==[ error occurred at Mon Aug 24 15:50:31 1998 ]==---
+note    : error was caught via catch().
+player  : errante [last verb: update katana.c]
+object  : /cmds/creator/update
+error   : *Error in loading object '/obj/weapon'
+program : cmds/creator/update.c
+file    : cmds/creator/update.c at line 144
+   ------------------------------------
+   object   : /cmds/creator/update
+   function : CATCH
+   program  : cmds/creator/update.c
+   file     : cmds/creator/update.c at line 144
+   ------------------------------------
+   object   : /cmds/creator/update
+   function : cmd
+   arguments: "/w/baldrick/mountains/items/katana.c", /global/creator#102,
+   program  : cmds/creator/update.c
+   file     : cmds/creator/update.c at line 144
+   ------------------------------------
+   object   : /cmds/creator/update
+   function : _cmd
+   arguments: "katana.c", /global/creator#102, "update",
+   program  : cmds/handlers/cmd.c
+   file     : cmds/handlers/cmd.c at line 87
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "update", "katana.c", /global/creator#102,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 150
+   ------------------------------------
+   object   : /global/creator#102
+   function : aq_add
+   arguments: "update katana.c",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/creator#102
+   function : queue_action
+   arguments: "update katana.c",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 507
+   ------------------------------------
+   object   : /global/creator#102
+   function : exec_alias
+   arguments: "ut", "katana.c",
+   program  : global/alias.c
+   file     : global/alias.c at line 460
+   ------------------------------------
+   object   : /global/creator#102
+   function : process_input
+   arguments: "ut katana.c",
+   program  : global/player.c
+   file     : global/process_input.c at line 91
+
+
+---==[ error occurred at Tue Oct  6 01:17:20 1998 ]==---
+note    : error was caught via catch().
+player  : klop [last verb: tell arthag puessste]
+object  : /cmds/handlers/cmd_handler
+error   : *Error in loading object '/net/intermud3/cmds/tell'
+program : cmds/handlers/cmd_handler.c
+file    : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : CATCH
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "tell", "arthag puessste", /global/player#1118,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /global/player#1118
+   function : aq_add
+   arguments: "tell arthag puessste",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/player#1118
+   function : action_check
+   arguments: "tell arthag puessste",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#1118
+   function : process_input
+   arguments: "tell arthag puessste",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Tue Oct  6 01:17:32 1998 ]==---
+note    : error was caught via catch().
+player  : klop [last verb: tell azzitai puessste]
+object  : /cmds/handlers/cmd_handler
+error   : *Error in loading object '/net/intermud3/cmds/tell'
+program : cmds/handlers/cmd_handler.c
+file    : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : CATCH
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "tell", "azzitai puessste", /global/player#1118,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /global/player#1118
+   function : aq_add
+   arguments: "tell azzitai puessste",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/player#1118
+   function : action_check
+   arguments: "tell azzitai puessste",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#1118
+   function : process_input
+   arguments: "tell azzitai puessste",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Tue Oct  6 01:17:44 1998 ]==---
+note    : error was caught via catch().
+player  : klop [last verb: tell phex puesste]
+object  : /cmds/handlers/cmd_handler
+error   : *Error in loading object '/net/intermud3/cmds/tell'
+program : cmds/handlers/cmd_handler.c
+file    : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : CATCH
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "tell", "phex puesste", /global/player#1118,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /global/player#1118
+   function : aq_add
+   arguments: "tell phex puesste",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/player#1118
+   function : action_check
+   arguments: "tell phex puesste",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#1118
+   function : process_input
+   arguments: "tell phex puesste",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Mon Nov  2 17:32:37 1998 ]==---
+note    : error was caught via catch().
+player  : baldrick [last verb: tell deekturn on your crechannel.]
+object  : /cmds/handlers/cmd_handler
+error   : *Error in loading object '/net/intermud3/cmds/tell'
+program : cmds/handlers/cmd_handler.c
+file    : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : CATCH
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "tell", "deekturn on your crechannel.", /global/god#38,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /global/god#38
+   function : aq_add
+   arguments: "tell deekturn on your crechannel.",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/god#38
+   function : queue_action
+   arguments: "tell deekturn on your crechannel.",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 507
+   ------------------------------------
+   object   : /global/god#38
+   function : exec_alias
+   arguments: "t", "deekturn on your crechannel.",
+   program  : global/alias.c
+   file     : global/alias.c at line 460
+   ------------------------------------
+   object   : /global/god#38
+   function : process_input
+   arguments: "t deekturn on your crechannel.",
+   program  : global/player.c
+   file     : global/process_input.c at line 91
+
+
+---==[ error occurred at Fri Nov  6 14:36:21 1998 ]==---
+note    : error was caught via catch().
+player  : timion [last verb: whoami]
+object  : /cmds/handlers/cmd_handler
+error   : *Error in loading object '/cmds/player/whoami'
+program : cmds/handlers/cmd_handler.c
+file    : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : CATCH
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "whoami", 0, /global/player#154,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /global/player#154
+   function : aq_add
+   arguments: "whoami",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/player#154
+   function : action_check
+   arguments: "whoami",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#154
+   function : process_input
+   arguments: "whoami",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Fri Nov  6 14:36:23 1998 ]==---
+note    : error was caught via catch().
+player  : timion [last verb: whoami]
+object  : /cmds/handlers/cmd_handler
+error   : *Error in loading object '/cmds/player/whoami'
+program : cmds/handlers/cmd_handler.c
+file    : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : CATCH
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "whoami", 0, /global/player#154,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /global/player#154
+   function : aq_add
+   arguments: "whoami",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/player#154
+   function : action_check
+   arguments: "whoami",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#154
+   function : process_input
+   arguments: "whoami",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Fri Nov  6 14:36:41 1998 ]==---
+note    : error was caught via catch().
+player  : timion [last verb: wer]
+object  : /cmds/handlers/cmd_handler
+error   : *Error in loading object '/cmds/player/wer'
+program : cmds/handlers/cmd_handler.c
+file    : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : CATCH
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "wer", 0, /global/player#154,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /global/player#154
+   function : aq_add
+   arguments: "wer",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/player#154
+   function : action_check
+   arguments: "wer",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#154
+   function : process_input
+   arguments: "wer",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Fri Nov  6 14:36:55 1998 ]==---
+note    : error was caught via catch().
+player  : timion [last verb: whoami]
+object  : /cmds/handlers/cmd_handler
+error   : *Error in loading object '/cmds/player/whoami'
+program : cmds/handlers/cmd_handler.c
+file    : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : CATCH
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "whoami", 0, /global/player#154,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /global/player#154
+   function : aq_add
+   arguments: "whoami",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/player#154
+   function : action_check
+   arguments: "whoami",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#154
+   function : process_input
+   arguments: "whoami",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Mon Nov  9 10:18:42 1998 ]==---
+note    : error was caught via catch().
+player  : shaydz [last verb: whoami]
+object  : /cmds/handlers/cmd_handler
+error   : *Error in loading object '/cmds/player/whoami'
+program : cmds/handlers/cmd_handler.c
+file    : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : CATCH
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "whoami", 0, /global/player#216,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /global/player#216
+   function : perform_next_action
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 468
+   ------------------------------------
+   object   : /global/player#216
+   function : act
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 527
+   ------------------------------------
+   object   : /global/player#216
+   function : heart_beat
+   program  : global/player.c
+   file     : global/player.c at line 1011
+
+
+---==[ error occurred at Mon Nov  9 10:18:50 1998 ]==---
+note    : error was caught via catch().
+player  : shaydz [last verb: whoami]
+object  : /cmds/handlers/cmd_handler
+error   : *Error in loading object '/cmds/player/whoami'
+program : cmds/handlers/cmd_handler.c
+file    : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : CATCH
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "whoami", 0, /global/player#216,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /global/player#216
+   function : aq_add
+   arguments: "whoami",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/player#216
+   function : action_check
+   arguments: "whoami",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#216
+   function : process_input
+   arguments: "whoami",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Mon Nov  9 10:18:54 1998 ]==---
+note    : error was caught via catch().
+player  : shaydz [last verb: whoami]
+object  : /cmds/handlers/cmd_handler
+error   : *Error in loading object '/cmds/player/whoami'
+program : cmds/handlers/cmd_handler.c
+file    : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : CATCH
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "whoami", 0, /global/player#216,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /global/player#216
+   function : aq_add
+   arguments: "whoami",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/player#216
+   function : action_check
+   arguments: "whoami",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/player#216
+   function : process_input
+   arguments: "whoami",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Mon Nov  9 13:57:40 1998 ]==---
+note    : error was caught via catch().
+player  : baldrick [last verb: tell shaudz no, just using a newer MudOS, and running it without the hackish DW-extensions.]
+object  : /cmds/handlers/cmd_handler
+error   : *Error in loading object '/net/intermud3/cmds/tell'
+program : cmds/handlers/cmd_handler.c
+file    : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : CATCH
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "tell", "shaudz no, just using a newer MudOS, and running it without the hackish DW-extensions.", /global/god#38,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /global/god#38
+   function : aq_add
+   arguments: "tell shaudz no, just using a newer MudOS, and running it without the hackish DW-extensions.",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/god#38
+   function : queue_action
+   arguments: "tell shaudz no, just using a newer MudOS, and running it without the hackish DW-extensions.",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 507
+   ------------------------------------
+   object   : /global/god#38
+   function : exec_alias
+   arguments: "t", "shaudz no, just using a newer MudOS, and running it without the hackish DW-extensions.",
+   program  : global/alias.c
+   file     : global/alias.c at line 460
+   ------------------------------------
+   object   : /global/god#38
+   function : process_input
+   arguments: "t shaudz no, just using a newer MudOS, and running it without the hackish DW-extensions.",
+   program  : global/player.c
+   file     : global/process_input.c at line 91
+
+
+---==[ error occurred at Mon Nov  9 23:17:07 1998 ]==---
+note    : error was caught via catch().
+player  : shaydz [last verb: whoami]
+object  : /cmds/handlers/cmd_handler
+error   : *Error in loading object '/cmds/player/whoami'
+program : cmds/handlers/cmd_handler.c
+file    : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : CATCH
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "whoami", 0, /global/creator#243,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /global/creator#243
+   function : aq_add
+   arguments: "whoami",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/creator#243
+   function : action_check
+   arguments: "whoami",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/creator#243
+   function : process_input
+   arguments: "whoami",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Tue Nov 10 14:31:29 1998 ]==---
+note    : error was caught via catch().
+player  : thulsa [last verb: tell asdf as df]
+object  : /cmds/handlers/cmd_handler
+error   : *Error in loading object '/net/intermud3/cmds/tell'
+program : cmds/handlers/cmd_handler.c
+file    : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : CATCH
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "tell", "asdf as df", /global/creator#300,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 136
+   ------------------------------------
+   object   : /global/creator#300
+   function : perform_next_action
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 468
+   ------------------------------------
+   object   : /global/creator#300
+   function : action_check
+   arguments: "tell asdf as df",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 649
+   ------------------------------------
+   object   : /global/creator#300
+   function : process_input
+   arguments: "tell asdf as df",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+

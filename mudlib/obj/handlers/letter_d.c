@@ -8,12 +8,12 @@
 
 string *undeleted;
 string letter;
-static string *mail_ls, *pl_ls;
-static int mail_ptr, pl_ptr;
+nosave string *mail_ls, *pl_ls;
+nosave int mail_ptr, pl_ptr;
 
 void manage_mail();
 void manage_users();
-nomask static int valid_access();
+nomask protected int valid_access();
 
 void create() {
     seteuid("Root");
@@ -108,7 +108,7 @@ void manage_users() {
     call_out("manage_users", 300);
 }
 
-nomask static int valid_access() {
+nomask protected int valid_access() {
     if(member_array(base_name(previous_object()), TRUSTED_MAILERS) == -1 &&
       geteuid(previous_object()) != "Root") return 0;
     return 1;

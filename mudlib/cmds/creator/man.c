@@ -27,7 +27,7 @@ string query_short_help() {
          "something like 'man *string*' works.\n";
 }
  
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   object man_obj;
   int match_all, enter_menu, menu_expert;
   int WAS_MATCH = 1;

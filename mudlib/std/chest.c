@@ -7,9 +7,9 @@ inherit "std/basic/cute_look";
 #define C_CLOSED 1
 #define C_TRANS 2
 #define C_OPAQUE 1
-static int max_weight, loc_weight;
-static int prevent_insert;
-static mapping locks;
+nosave int max_weight, loc_weight;
+nosave int prevent_insert;
+nosave mapping locks;
 int open;    // if open == 1 you can SEE contents
 string close_mess, open_mess;
 void create() {

@@ -5,12 +5,12 @@
  * written by alice(ember). But this one is written by pinkfish like
  * most of the rest of this mud, bar what is not of course ;)
  */
-static int fsize,
+nosave int fsize,
            topl,
            search_flag,
            botl;
-static mixed mark_data;
-static string fname,
+nosave mixed mark_data;
+nosave string fname,
               *mark_name,
               *filenames,
               finish_func,

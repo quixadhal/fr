@@ -25,9 +25,9 @@
  * tohit_bonus and body_ac_bonus thingie..
  */
 
-static int ovr_num,
+nosave int ovr_num,
            ovr_type;
-static object defender,
+nosave object defender,
               attacker;
 
 string *known_unarmed_styles,

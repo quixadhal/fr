@@ -17,7 +17,7 @@ position = 1;
  * Does a strange intermud ping thingy.
  */
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   string  mud, param, type;
   mapping minfo;
 

@@ -1,7 +1,7 @@
 /* /std/basic/extra_looks */
 
 
-private static object *extra_looks;
+private nosave object *extra_looks;
 
 void create() {
   extra_looks = ({ });

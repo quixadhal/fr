@@ -120,7 +120,7 @@ string long(string name, int dark)
     return 0;
 } /* long() */
 
-static int visible() {
+protected int visible() {
     if(!query_invis()) {
 	notify_fail("You are already visible.\n");
 	return 0;
@@ -131,7 +131,7 @@ static int visible() {
     return 1;
 } /* visible() */
 
-static int invisible(string str) 
+protected int invisible(string str) 
 {
     // Flode, 120997 - Added the possibility to go from invis 2
     // to invis 1 the hard way
@@ -180,7 +180,7 @@ nomask int query_demi() {
     return 0;
 }
 
-static int promote(string str) {
+protected int promote(string str) {
     if (this_player(1) != this_object())
 	return 1;
     if (!str) {
@@ -190,7 +190,7 @@ static int promote(string str) {
     return (int)"/secure/master"->create_creator(str);
 } /* promote() */
 
-static int do_demote(string str) {
+protected int do_demote(string str) {
     if (this_player(1) != this_player())
 	return 0;
     if (!str) {
@@ -200,7 +200,7 @@ static int do_demote(string str) {
     return (int)"/secure/master"->demote_creator(str);
 } /* do_demote() */
 
-static int new_domain(string str) {
+protected int new_domain(string str) {
     string s1, s2;
     if (this_player(1) != this_object())
 	return 1;
@@ -259,7 +259,7 @@ string query_gtitle()
     {
 	if(query_demi())
 	{
-	    of_title = "/secure/lords.c"->query_boo(name);
+	    of_title = "/secure/lords.c"->query_lord(name);
 	    return "the Professor " + of_title;
 	}
 	return "the Janitor";
@@ -268,7 +268,7 @@ string query_gtitle()
     {
 	if(query_demi())
 	{
-	    of_title = "/secure/lords.c"->query_boo(name);
+	    of_title = "/secure/lords.c"->query_lord(name);
 	    return "the Professor " + of_title;
 	}
 	return "the Janitor";

@@ -14,7 +14,7 @@ string query_usage()
 }
 
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
     string *mem, mems2;
     int cols, i;
     mems2 = "";

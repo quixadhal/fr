@@ -12,7 +12,7 @@ string query_short_help() {
  return "Full list files in current or specified directories";
 }
 
-static int cmd(string arg, object me){
+protected int cmd(string arg, object me){
 string *list;
 string euid, file;
 object obj;

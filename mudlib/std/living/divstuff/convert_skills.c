@@ -5,7 +5,7 @@
 
 #define DIRECT(SKL) skillcpy_con(SKL, SKL)
 
-static mixed *old_skills; /* we don't want to save them :) */
+nosave mixed *old_skills; /* we don't want to save them :) */
 
 /*
  * Sets the skill pointed to by 'path' to have the 'lvl' and 'exp'

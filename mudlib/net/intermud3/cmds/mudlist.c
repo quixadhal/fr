@@ -8,7 +8,7 @@
 #include <cmd.h>
 #define INTERMUD_D "/net/intermud3/intermud"
 inherit CMD_BASE;
-static int cmd(string str, object me)
+protected int cmd(string str, object me)
     {
     mixed *info;
     string *list;

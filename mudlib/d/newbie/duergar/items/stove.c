@@ -1,7 +1,7 @@
 /* Likewise this is Hamlet's.  Perhaps worm isn't the word. */
 inherit "/std/container";
 #include "path.h"
-static int x =0;
+nosave int x =0;
  
 object pot;
 object ladle;

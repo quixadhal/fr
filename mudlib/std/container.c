@@ -12,7 +12,7 @@ inherit "std/object";
 inherit "std/basic/cute_look";
 
 int max_weight;              /* maximum allowable weight, 0 = no limit */
-static int contents_weight;  /* current contained weight */
+nosave int contents_weight;  /* current contained weight */
 
 void create() 
 {

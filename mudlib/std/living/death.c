@@ -244,7 +244,7 @@ object make_corpse()
 
 //? shouldnt need to call this... so make it static, just in case 
 
-static void actual_death() 
+protected void actual_death() 
 {
     object ob, ob2;
     // Radix made this so it didn't HAVE to create a corpse, 

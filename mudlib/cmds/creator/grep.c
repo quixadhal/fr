@@ -10,7 +10,7 @@ void setup(){
 
 
 
-static int cmd(mixed words, object me) {
+protected int cmd(mixed words, object me) {
     int i, j,k, size;
     string line, found, output, pattern, *files, *lines, *match;
 

@@ -15,8 +15,8 @@ inherit "/global/wiz_communicate";
 
 #define MASTER "/secure/master"
 
-static string in_editor;
-static int file_mod_time;                   // Radix, 1996
+nosave string in_editor;
+nosave int file_mod_time;                   // Radix, 1996
 
 varargs object *wiz_present(string str, object onobj, int nogoout);
 string desc_object(mixed o);
@@ -26,17 +26,17 @@ string desc_f_object(object o);
 nomask void set_file_mod_time(int t) { file_mod_time = t; }
 nomask int query_file_mod_time() { return file_mod_time; }
 
-// Randor brought these back, 27-mar-98
-int query_ed_setup() { return ed_setup; }
-void set_ed_setup(int i) { ed_setup = i; }
+// Randor brought these back, 27-mar-98 and Baldrick tries to remove it again.
+//int query_ed_setup() { return ed_setup; }
+//void set_ed_setup(int i) { ed_setup = i; }
 
-static void wiz_commands() {
+protected void wiz_commands() {
     wiz_object_comm::wiz_commands();
     wiz_info_comm::wiz_commands();
     wiz_communicate::wiz_commands();
 } /* wiz_commands() */
 
-static void app_commands() {
+protected void app_commands() {
 //    wiz_object_comm::app_commands();
     wiz_info_comm::app_commands();
 } /* app_commands() */
@@ -50,7 +50,13 @@ void all_commands() {
     wiz_info_comm::all_commands();
 } /* all_commands() */
 
-static int edit(string str) {
+void fini_editor() {
+    // Radix
+    master()->check_file_mod_time(in_editor,this_object());
+    in_editor = 0;
+} /* fini_editor() */
+
+protected int edit(string str) {
     string *filenames, spam;
     object *things;
     int egg;
@@ -60,7 +66,8 @@ static int edit(string str) {
 
     if (!str) {
         in_editor = "(hidden)";
-        ed("frog", "fini_editor");
+//        ed("frog", "fini_editor");
+        this_object()->begin_editing("frog", (: fini_editor :));
         return 1;
     }
     /* dodgy idea, but allows 'ed here' or 'ed strawberry' */
@@ -105,7 +112,8 @@ static int edit(string str) {
     in_editor = str;
     if (!MASTER->valid_write(str, geteuid(), "frog"))
         write("[read only] ");
-    ed(str, "fini_editor");
+    //ed(str, "fini_editor");
+    this_object()->begin_editing(str, (: fini_editor :));
     this_object()->set_trivial_action();
     return 1;
 } /* edit() */
@@ -120,16 +128,10 @@ void set_in_editor(mixed fname) {
 }
 mixed query_in_editor() { return in_editor; }
 
-void fini_editor() {
-    // Radix
-    master()->check_file_mod_time(in_editor,this_object());
-    in_editor = 0;
-} /* fini_editor() */
-
 // Radix - Added wis_present call to 'cd' allowing 'cd here'
 // or any other object, same as 'ed'
 // December 15, 1995
-static int change_dir(string str) {
+protected int change_dir(string str) {
     string *filenames;
     object *obs = ({ });
     string tmp = 0;
@@ -198,7 +200,7 @@ static int change_dir(string str) {
 string query_path() { return current_path; }
 string set_path(string ping) { current_path = ping; }
 
-static int set_home_dir(string str) {
+protected int set_home_dir(string str) {
     if ( this_player()->query_current_action_forced() )
       return 0;
     if (str) home_dir = get_path(str);
@@ -219,4 +221,28 @@ int review() {
  */
 /*	Comparison function for alphabetical sorting */
 int compare(string one, string two) {  return strcmp(lower_case(one), lower_case(two));  }
+
+// Skullslayer - this should be good :)
+
+string short_path() {
+  string *tmp;
+
+  tmp = explode(query_current_path(), "/") - ({ "" });
+  switch(sizeof(tmp)) {
+    case 0:
+      return "/";
+      break;
+
+   case 1:
+     return "/"+tmp[0];
+     break;
+
+   case 2:
+     return "/"+tmp[0]+"/"+tmp[1];
+     break;
+
+   default:
+     return tmp[<2]+"/"+tmp[<1];
+   }
+}
 

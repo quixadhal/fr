@@ -21,7 +21,7 @@ string query_short_help()
 	return "Shows actual and max encumbrance.";
 }
 
-static int cmd (string arg, object me)
+protected int cmd (string arg, object me)
 {
 	int now;
 	int max;

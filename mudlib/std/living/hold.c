@@ -8,9 +8,9 @@
  * Will add that in version 2...:=)
  */
 
-static private mixed *held_ob;
-static private int free_hands_left;
-static private int held_ac;
+nosave private mixed *held_ob;
+nosave private int free_hands_left;
+nosave private int held_ac;
 
 // prototypes:
 

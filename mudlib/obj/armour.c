@@ -24,7 +24,7 @@ inherit "/std/basic/condition";
 /* attack_out consists of concatenated 7-tuples */
 
 /* Shields *can* be twohanded.. :=) */
-static int twohanded;   /* used to be "str hand" */
+nosave int twohanded;   /* used to be "str hand" */
 
 int enchant,value_adjustment;
 
@@ -34,8 +34,8 @@ int ac, max_ac, min_ac;
 /* The armours full ac value.. 
  * Will add magical ac later..
  */
-static int armour_ac;
-//static int value;
+nosave int armour_ac;
+//nosave int value;
 
 string cond_string()
 {

@@ -16,7 +16,7 @@ void save_me();
  * Hmmm, well I think I will add mailing list support. Sounds cute huh?
  */
 
-static object *our_mailers;
+nosave object *our_mailers;
 mapping mailing_lists;
 
 void setup() {
@@ -132,7 +132,7 @@ int create_list(string list, string creator) {
   return 1;
 } /* create_list() */
 
-static int delete_list(string list) {
+protected int delete_list(string list) {
   if (!mailing_lists[list])
     return 0;
   map_delete(mailing_lists, list);

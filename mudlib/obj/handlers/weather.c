@@ -25,7 +25,7 @@ mixed *coldarr,
       *cloudarr,
       *rainarr;
 
-static mapping my_obs;
+nosave mapping my_obs;
  
 int div,
     year,

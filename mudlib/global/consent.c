@@ -9,7 +9,7 @@
  */
 
 mapping consents;
-static mixed valid_consents;
+nosave mixed valid_consents;
 
 string help()
 {

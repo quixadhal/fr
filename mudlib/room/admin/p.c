@@ -8,9 +8,9 @@ inherit "std/room";
 #define OUTSIDE "d/fr/daggerford/ladyluck"
  
 string ban;
-static string message, apply_dom, *doms;
-static int in_use;
-static object sign;
+nosave string message, apply_dom, *doms;
+nosave int in_use;
+nosave object sign;
 
 string query_cap_name() { return "A wandering spirit"; }
 

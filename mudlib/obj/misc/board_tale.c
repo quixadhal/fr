@@ -18,7 +18,7 @@ inherit "/obj/monster";
  
 #include "board.h"
 /* Taniwha 1995, a list of immort write only boards, easy to extend */
-static string *readonly = ({"playerinfo","quests","announcements"});
+nosave string *readonly = ({"playerinfo","quests","announcements"});
  
 string board_name;
  

@@ -12,7 +12,7 @@ position = 1;
 }
 
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   int eval_cost;
 
   if ( me->query_current_action_forced() )

@@ -1,9 +1,9 @@
 #include "unarmed_combat.h"
 
-static int ovr_num,ovr_type;
-static string *custom_attacks;
+nosave int ovr_num,ovr_type;
+nosave string *custom_attacks;
 object attacker,defender;
-static string *bits;
+nosave string *bits;
 
 
 /*

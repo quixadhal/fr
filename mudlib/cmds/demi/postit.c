@@ -7,7 +7,7 @@ void setup(){
     position = 2;
 }
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
     object ob;
     string name;
 

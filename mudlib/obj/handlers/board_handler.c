@@ -11,11 +11,11 @@ int num;
 #define DEFAULT_MIN 10
 #define DEFAULT_MAX 80
 #define DEFAULT_TIMEOUT 14
-#define ARCHIVE_DIR "/open/boards/"
+#define ARCHIVE_DIR "/" + mud_name() + "/open/boards/"
  
 void expire_boards();
 string query_archive(string board);
-static int zap_message(string board, int num);
+protected int zap_message(string board, int num);
  
 void create() {
   num = 1;
@@ -42,8 +42,10 @@ mixed get_subjects(string name) {
   string pl;
   int bit;
  
+/* taniwha, we need this removed to fix up some cloning mem leaks
   if (file_name(previous_object())[0..10] != "/obj/misc/board"[0..10])
     return ({ });
+*/
   pl = (string)this_player()->query_name();
   bit = priv[name] && !query_lord(pl) &&
         (member_array(pl, security[name]) == -1);
@@ -55,8 +57,10 @@ mixed get_subjects(string name) {
 string get_message(string board, int num) {
   string name;
  
+/* Taniwha, 1997, we need this allowed so we can clean up some cloning leaks
   if (file_name(previous_object())[0..10] != "/obj/misc/board"[0..10])
     return 0;
+*/
   name = (string)this_player()->query_name();
   if (!boards[board] || (priv[board] && !query_lord(name)
                         && (member_array(geteuid(previous_object()),
@@ -152,7 +156,7 @@ int remove_allowed(string board, string name) {
   return 1;
 } /* add_allowed() */
  
-static int zap_message(string board, int off) {
+protected int zap_message(string board, int off) {
   int num;
   string nam, archive;
  
@@ -178,8 +182,7 @@ static int zap_message(string board, int off) {
 } /* zap_message() */
  
 int delete_message(string board, int off) {
-  string nam, archive;
-  int num;
+  string nam;
  
   if (file_name(previous_object())[0..10] != "/obj/misc/board"[0..10])
     return 0;

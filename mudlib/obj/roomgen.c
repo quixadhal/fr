@@ -14,7 +14,7 @@ inherit "obj/roomgen/misc";
 #define SAVE_DIR "/save/roomgen/"
  
 string file_name, temp_file_name, extra_code;
-static string tmp_file_name;
+nosave string tmp_file_name;
  
 void main_menu();
 

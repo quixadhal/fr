@@ -82,7 +82,7 @@ void get_mental_effects(void)
 
 void get_physical_effects(void)
 {
-  static int middle = 0, old = 0, venerable = 0;
+  nosave int middle = 0, old = 0, venerable = 0;
   object plrChr = this_player();
 
   if (curAge < raceObj->GetMiddleAge())

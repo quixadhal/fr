@@ -11,13 +11,13 @@ inherit "/std/living/unarmedtest";
 /* Hmm, are we using these now ? */
 int *weapon_attack_out, *attack_out;                //dk
 
-static object attackee;
-static object *attacker_list,
+nosave object attackee;
+nosave object *attacker_list,
 *call_outed,
 protector;
 
-static object concentrate;
-static int dodging;
+nosave object concentrate;
+nosave int dodging;
 
 
 #define DIV_NUM 6

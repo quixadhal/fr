@@ -1,6 +1,6 @@
 
-static string dir_path;
-static string func;
+nosave string dir_path;
+nosave string func;
  
  
 void get_key(string str) {

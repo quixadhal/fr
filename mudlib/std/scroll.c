@@ -34,7 +34,7 @@ mapping guilds = ([
 mapping query_guilds() { return guilds; }
 mapping learnable = ([
 ]);
-static int phrase;
+nosave int phrase;
 string file;
 string spellname;
 string func;

@@ -18,7 +18,7 @@ string query_short_help()
 	return "Shows current player name and title(s).";
 }
 
-static int cmd (string str, object me)
+protected int cmd (string str, object me)
 {
 	efun::tell_object(me, (string)me->query_short()+
 		(me->query_gtitle()? " "+me->query_gtitle() : "")+

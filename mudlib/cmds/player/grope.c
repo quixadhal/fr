@@ -18,7 +18,7 @@ string query_short_help()
    return "Lets you feel around the area for an exit.";
 }
 /*
-static int cmd(string arg, object me)
+protected int cmd(string arg, object me)
 */
 int cmd(string arg, object me)
 {

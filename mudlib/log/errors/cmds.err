@@ -1,0 +1,171 @@
+---==[ error occurred at Sun Aug  2 14:25:54 1998 ]==---
+player  : baldrick [last verb: no verb]
+object  : /cmds/creator/update
+error   : *Error in loading object '/global/prompt'
+program : cmds/creator/update.c
+file    : cmds/creator/update.c at line 65
+   ------------------------------------
+   object   : /cmds/creator/update
+   function : do_update
+   arguments: ({ /* sizeof() == 1 */
+  0
+}), /global/god#8,
+   program  : cmds/creator/update.c
+   file     : cmds/creator/update.c at line 65
+   ------------------------------------
+   object   : /cmds/creator/update
+   function : cmd
+   arguments: "/global/prompt.c", /global/god#8,
+   program  : cmds/creator/update.c
+   file     : cmds/creator/update.c at line 164
+   ------------------------------------
+   object   : /cmds/creator/update
+   function : _cmd
+   arguments: "/global/prompt", /global/god#8, "update",
+   program  : cmds/handlers/cmd.c
+   file     : cmds/handlers/cmd.c at line 87
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "update", "/global/prompt", /global/god#8,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 150
+   ------------------------------------
+   object   : /global/god#8
+   function : aq_add
+   arguments: "update /global/prompt",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 295
+   ------------------------------------
+   object   : /global/god#8
+   function : action_check
+   arguments: "update /global/prompt",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 616
+   ------------------------------------
+   object   : /global/god#8
+   function : process_input
+   arguments: "update /global/prompt",
+   program  : global/player.c
+   file     : global/process_input.c at line 88
+
+
+---==[ error occurred at Wed Sep  9 13:01:27 1998 ]==---
+player  : baldrick [last verb: mudlist]
+object  : /cmds/handlers/cmd_handler
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : cmds/handlers/cmd_handler.c
+file    : cmds/handlers/cmd_handler.c at line 150
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "mudlist", 0, /global/god#304,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 150
+   ------------------------------------
+   object   : /global/god#304
+   function : aq_add
+   arguments: "mudlist",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/god#304
+   function : action_check
+   arguments: "mudlist",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/god#304
+   function : process_input
+   arguments: "mudlist",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sun Sep 20 17:31:16 1998 ]==---
+player  : no active player [last verb: no verb]
+object  : /cmds/creator/update
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : cmds/creator/update.c
+file    : cmds/creator/update.c at line 91
+   ------------------------------------
+   object   : /cmds/creator/update
+   function : do_update
+   arguments: ({ /* sizeof() == 1 */
+  /global/god#756
+}), 0,
+   program  : cmds/creator/update.c
+   file     : cmds/creator/update.c at line 91
+   ------------------------------------
+   object   : /cmds/creator/update
+   function : cmd
+   arguments: "baldrick", 0,
+   program  : cmds/creator/update.c
+   file     : cmds/creator/update.c at line 135
+   ------------------------------------
+   object   : /cmds/creator/update
+   function : _cmd
+   arguments: "baldrick", 0, "update",
+   program  : cmds/handlers/cmd.c
+   file     : cmds/handlers/cmd.c at line 87
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "update", "baldrick", 0,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 150
+   ------------------------------------
+   object   : 0
+   function : aq_add
+   arguments: "update baldrick",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : 0
+   function : action_check
+   arguments: "update baldrick",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : 0
+   function : process_input
+   arguments: "update baldrick",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+
+---==[ error occurred at Sun Oct  4 19:29:15 1998 ]==---
+player  : baldrick [last verb: mudlist]
+object  : /cmds/handlers/cmd_handler
+error   : *Bad argument 1 to call_other()
+Expected: string or array or object Got: 0.
+program : cmds/handlers/cmd_handler.c
+file    : cmds/handlers/cmd_handler.c at line 150
+   ------------------------------------
+   object   : /cmds/handlers/cmd_handler
+   function : cmd
+   arguments: "mudlist", 0, /global/god#765,
+   program  : cmds/handlers/cmd_handler.c
+   file     : cmds/handlers/cmd_handler.c at line 150
+   ------------------------------------
+   object   : /global/god#765
+   function : aq_add
+   arguments: "mudlist",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 308
+   ------------------------------------
+   object   : /global/god#765
+   function : action_check
+   arguments: "mudlist",
+   program  : std/living/action_queue.c
+   file     : std/living/action_queue.c at line 637
+   ------------------------------------
+   object   : /global/god#765
+   function : process_input
+   arguments: "mudlist",
+   program  : global/player.c
+   file     : global/process_input.c at line 94
+
+

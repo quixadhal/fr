@@ -7,7 +7,7 @@ varargs object *wiz_present(string str, object onobj, int nogoout);
 string desc_object(mixed o);
 string desc_f_object(object o);
 
-static void wiz_commands() {
+protected void wiz_commands() {
     add_action("function2","call");
     add_action("parse_frogs", ";");
     add_action("dest", "destruct");
@@ -22,7 +22,7 @@ static void wiz_commands() {
 ** we must be careful in what we place here
 */
 
-static void app_commands() {
+protected void app_commands() {
     add_action("whereis","whereis");
     add_action("get_pathof","pathof");
     add_action("get_creator","coder");
@@ -35,7 +35,7 @@ static void app_commands() {
     add_action("do_debug", "debug");
 } /* app_commands() */
 
-static void all_commands() {
+protected void all_commands() {
 } /* all_obj_commands() */
 
 int whereis(string str) {
@@ -63,7 +63,7 @@ int whereis(string str) {
 } /* whereis() */
 
 /* This is for querying about objects who don't want to be destructed */
-static object discard_obj;
+nosave object discard_obj;
 
 int affirmative(string s) /* returns true if s is a 'yes' equiv response */
 {
@@ -163,8 +163,8 @@ int get_creator(string str) {
     return 1;
 } /* get_creator() */
 
-static object *dest_obj; 
-static int objn, majd;
+nosave object *dest_obj; 
+nosave int objn, majd;
 
 void ask_dest() {
     if (!pointerp(dest_obj) || objn >= sizeof(dest_obj)) {
@@ -454,7 +454,7 @@ varargs object *wiz_present(string str, object onobj, int nogoout) {
     return ({ });
 } /* wiz_present() */
 
-static mixed *parse_args(string str, string close) {
+protected mixed *parse_args(string str, string close) {
     mixed *args, *m, *m2;
     object *obs;
     string s1, s2, s3, s4, s5, s6, s7;
@@ -633,14 +633,14 @@ void inform_of_call(object ob, mixed *argv) {
      */
 } /* inform_of_call() */
 
-static mixed mapped_call(object ob, mixed *argv) {
+protected mixed mapped_call(object ob, mixed *argv) {
     inform_of_call(ob, argv);
     return call_other(ob, argv[0], argv[1],argv[2],argv[3],
       argv[4],argv[5],argv[6]);
 } /* mapped_call() */
 
 /* Free form parse_args code */
-static int parse_frogs(string str) {
+protected int parse_frogs(string str) {
     mixed junk;
 
     if (this_player(1) != this_object()) return 0;
@@ -654,7 +654,7 @@ static int parse_frogs(string str) {
     return 1;
 } /* parse_forgs() */
 
-static int function2(string str) {
+protected int function2(string str) {
     /* call fish(x,y,z) object */
     mixed *args;
     string *s, s1, s2;
@@ -712,7 +712,7 @@ static int function2(string str) {
     return 1;
 } /* function2() */
 
-static int do_find(string str) {
+protected int do_find(string str) {
     string func, thing, s, ping;
     object *obs, fish;
     int i;

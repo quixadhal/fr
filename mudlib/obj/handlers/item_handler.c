@@ -13,7 +13,7 @@ mapping mylist = (["fire":1,"cold":1,"magical":1,"electrical":1,"stone":1,
    Note that the way this is coded, it is unwise to wear "enchanted"
    items for too long, you'll take a temp hit on removal if you do
 */      
-static void stat_adjust(string query_tmp,string query_total,string adj,int j,object user_ob)
+protected void stat_adjust(string query_tmp,string query_total,string adj,int j,object user_ob)
 {
     int total,temp;
     if(!intp(j)) return;

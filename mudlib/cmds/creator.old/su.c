@@ -9,7 +9,7 @@ position = 1;
 
 
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   if (!str || str == "") {
     notify_fail("Usage: su <name>\n");
     return 0;

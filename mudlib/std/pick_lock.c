@@ -1,6 +1,6 @@
 inherit "/std/item.c";
-static int pick_skill;
-static string tool_type;
+nosave int pick_skill;
+nosave string tool_type;
 varargs int box_unlock_part2(string chest, object ob2);
 object locd_ob;
 

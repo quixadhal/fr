@@ -10,7 +10,7 @@ int do_who(string str) {
   return 1;
 }
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   string ws;
 
   ws = who_string((int)me->query_cols(), (int)me->query_creator(), str);

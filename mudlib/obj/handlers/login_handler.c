@@ -17,8 +17,8 @@ inherit "std/object";
 string *names;
 mixed *functions;
 mixed *objects;
-static string *players_on;
-static int number_players;
+nosave string *players_on;
+nosave int number_players;
 
 
 void create() {

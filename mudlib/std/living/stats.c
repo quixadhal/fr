@@ -33,7 +33,7 @@ chatmp;
 
 int extreme_str, hp_bonus, kill_xp;
 
-static int no_check,
+nosave int no_check,
 tmp_ac_bon,
 tmp_damage_bon,
 tmp_tohit_bon;

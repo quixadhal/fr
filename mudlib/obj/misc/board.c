@@ -3,12 +3,12 @@ inherit "/std/object";
 
 #include "board.h"
 /* Taniwha 1995, a list of immort write only boards, easy to extend */
-static string *readonly = ({"playerinfo","quests","announcements"});
+nosave string *readonly = ({"playerinfo","quests","announcements"});
 
 string board_name;
 
 mapping being_written;
-int action_pri;
+#define ACTION_PRI 0
 
 void setup() {
   set_name("board");
@@ -18,7 +18,6 @@ void setup() {
   reset_get();
   board_name = "fish";
   being_written = ([ ]);
-  action_pri = 0;
 } /* setup() */
 
 string query_plural() {
@@ -111,29 +110,18 @@ string long(string str, int dark) {
 } /* long() */
 
 void init() {
-   // Removed the  from the next two add_action's - Radix
-    // Put'em back, and I remove you
+   // Removed the * from the next two add_action's - Radix
   add_action("read", "read");
-  add_action("post","post");
-  add_action("post", "note");
+  add_action("post", "post");
+  add_action("post", "note"); 
   add_action("eat", "eat");
   add_action("followup", "followup");
-  add_action("reply","reply");
+  add_action("reply", "reply");
   add_action("subjects", "subjects");
-  
-  ::init();
 } /* init() */
 
 void string_more(string arg, string prompt) {
-/* changed to our more_string
 
-  if (!(obj = (object)MAIL_SERVER->mail_reader(this_player()))) {
-    log_file(LOG_FILE, "board: got NULL MAIL_READER from MAIL_SERVER.\n");
-    write("MAIL_SERVER error ...\n");
-    return;
-  }
-  obj->string_more(arg, prompt);
-*/
   this_player()->set_finish_func(0);
   this_player()->more_string(arg, prompt);
 } /* string_more() */
@@ -189,12 +177,8 @@ int post(string str) {
 /* ok shove the editing stuff in here.  Lets make it function string_edit
  * sound froggy?
  */
-/*
-  string_edit("");
-  body = string_edit_res;
-*/
   being_written[this_player()->query_name()] = str;
-  this_player()->do_edit(0,"end_of_thing");
+  this_player()->do_edit("","end_of_thing", this_object());
   return 1;
 } /* post() */
 
@@ -251,8 +235,8 @@ int followup(string str) {
   mixed stuff;
   string s;
 
-   if( (member_array(board_name,readonly) != -1) && !this_player()->query_creator())
-   {
+  if(board_name=="announcements" && !this_player()->query_creator() )
+  {
    write("Sorry, only immortals may write upon this board.\n");
     return 1;
   }
@@ -298,7 +282,6 @@ int reply(string str) {
 } /* reply() */
 
 void set_board_name(string str) {
-  str = lower_case(str);
   board_name = str;
   BOARD_HAND->create_board(board_name, 0);
 }

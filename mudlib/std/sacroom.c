@@ -134,7 +134,7 @@ int begin_worship(string rabbit) {
   return 1;
 }
 
-static int not_in_use(object ob) { return ob && !ob->query_in_use() &&
+protected int not_in_use(object ob) { return ob && !ob->query_in_use() &&
                                           !ob->query_property("cursed"); }
 
 int sacrifice(string what) {

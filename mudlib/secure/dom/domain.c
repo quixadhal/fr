@@ -14,15 +14,15 @@ mapping read_perms, write_perms, dir_owners;
 string finger_info;
 mixed members;
 
-static void set_domain(string dom) { DOMAIN = dom; }
-static void set_domain_lord(string lord) { DOM_LORD = lord; }
-static void set_open_read(int i) { open_read = i; }
-static void set_open_write(int i) { open_write = i; }
-static void set_finger_info(string info) { finger_info = info; }
-static void set_read_perms(mapping i) { read_perms = i; }
-static void set_write_perms(mapping i) { write_perms = i; }
-static void set_dir_owners(mapping i) { dir_owners = i; }
-static void setup_perms() { return; }
+protected void set_domain(string dom) { DOMAIN = dom; }
+protected void set_domain_lord(string lord) { DOM_LORD = lord; }
+protected void set_open_read(int i) { open_read = i; }
+protected void set_open_write(int i) { open_write = i; }
+protected void set_finger_info(string info) { finger_info = info; }
+protected void set_read_perms(mapping i) { read_perms = i; }
+protected void set_write_perms(mapping i) { write_perms = i; }
+protected void set_dir_owners(mapping i) { dir_owners = i; }
+protected void setup_perms() { return; }
 
 int query_open_read() { return open_read; }
 int query_open_write() { return open_write; }

@@ -9,7 +9,7 @@ position = 1;
 
 
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
   mixed  err, ret;
   object ob;
   string file, wiz_dir;

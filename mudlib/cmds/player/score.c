@@ -22,7 +22,7 @@ string query_short_help()
 }
 
 
-static int cmd (string str, object me)
+protected int cmd (string str, object me)
 {
 	int age, i;
 	string *st;

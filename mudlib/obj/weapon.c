@@ -53,7 +53,7 @@ private int rolls,
             roll_add;
 
 
-static object wielder; 
+nosave object wielder; 
 
 /* HACK !!! HAS TO BE FIXED ASAP"!!!!!! */
 /* Baldrick 9 apr '94 */

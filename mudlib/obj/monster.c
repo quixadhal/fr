@@ -64,9 +64,9 @@ join_fight_mess;      /* I shall say this when I join a fight */
 
 mapping loved;	/* How do I love thee, let me count the ways */
 mapping hated;  /* ditto hated */	
-static string *story;        /* The current story (set of strings) */
-static int which_story;      /* which bit of the story to come next */
-static int hbcheck;	     /* A little patch to avoid slaughtering cowards */
+protected string *story;        /* The current story (set of strings) */
+nosave int which_story;      /* which bit of the story to come next */
+nosave int hbcheck;	     /* A little patch to avoid slaughtering cowards */
 
 /*** End of local variables ***/
 

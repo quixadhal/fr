@@ -21,9 +21,9 @@ mmsgout,
 mmsgin;
 int verbose, level;
 status dead;
-static mixed *it_them;
-static object *followers;
-static mixed remember_follow;
+nosave mixed *it_them;
+nosave object *followers;
+nosave mixed remember_follow;
 mixed attack_data,
 attack_name;
 
@@ -99,7 +99,7 @@ int query_alive()
 int test_add(object ob, int flag) { return !flag; }
 int test_remove(object ob, int flag) { return !flag; }
 
-static int in_move;
+nosave int in_move;
 
 int query_in_move() { return in_move; }
 

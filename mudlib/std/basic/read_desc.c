@@ -6,8 +6,8 @@ inherit "/std/basic/desc";
 /* this one also contians info on read_messages... */
 #include "language.h"
 
-static mixed *read_mess;
-static int max_size,
+nosave mixed *read_mess;
+nosave int max_size,
            cur_size;
 
 

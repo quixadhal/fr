@@ -22,8 +22,8 @@ mixed recursive_skill_add(mixed skil, string *path, int avr, int lvl, int exp,
 
 mixed *skills;
  
-private static int delta;
-static mapping bonus_cache,
+private nosave int delta;
+nosave mapping bonus_cache,
                level_cache,
                teach_offer;
 

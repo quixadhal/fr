@@ -12,7 +12,7 @@
 int guild_joined;
 string race_ob, guild_ob,  *known_commands;
 string group_ob, race_group_ob;
-static mapping gr_commands;
+nosave mapping gr_commands;
 
 void race_guild_commands() 
 {
@@ -193,7 +193,7 @@ int list_commands() {
 
 string *query_known_commands() { return known_commands+({ }); }
 
-static int allowed_add;
+nosave int allowed_add;
 
 int add_known_command(string str) {
     mixed tmp;

@@ -12,7 +12,7 @@ void setup(){
     position = 1;
 }
 
-static int cmd(string str, object me) {
+protected int cmd(string str, object me) {
     if (!me->query_invis()) {
         notify_fail("You are already visible.\n");
 	return 0;

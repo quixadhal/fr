@@ -11,19 +11,19 @@ inherit "/std/basic/extra_look";
  * The night long is for rooms where you want the describe to change at
  * night.
  */
-static string night_long;
+nosave string night_long;
 
 /*
  * This is the string it will display instead of it is dark.
  */
-static string dark_long;
+nosave string dark_long;
 
 /*
  * It will call this function on the room when it changes from dark to
  * light.  ie...  changes from day to night.
  */
-static string light_change;
-static int current_day;
+nosave string light_change;
+nosave int current_day;
 
 void set_dark_long(string s) { dark_long = s; }
 string query_dark_long() { return dark_long; }

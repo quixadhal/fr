@@ -1,8 +1,8 @@
 inherit "obj/roomgen/support";
  
 string *room_aliases, *room_alias_meanings;
-static string ralias;
-static int pos;
+nosave string ralias;
+nosave int pos;
  
 #define ALIAS_HELP "/doc/roomgen/alias_help"
 #define ALIAS_EXAMPLE "/doc/roomgen/alias_example"

@@ -8,10 +8,6 @@ string mud_long_name()
   {
   switch (mud_name())
     {
-    case "fr" : return "Final Realms"; 
-    case "fr_dev" : return "FR:Development";
-    case "fr_tnd" : return "FR:The Next Dimension";
-    case "fr_anarchy" : return "FR:Anarchy";
     default: return "Obviously not decided yet";
     }
 }

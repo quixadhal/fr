@@ -8,8 +8,8 @@ inherit "/std/object";
 #define UBREATHE_PROP "underwater_breathing"
 #define WEREWOLF_DISABLED 0
 
-static int min_light_limit;
-static int max_light_limit;
+nosave int min_light_limit;
+nosave int max_light_limit;
 
 int race_size;
 int limbs;
