@@ -9,23 +9,23 @@
 /* One other possible use for LE is for cute aliases */
 
 static int line;
-static string *cfile, cfile_name, last_search;
+static string *cfile, cfile_name, le_last_search;
 
-print_line()
+void print_line()
 {
    if (line > sizeof(cfile)) line = sizeof(cfile);
    if (!line) { write("No line.\n"); return; }
    write(extract("   ", 0, 3 - strlen(line + "")) + line + ":" + cfile[line-1] + "\n");
 }
 
-le(s)
+int le(string s)
 {
    int j;
 
    seteuid(geteuid(this_player(1)));
-
    if (!pointerp(cfile)) { cfile = ({ }); line = 0; }
-   if (!s || s == "") { print_line(); return 1; }
+// v22b27 hack.. Baldrick.
+   if (!s || s== "") { print_line(); return 1; }
 
    if (sscanf(s, "%d", j)) { line = j; print_line(); return 1; }
    switch (s[0]) {
@@ -43,9 +43,9 @@ le(s)
    case '/':
       s = extract(s, 1);
       if (s == "") {
-         s = last_search;
+         s = le_last_search;
       }
-      last_search = s;
+      le_last_search = s;
       {
          int i, s1, s2;
          for (i = line+1; i<= sizeof(cfile); i++) {

@@ -10,7 +10,7 @@ inherit "/obj/monster";
 
 void setup()
   {
-//set_name("james");
+set_name("james");
   set_short("james");
   set_long("James is an elder man. He is wearing a stylish white " 
            "ceremonial dress.\n");
@@ -18,7 +18,8 @@ void setup()
   set_gender(1);
   //set_class("taniwha");
   set_race_ob("/std/races/human");
-  set_guild_ob("/std/guilds/priests/taniwha");
+  //set_guild_ob("/std/guilds/priests/taniwha");
+  set_guild_ob("/std/guilds/cleric");
   set_level(15);
   set_max_gp(100);
   adjust_gp(100);
@@ -49,4 +50,5 @@ int do_raising(object player)
    player->adjust_max_lives(1);
    player->adjust_con(-1);
 */
+return 1; // you forgot this.. -randor, 19-mar-98
 } /* int do raising. */

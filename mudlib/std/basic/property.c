@@ -32,7 +32,6 @@ int query_hb_diff(int oldc)
 }
  
 int add_property(string var, mixed val) {
-  int i;
  
   if (!stringp(var))
     return 0;
@@ -43,7 +42,6 @@ int add_property(string var, mixed val) {
 }
 
 int add_static_property(string var, mixed val) {
-  int i;
 
   if (!stringp(var))
     return 0;
@@ -70,7 +68,6 @@ int add_timed_property(string var, mixed val, int time)
 }
 
 int remove_property(string var) {
-  int i;
  
   if (!var)
     return 0;
@@ -81,7 +78,6 @@ int remove_property(string var) {
 }
 
 int remove_static_property(string var) {
-  int i;
 
   if (!var)
     return 0;
@@ -92,7 +88,6 @@ int remove_static_property(string var) {
 }
 
 int remove_timed_property(string var) {
-  int i;
 
   if (!var)
     return 0;
@@ -104,7 +99,6 @@ int remove_timed_property(string var) {
 }
  
 mixed query_old_property(string str) {
-  int i;
 
   if (!str)
     return 0;
@@ -116,7 +110,6 @@ mixed query_old_property(string str) {
 
 
 mixed query_static_property(string str) {
-  int i;
   
   if (!str)
     return 0;
@@ -133,8 +126,7 @@ mixed query_static_property(string str) {
  * ehh tried to be coded.. wonder if it will work..
  */
 mixed query_timed_property(string str) {
-  int i;
-  int val;
+  int i, val;
 
   if (!str)
     return 0;
@@ -157,8 +149,7 @@ mixed query_timed_property(string str) {
 /* Could do clever stuff like check for static & normals if it falls through */
 static int timeleft;
 int query_time_remaining(string str) {
-  int i;
-  int val;
+  int i, val;
   if (!str)
     return 0;
   if (!timed_prop)
@@ -202,14 +193,12 @@ void traverse_timed_properties()
 } /* void traverse.. */
  
 int query_property_exists(string str) {
-  int i;
   if (!map_prop)
     map_prop = ([ ]);
   return (member_array(str, m_indices(map_prop))) != -1;
 }
 
 int query_static_property_exists(string str) {
-  int i;
   if (!static_map_prop)
     static_map_prop = ([ ]);
   return (member_array(str, m_indices(static_map_prop))) != -1;

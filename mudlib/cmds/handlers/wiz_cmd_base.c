@@ -225,8 +225,8 @@ object *wzpresent2(string str, mixed onobj) {
 varargs object *wiz_present(string str, object onobj, int nogoout) {
     /* nogoout is so that it WON'T check the environment of onobj */
     int i,j;
-    object ob, *obs, *obs2, *users_ob, *temp_ob;
-    string s1, s2, *sts, temp;
+    object ob, *obs, *obs2;
+    string s1, s2, *sts;
 
     if (!str || !onobj) {
 	return ({ });

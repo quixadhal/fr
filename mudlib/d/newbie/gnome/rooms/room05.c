@@ -20,7 +20,7 @@ void init()
 {
     ::init();
     add_action("go_gate","gate");
-    add_action("go_north","n*orth");
+    add_action("go_north","north");
 }
 int go_gate(string str)
 {

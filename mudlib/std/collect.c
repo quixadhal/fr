@@ -46,7 +46,7 @@ void init() {
 //  add_action("close_account", "close");
   add_action("deposit", "deposit");
 //  add_action("newowner", "newowner");
-//  add_action("setpercentage", "setp*ercentage");
+//  add_action("setpercentage", "setpercentage");
   ::init();
 } /* init() */
 

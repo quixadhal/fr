@@ -1,6 +1,4 @@
 void crash(string crash_mess, object command_giver, object current_object) {
-  int i;
-  object *obs;
 
   log_file("CRASH", ctime(time())+" ");
   if (current_object)
@@ -17,4 +15,5 @@ cp("/log/debug.log", "/log/debug.log.old");
   for (i=0;i<sizeof(obs);i++)
     obs[i]->do_force_on_me("quit");
 */
+rename("/log/runtime_debug.log","/log/crash_log"+time());
 } /* crash() */

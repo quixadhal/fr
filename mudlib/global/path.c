@@ -7,8 +7,9 @@ string invalid_path() {
 } /* invalid_path() */
                         
 string get_path(string str) {
-string *array, *array1, temp, temp1;
-int i,j;
+string *arry, temp;
+int i;
+
   if (!str) {
     if(!home_dir) {
       home_dir = "/w/" + this_player()->query_name();
@@ -39,24 +40,24 @@ int i,j;
   if (str == "/")
     return "/"; 
   else
-    array = explode(str,"/") - ({ "" }) ;
-  for (i=0;i<sizeof(array);i++)
-    if (array[i] == "..") {
+    arry = explode(str,"/") - ({ "" }) ;
+  for (i=0;i<sizeof(arry);i++)
+    if (arry[i] == "..") {
       if (i<1)
         return invalid_path();
       if (i == 1)
-        array1 = ({ "." });
+        arry = ({ "." });
       else
-         array1 = array[0..i-2];
-      if (i+1 <= sizeof(array)-1) 
-        array1 += array[i+1..sizeof(array)-1];
-      array = array1;
+         arry = arry[0..i-2];
+      if (i+1 <= sizeof(arry)-1) 
+        arry += arry[i+1..sizeof(arry)-1];
+      arry = arry;
       i -=2;
     } else
-      if (array[i] == ".")
-        array[i] = 0;
- if (array)
-   str = implode(array, "/");
+      if (arry[i] == ".")
+        arry[i] = 0;
+ if (arry)
+   str = implode(arry, "/");
  else
    str = "";
   }

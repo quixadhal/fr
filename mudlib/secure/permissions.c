@@ -35,7 +35,7 @@ mixed write;
  */
 mixed load;
 
-create() {
+void create() {
   owner = 0;
   path = 0;
   read = READ_DEFAULT;
@@ -43,7 +43,7 @@ create() {
   load = LOAD_DEFAULT;
 }
 
-start_up(arg) {
+int start_up(arg) {
   int i;
 
   i = file_size(arg+PERMISSIONS+".o");
@@ -56,7 +56,8 @@ start_up(arg) {
     log_file("SECURITY", "null owner permissions created for "+arg+".\n");
     return 0;
   }
-restore_object(arg+PERMISSIONS,1);
+
+int restore_object(arg+PERMISSIONS,1);
   if (path != arg) {
     log_file("SECURITY", "corrupt permissions for "+arg+".\n");
     dest_me();
@@ -64,23 +65,23 @@ restore_object(arg+PERMISSIONS,1);
   return 1;
 }
 
-save() {
+int save() {
 save_object(path+PERMISSIONS,1);
   return 1;
 }
 
-dest_me() {
+void dest_me() {
   destruct(this_object());
 }
 
-set_owner(arg) {
+void set_owner(arg) {
   if ((file_name(previous_object()) != MASTER)
       && !MASTER->high_programmer(this_player()->query_name()))
     return "You don't have the security clearance.";
   owner = arg;
 }
 
-add_read(arg) {
+string add_read(arg) {
   if ((file_name(previous_object()) != MASTER)
       && !MASTER->high_programmer(this_player()->query_name()))
     return "You don't have the security clearance.";
@@ -98,6 +99,7 @@ add_read(arg) {
     return "Read permissions corrupt!  Read set to "+arg+".";
   }
   read += ({ arg });
+  return "";
 }
 
 rm_read(arg) {

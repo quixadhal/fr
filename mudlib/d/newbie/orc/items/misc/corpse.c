@@ -20,7 +20,7 @@ void setup()
 }
 void init()
 {
-    add_action("look_me","l*ook");
+    add_action("look_me","look");
     add_action("get_me","get");
     ::init();
 }

@@ -27,6 +27,7 @@ static int cmd(string str, object me) {
     write(implode(bits[0..sizeof(bits)-2], ", ")+" and "+
           bits[sizeof(bits)-1]+".\nMore useless info "+
           query_load_average()+".\n");
+  me->set_trivial_action();
   return 1;
 } /* do_uptime() */
 

@@ -77,16 +77,17 @@ string long(string str, int dark) {
 }
 
 void init() {
-  add_action("read", "r*ead");
-  add_action("post", "p*ost");
-  add_action("post", "not*e");
+  ::init();
+  add_action("read", "read");
+  add_action("post", "post");
+  add_action("post", "note");
   add_action("eat", "eat");
-  add_action("followup", "f*ollowup");
-  add_action("reply", "rep*ly");
+  add_action("followup", "followup");
+  add_action("reply", "reply");
   add_action("save_note", "store");
   add_action("next", "next");
   add_action("prev", "prev");
-add_action("newm", "new");
+  add_action("newm", "new");
   add_action("board", "board");
   add_action("kfile", "killfile");
   add_action("summary","summary");
@@ -94,7 +95,7 @@ add_action("newm", "new");
 }
 
 void string_more(string arg, string prompt) {
-  object obj;
+
 /* changed to our more_string
 
   if (!(obj = (object)MAIL_SERVER->mail_reader(this_player()))) {
@@ -159,7 +160,6 @@ int read(string str) {
 }
 
 int post(string str) {
-  string body;
 
   notify_fail("Syntax: post <subject>\n");
   if (!str)

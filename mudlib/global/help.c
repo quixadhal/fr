@@ -64,7 +64,7 @@ int do_help(string str) {
     if ( !s )
       write("You do not know that spell.\n");
     else write(s);
-    return;
+    return 1;
   }
   if ( sscanf(str, "command %s", s) == 1 )
   {
@@ -72,7 +72,7 @@ int do_help(string str) {
     if (!s)
       write("You do not know that command.\n");
     else write(s);
-    return ;
+    return 1 ;
   }
   filen = search_help(str);
   if (!filen)

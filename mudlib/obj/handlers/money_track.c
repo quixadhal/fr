@@ -67,7 +67,7 @@ void clear_data() {
   save_object(SAVE+"moneydata",1);
 }
 
-create()
+void create()
 {
    ::create();
    data = ([ ]);
@@ -75,7 +75,7 @@ create()
    load_this_ob();
 }
 
-dest_me()
+void dest_me()
 {
    save_this_ob();
    destruct(this_object());
@@ -113,8 +113,6 @@ mixed *query_money_stat( string dom, string pathname ) {
   }
   return 0;
 }
-
-
 
 void select_domain_stats(string realdom) {
   int i;

@@ -34,6 +34,8 @@
  *           - Fixed data_write_callback function, it was quite broken.
  *             Sending of double packets should now belong to the past.
  *           - Fixed data_conn function, it violated the flow control model.
+ * 15-02-97  Baldrick@Final Realms.
+ *           - How the heck do I make this multi-mud aware..
  */
 #include <ftp.h>
 #include <socket.h>
@@ -47,7 +49,7 @@
    debugging defines.
 -----------------------------------------------
 */
-#define TP_CRE "asmodean"
+#define TP_CRE "baldrick"
  
 #undef DEBUG
  
@@ -183,7 +185,7 @@ void  create()
   socket_info = ([]);
   rnfr = "";
   offset = 0;
-call_out("setup_ftp", 2, FR_FTP_PORT);
+  call_out("setup_ftp", 2, FR_FTP_PORT);
   call_out("check_connections", 5 * 60);
 }      /* create() */
  
@@ -629,12 +631,13 @@ string name;
  
 void  parse_comm(int fd, string str)
 {
-string *bits, tmp, *tmpar;
-mixed *misc;
-int   port, i, mask;
+  string *bits, tmp;
+  mixed *misc;
+  int   port, i, mask;
 
   if (strsrch(str, "PASS") == -1) 
     TPX("Parseing " + str + ".\n");
+
   bits = explode(str, " ");
   socket_info[fd][LAST_DATA] = time();
   switch (lower_case(bits[0]))
@@ -1307,9 +1310,8 @@ void  in_close_callback(int fd)
  
 string  get_path(int fd, string str)
 {
-string *array, *array1, temp, temp1;
-int   i, j;
- 
+  string *arry, *arry1, temp;
+  int   i;
  
   if (!str || str == "")
   {
@@ -1353,27 +1355,27 @@ int   i, j;
   }
   if (str == "/")
     return "/";
-  array = explode(str, "/") - ({ "" });
-  for (i = 0; i < sizeof(array); i++) {
-    if (array[i] == "..")
+  arry = explode(str, "/") - ({ "" });
+  for (i = 0; i < sizeof(arry); i++) {
+    if (arry[i] == "..")
     {
       if (i < 1)
         return "/";
       if (i == 1)
-        array1 = ({ "." });
+        arry1 = ({ "." });
       else
-        array1 = array[0..i - 2];
-      if (i + 1 <= sizeof(array) - 1)
-        array1 += array[i + 1..sizeof(array) - 1];
-      array = array1;
+        arry1 = arry[0..i - 2];
+      if (i + 1 <= sizeof(arry) - 1)
+        arry1 += arry[i + 1..sizeof(arry) - 1];
+      arry = arry1;
       i -= 2;
     }
     else
-      if (array[i] == ".")
-        array[i] = 0;
+      if (arry[i] == ".")
+        arry[i] = 0;
   }
-  if (array)
-    str = implode(array, "/");
+  if (arry)
+    str = implode(arry, "/");
   else
     str = "";
   return "/" + str;

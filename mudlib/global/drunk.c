@@ -9,7 +9,7 @@ void do_wander(int bing);
 static int drunkness, missing;
 
 int drunk_heart_beat(int intox) {
-  int lvl, nxt, i, con;
+  int lvl, i, con;
   object *obs;
 
   if (intox <= 0)

@@ -9,7 +9,7 @@ void setup_shadow(object ob, int length)
      length = 100;
   shadow(ob,1);
   my_player = ob;
-  add_action("do_suppress", "*");
+  add_action("do_suppress", "");
   call_out("dest_shadow", length);
 }
 

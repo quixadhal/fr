@@ -125,7 +125,7 @@ mixed *workout_attack(string unarmed_type)
 
 
 /* This needs the attacker's object too.. */
-apply_damage(int hps, object att)
+void apply_damage(int hps, object att)
 {
   if(hps<0) hps=0;
   /* taniwha, was attacker here, God knows ;) who that was */

@@ -74,7 +74,7 @@ void setup()
 }
 void init()
 {
-    add_action("do_look","l*ook");
+    add_action("do_look","look");
     mysetup();
     ::init();
 }

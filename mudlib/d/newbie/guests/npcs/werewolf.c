@@ -50,7 +50,7 @@ set_al(-100);
  
 void init()
   {
-add_action("do_look","l*ook");
+add_action("do_look","look");
   ::init();
 }
 /*init()*/

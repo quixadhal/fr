@@ -45,7 +45,7 @@ void init()
 {
    ::init();
    add_action("buy_me","buy");
-   add_action("do_sell","se*ll");
+   add_action("do_sell","sell");
 }
 
 int buy_me(string str)

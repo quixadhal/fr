@@ -23,8 +23,8 @@ add_exit("north",DUNGEON +"dungeon03","door");
 void init()
 {
    ::init();
-   add_action("go_east","e*ast");
-   add_action("go_east","s*outh");
+   add_action("go_east","east");
+   add_action("go_east","south");
 }
 int go_east()
 {

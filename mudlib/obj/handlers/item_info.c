@@ -45,7 +45,7 @@ create()
    purge_info();
 }
  
-dest_me()
+void dest_me()
 {
    save_this_ob();
    destruct(this_object());
@@ -94,7 +94,7 @@ void display_item_properties(object ob)
 }
 
 // Called from /global/creator/cmds/info.c option -update
-void mapping_update()
+int mapping_update()
 {
    string *k = keys(container_data);
    int i;

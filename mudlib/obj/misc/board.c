@@ -111,19 +111,20 @@ string long(string str, int dark) {
 } /* long() */
 
 void init() {
-   // Removed the * from the next two add_action's - Radix
+   // Removed the  from the next two add_action's - Radix
     // Put'em back, and I remove you
-  add_action("read", "read", action_pri);
-  add_action("post", "post", action_pri);
-  add_action("post", "note", action_pri); 
-  add_action("eat", "eat", action_pri);
-  add_action("followup", "f*ollowup", action_pri);
-  add_action("reply", "rep*ly", action_pri);
-  add_action("subjects", "sub*jects", action_pri);
+  add_action("read", "read");
+  add_action("post","post");
+  add_action("post", "note");
+  add_action("eat", "eat");
+  add_action("followup", "followup");
+  add_action("reply","reply");
+  add_action("subjects", "subjects");
+  
+  ::init();
 } /* init() */
 
 void string_more(string arg, string prompt) {
-  object obj;
 /* changed to our more_string
 
   if (!(obj = (object)MAIL_SERVER->mail_reader(this_player()))) {
@@ -176,7 +177,6 @@ int read(string str) {
 } /* read() */
 
 int post(string str) {
-  string body;
 
    if( (member_array(board_name,readonly) != -1) && !this_player()->query_creator())
    {

@@ -2,7 +2,7 @@ inherit "std/room";
 
 mixed leverarr;
 
-reset (int arg) 
+void reset (int arg) 
   {
   if (arg) return;
 
@@ -14,7 +14,7 @@ reset (int arg)
 
   set_light(1);
   seteuid("baldrick");
-  add_property("inside");
+  add_property("inside", 1);
   add_item("lights","What did I say? there are lots of them and they are insesantly\n"+
            "flashing.\n");
   add_item("dials","Large dials with all sort of things on them. One you can see says\n"+
@@ -31,14 +31,14 @@ reset (int arg)
        
 }
 
-init() {
+void init() {
   ::init();
   add_action("pull","pull");
   add_action("push","push");
 }
 
 
-pull(str) {
+int pull(string str) {
   int i;
   string type,rand;
   object lever, weather;
@@ -59,7 +59,7 @@ pull(str) {
   }
   if (!lever) {
     notify_fail("You need to choose and existing lever");
-    return ;
+    return 0;
   }
 
   weather = present("weather",this_object());
@@ -67,13 +67,13 @@ pull(str) {
     notify_fail("Opps the weather controller does not exist.\n");
     return 0;
   }
-  sscanf(lever[1],"%s#%s",type,rand);
+  //sscanf(lever[1],"%s#%s",type,rand);
   write(type);
   this_player()->print_object(call_other(weather,rand));
   return 1;
 }
 
-push(str) {
+int push(string str) {
   object lever;
   int i;
   string type,bing;
@@ -97,4 +97,5 @@ push(str) {
   }
 
   write("You huff and you puff, but you just cant push that lever.\n");
+  return 1;
 }

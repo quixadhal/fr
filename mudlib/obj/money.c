@@ -1,6 +1,7 @@
 /* Altered August 1995 - January 1996 by Hamlet
    Added weight and shortcut ways to say 'platinum coins'.
    Added the cute little 'look coin' thingy.
+  980502 Skullslayer - removed unused variables
 */
 inherit "/std/object";
 #include "move_failures.h"
@@ -44,7 +45,7 @@ int do_help(string str) {
 }
 
 varargs int adjust_money(mixed amt, string type) {
-  int i, j, val;
+  int i, val;
   
   if (pointerp(amt)) {
     for (i=0;i<sizeof(amt);i+=2)
@@ -220,7 +221,6 @@ object new_money_object(int num, string type) {
 }
 
 varargs int move(mixed dest, mixed messin, mixed messout) {
-  mixed i;
   int j;
   object ob, mon;
   object from_where;
@@ -271,7 +271,7 @@ varargs int move(mixed dest, mixed messin, mixed messout) {
 
 object query_parse_id(mixed *arr) {
   int i, j, num, l;
-  string s1, s2, *bit;
+  string s1, *bit;
   int n1;
   object ob;
   string cn1;

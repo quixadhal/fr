@@ -98,7 +98,7 @@ void init() {
   add_action("read", "hear", action_pri);
   add_action("read", "listen", action_pri);
   add_action("subjects", "list", action_pri);
-  add_action("subjects", "sub*jects", action_pri);
+  add_action("subjects", "subjects", action_pri);
   ::init();
  } /* init() */
  

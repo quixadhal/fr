@@ -1,7 +1,7 @@
 inherit "std/room";
 #define PATH "/doc/races/"
 
-setup() 
+void setup() 
 {
   string human, halfelf, elf, halfling, orc, halforc, lizardman;
   string gnome, dwarf, goblin, drow,duergar;
@@ -68,12 +68,12 @@ int no_kill(string str) { return 1; }
 void init()
 {
   ::init();
-  add_action("do_become", "be*come");
+  add_action("do_become", "become");
    add_property("nocast",1);
    add_property("noguild",1);
   /* Mask the action rearrange */
   add_action("do_rearrange", "rearrange");
-   add_action("no_kill","at*tack");
+   add_action("no_kill","attack");
    add_action("no_kill","kill");
 }
 

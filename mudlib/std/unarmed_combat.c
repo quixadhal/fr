@@ -153,7 +153,7 @@ string query_current_unarmed_style()
 }
 
 /* This needs the attacker's object too.. */
-apply_damage(int hps, object att)
+void apply_damage(int hps, object att)
 {
   if(hps<0) hps=0;
   /* taniwha, was attacker here, God knows ;) who that was */

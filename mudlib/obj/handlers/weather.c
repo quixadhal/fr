@@ -51,6 +51,8 @@ void setup() {
   set_name("weather");
   set_short("weather controller extrodinare");
   set_long("The weather controller, at least this one is always right!\n");
+// taniwha. will this let it read it's own save file ?
+  seteuid((string)master()->creator_file(file_name(this_object())));
 /*
  * The default arrays, we use offsets from these to determine the weather
  * The reason for haveing 3 of them is to average the effect, so in effect
@@ -93,7 +95,7 @@ int default_weight()
 
 
 /* have this move here to get it to my weather room ;) (Sleaze) */
-move(string arg) {
+int move(string arg) {
   ::move(HOME);
 }
 
@@ -118,7 +120,6 @@ mixed *query_rain() { return rainarr; }
 mixed *query_cloud() { return cloudarr; }
 
 /* Moon cycle and the string we would give if the moon was up */
-void set_moon(int i) { return mooncycle = i; }
 int query_moon() { return mooncycle; }
 string query_moon_string(object env) {
   int bing;

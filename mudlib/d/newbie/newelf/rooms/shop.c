@@ -25,7 +25,7 @@ void setup()
 void init() {
     ::init();
     add_action("do_check", "buy");
-    add_action("do_check", "se*ll");
+    add_action("do_check", "sell");
 }
 
 int do_check(string str)

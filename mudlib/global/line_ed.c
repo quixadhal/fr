@@ -8,16 +8,19 @@
  * cute line editor thing.  Which even a player could use!
  */
 
-static string *lines, end_func;
-static object end_object;
-static int insertion_point;
 string editor; /* The editor to use... */
+private static string someshitthathastobehereorelseitpukes;
+private string end_func;
+private object end_object = 0;
+private static int insertion_point;
+private static string *linearr = ({});
 
 void main_bit(string str);
 void editor_do_quit(string str);
 
 void create() {
   editor = "menu";
+  //someshitthathastobehereorelseitpukes="crap";
 } /* create() */
 
 void editor_commands() {
@@ -26,6 +29,11 @@ void editor_commands() {
 
 int do_edit(string str, string end_f, object end_o) {
 
+log_file("ED_BUG",ctime(time())+" "+this_player()->query_name()+
+" tried with "+str+" and "+end_f+" and "+sprintf("%O",end_o)+
+", prev ob: "+sprintf("%O", previous_object())+
+" editor: "+editor+
+"\n");
   if (!end_f) {
     write("Someone has stuffed up.\n");
     return 0;
@@ -39,11 +47,12 @@ int do_edit(string str, string end_f, object end_o) {
     str = "";
   switch (editor) {
     case "menu" :
-      lines = explode(str, "\n") - ({ 0 });
+      linearr = explode(str, "\n") - ({ 0 });
       write("Ok, enter your text.  ** on a line by itself to exit.\n");
-      insertion_point = sizeof(lines);
+      insertion_point = sizeof(linearr);
       printf("%-2d] ", insertion_point+1);
       input_to("editor_loop");
+      log_file("ED_BUG", sprintf("linearr in do_edit: %O\n", linearr));
       return 1;
     case "ed" :
       if (stringp(str) && str != "")
@@ -51,11 +60,13 @@ int do_edit(string str, string end_f, object end_o) {
       ed(TMP_FILE, "editor_finish_ed");
       return 1;
     case "command" :
-      lines = explode(str, "\n") - ({ 0 });
+      linearr = explode(str, "\n") - ({ 0 });
+      
       write("Ok, enter your text.  ** on a line by itself to quit.  ~h for help.\n");
-      insertion_point = sizeof(lines);
+      insertion_point = sizeof(linearr);
       printf("%-2d] ", insertion_point+1);
       input_to("editor_loop");
+      log_file("ED_BUG", sprintf("linearr in do_edit: %O\n", linearr));
       return 1;
   }
 } /* do_edit() */
@@ -81,8 +92,8 @@ void main_bit(string str) {
       case 'l' :
       case 'L' :
                 s = "";
-                for (i=0;i<sizeof(lines);i++)
-                  s += sprintf("%3d: %s\n", i+1, lines[i]);
+                for (i=0;i<sizeof(linearr);i++)
+                  s += sprintf("%3d: %s\n", i+1, linearr[i]);
                 this_player()->set_finish_func("end_of_edit_more");
                 this_player()->more_string(s);
                 return ;
@@ -95,7 +106,7 @@ void main_bit(string str) {
       case 'C' :
                 write(sprintf("Ok, back into insertion mode, ** on a line by "+
                       "itself to exit.\n%-2d] ", insertion_point+1));
-                insertion_point = sizeof(lines);
+                insertion_point = sizeof(linearr);
                 input_to("editor_loop");
                 return ;
       case 'e' :
@@ -103,13 +114,13 @@ void main_bit(string str) {
                 write("Entering ed....  Use 'q' to quit, 'x' to save and "+
                       "exit, 'Q' to quit without saveing changes and 'h' "+
                       "for help.\n");
-                write_file(TMP_FILE, implode(lines,"\n"));
+                write_file(TMP_FILE, implode(linearr,"\n"));
                 ed(TMP_FILE, "editor_exit_ed");
                 return ;
       case 's' :
       case 'S' :
                 write("Quiting and saving.\n");
-                editor_do_quit(implode(lines, "\n"));
+                editor_do_quit(implode(linearr, "\n"));
                 return ;
       case 'q' :
       case 'Q' :
@@ -130,7 +141,7 @@ void main_bit(string str) {
     }
   }
   if (editor == "menu") {
-    write(sizeof(lines)+" lines - Choose from IDLMCESQ H for help. ");
+    write(sizeof(linearr)+" lines - Choose from IDLMCESQ H for help. ");
     input_to("main_bit");
   } else {
     printf("%-2d] ", insertion_point+1);
@@ -153,24 +164,24 @@ void editor_delete(string str) {
       num1 = num2;
       num2 = tmp;
     }
-    if (num1 < 1 || num2 > sizeof(lines)+1) {
+    if (num1 < 1 || num2 > sizeof(linearr)+1) {
       write("Out of bounds.\n");
       main_bit("");
     }
     write("Deleteing from line "+num1+" to line "+num2+".\n");
-    lines = delete(lines, num1-1, num2-num1+1);
+    linearr = delete(linearr, num1-1, num2-num1+1);
     write("Ok.\n");
     main_bit("");
     return ;
   }
   if (sscanf(str, "%d", num1) == 1) {
-    if (num1 < 1 || num1 > sizeof(lines)) {
+    if (num1 < 1 || num1 > sizeof(linearr)) {
       write("Line number out of range.\n");
       main_bit("");
       return ;
     }
     write("Deleteing line "+num1+".\n");
-    lines = delete(lines, num1-1, 1);
+    linearr = delete(linearr, num1-1, 1);
     write("Ok.\n");
     main_bit("");
     return ;
@@ -188,7 +199,7 @@ void editor_insert(string str) {
     main_bit("");
     return ;
   }
-  if (num < 1 || num > sizeof(lines)+1) {
+  if (num < 1 || num > sizeof(linearr)+1) {
     write("Number out of bounds.\n");
     main_bit("");
     return ;
@@ -200,7 +211,8 @@ void editor_insert(string str) {
   return ;
 } /* editor_insert() */
 
-void editor_loop(string str) {
+ void editor_loop(string str) {
+      log_file("ED_BUG", sprintf("linearr in editor_loop: %O\n", linearr));
   if (strlen(str) > 1 && str[0] == '~' && editor == "command") {
     main_bit(str[1..1000]);
     return ;
@@ -208,21 +220,23 @@ void editor_loop(string str) {
   if (str == "**") {
     if (editor == "menu")
       main_bit("");
-    else if (sizeof(lines))
-      editor_do_quit(implode(lines, "\n"));
+    else if (sizeof(linearr))
+      editor_do_quit(implode(linearr, "\n"));
     else
       editor_do_quit(0);
     return ;
   }
-  lines = lines[0..insertion_point-1]+({ str })+lines[insertion_point..1000];
+  if(!pointerp(linearr)) linearr=({});
+  linearr = linearr[0..insertion_point-1]+({ str })+linearr[insertion_point..];
+  log_file("ED_BUG", sprintf("linearr at the end: %O\n", linearr));
   insertion_point++;
   printf("%-2d] ", insertion_point+1);
   input_to("editor_loop");
   return ;
 } /* editor_loop() */
 
-static int range1, range2;
-static string modify_string;
+private int range1, range2;
+private string modify_string;
 
 void editor_modify(string str) {
   int num1, num2, tmp;
@@ -233,7 +247,7 @@ void editor_modify(string str) {
       num1 = num2;
       num2 = tmp;
     }
-    if (num1 < 1 || num2 > sizeof(lines)+1) {
+    if (num1 < 1 || num2 > sizeof(linearr)+1) {
       write("Out of bounds.\n");
       main_bit("");
     }
@@ -245,7 +259,7 @@ void editor_modify(string str) {
     return ;
   }
   if (sscanf(str, "%d", num1) == 1) {
-    if (num1 < 1 || num1 > sizeof(lines)) {
+    if (num1 < 1 || num1 > sizeof(linearr)) {
       write("Line number out of range.\n");
       main_bit("");
       return ;
@@ -280,12 +294,12 @@ void editor_modify3(string str) {
   write("Changing all occurances of '"+modify_string+"' to '"+str+"' "+
         "from "+range1+" to "+range2+".\n");
   for (i=range1-1; i<range2;i++)
-    if (sscanf(lines[i], "%s"+modify_string+"%s", s1, s2) == 2) {
+    if (sscanf(linearr[i], "%s"+modify_string+"%s", s1, s2) == 2) {
       s1 += str;
       while (sscanf(s2, "%s"+modify_string+"%s", s3, s2) == 2)
         s1 += s3+str;
-      lines[i] = s1 + s2;
-      write(sprintf("%3d: %s\n", i+1, lines[i]));
+      linearr[i] = s1 + s2;
+      write(sprintf("%3d: %s\n", i+1, linearr[i]));
     }
   write("Done.\n");
   main_bit("");
@@ -298,10 +312,10 @@ void editor_exit_ed() {
   str = read_file(TMP_FILE);
   if (!rm(TMP_FILE))
     log_file(LOG_FILE, "ed: couldn't rm "+TMP_FILE+"\n");
-  lines = explode("#"+str+"#", "\n");
-  lines[0] = lines[0][1..1000];
-  lines[sizeof(lines)-1] = lines[sizeof(lines)-1][0..
-                                 strlen(lines[sizeof(lines)-1])-2];
+  linearr = explode("#"+str+"#", "\n");
+  linearr[0] = linearr[0][1..1000];
+  linearr[sizeof(linearr)-1] = linearr[sizeof(linearr)-1][0..
+                                 strlen(linearr[sizeof(linearr)-1])-2];
   main_bit("");
   return ;
 } /* editor_exit_ed() */
@@ -317,8 +331,8 @@ void editor_finish_ed() {
     editor_do_quit(0);
     return ;
   }
-  lines = explode(str, "\n");
-  if (sizeof(lines))
+  linearr = explode(str, "\n");
+  if (sizeof(linearr))
     editor_do_quit(str);
   else
     editor_do_quit(0);
@@ -326,7 +340,7 @@ void editor_finish_ed() {
 } /* editor_finish_ed() */
 
 void editor_do_quit(string str) {
-  lines = ({ });
+  linearr = ({ });
   call_other(end_object, end_func, str);
   end_object = 0;
 } /* editor_do_quit() */
@@ -373,7 +387,7 @@ void editor_check_do_quit() {
 /* Force them to sve the thingy they are editing. */
     write("Saveing what you are editing.\n");
     if (editor != "ed")
-      editor_do_quit(implode(lines, "\n"));
+      editor_do_quit(implode(linearr, "\n"));
     else
       editor_finish_ed();
   }

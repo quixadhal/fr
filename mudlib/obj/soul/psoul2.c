@@ -22,7 +22,7 @@ int init_arg(int s) {
 }
 
 void init() {
-  add_action("soul_com","*");
+  add_action("soul_com","");
   add_action("soul_toggle", "no_soul");
 }
 

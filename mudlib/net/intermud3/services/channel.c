@@ -29,7 +29,6 @@ void eventReceiveChannelWhoReply(mixed *packet) {
 }
 
 void eventReceiveChannelWhoRequest(mixed *packet) {
-    string *who;
 
 #ifdef SHOW_CHANNEL_USERS
     who = CHANNEL_HAND->get_chan_users(packet[6]);
@@ -73,28 +72,13 @@ void eventReceiveChannelMessage(mixed *packet) {
                            packet[2] + ": " + packet[8] + "\n");
 #endif
 
-#ifdef WWC
-    CHANNEL_HAND -> deliver_message(GetLocalChannel(packet[6]),
-      packet[7] +"@"+ packet[2], packet[8]);
-#endif
-#ifdef FR
 // Taniwha
    if(sizeof(packet) > 7)
     "/global/do_chat"->received_cre(GetLocalChannel(packet[6])+" "+
       packet[7] + " " + replace_string(packet[2]," ","_") + " " + packet[8]);
-#endif
-#ifdef NEWMOON
-     "/global/creator"->do_inter_channels( " "+packet[8],
-                                           packet[7]+"@"+packet[2],
-                                           GetLocalChannel(packet[6]) );
-#endif
-
-
 }
 
 void eventReceiveChannelEmote(mixed *packet) {
-    string target;
-    object *people;
 
   if( file_name(previous_object()) != INTERMUD_D ) return;
     if( packet[2] == mud_name() ) return;
@@ -105,22 +89,9 @@ void eventReceiveChannelEmote(mixed *packet) {
                            packet[2] + " " + packet[8] + "\n");
 #endif
 
-#ifdef WWC
-    CHANNEL_HAND -> deliver_message(GetLocalChannel(packet[6]),
-           packet[7] + "@" + packet[2], "@"+
-           replace_string(packet[8], "$N ", ""));
-#endif
-#ifdef FR
     "/global/do_chat"->received_cre(GetLocalChannel(packet[6])+" "+
         packet[7] + " " + packet[2] + " " +
         replace_string(replace_string(packet[8],"$N ",""), " ", "_"));
-#endif
-#ifdef NEWMOON
-    "/global/creator"->do_inter_channels( ":"+
-        replace_string(packet[8],"$N ",""),
-        packet[7]+"@"+packet[2], GetLocalChannel(packet[6]) );
-#endif
-
 }
 
 varargs void eventSendChannel(string who, string ch, string msg, int emote,

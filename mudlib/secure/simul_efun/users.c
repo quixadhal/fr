@@ -1,4 +1,3 @@
-// Radix - June 1996
 object *users()
 {
    object *all = efun::users();

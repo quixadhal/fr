@@ -51,9 +51,7 @@ int remove_exit_type(string type) {
   return 1;
 }
 
-mixed *query_door_type(string type, string direc, string dest) {
-  int i;
-  mixed s;
+mixed *query_door_type(string type, string direc, mixed dest) {
 
   if (!door_types[type])
     return 0;
@@ -84,7 +82,6 @@ void check_door(mixed bing) {
 }
 
 mixed *query_exit_type(string type, string dir) {
-  int i;
   mixed s;
 
   if (!(s = opposite[dir])) {

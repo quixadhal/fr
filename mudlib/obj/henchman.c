@@ -79,7 +79,7 @@ void find_owner()
     tell_object(owner,join_me_mess+"\n");
 }
 
-house_clean()
+void house_clean()
 {
     tell_room(environment(),leave_room_mess+"\n");
     dest_me();

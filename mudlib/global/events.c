@@ -2,8 +2,8 @@
  * Changed a bit, added Begosh new channel system..
  * And some more basic stuff.. 
  * Baldrick, may '94.
+ * Using pretty_time() in event_tell - Radix Mar 1997
  */
-// Added block command - Radix 1996
 
 inherit "/global/play_parse_com";
 inherit "/global/communicate";
@@ -60,32 +60,38 @@ string read_message(string str, string type, string lang) {
     return "'"+str+"' written in "+type+"\n";
 } /* read_message() */
 
-string fix_string(string ret) 
+/*
+The fix_string from FR IV:
+varargs string fix_string(string ret, int margin) 
 {
-    string *st;
-    int i, off, oct;
-
-    if (!colour_map)
-	colour_map = (mapping)TERM_HANDLER->set_term_type(term_name);
-    if (!stringp(ret) || ret == "")
-	return ret;
-    st = explode(ret, "%^");
-    ret = "";
-    for (i=0;i<sizeof(st);i++) {
-	if(st[i][0..8] == "OCTARINE:")
-	    if(query_see_magic()) st[i] = extract(st[i], 9);
-	    else continue;
-	if (colour_map[st[i]])
-	    ret += colour_map[st[i]];
-	else
-	    ret += st[i];
-    }
-    return ret+colour_map["RESET"];
+  if(!term_name) term_name = "dumb";
+  if(!colour_map)
+    colour_map = (mapping)TERM_HANDLER->set_term_type(term_name);
+  if(!stringp(ret) || ret == "") return ret;
+  ret += "%^RESET%^";
+  if(margin) return terminal_colour(ret, colour_map, cols, margin);
+  return terminal_colour(ret, colour_map, cols);
 } /* fix_string() */
+
+// here it goes.. the fix_string from Aurora, slighly
+// modified for this lib; in the future you can use it
+// for wrapping and indenting, instead of using (s)printf
+// Randor, 20-mar-98
+varargs string fix_string(string ret, int indent, int colz, int noreset)
+{                                                                       
+  if(!term_name) term_name = "dumb";
+  if (!colour_map)                                                        
+      colour_map = (mapping)TERM_HANDLER->set_term_type(term_name);          
+  if (!stringp(ret) || ret == "")  return ret;                            
+                                                                          
+  if(!noreset) ret+="%^RESET%^";                                          
+
+// you might want to have if(!colz) colz=cols; later
+  return terminal_colour(ret, colour_map, colz, indent);                  
+} /* fix_string() */                                                    
 
 int set_term_type(string str) 
 {
-    mapping tmp_col;
 
     if (!str) {
 	notify_fail(sprintf("%-=*s", cols,
@@ -119,7 +125,7 @@ void event_commands(){
     add_action("set_term_type", "term");
     if(!this_object()->query_creator())
        add_action("do_block","block");
-    add_action("do_new_line","new_*line");
+    add_action("do_new_line","new_line");
     if(this_object()->query_property(NO_LINE_PROP))
 	new_line = "";
     else
@@ -137,15 +143,13 @@ int do_block(string name)
          notify_fail("Syntax: block <player>\n");
       return 0;
    }
-   if(!user_exists(lower_case(name)) && !find_player(name))
+   if(!user_exists(lower_case(name)))
    {
-      notify_fail("That player has never existed on " + mud_name() + ".\n");
+      notify_fail("That player has never existed on Final Realms Mud.\n");
       return 0;
    }
    block = name;
    write("Okay, blocking messages from "+capitalize(block)+".\n");
-   log_file("BLOCK",TO->query_cap_name()+" blocked "+capitalize(block)+
-      " : "+ctime(time())+"\n");
    return 1;
 }
 
@@ -281,7 +285,7 @@ int inform(string str)
     int i;
 
     if (this_object()->query_creator())
-	types = ({ "logon", "link-death", "message", "call", "death", "immort_logon" });
+	types = ({ "logon", "link-death", "message", "call", "person_cheat", "death", "ftp", "dest", "immort_logon" });
     else
 	types = ({ "logon" });
     on = (string *)this_object()->query_property("inform");
@@ -396,7 +400,14 @@ int set_our_rows(string str)
 } /* set_our_rows() */
 
 int query_cols() { return cols; }
-void set_cols(int i) { cols = i; }
+
+void set_cols(int i)
+  {
+  if ( cols >= 500 )
+    cols = 500;
+   else
+    cols = i;
+  }
 
 int set_our_cols(string str) 
 {
@@ -465,8 +476,7 @@ void event_inform(object ob, string mess, string type)
       || !sizeof(on))
 	return ;
     if (member_array(type, on) == -1) return ;
-    efun::tell_object(this_object(), new_line + "[" +
-      fix_string(sprintf("%-=*s", cols-2, mess)) + "]\n");
+    efun::tell_object(this_object(), new_line+fix_string("["+mess+"]\n"));
 } /* event_inform() */
 
 void event_enter(object ob, string mess, object *ignore) 
@@ -474,19 +484,9 @@ void event_enter(object ob, string mess, object *ignore)
     if (pointerp(ignore) && member_array(this_object(), ignore) != -1)
 	return ;
     if (stringp(mess))
-	efun::tell_object(this_object(), new_line + fix_string(sprintf("%-=*s",
-	      cols, process_string(mess))));
+	efun::tell_object(this_object(), new_line + fix_string(mess));
 } /* event_enter() */
 
-/* Testing a new version... please don't touch.  Ducky
- *
-void event_exit(object ob, string mess, object from) 
-  {
-  ::event_exit(ob, mess, from);
-  if (mess)
-    efun::tell_object(this_object(), new_line + fix_string(sprintf("%-=*s",
-		     cols, process_string(mess))));
-}  event_exit() */
 
 void event_exit(object ob, string mess, object to, object *ignore) 
 {
@@ -494,8 +494,7 @@ void event_exit(object ob, string mess, object to, object *ignore)
     if (pointerp(ignore) && member_array(this_object(), ignore) != -1)
 	return ;
     if (mess)
-	efun::tell_object(this_object(), new_line + fix_string(sprintf("%-=*s",
-	      cols, process_string(mess))));
+      efun::tell_object(this_object(), new_line + fix_string(mess+"\n"));
 } /* event_exit() */
 
 void event_say(object caller, string str, mixed avoid) 
@@ -505,19 +504,18 @@ void event_say(object caller, string str, mixed avoid)
 	    return ;
     } else if (avoid == this_object())
 	return ;
-    efun::tell_object(this_object(), new_line + fix_string(sprintf("%-=*s",
-	  cols, process_string(str))));
+// Don't put that &*&*&* \n back. If you want it, it can go in the tell room. But we can never get RID of it if it's here Taniwha
+    efun::tell_object(this_object(), new_line + fix_string(str));
 } /* event_say() */
 
 void event_write(object caller, string str) 
 {
-    efun::tell_object(this_object(), fix_string(process_string(str)));
+    efun::tell_object(this_object(), fix_string(str));
 } /* event_write() */
 
 void do_efun_write(string str) 
 {
-    efun::tell_object(this_object(), fix_string(sprintf("%-=*s",
-	  cols, process_string(str))));
+   efun::tell_object(this_object(),fix_string(str));
 } /* do_efun_write() */
 
 void event_soul(object ob, string str, mixed avoid) 
@@ -546,13 +544,12 @@ void event_person_say(object ob, string start, string mess, string lang, int spe
     if (ob == this_object()) return;
 //  if(!this_object()->query_creator())
        mess = "/std/language"->scramble_sentence(mess,speaker, this_object()->query_int());
-    efun::tell_object(this_object(), new_line + fix_string(sprintf("%s%-=*s\n",
-	  start, cols-strlen(start), mess)));
+    efun::tell_object(this_object(), new_line + fix_string(start + mess+"\n",
+                      strlen(start)));
 } /* event_person_say() */
 
 void event_person_tell(object ob, string start, string mess, string lang) 
 {
-    string s;
     int id; 
     mixed str;
 
@@ -575,38 +572,21 @@ void event_person_tell(object ob, string start, string mess, string lang)
     } else if (lang != "common")
 	start = start[0..strlen(start)-3]+" in "+lang+": ";
 
-    /* The following block of code was added to tell players that the target
-       is idle and may not reply for a period of time.
-       Firestorm 9/3/93
-    */
-
     if (interactive(this_object()) && (id=query_idle(this_object())) 
       > TELL_WARN_TIME)
-/* tell warn time is defined in player.h in case you wondered -- FS */
     {
-	str = ({  });
-/* Need to use some neato formulas to convert to standard time -- FS */
-   // This needs cleaned up, a simul_efun does this... have to come back
-   // Radix
-
-	if(id/(60*60))
-	    str += ({   (id/(60*60))+ " hours"  });
-	if((id/60)%60)
-	    str += ({   ((id/60)%60) + " minutes"   });
-	if(id%60)
-	    str += ({   (id%60) + " seconds"   });
-	write(this_object()->query_cap_name() + " has been idle for "+
-	  query_multiple_short(str) + ".\n");
+      write(this_object()->query_cap_name()+" has been idle for "
+         +pretty_time(id)+".\n");
     }
 
     if(this_object()->query_in_editor())  
     {
-	write(this_object()->query_cap_name() + " is busy editing a file and"+
+      write(this_object()->query_cap_name()+" is busy editing a file and"+
 	  " may take a while to respond.\n");
     }
 
-    efun::tell_object(this_object(), new_line + fix_string(sprintf("%s%-=*s\n",
-	  start, cols-strlen(start), mess)));
+    efun::tell_object(this_object(), new_line + fix_string(start + mess +"\n",
+                      strlen(start)));
 } /* event_person_tell() */
 
 void event_whisper(object ob, string start, string mess, object *obs,
@@ -634,17 +614,17 @@ void event_whisper(object ob, string start, string mess, object *obs,
     else
     if (!stringp(blue)) blue = "";
     if (member_array(this_object(), obs) == -1)
-	efun::tell_object(this_object(), new_line + fix_string(sprintf("%s.\n",
+	efun::tell_object(this_object(), new_line + fix_string(
 	      start + query_multiple_short(obs) +
-	      blue[0..strlen(blue)-3])));
+	      blue[0..strlen(blue)-3]+"\n"));
     else if (sizeof(obs) == 1)
-	efun::tell_object(this_object(), new_line + fix_string(sprintf("%s%-=*s\n",
-              start + "you: " + blue, rows - strlen(start) - 10,
-	      mess)));
+	efun::tell_object(this_object(), new_line + fix_string(
+              start + "you: " + blue + mess+"\n", strlen(start)));
     else
-	efun::tell_object(this_object(), new_line + fix_string(sprintf("%s%-=*s\n",
-              start + "you and ", rows - strlen(start) - 10,
-              query_multiple_short(obs - ({this_object()})) + ": "+blue+mess)));
+	efun::tell_object(this_object(), new_line + fix_string(
+              start + "you and " +
+              query_multiple_short(obs - ({this_object()})) + ": "+
+              blue+mess+"\n",strlen(start) + 5));
 } /* event_whisper() */
 
 void event_person_shout(object ob, string start, string mess, string lang) 
@@ -665,8 +645,8 @@ void event_person_shout(object ob, string start, string mess, string lang)
 	    return ;
     } else if (lang != "common")
 	start = start[0..strlen(start)-3]+" in "+lang+": ";
-    efun::tell_object(this_object(), new_line + fix_string(sprintf("%s%-=*s\n",
-	  start, cols-strlen(start), mess)));
+    efun::tell_object(this_object(), new_line + fix_string(start + mess,
+                      strlen(start)));
 } /* event_person_shout() */
 
 void event_creator_tell(object ob, string start, string mess) 
@@ -674,16 +654,16 @@ void event_creator_tell(object ob, string start, string mess)
     if (ob == this_object() || (earmuffs == 1 && query_verb() != "cre!") ||
       !this_object()->query_creator())
 	return;
-    efun::tell_object(this_object(), new_line + fix_string(sprintf("%s%-=*s\n",
-	  start, cols - strlen(start), mess)));
+    efun::tell_object(this_object(), new_line + fix_string(start + mess,
+                      strlen(start)));
 } /* event_creator_tell() */
 
 nomask void event_god_inform(object ob, string start, string mess)
 {
     if(!previous_object()->query_lord())
 	return;
-    efun::tell_object(this_object(), new_line + fix_string(sprintf("%s%-=*s\n",
-	  start, cols - strlen(start), mess)));
+    efun::tell_object(this_object(), new_line + fix_string(start + mess,
+                      strlen(start)));
 }
 
 void event_inter_creator_tell(object ob, string mname, string pname, 
@@ -694,15 +674,14 @@ void event_inter_creator_tell(object ob, string mname, string pname,
       || this_object() == ig)
 	return ;
     efun::tell_object(this_object(), new_line +
-      fix_string(sprintf("%s@%s%s%-=*s\n", pname, mname,(emote?" ":": "),
-	  cols-strlen(mname)-strlen(pname)-3, mess)));
+      fix_string(sprintf("%s@%s%s%s\n", pname, mname,(emote?" ":": ") + mess,
+	  cols-strlen(mname)-strlen(pname)-3)));
 } /* event_inter_creator_tell() */
 
 void event_player_echo_to(object ob, string mess) {
     if (this_object()->query_lord())
 	efun::tell_object(this_object(), ob->query_cap_name()+" echo to's:\n");
-    efun::tell_object(this_object(), new_line + fix_string(sprintf("%-=*s\n",
-	  cols, mess)));
+    efun::tell_object(this_object(), new_line + fix_string(mess));
 } /* event_player_echo_to() */
 
 void event_player_emote_all(object ob, string mess) 
@@ -711,8 +690,7 @@ void event_player_emote_all(object ob, string mess)
 	return;
     if (this_object()->query_lord())
 	efun::tell_object(this_object(), ob->query_cap_name()+" emote all's:\n");
-    efun::tell_object(this_object(), new_line + fix_string(sprintf("%-=*s\n",
-	  cols, mess)));
+    efun::tell_object(this_object(), new_line + fix_string(mess));
 } /* event_player_echoall() */
 
 void event_player_echo(object ob, string mess) 
@@ -721,6 +699,5 @@ void event_player_echo(object ob, string mess)
 	return;
     if (this_object()->query_lord())
 	efun::tell_object(this_object(), ob->query_cap_name()+" echo's:\n");
-    efun::tell_object(this_object(), new_line + fix_string(sprintf("%-=*s\n",
-	  cols, mess)));
+    efun::tell_object(this_object(), new_line + fix_string(mess));
 } /* event_player_echo() */

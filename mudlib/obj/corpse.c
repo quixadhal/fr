@@ -182,19 +182,19 @@ void decay() {
     this_object()->dest_me();
 }
 
-set_race_ob(string s)
+void set_race_ob(string s)
 {
     race_ob = s;
 }
 
-query_race_ob()
+string query_race_ob()
 {
     return race_ob;
 }
 
-find_inv_match(s)
+mixed find_inv_match(string s)
 {
-    string bit;
+    mixed *bit;
     object bitobj, weap;
     int i,j;
 
@@ -235,7 +235,7 @@ find_inv_match(s)
     return ({ bitobj });
 }
 
-query_bits_gone() { return bits_gone; }
+string * query_bits_gone() { return bits_gone; }
 
 /* this for formatting of objects sake */
 object *query_armours() { return armours + ({ }); }

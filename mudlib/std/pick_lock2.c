@@ -2,6 +2,7 @@ inherit "/std/item.c";
 static int pick_skill;
 static string tool_type;
 string alt_lock_name(object locd_ob);
+varargs int box_unlock_part2(string chest, object ob2);
 
 int query_pick_skill()
 {

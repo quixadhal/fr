@@ -24,12 +24,12 @@ int do_stick(object *obs) {
   return 1;
 } /* do_stick() */
 
-move(object ob, string s1, string s2) {
+int move(object ob, string s1, string s2) {
   object env;
   int i;
 
   env = environment();
-  i = ::move(ob, s1, s2);
+  i = (int)::move(ob, s1, s2);
   if (!i && env)
     env->remove_label(this_object());
   return i;

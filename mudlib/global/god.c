@@ -5,13 +5,8 @@ inherit "/global/lord.c";
 string query_gtitle()
 {
   string patronage;
-  patronage = "/secure/gods"->query_boo(name);
-  /* I don't think it is a female Thane.. title..
-  if(query_female())
-    return "the Master of "+patronage;
-   return "the Dean of "+patronage;
-   */
-   return "the Dean";
+  patronage = "/secure/gods"->query_god(name);
+  return "the Dean";
    
 }
 
@@ -19,7 +14,6 @@ string query_gtitle()
    unshadowable. Baldy.. */
 
 nomask int query_god() {return 1;}
-int query_lord() {return 1;}
 int query_creator() {return 1;}
 	    
 string query_object_type() 

@@ -37,6 +37,7 @@ static int cmd(string str, object me) {
 
      return 0;
     printf("%-30s %5d\n", "Total:", rec_du((string)this_player()->query_current_path()));
+    this_player()->set_trivial_action();
     return 1;
   }
 /* forget about type 2 for now ;) */

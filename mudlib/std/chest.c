@@ -91,7 +91,7 @@ int test_remove(object ob, int flag) {
    if(open == 1){return 1;}
    else{return 0;}
 }
-int test_add(object ob, int flag) {
+int test_add_object(object ob, int flag) {
    if(flag)  return 1;
    if(open == 1)  return 1;
    return 0;

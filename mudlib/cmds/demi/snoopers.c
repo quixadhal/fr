@@ -22,8 +22,7 @@ int check_qsnoop(object ob) {
  
 static int cmd(string str, object me) {
   object *obs, *qobs;
-  int i,j;
-      notify_fail("No one is being snooped by anyone.\n");
+  int i;
   qobs = filter_array(users(), "check_qsnoop", this_object());
   obs = filter_array(users(), "check_snoop", this_object());
   if (!"/secure/master"->high_programmer(geteuid(me)))

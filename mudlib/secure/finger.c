@@ -146,7 +146,7 @@ string finger_info(string name) {
 	    (sizeof(bing)>2?"s.\n":".\n");
 	// Added by Radix, July 1996
 	bing = ({ });
-	catch(bing = "/d/aprior/master"->query_patronages(name));
+	//catch(bing = "/d/aprior/master"->query_patronages(name));
 	if(sizeof(bing))
 	    retval += "Patronage of the "+implode(bing,", ")+".\n";
     }

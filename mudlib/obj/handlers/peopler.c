@@ -224,7 +224,6 @@ string review_thingy(mixed *bing) {
  */
 void print_entrys(object *obs, mixed *format) {
   int i, age, j;
-  object g;
   string form, str;
 string ret;
 
@@ -361,7 +360,8 @@ string ret;
 ret = implode(sort_array(explode(ret, "\n"), 1), "\n");
  ret = ret = sprintf("%s\n", create_title(format)) + ret;
 this_player()->more_string(ret);
-} /* print_entrys() */
+}
+/* Print_enrtys() */
 
 int do_people(string str) 
   {

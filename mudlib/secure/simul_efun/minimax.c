@@ -1,27 +1,27 @@
 
 // by Dank Mar 11 93.  max may be a reserved word, so maxi is safer
-int maxi(int *array) {
+int maxi(int *arry) {
   int i, j;
-  if (!sizeof(array)) {
+  if (!sizeof(arry)) {
     notify_fail("Array must contain one or more ints.\n");
     return 0;
   }
-  j = array[0];
-  for (i=1; i<sizeof(array); i++)
-    if (array[i] > j)
-      j = array[i];
+  j = arry[0];
+  for (i=1; i<sizeof(arry); i++)
+    if (arry[i] > j)
+      j = arry[i];
   return j;
 }
 
-int mini(int *array) {
+int mini(int *arry) {
   int i, j;
-  if (!sizeof(array)) {
+  if (!sizeof(arry)) {
     notify_fail("Array must contain one or more ints.\n");
     return 0;
   }
-  j = array[0];
-  for (i=1; i<sizeof(array); i++)
-    if (array[i] < j)
-      j = array[i];
+  j = arry[0];
+  for (i=1; i<sizeof(arry); i++)
+    if (arry[i] < j)
+      j = arry[i];
   return j;
 }

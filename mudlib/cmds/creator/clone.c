@@ -54,6 +54,7 @@ static int cmd(string str, object me) {
           tell_object(this_player(),"Failed to clone.\n");
        }
     }
+  this_player()->set_trivial_action();
     return 1;
 } /* clone() */
 

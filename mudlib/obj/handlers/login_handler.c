@@ -32,7 +32,7 @@ void create() {
 } /* create() */
 
 int add_login_call(string player, mixed funct, mixed obj) {
-  int pos, retval;
+  int pos;
 
   if((pos = member_array(player, names)) != -1) {
     if(pointerp(funct) && pointerp(obj)) {

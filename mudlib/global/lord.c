@@ -27,8 +27,11 @@ void move_player_to_start(string bong, int new_pl, int going_invis) {
     if(query_invis())
 	tell_object(this_object(), "===> You are currently INVISIBLE! <===\n");
     add_action("emergency_shutdown","shutdown!");
-    add_action("visible", "vis");
-    add_action("invisible", "invis");
+
+ /* Removed by Syll.. Handled externally now Mar'98
+   add_action("visible", "vis");
+   add_action("invisible", "invis");
+  */
     add_action("promote", "promote");
     add_action("do_demote", "demote");
     add_action("new_domain", "new_domain");
@@ -52,7 +55,7 @@ int emergency_shutdown()
    call_out("enditall",0);
    log_file("CRASH",this_player(1)->query_cap_name()+
       "shutdown the MUD in an emergency! "+ctime(time())+"\n");
-   return;
+   return 1;
 }
 int enditall()
 {
@@ -60,7 +63,7 @@ int enditall()
 }
 
 // Added by Radix (So I lied, we could dest'em instead)
-do_blocking(string str)
+int do_blocking(string str)
 {   
     return this_object()->do_block(str);
 }
@@ -168,10 +171,11 @@ static int invisible(string str)
 } /* invisible() */
 
 int query_creator() { return 1; }
-int query_lord() { return 1; }
+nomask int query_lord() { return 1; }
+nomask int query_thane() { return 1; }
 
 nomask int query_demi() {
-    if("/secure/lords"->query_boo(query_name()))
+    if("/secure/lords"->query_lord(query_name()))
 	return 1;
     return 0;
 }
@@ -258,7 +262,7 @@ string query_gtitle()
 	    of_title = "/secure/lords.c"->query_boo(name);
 	    return "the Professor " + of_title;
 	}
-	return "the Tutor";
+	return "the Janitor";
     }
     else
     {
@@ -267,7 +271,7 @@ string query_gtitle()
 	    of_title = "/secure/lords.c"->query_boo(name);
 	    return "the Professor " + of_title;
 	}
-	return "the Tutor";
+	return "the Janitor";
     }
 }
 

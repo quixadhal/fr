@@ -2,7 +2,7 @@
  * It will make the players able to delete their own charachters. 
  * Baldrick march '94 
  * Put it in /secure/master and add it to master.c (#include).
- * Add an add_action and a call in player.c (test on force!)
+  Add an add_action and a call in player.c (test on force!)
  */
 #define MAX_RETRYS 1
 #define BANK_HANDLER "/obj/handlers/bank_handler"
@@ -41,7 +41,6 @@ int test_password(string name, string pass)
 
 static int put_password(mixed str) 
   {
-  string bing;
   string playername;
 
   playername = this_player(1)->query_name();

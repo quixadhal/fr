@@ -1,8 +1,8 @@
 /* Raskolnikov Nov 96 */
 
 string *block_list = ({
-  "/global/lord",
-  "/global/lord.c",
+  "/global/demi",
+  "/global/demi.c",
   "/global/god",
   "/global/god.c",
 });

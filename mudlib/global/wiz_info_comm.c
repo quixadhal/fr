@@ -13,11 +13,8 @@ string desc_object(mixed o);
 string desc_f_object(object o);
 
 static void wiz_commands() {
-  add_action("do_gauge", "ga*uge");
-  /* Added by Jada aug '94, blame him if it won't work */
-  add_action("do_title", "title");
   /* Adds for new commandsystem.. */
-  add_action("comm_info","comi*nfo");
+  //add_action("comm_info","cominfo");
 } /* wiz_commands() */
      
 /*
@@ -52,7 +49,7 @@ int check_snoop(object ob) {
 static int grim_snoop(string str) {
    object targ;
 
-if(this_player()->query_lord())
+  if( this_player(1)->query_lord() )
      {
       if(!str)
         {
@@ -66,7 +63,7 @@ if(this_player()->query_lord())
          notify_fail("Cannot find "+str+" to quiet snoop.\n");
          return 0;
         }
-      if(targ->query_lord())
+      if(targ->query_god())
         {
          tell_object(targ,"A demonic voice echo's within your head saying:\n"+
                      " \n"+
@@ -105,6 +102,7 @@ if(!this_player()->query_god() && targ->query_lord()) {
  tell_object(targ, "A cute Duck appears before you.\n"+
                  "The Duck says: "+this_player()->query_cap_name()+
                  " is trying to snoop you m'lord.\n");
+  this_object()->set_trivial_action();
  return 1;
 }
 
@@ -118,21 +116,9 @@ if(!this_player()->query_god() && targ->query_lord()) {
 
 int review() {
   PEOPLER->review();
+  this_object()->set_trivial_action();
   return 1;
 } /* review() */
-
-static int do_gauge(string str) {
-  int eval_cost;
-
-  if (this_player(1) != this_object()) return 0;
-  if(!str) {
-    notify_fail("Usage : gauge command.\n");
-    return 0;
-  }
-  eval_cost = command(str);
-  write("\nThe command '" + str + "' took: " + eval_cost + " CPU cycles.\n");
-  return 1;
-} /* do_gauge() */
 
 static mapping blue;
 
@@ -170,29 +156,11 @@ string string_stats(mapping map) {
   return str;
 } /* print_stats() */
 
-int do_title(string str) 
-  {
-  string title;
-
-  title = this_player()->query_title();
-  if (!str) 
-    {
-    if(title) write("Your title is: "+title+"\n");
-     else 
-      write("You have no title.\n");
-    }
-   else 
-    if (str=="-c")
-      {
-      write("Clearing your title.\n");
-      this_player()->set_title(0);
-      return 1;
-      }
-    else
-     this_player()->set_title(str);
-    return 1;
-}
-
+/*
+ * I wonder if anything else than cominfo uses this.
+ * I'll keep it rem'ed out for now. 
+ * cominfo uses it's own in the external command
+ * Baldrick. dec '97.
 static string do_find_comm(string func, object ob) {
   string s, ping;
   object fish;
@@ -207,49 +175,5 @@ static string do_find_comm(string func, object ob) {
       s += " shadowed by " + file_name(fish);
   s += ".\n";
   return s;
-} /* do_find_comm() */
+} */ /* do_find_comm() */
 
-/*** By Dyraen@Rod 
- */
-int comm_info(string str) {
-object on;
-string *comms, xtra, s1, s2;
-int i;
- 
-  if (str) {
-    sscanf(str,"%s %s",s1,s2);
-    if (s2) {
-      s2 = this_player()->expand_nickname(s2);
-      on = find_player(s2);
-      str = s1;
-    }
-  }
-  if (on)
-    comms = on->query_commands();
-  else
-    comms = commands();
-
-  write("Searching "+sizeof(comms)+" commands..\n");
-
-  if (!str || str == "0")
-    for(i=0;i<sizeof(comms);i++) {
-    // See below, wonderflug
-      //if ((string)comms[i][C_NAME..C_NAME] == "") comms[i][C_NAME..C_NAME] = "*";
-      xtra = do_find_comm((string)comms[i][C_FUNC],(object)comms[i][C_OBJ]);
-      write(i+". "+comms[i][C_NAME]+"["+comms[i][C_DATA]+"] "+
-            file_name((object)comms[i][C_OBJ])+"->"+comms[i][C_FUNC]+"()"+
-            xtra);
-    }
-  else for(i=0;i<sizeof(comms);i++) {
-  //We don't match '*', and besides this buggers it somehow.
-  // Wonderflug
-    //if ((string)comms[i][C_NAME] == "") (string)comms[i][C_NAME..C_NAME] = "*";
-    if (str ==(string) comms[i][C_NAME]) {
-      xtra = do_find_comm((string)comms[i][C_FUNC],(object)comms[i][C_OBJ]);
-      write(comms[i][C_NAME]+"["+comms[i][C_DATA]+"] "+
-            file_name((object)comms[i][C_OBJ])+"->"+comms[i][C_FUNC]+"()"+
-            xtra);
-    }
-  }
-  return 1;
-} 

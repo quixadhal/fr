@@ -1,5 +1,14 @@
+/* this is the creator player object. 
+ * Baldrick.
+ * And now it is a builder.c for the new (im)mortal chain, jun '97
+ */
+
 inherit "/global/wiz_file_comm";
 
+/* I reaally wonder if this NO_SWAP is needed at all or if I could
+ * just remove everything between the #define and the #endif
+ * Baldrick.
+ */
 #define NO_SWAP
 #define ECHO_ALLOWED
 
@@ -72,42 +81,39 @@ void swap_entryexit() {
 #endif
 
 
-void move_player_to_start(string bong, int new_pl, int going_invis) {
+void move_player_to_start(string bong, int new_pl, int going_invis, int immortal) {
   string temp;
 
   if(!sscanf(file_name(previous_object()), "/secure/login#%s", temp))
     return 0;
   cat("doc/CREATORNEWS");
-  ::move_player_to_start(bong, new_pl, going_invis);
+  ::move_player_to_start(bong, new_pl, going_invis, immortal);
 
   if(query_invis())
     tell_object(this_object(), "===> You are currently INVISIBLE! <===\n");
+
   swap_entryexit();
+
 #ifndef NO_SWAP
   xp = oxp;
 #endif
-  add_action("visible", "vis");
-  add_action("invisible", "invis");
-  load_login();
+
+ load_login();
    /* Added by Asmodean cause Aragorn taught him how :) */
-   /* Taking it out, doesn't work.  Wonderflug dec 95
-   enable_wizard();
-    */
   enable_wizard();
 }
 
-
-
 void load_login(){
-string *strs;
-int n;
-if(read_file("/w/"+name+"/.login")){
-strs=explode(read_file("/w/"+name+"/.login"),"\n");
-for(n=0;n<sizeof(strs);n++)
-command(strs[n]);
+  string *strs;
+  int n;
+  if(read_file("/w/"+name+"/.login")){
+  strs=explode(read_file("/w/"+name+"/.login"),"\n");
+  for(n=0;n<sizeof(strs);n++)
+  command(strs[n]);
+  }
+}
 
-}
-}
+/*
 string short(int dark) {
   if (query_invis())
     if(!this_player() || this_player()->query_creator())
@@ -117,7 +123,47 @@ string short(int dark) {
   else
     return ::short(dark);
 }
+*/
 
+string short(int dark) {
+  if(query_invis() == 2)
+  {
+    if("/secure/gods"->query_boo(this_player()->query_name()))
+       return "**"+::short(dark)+"**";
+    return 0;
+  }
+  if (query_verb() == "dest")
+    return ""+this_object()->query_name();
+  if (query_invis())
+    if(!this_player() || this_player()->query_creator())
+      return "*"+::short(dark)+"*";
+    else
+      return 0;
+  else
+    return ::short(dark);    
+  return 0;
+} /* short() */
+
+
+string long(string name, int dark) 
+{
+  if(query_invis() == 2)
+  {
+    if("/secure/gods"->query_boo(this_player()->query_name()))
+       return "**"+::long(name, dark)+"**";
+    return 0;
+  }
+  if (query_invis())
+    if(!this_player() || this_player()->query_creator())
+      return "*"+::long(name, dark)+"*";
+    else
+      return 0;
+  else
+    return ::long(name, dark);
+  return 0;
+} /* long() */
+
+//static
 int visible() {
   if(!query_invis()) {
     notify_fail("You are already visible.\n");
@@ -129,6 +175,30 @@ int visible() {
   return 1;
 }
 
+int invisible(string str) 
+{
+  if(query_invis() == 2) 
+  {
+    notify_fail("You are already true invisible.\n");
+    return 0;
+  }
+
+  if( (query_invis() || str) 
+    && ( "/secure/gods"->query_boo(this_player()->query_name()) ) )
+    {
+    write("You are now truly invisible.\n");
+    say(query_cap_name()+" suddenly disappears.\n", this_player());
+    set_invis(2);
+    return 1;
+  }
+
+  write("You disappear.\n");
+  say(query_cap_name()+" suddenly disappears.\n", this_player());  
+  set_invis(1);
+  return 1;
+} /* invisible() */
+
+/*
 int invisible() {
   if(query_invis()) {
     notify_fail("You are already invisible.\n");
@@ -139,6 +209,7 @@ int invisible() {
   set_invis(1);
   return 1;
 }
+*/
 
 void save_me() {
   swap_entryexit();
@@ -146,20 +217,14 @@ void save_me() {
   swap_entryexit();
 }
 
-int query_creator() { return 1; }
-nomask int query_lord() { return 0; }
+nomask int query_creator() { return 1; }
 // people like to shadow this to snoop the demi channel.... Hpj
-int query_app_creator() { return app_creator; }
-int query_creator_playing() { return 0; }
+nomask int query_app_creator() { return app_creator; }
+nomask int query_creator_playing() { return 0; }
 
 string query_gtitle() 
 { 
-/*
-  if (query_female())
-    return "the Student"; 
-   else
-*/
-    return "the Student"; 
+  return "the Student"; 
 }
 
 string query_object_type() {

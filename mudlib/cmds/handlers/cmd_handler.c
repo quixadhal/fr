@@ -6,8 +6,10 @@
 
 #include <standard.h>
 #include <cmd.h>
+#define SOUL_OBJECT "/obj/handlers/soul"
 
 int cmd_make_hash(int i);
+int soul_com(string str, object me);
 
 static mapping cmd_dirs =
 ([
@@ -17,8 +19,8 @@ static mapping cmd_dirs =
 	"/cmds/thane/":			({THANE_CMD,	"Thane"}),
 	"/cmds/demi/":			({DEMI_CMD,"Demi-God"}),
 	"/cmds/god/":			({GOD_CMD,"God"}),
-	"/net/cmds/":			({0,		"InterMUD network"}),
-	"/cmds/handler/cmds/":		({0,		"Command handler"}),
+        "/net/intermud3/cmds/":         ({0,            "InterMUD network"}),
+	"/cmds/handlers/cmds/":		({0,		"Command handler"}),
 ]);
 
 static mapping cmd_hash = ([ ]);  	// For commands and their objects
@@ -95,7 +97,7 @@ int cmd(string verb, string tail, object thisob)
 	s = find_cmd(verb);
 
 	if(!s)
-          return 0;       
+          return 0;
 
 	// Check their position now...
 	switch(cmd_dirs[last_dir][0])
@@ -144,7 +146,6 @@ int cmd(string verb, string tail, object thisob)
 
 	seteuid("CMD");
 	current_verb = verb;
-	//ret = (int)ob->_cmd(tail, thisob);
 	ret = (int)ob->_cmd(tail, thisob, orig_verb);
 	current_verb = 0;
 
@@ -223,3 +224,34 @@ string query_last_dir() { return last_dir; }
 mapping query_aliases() { return cmd_aliases; }
 string query_alias(string verb) { return cmd_aliases[verb]; }
 
+/* Added by Baldrick.
+ */
+int soul_com(string str, object me)
+{
+  string str1, str2;
+  int i;
+
+  if (sscanf(str,"%s %s", str1, str2) != 2)
+    str1 = str;
+
+  if (!me->query_property("nosoul"))
+  {
+    if ( !load_object(SOUL_OBJECT) )
+    {
+      write("Soul errors!  Notify an immortal.\n");
+      write("Use nosoul to turn the soul back on when it is fixed.\n");
+      me->add_property("nosoul",1);
+      return 0;
+    }
+
+    i = SOUL_OBJECT->soul_command(str1, str2, me);
+
+    /* souls are trivial */
+    if ( i )
+      me->set_trivial_action();
+
+    return i;
+  }
+
+  return 0;
+} /* soul_com() */

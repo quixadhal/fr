@@ -40,14 +40,14 @@ void create() {
 } /* create() */
 
 void living_commands() {
-  add_action("wield", "wi*eld");
-  add_action("wear", "wea*r");
-  add_action("hold", "ho*ld");
-  add_action("do_equip", "eq*uip");
+  add_action("wield", "wield");
+  add_action("wear", "wear");
+  add_action("hold", "hold");
+  add_action("do_equip", "equip");
   add_action("remove", "remove");
-  add_action("follow", "fo*llow");
-  add_action("lose", "lo*se");
-  add_action("unfollow", "unf*ollow");
+  add_action("follow", "follow");
+  add_action("lose", "lose");
+  add_action("unfollow", "unfollow");
   add_action("follow_dummy", "FOLLOW_DUMMY");
   combat_commands();
   skill_commands();

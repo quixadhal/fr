@@ -14,6 +14,7 @@ static int cmd(string str, object me) {
     ob = new("/obj/handlers/post");
     ob->move(me);
     ob->start_mail(str);
+    me->set_trivial_action();
     return 1;
 }
  

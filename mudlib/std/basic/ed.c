@@ -24,7 +24,6 @@ int ed_get_line(string str) {
     my_bit = "";
   if (str == "**") {
     this_object()->ed_end_it_all(my_bit);
-    write_file(CHANGE_LOG, "ed: "+TMP_FILE+" changed by "+this_player()->query_cap_name()+".\n");
     my_bit = 0;
   } else if (str == "~q") {
     my_bit = 0;

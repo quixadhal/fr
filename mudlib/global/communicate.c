@@ -9,45 +9,28 @@ string *languages,
 cur_lang;
 
 string drunk_speech(string str);
+string *query_languages();
 
 void communicate_commands() {
-    add_action("do_say","sa*y");
-    add_action("do_say","'*");
+    add_action("do_say","say");
     add_action("do_loud_say", "lsay");
-    add_action("do_loud_say","\"*");
-    add_action("do_tell","t*ell");
-    add_action("do_whisper", "whi*sper");
-    add_action("set_language", "sp*eak");
-    add_action("do_emote",":*");
-    add_action("do_emote","em*ote");
-// Removed by Radix - Jan 1996
-//  add_action("do_channels", "000");
-    add_action("do_channels", "eme*rgency");
-    add_action("do_channels", "guild");
-//Added by Quark, May 96.
-    add_action("do_channels", "group");
-    add_action("do_channels", "race");
+    add_action("do_tell","tell");
+    add_action("do_tell","t");
+    add_action("do_whisper", "whisper");
+    add_action("set_language", "speak");
+    add_action("do_emote","emote");
  
 /* Testing something, baldrick, may '96
  * and it works.. next dimension, here we come.
  */
 
 #ifndef STRICT_MUD
-      add_action("do_echo","ec*ho");
+      add_action("do_echo","echo");
       add_action("do_emote_all", "emoteall");
       add_action("do_echo_to", "echoto");
-      add_action("do_shout", "sh*out");
+      add_action("do_shout", "shout");
 #endif
 
-   // Who did this?  goobers!
-  /*
-    if( this_player()->query_creator() )
-    {
-	add_action("do_channels", "cre");
-	if( this_player()->query_lord() )
-	    add_action("do_channels", "demi");
-    }
-   */
 } /* communicate_commands() */
 
 void set_max_social_points(int num) {
@@ -131,8 +114,7 @@ void my_mess(string fish, string erk)
 
 int do_loud_say(string arg) 
 {
-    string word, s1, s2;
-    object g;
+    string word;
 
     if (!arg) 
 	arg = "";
@@ -158,8 +140,7 @@ int do_loud_say(string arg)
 
 int do_say(string arg, int no_echo) 
 {
-    string word, s1, s2;
-    object g;
+    string word;
 
 // Taniwha, sanity/ no debug errors
    if(!environment(this_object()))
@@ -271,7 +252,7 @@ int do_emote(string arg)
 {
     string str;
 
-    if(my_file_name=="/global/player"&&!this_player()->query_property("emote")) {
+    if(my_file_name=="/global/mortal" && !this_player()->query_property("emote")) {
 	notify_fail(NOT_ALLOWED);
 	return 0;
     }
@@ -304,17 +285,7 @@ int do_emote(string arg)
 // Flode added 2-round lockout  -  211197
 int do_shout(string str) 
 {
-    string tmp, s1, s2, s;
-    object g;
-
-
-    /* to be removed.
-     * Baldrick.
-    notify_fail("Not right now, the immorts needs peace.\n");
-    return 0;
-     */
-
-
+    string s1, s;
 
     if(!str || str == "") {
 	notify_fail("Syntax : shout <text>\n");
@@ -347,11 +318,9 @@ int do_shout(string str)
 	s = "shouts"+s1;
     else
 	s = s1+"s";
-
-      str = "/obj/handlers/profanity"->clean_language(str);
-
     if (this_object()->query_volume(D_ALCOHOL))
 	str = drunk_speech(str);
+    str += "\n";
     event(users(), "person_shout", this_object()->query_cap_name()+
       " "+s+": ", str, cur_lang);
     if (s1 != "yell") {
@@ -369,7 +338,7 @@ int do_shout(string str)
 int do_whisper(string str) 
 {
     object *obs;
-    string s, s2, *bits, peeps;
+    string s, s2, *bits;
     int i;
 
     notify_fail("Syntax: whisper [to] <person> <string>\n");
@@ -414,7 +383,7 @@ int do_whisper(string str)
 
 int do_channels( string str )
 {
-    "global/do_chat"->do_chat( str );
+    "global/do_chat"->do_chat( str, query_verb() );
     return 1;
 }  /* do_channels */
 
@@ -424,22 +393,13 @@ string drunk_speech(string str)
       "S", "SH", "R", "RR" }));
 } /* drunk_speech() */
 
-// Flode, 080997. Hopefully my fix will make sure that people won't learn
-// fifteen dwarfs or similar anymore
 void add_language(string lang) 
 {
-  int i;
-
-  if (!LANGUAGE_HAND->test_language(lang))
-    return ;
-  if(!i=(member_array(lang, languages)+1))
-    languages += ({ lang });
-  else
-    while(i < sizeof(languages))
-      if(languages[i] == lang)
-        languages = delete(languages, i, 1);
-      else
-        ++i;
+    if (!LANGUAGE_HAND->test_language(lang))
+	return ;
+    // Flode added the 'if' - 150997
+    if(member_array(lang, languages) == -1)
+        languages += ({ lang });
 } /* add_language() */
 
 void remove_language(string lang) 
@@ -463,10 +423,12 @@ int set_language(string str)
 {
     if (!str) {
 	notify_fail("You are now speaking "+cur_lang+" and can speak any of "+
-	  query_multiple_short(languages+({ "grunt" }))+".\n");
+	  query_multiple_short(this_object()->query_languages()+
+           ({ "grunt"}))+".\n");
 	return 0;
     }
-    if (member_array(str, languages+({ "grunt" })) == -1) {
+    if (member_array(str, this_object()->query_languages()+
+           ({ "grunt" }))== -1) {
 	notify_fail("You do not know "+str+".\n");
 	return 0;
     }
@@ -477,12 +439,19 @@ int set_language(string str)
 
 string query_current_language() { return cur_lang; }
 
-string *query_languages() { return languages; }
+string *query_languages()
+ {
+   string *race_lang = this_object()->query_race_ob()->query_race_lang();
+     if(!arrayp(race_lang))
+       return languages;
+    return languages + race_lang; 
+ }
 
 // Needed to be here - Radix Jan 1996
 int query_known_language(string lang)
 {
    if(!lang) return(0);
-   if(member_array(lang,languages) != -1) return(1);
+   if(member_array(lang,this_object()->query_languages()) != -1)
+       return(1);
    return(0);
 }

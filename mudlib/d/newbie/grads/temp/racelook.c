@@ -30,7 +30,7 @@ void setup()
 }
 void init()
 {
-    add_action("do_drowlook", "l*ook");
+    add_action("do_drowlook", "look");
 
     ::init();
 }

@@ -43,14 +43,14 @@ void save_this_ob() {
     save_object(SAVE+"pk",1);
 }
 
-create()
+void create()
 {
    ::create();
    killer_data = ([ ]);
    load_this_ob();
 }
 
-dest_me()
+void dest_me()
 {
    save_this_ob();
    destruct(this_object());

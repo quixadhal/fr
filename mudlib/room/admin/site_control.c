@@ -38,13 +38,13 @@ void init() {
   ::init();
 // YES, should be lord, certainly NOT high programmer.
 if ("/secure/master"->query_lord(geteuid(previous_object()))) {
-    add_action("do_site_banish", "site*banish"); /* Site banishing... */
-  add_action("do_access", "access"); /* Show the current access list. */
+    add_action("do_site_banish", "sitebanish"); /* Site banishing... */
+  add_action("do_access", "access"); / Show the current access list. */
   add_action("do_banish","banish");
   add_action("do_unbanish","unbanish");
   add_action("do_suspend", "suspend");
   add_action("do_unsuspend", "unsuspend");
-       add_action("do_unsite_banish","unsite*banish");
+       add_action("do_unsite_banish","unsitebanish");
        add_action("do_grant","grant");
        add_action("do_nonew","nonew");
        add_action("do_noaccess","noaccess");

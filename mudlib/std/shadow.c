@@ -14,7 +14,7 @@ void wear_off(object me)
  destruct(this_object());
 }
 
-dispell()
+int dispell()
 {
  tell_object(owner, "A Dispell Magic dispelled your spell.\n");
  tell_object(environment(owner), owner->query_cap_name()+"'s spell is dispelled.\n");

@@ -11,7 +11,9 @@ inherit "/std/living/gender";
 inherit "/std/living/stats";
 inherit "/std/living/carrying";
 inherit "/std/living/health";
+inherit "/std/living/action_queue.c";
 inherit "/std/container";
+
 
 string msgout,
 msgin,
@@ -35,6 +37,7 @@ void create()
     spells::create();
     skills::create();
     health::create();
+    action_queue::create();
     enable_commands();
     attack_name = ({ });
     attack_data = ({ });
@@ -49,17 +52,17 @@ void create()
 void living_commands() 
 {
     add_action("do_equip", "equip");
-    add_action("do_hold", "wi*eld");
-    add_action("do_unhold", "unwi*eld");
-    add_action("do_wear", "wea*r");
-    add_action("do_unwear", "unwea*r");
-    add_action("do_unhold", "unho*ld");
-    add_action("do_hold", "ho*ld");
-    add_action("do_equip", "eq*uip");
+    add_action("do_hold", "wield");
+    add_action("do_unhold", "unwield");
+    add_action("do_wear", "wear");
+    add_action("do_unwear", "unwear");
+    add_action("do_unhold", "unhold");
+    add_action("do_hold", "hold");
+    add_action("do_equip", "equip");
     add_action("remove", "remove");
-    add_action("follow", "fo*llow");
-    add_action("lose", "lo*se");
-    add_action("unfollow", "unf*ollow");
+    add_action("follow", "follow");
+    add_action("lose", "lose");
+    add_action("unfollow", "unfollow");
     add_action("follow_dummy", "FOLLOW_DUMMY");
     combat_commands();
     //skill_commands();
@@ -155,10 +158,10 @@ varargs mixed move_player(string dir, mixed dest, mixed message,
     if (interactive(this_object()) && !query_property(UNKNOWN_MOVE_PROP)) {
 	if (verbose) {
 	    this_object()->ignore_from_history("look");
-	    command("look");
+	    insert_action("look");
 	} else {
 	    this_object()->ignore_from_history("glance");
-	    command("glance");
+	    insert_action("glance");
 	}
     }
     if(!dir || dir == "X" || (!sizeof(followers) && !followee)) return 1;
@@ -224,7 +227,7 @@ object *do_follow_command(string dir)
 {
     remember_follow = ({ previous_object(), dir });
     this_object()->ignore_from_history("FOLLOW_DUMMY");
-    command("FOLLOW_DUMMY");
+    insert_action("FOLLOW_DUMMY");
     return remember_follow;
 }
 
@@ -465,7 +468,7 @@ int query_money(string type) {
 } /* query_money() */
 
 int query_value() { return money::query_value(); }
-query_teleport() {
+int query_teleport() {
     if (!msgin) {
 	return 0;
     }

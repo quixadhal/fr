@@ -95,7 +95,7 @@ int do_exit_command(string str, mixed verb, object ob, object foll)
 int really_do_exit_command(string str, mixed verb, object ob, object foll)
 {
     if(!ob && this_player() ) ob = this_player();
-    if(!ob) return;
+    if(!ob) return 0;
     ob->remove_timed_property("IS_SWIMMING");
    ob->remove_timed_property("wolfbane"); // washes off dunnit
     ob->remove_static_property("nocast");

@@ -10,7 +10,6 @@
  * "error messages":	Is the player allowed to get run time error messages ?
  */
 int query_player_level(string what) {
-  int level;
 
   if (this_player() == 0)
     return 0;

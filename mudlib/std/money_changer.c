@@ -3,7 +3,7 @@ inherit "/std/room";
 
 void init() {
   ::init();
-  add_action("change", "ch*ange");
+  add_action("change", "change");
 }
 
 int change(string str) {

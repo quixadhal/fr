@@ -5,7 +5,7 @@ inherit "/global/creator";
 string query_gtitle()
 {
   string patronage;
-  patronage = "/secure/thanes"->query_of(name);
+  patronage = "/secure/thanes"->query_thane(name);
   /* I don't think it is a female Thane.. title..
   if(query_female())
     return "the Master of "+patronage;

@@ -11,13 +11,14 @@ void setup()
       "quite know where to begin or what to do.  Thankfully "+
       "for you, there is a large sign in front of you that might give "+
      "you an idea of what's going on and where to go.\n" +
+      "%^RED%^BOLD%^You may wish to examine the sign.%^RESET%^\n" +
       "To the west is the meeting-room, and to the east is the post "+
       "office.\n\n");
 
     set_light(80);
     add_item("sign",
       "  +==========================================================+\n" +
-      "  | FR:Illumitech -- Decicated to Mud Instruction and the    |\n" +
+      "  | FR:Illumitech -- Dedicated to Mud Instruction and the    |\n" +
       "  |                  Continuing Development of the FR:Mudlib |\n" +
       "  |                                                          |\n" +
       "  | New Applicants:                                          |\n" +

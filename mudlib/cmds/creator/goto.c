@@ -5,7 +5,6 @@
 #include <standard.h>
 #include <cmd.h>
 inherit CMD_BASE;
-inherit "/cmds/handlers/wiz_cmd_base";
 
 void setup(){
 
@@ -16,11 +15,11 @@ static int cmd(string str, object me) {
     object dest;
     string *names, nick;
 
-    notify_fail("Teleport like where?\n");
     if (!str) {
+        notify_fail("Teleport like where?\n");
 	return 0;
     }
-    if(!me->query_lord())
+    if(!me->query_thane())
 	me->set_invis(0);
     nick = (string)me->expand_nickname(str);
     dest = find_living(nick);

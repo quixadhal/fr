@@ -5,7 +5,7 @@
 inherit CMD_BASE;
 
 int ex_spool(string yn,string file,int linum);
-varargs wiz_present(string str,object ob,int internal);
+varargs object * wiz_present(string str,object ob,int internal);
 
 void setup()
 {
@@ -16,11 +16,13 @@ static int cmd(string str, object me)
 {
    object *things;
    string * filenames;
-   string s1;
    int egg;
    string spam;
-   int i;
-   if(str == 0 || str == "") return 0;
+   if(str == 0 || str == "") 
+     {
+     notify_fail("No file.\n");
+     return 0;
+     }
   /* dodgy idea, but allows 'ed here' or 'ed strawberry' */        
   if (sizeof(things =  me->wiz_present(str, me))) {
     spam = file_name(things[0]);
@@ -60,6 +62,7 @@ static int cmd(string str, object me)
    ex_spool("y",str,1);
    return 1;
 }
+
 int ex_spool(string yn,string fil,int linum)
 {
    string s1;
@@ -80,7 +83,7 @@ int ex_spool(string yn,string fil,int linum)
          write("\n");
          return(1);
       }
-      printf("%4d: %s",linum,s1);
+   printf("%-4d %s",linum,s1);
    }
    printf("File %s Q to quit ",fil);
    input_to("ex_spool",0,fil,linum);

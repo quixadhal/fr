@@ -42,6 +42,7 @@ static int cmd(string str, object me) {
         }
    }
    write("Ok.\n");
+  this_player()->set_trivial_action();
    return 1;
 } /* removedir() */
 

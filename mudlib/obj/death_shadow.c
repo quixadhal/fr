@@ -19,13 +19,13 @@ void setup_shadow(object ob) {
   my_player = ob;
 }
 
-attack_by(object ob) {
+int attack_by(object ob) {
   tell_object(ob, "This person is a ghost... You cannot attack it.\n");
   ob->stop_fight(my_player);
   return 1;
 }
 
-attack_ob(object ob) {
+int attack_ob(object ob) {
   write("Your hand passes right through it! You are just a ghost!\n");
   return 0;
 }

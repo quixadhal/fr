@@ -6,7 +6,7 @@ inherit "/std/room";
 
 init()
 {
-  add_action("get_sand", "*", 1000);
+  add_action("get_sand", "", 1000);
   ::init();
 }
 

@@ -73,7 +73,6 @@ string help_spell(string str)
 int show_spells(string str) 
   {
   string *frog;
-  int i;
 
   if (!mappingp(spells))
    spells = ([ ]);
@@ -91,10 +90,9 @@ int show_spells(string str)
 /* Will cast the spell after a round of casting time */
 int cast(string str) 
 {
-  int i, j;
+  int j;
   string *s,s1;
   object guild;
-  object *armours;
   string spell_dir;
 
   if( this_player()->query_property("nocast") )

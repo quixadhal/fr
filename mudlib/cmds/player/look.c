@@ -56,7 +56,7 @@ static int cmd (string arg, object me)
 
    sscanf(arg, "at %s", arg);
 
-   ob = find_match (arg, ({ me, here }) );
+   ob = find_match (arg, ({ me, here }) ,1);
    ret = "";
    me->adjust_time_left(-DEFAULT_TIME);
    if (sizeof(ob))

@@ -4,14 +4,13 @@ static string short_d,
        plural_d,
        long_d;
 
-// Changed implode(explode(.. to replace_string but screwed it up
-// anyway - Radix, Wonderflug fixed his drool : Jan 11, 1997
+// Maybe I'm going insane, but this is the THIRD time I'm having
+// to do this here...  Radix Jan 12, *1997*
 void set_short(string str)
 {
-   if(stringp(str)) 
+   if(stringp(str))
       str = replace_string(str,"\n","");
-  short_d = str;
-   return;
+   short_d = str;
 }
 void set_long(string str) { long_d = str; }
 void set_main_plural(string str) { plural_d = str; }
@@ -47,10 +46,3 @@ mixed pretty_plural() {
   return query_plural();
 }
 
-/* std/basic/desc: */
-mixed *query_init_data() {
-   return ::query_init_data() +
-      ({ "short", short_d, "set_short/p/",
-         "long", long_d, "set_long/p/",
-         "main_plural", plural_d, "set_main_plural/p/" });
-} /* query_init_data() */

@@ -34,6 +34,7 @@ static int cmd(string str, object me) {
       write("Loaded "+str+"\n");
   }
   write("Ok.\n");
+  me->set_trivial_action();
   return 1;
 } /* load() */
  

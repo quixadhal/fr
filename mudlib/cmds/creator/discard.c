@@ -46,10 +46,12 @@ static int cmd(string str, object me) {
       write("That object has a violent objection to being dested.\n");
       write("Are you sure you want to do this? ");
       input_to("no_discard");
+      this_player()->set_trivial_action();
       return 1;
     }
   }
   write("Ok.\n");
+  this_player()->set_trivial_action();
   return 1;
 } /* discard() */
 

@@ -185,7 +185,6 @@ void create()
     handle_commands();
     spell_commands();
     communicate_commands();
-    add_action("soul_commqz", "*");
     add_property("npc",1);
     /* this is used to get the this_player set right */
     add_action("init_race", "init_race");
@@ -218,7 +217,6 @@ int soul_commqz(string str)
 
 int soul_com_force(string str) 
 {
-    string str1,str2;
 
     if (file_name(previous_object()) != SOUL_OBJECT)
 	return 0;
@@ -444,9 +442,8 @@ void chatter(int chance, mixed chat)
 }
 void combat_heart_beat()
 { 
-    int i, j, k, silent;
-    string spell_target;
 
+    int i;
     if ( (max_hp*wimpy/100) > hp && hp > 0) 
     {
 	run_away();
@@ -512,8 +509,6 @@ void move_after_heart_beat()
  */
 void heart_beat()
 {
-    object ob;
-    int i, j;
 
     hbcheck = 0; // Taniwha, so they don't attack TOO often	
     // Radix was here spet. 1995
@@ -571,7 +566,7 @@ void set_random_stats(int low, int max) {
 void set_level(int i)
 {
     object guildobject;
-    int e, step;
+   int step;
 
     if(i > MIN_MONSTER_LEVEL) 
 	p_memory = 1;
@@ -790,7 +785,7 @@ int reset_enter_commands()
     enter_commands = ({ });
 }
 
-move_player(string dir, string dest, mixed message, object followee,
+int move_player(string dir, string dest, mixed message, object followee,
   mixed enter) {
     int i, j;
 
@@ -1080,7 +1075,7 @@ string expand_nickname(string str) { return str; }
 
 // Added by Asmodean to make em go away like good monies
 // Its 2:30am, give me a break.
-clean_up(int used)
+int clean_up(int used)
 {
     return ::clean_up(used);
 }

@@ -9,6 +9,7 @@ position = 1;
 }
 
 static int cmd(string str, object me) {
+  me->set_trivial_action();
   return (int)PEOPLER->do_people(str);
 } /* do_people() */
 

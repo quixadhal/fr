@@ -58,7 +58,7 @@ set_item_table(ROOM+"SHOP_TABLE");
 void init()
 {
    ::init();
-   add_action("do_sell","se*ll");
+   add_action("do_sell","sell");
    add_action("buy_me","buy");
    add_action("do_out","out");
 }

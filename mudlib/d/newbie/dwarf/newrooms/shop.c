@@ -31,7 +31,7 @@ void setup() {
 void init() {
   ::init();
   add_action("do_buy", "buy");
-  add_action("do_sell", "se*ll");
+  add_action("do_sell", "sell");
 }
 
 int do_buy(string str) {

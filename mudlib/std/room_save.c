@@ -29,9 +29,9 @@ int query_saveroom() { return(1); }
 void set_void(string path) { voidpath = path; }
 int maxinv;
 
-create()
+void create()
 {
-    object olist;
+    object *olist;
     maxinv = MAXINV;
     ::create();
     auto_load = ({ });
@@ -41,6 +41,8 @@ create()
 	restore_object(file_name(this_object()),1);
 	if(sizeof(auto_load))  
 	    olist = load_auto_load(auto_load,this_object());
+// can't see the purpose of the assignment above, given
+// that the var is local -randor
     }
 }
 int test_add(object ob,int flag)

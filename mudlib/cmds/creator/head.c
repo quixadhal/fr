@@ -11,8 +11,9 @@ void setup(){
 
 
 static int cmd(string str, object me) {
-    string file, *filename, text;
-    int range, loop;
+    string *filename, text;
+   int file;
+    int range;
 
     if (!str) {
         notify_fail("Usage : head -range|file\n");
@@ -31,6 +32,7 @@ static int cmd(string str, object me) {
 	if(!range) range = 10;
 	text = read_file(filename[0], 0, range);
 	printf("%-=*s", this_player()->query_cols(), text);
+        this_player()->set_trivial_action();
 	return 1;
     }
     else {
@@ -42,6 +44,7 @@ static int cmd(string str, object me) {
 	}
 	text = read_file(filename[0], 0, 10);
 	printf("%-=*s", this_player()->query_cols(), text);
+        this_player()->set_trivial_action();
 	return 1;
     }
 } /* head_file() */

@@ -1,6 +1,6 @@
 /* Additional workroom for newbie Builders.  This one is basically the
  * the same as workroom.c but has stripped out descriptions but added
- * in add_action()'s so you can "move desk" or whatever in your 
+  in add_action()'s so you can "move desk" or whatever in your 
  * workrooms.
  * Radix : September 27, 1995
  */

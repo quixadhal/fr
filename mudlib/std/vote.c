@@ -47,9 +47,14 @@ void do_resume(string sub, int limited, string info, string *candidates,
                int flag1, string *whoflag1, int flag2);
 
 
+void restore_function() 
+{
+   if( !sizeof(vote_data) )   
+      restore_object(LOGFILE, 1);
+}
 
 
-create()
+void create()
 {
    ::create();
    vote_data = ([ ]);
@@ -62,13 +67,8 @@ void save_function()
       save_object(LOGFILE);
 }
 
-void restore_function() 
-{
-   if( !sizeof(vote_data) )   
-      restore_object(LOGFILE, 1);
-}
 
-dest_me()
+void dest_me()
 {
    save_function();
    destruct(this_object());
@@ -685,7 +685,7 @@ void do_resume(string sub, int limited, string info, string *candidates,
    tell_object(TP, str);
 }
 
-void resume(string str)
+int resume(string str)
 {
    mixed tmp;
    int i;

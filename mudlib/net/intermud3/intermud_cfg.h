@@ -4,7 +4,7 @@
 */
 
 /* Which mud is this for? */
-#define FR
+#define FR                "FR:Illumitech"
 
 #define LOGFILE          "INTERMUD"
 #define SAVE_INTERMUD    "/net/intermud3/save/intermud"
@@ -17,7 +17,7 @@
 #define IMUD_UDP_PORT    0
 
 #define OPEN_STATUS      "open to players"
-#define ADMIN_EMAIL      "mudadm@fr.imaginary.com"
+#define ADMIN_EMAIL      "imudadm@fr.imaginary.com"
 
 /* Below are the services we allow (and disallow) */
 #undef  SERVICE_AUTH

@@ -1,4 +1,4 @@
-#std/room_save.c
+#/std/room_save.c
 map_prop (["location":"inside",])
 timed_prop ([])
 labels 0

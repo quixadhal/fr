@@ -135,8 +135,7 @@ int check_proper_name(string n)
 }
 
 void logon1(string str) {
-  int tmp, frog;
-  object ob, me;
+  int tmp;
   int NEWBIE = 0;
   creator = 0;
   app_creator = 0;
@@ -349,8 +348,6 @@ static void get_sex(string str) {
   } /* get_sex() */
 
 static void logon4(int new_pl) {
-  int i;
-  object *kopi;
   if (name != "root" && name != "guest")
   {
     other_copy = find_player(name);
@@ -417,7 +414,8 @@ void guest_login2(string str) {
 } /* guest_login2() */
 
 static void try_throw_out(string str) {
-  object tmp, ob, ob1;
+  object tmp, ob;
+
   if (str == "restart") {
     if (catch(other_copy->quit()))
       if (catch(other_copy->dest_me()))
@@ -463,9 +461,12 @@ static void begin(int new_pl) {
 } /* begin() */
 
 static void begin2(int new_player) {
-  object ob, ob1, tp;
+  object tp;
+
   /* clone the player object */
   catch(new_copy = clone_object(player_ob));
+  // HACK HACK HACK!!!
+  //if(player_ob=="global/creator") player_ob=="global/player";
   if (!new_copy) {
     write("Arrggghhhh something bad happened.\n");
     destruct(this_object());
@@ -525,6 +526,7 @@ int new_player(object old) {
   object new_one, tp;
   string name;
 
+  if(!old) return 0;
   name = (string)old->query_name();
   tp = this_object();
   exec(tp, old);
@@ -535,6 +537,7 @@ int new_player(object old) {
   exec(new_one, tp);
   new_one->move_player_to_start(name, 0, -1);
   destruct(this_object());
+  return 1;
 } /* new_player() */
 
 int query_prevent_shadow() { return 1; }

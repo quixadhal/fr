@@ -49,17 +49,17 @@ void create()
 void living_commands() 
 {
     add_action("do_equip", "equip");
-    add_action("do_hold", "wi*eld");
-    add_action("do_unhold", "unwi*eld");
-    add_action("do_wear", "wea*r");
-    add_action("do_unwear", "unwea*r");
-    add_action("do_unhold", "unho*ld");
-    add_action("do_hold", "ho*ld");
-    add_action("do_equip", "eq*uip");
+    add_action("do_hold", "wield");
+    add_action("do_unhold", "unwield");
+    add_action("do_wear", "wear");
+    add_action("do_unwear", "unwear");
+    add_action("do_unhold", "unhold");
+    add_action("do_hold", "hold");
+    add_action("do_equip", "equip");
     add_action("remove", "remove");
-    add_action("follow", "fo*llow");
-    add_action("lose", "lo*se");
-    add_action("unfollow", "unf*ollow");
+    add_action("follow", "follow");
+    add_action("lose", "lose");
+    add_action("unfollow", "unfollow");
     add_action("follow_dummy", "FOLLOW_DUMMY");
     combat_commands();
     //skill_commands();

@@ -12,9 +12,7 @@
 #define GROUP this_player()->query_group_ob()
 #define RACEG this_player()->query_race_group_ob()  
 
-#define MAX_CHAN_HIST 20
-
-#define HAND_ESOB "/w/radix/mine/esobs"
+#define MAX_CHAN_HIST 50
 
 mapping channels = ([ ]),
         history = ([ ]);
@@ -24,7 +22,6 @@ int query_channel_permission(object ob, string chan);
 varargs void do_channel(string verb, string str, string name, string mud, int flg);
 
 void create() {
-    call_out("do_sockets",1);
 }
 
 void init_player_channels(string *chans) {
@@ -60,8 +57,6 @@ int query_channel_permission(object ob, string chan) {
 	if(ob->query_lord()) return 1;
 	return 0;
     default: return 1;
-    case "esob":
-        return HAND_ESOB->query_member(ob->query_name());
     }
 }
 
@@ -95,8 +90,11 @@ string get_history(string chan) {
   return implode(history[chan], "\n");
 }
 
-int do_chat( string str ) {
-    string verb = query_verb();
+int do_chat( string str, string verb ) {
+
+    if (!verb)
+      verb = query_verb();
+
     if(!str || str =="") {
 	message("You must have a message too.\n","",TP);
 	return 1;
@@ -179,14 +177,8 @@ int do_chat( string str ) {
 
     do_channel(verb, str, this_player()->query_cap_name());
 
-    /* not on this mud. Baldrick
-    if( verb == "cre" || verb == "thane" || verb == "demi" ) {
-	add_send_mess(verb+" "+this_player()->query_cap_name()+" "+
-	  implode(explode(mud_name()," "),"_")+" "+str);
-	transmit();
-    }
-    */
-    if( (verb == "dwcre") || (verb == "dwadmin") || (verb == "intercre" )) {
+    if( (verb == "dwcre") || (verb == "dwadmin") 
+         || (verb == "intergossip") || (verb == "intercre" )) {
 	SERVICES_D->eventSendChannel(this_player()->query_short(), verb,
 	  str, 0, 0, 0);
     }
@@ -214,13 +206,17 @@ string get_channel_help(string verb) {
 #define check_cmd() if(strlen(str) > 1) { chan_msg(); return; }
 
 varargs void do_channel(string verb, string str, string name, string mud, int flg) {
+
   if(sizeof(channels[verb])) // Taniwha 01/05/97, make sure it exists
     channels[verb] -= ({ 0 });
   else channels[verb] = ({ });
   if(mud)
-    name = "@"+mud;
+    name = name+"@"+mud;
   switch(str[0]) {
     case '!':
+  //return; // Taniwha, just spams the fucking logs, it's gone
+// added back by Randor, 20-mar-98 - on Illumitech it's
+// kinda useful :)
       check_cmd();
       message(get_history(verb), verb+" history:\n", TP);
       return;
@@ -249,29 +245,24 @@ varargs void do_channel(string verb, string str, string name, string mud, int fl
   }
 }
 
-/*
 varargs void received_cre(string s) {
     string verb, str, name, mud;
-    object *subjs;
-    int i;
 
-    if(s)  received += ({ s });
-
-    if (sizeof(received))
-	for(i=0;i<sizeof(received);i++) {
-	    sscanf(received[i],"%s %s %s %s", verb, name, mud, str);
-	    switch(verb) {
-	    case "dwcre":
-	    case "dwadmin":
-	    case "intercre":
-		do_channel(verb, str, name, mud);
-		break;
-	    default:
-		do_channel(verb, str, name, 0, 1);
+    if (sizeof(s))
+      {
+      sscanf(s,"%s %s %s %s", verb, name, mud, str);
+      switch(verb) {
+        case "dwcre":
+        case "dwadmin":
+        case "intercre":
+        case "intergossip":
+                    do_channel(verb, str, name, mud);
+                    break;
+        default:
+          do_channel(verb, str, name, 0, 1);
 	    }
 	}
-    received = ({ });
-}*/ /* received_cre() */
+} /* received_cre() */
 
 // Radix
 int clean_up() { return 0; }

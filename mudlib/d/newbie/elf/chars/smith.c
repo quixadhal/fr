@@ -44,7 +44,7 @@ void setup() {
 void init() {
   ::init();
   add_action("do_bong","say");
-  add_action("do_bong","'*");
+  add_action("do_bong","'");
 }
 
 int do_bong(string str, object weapon, object armour, object armour1, object cloak) {

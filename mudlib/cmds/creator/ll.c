@@ -5,7 +5,6 @@
 
 inherit CMD_BASE;
 
-void setup() { position = CREATOR_CMD; }
 
 string query_usage() { return "[directory|filename]"; }
 
@@ -17,7 +16,7 @@ static int cmd(string arg, object me){
 string *list;
 string euid, file;
 object obj;
-int i, size, date, num_child;
+  int i;
 
   if (!arg || arg=="") arg=this_player()->query_path()+"/";
   arg = this_player()->get_path(arg);
@@ -34,5 +33,6 @@ int i, size, date, num_child;
     write(" "+list[i][0]);
     write("\n");
   }
+  me->set_trivial_action();
   return 1;
 }

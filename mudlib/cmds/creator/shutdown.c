@@ -8,7 +8,7 @@ position = 1;
 }
 
 static int cmd(string arg, object me) {
-  int tim,upt,temp;
+  int tim,upt;
   string str;
 
   if( !arg || arg == "" ) {

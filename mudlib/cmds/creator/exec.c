@@ -11,7 +11,6 @@ position = 1;
 
 static int cmd(string str, object me) {
   mixed  err, ret;
-  object ob;
   string file, wiz_dir;
 
   if (!this_player()) return 0;
@@ -30,9 +29,9 @@ static int cmd(string str, object me) {
 
   if (file_size(file+".c")>0) rm(file+".c");
   write_file(file+".c",
-    "create() { seteuid(geteuid(this_player())); }\n" +
-    "dest_me() { destruct(this_object()); }\n" +
-    "do_call() {\n"+ str + ";\n}\n");
+    "void create() { seteuid(geteuid(this_player())); }\n" +
+    "void dest_me() { destruct(this_object()); }\n" +
+    "mixed do_call() {\n"+ str + ";\n}\n");
   err = catch(ret = (mixed) file->do_call());
   if (err==0) printf("\nReturns: %O\n", ret);
   if (find_object(file)) file->dest_me();

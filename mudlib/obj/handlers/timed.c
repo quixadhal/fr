@@ -8,7 +8,7 @@ inherit "/std/object";
 
 #define REBOOT_TIME 23 * 60 * 60  /* every 23 hours, so its not always 
                                       the same time */
-#define REBOOT_MEMORY 42 * 1024 * 1024
+#define REBOOT_MEMORY 15 * 1024 * 1024
 
 #define STAT_TIME 600 /* Do a statistics every tenth minute */
 
@@ -18,8 +18,8 @@ int last_time;
 object *netdeads();
 int query_player_object(object pob);
 
-string *checks = ({
 //         "do_idletest", "auto_reboot", "net_dead_purge"
+string *checks = ({
          "auto_reboot", "do_stat_users"
         });
 
@@ -84,7 +84,7 @@ void auto_reboot() {
   int time;
 
   time = uptime();
-  if( (time >= REBOOT_TIME) || (memory_info() > REBOOT_MEMORY) ) {
+  if( (memory_info() > REBOOT_MEMORY) ) {
     if (!SHUTTING && !find_object("/obj/shut")) {
       "/obj/shut"->shut(10);
       SHUTTING = 1;
@@ -110,7 +110,7 @@ int query_player_object(object pob) {
 
 object *netdeads() 
   {
-  object *livs, *l, *nd;
+  object *l, *nd;
   int i;
 
   l = ({ });

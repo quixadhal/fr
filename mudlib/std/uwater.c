@@ -69,7 +69,7 @@ int do_exit_command(string str, mixed verb, object ob, object foll)
 {
     int delay;
     if(!ob && this_player() ) ob = this_player();
-    if(!ob) return;
+    if(!ob) return 0;
 
     if(!verb)
 	verb = query_verb();
@@ -100,7 +100,7 @@ int do_exit_command(string str, mixed verb, object ob, object foll)
 int really_do_exit_command(string str, mixed verb, object ob, object foll)
 {
     if(!ob && this_player() ) ob = this_player();
-    if(!ob) return;
+    if(!ob) return 0;
     ob->remove_timed_property("IS_SWIMMING");
     ob->remove_static_property("nocast");
     ob->remove_static_property("noguild");

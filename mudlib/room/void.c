@@ -4,7 +4,7 @@ inherit "/std/room";
 // after we moved to Aurora...
 // Sept 28, 1995
 // This got COMPLICATED .. argh
-do_update(string str)
+void do_update(string str)
 {
    int i;
    object *all = all_inventory(this_object());
@@ -12,14 +12,14 @@ do_update(string str)
    {
       //load destinations
       "/w/common"->BAH();
-      "/d/ss/daggerford/df_board"->BAH();
+      "/room/entryroom"->BAH();
       for(i=0; i<sizeof(all); i++)
          if(interactive(all[i])) 
          {
             if(!all[i]->query_creator())
             {
                tell_object(all[i],"Moving you from Hell.\n");
-               all[i]->move("/d/ss/daggerford/df_board");
+               all[i]->move("/room/entryroom");
             }
             if(all[i]->query_creator())
             {
@@ -54,7 +54,7 @@ void setup() {
      add_item("wombat", "Perhaps you should tell him to use his spoon.\n");
      add_item("igloo", "It is nice and warm despite the icy decor.\n");
      add_item("penguin", "The penguins are all rather formally dressed.\n");
-     add_exit("tavern", "/d/ss/daggerford/ladyluck", "door");
+     add_exit("entryroom", "/room/entryroom", "door");
 }
 void init()
 {

@@ -65,7 +65,6 @@ void set_plurals(string *str) {
 } /* set_plurals() */
 
 void add_plural(mixed str) { 
-  int i;
 
   if (pointerp(str))
     plurals += str;
@@ -170,9 +169,3 @@ void attack_by(object ob) {
 */
 
 /* std/basic/id: */
-mixed *query_init_data() {
-   return ({ "name", name, "set_name/p/",
-             "alias", alias, "add_alias/p/",
-             "adjectives", adjectives, "add_adjective/p/",
-             "plurals", plurals, "add_plurals/p/" });
-} /* query_init_data() */

@@ -1,20 +1,43 @@
+#include "condition.h"
+
 int cond,
-    max_cond,
-    lowest_cond;
+    max_cond;
 
-void create() {
-   cond = 100;
-  max_cond = 100;
-}
-
-/* this should be masked by the object */
-void break_me()
+void setup_condition(int i)
 {
-  this_object()->dest_me();
+  if(max_cond = i + random(COND_RANGE) > COND_MAX) max_cond = i = COND_MAX;
+  cond = i;
 }
 
-string cond_string() {
-  switch ((100*cond)/max_cond) {
+/* this could be masked by the object */
+varargs void break_me(object adjuster)
+{
+  object env = environment();
+  if(env && interactive(env)){
+    if(adjuster && adjuster != env){
+      tell_object(env, "\n"+adjuster->query_cap_name()+
+                       " destroys your "+this_object()->query_short()+
+                       "!\n");
+       tell_object(adjuster, "You destroy "+env->query_cap_name()+
+        "'s "+this_object()->query_short()+"!\n");
+      tell_room(environment(env),adjuster->query_cap_name()+
+         " destroys "+env->query_cap_name()+"'s "
+         +this_object()->query_short()+"!\n");
+    }
+    else    
+      tell_object(env, "\nYour "+this_object()->query_short()+
+                       " exists no more.\n");
+  }
+  // Taniwha, can't continue execution after a dest.
+// So it'll get rather full :), but it fixes the problem
+   this_object()->move("/room/rubbish");
+   call_out("dest_me",0);
+}
+
+string cond_string()
+{
+  switch ((100*cond)/COND_MAX)
+  {
     case 0 :
       return "It is a wreck.\n";
     case 1..10 :
@@ -38,39 +61,33 @@ string cond_string() {
   }
 }
  
-void set_max_cond(int i) { max_cond = i; }
-void set_cond(int i) {
-  cond = i;
-  if (cond < lowest_cond)
-    lowest_cond = cond;
-  if(cond <= 0) {
-    this_object()->break_me();
-    return 0;
-  }
-}
-int adjust_cond(int i) {
+varargs int adjust_cond(int i, object adjuster)
+{
+  if(!i) return cond;
+
   cond += i;
-  if (cond < lowest_cond)
-    lowest_cond = cond;
-  if (cond > max_cond)
+
+  if(cond < 0) cond = 0;
+
+// can't make better than max_cond
+  if(cond > 0 && max_cond < cond){
     cond = max_cond;
-  if(cond <= 0) {
-    this_object()->break_me();
-    return 0;
+    return cond;
   }
+// max_cond can slip...
+  if(cond < 0 && max_cond < cond + COND_RANGE)
+    max_cond = cond + COND_RANGE;
+
+// the bigger i is and the smaller cond is the bigger the chance of breaking
+  if(i < 0 && random(-cond/i) <= COND_FAIL)
+    break_me(adjuster);
+/*
+  if(cond < max_cond / 4 && (cond*400/max_cond + random(100) < 100))
+    break_me(adjuster);
+*/
+
   return cond;
 }
-/* the lowest cond varible is used for repairing the armor...
- * See where it was repaired to last time, this determines how difficult
- * repairs will be...
- */
-void set_lowest_cond(int i) { lowest_cond = i; }
+
 int query_cond() { return cond; }
 int query_max_cond() { return max_cond; }
-int query_lowest_cond() { return lowest_cond; }
-
-int set_percentage(int i) {
-  if (i > 100) i = 100;
-  cond = (max_cond*i)/100;
-  lowest_cond = (cond*(random(30)+70))/100;
-}

@@ -14,7 +14,7 @@ setup()
 init()
 {
   ::init();
-  add_action("throw_sand", "throw*", 100);
+  add_action("throw_sand", "throw", 100);
 }
 
 throw_sand(string fish)

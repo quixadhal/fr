@@ -26,7 +26,7 @@ void do_chat(string str)
    return;
 }
 
-heart_beat()
+void heart_beat()
 {
    cnt++;
    

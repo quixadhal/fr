@@ -20,7 +20,6 @@ static int cmd(string str, object me) {
         return 0;
         }
     filenames = this_player()->get_files(str);
-
     if (!sizeof(filenames)) {
        notify_fail(str + ": No such file.\n");
        return 0;
@@ -37,6 +36,7 @@ static int cmd(string str, object me) {
          write("\n ----- TRUNCATED ----- \n");
        }
     }
+  me->set_trivial_action();
     return 1;
 } /* exa_file() */
  

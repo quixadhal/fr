@@ -11,15 +11,17 @@
 
 #define FPERM "/secure/fperm"
 
-#define CREATOR (master()->author_file(sprintf("%s/%s", str, direc[i][0]))? \
+#define CRTR (master()->author_file(sprintf("%s/%s", str, direc[i][0]))? \
                 master()->author_file(sprintf("%s/%s", str, direc[i][0])): \
                 "Root")
+
 #define DOMAIN  (master()->domain_file(sprintf("%s/%s", str, direc[i][0]))? \
                 master()->domain_file(sprintf("%s/%s", str, direc[i][0])): \
                 "Root")
-#define CREATOR_D (master()->author_file(sprintf("%s/%s/.", str, direc[i][0]))? \
+#define CRTR_D (master()->author_file(sprintf("%s/%s/.", str, direc[i][0]))? \
                 master()->author_file(sprintf("%s/%s/.", str, direc[i][0])): \
                 "Root")
+
 #define DOMAIN_D (master()->domain_file(sprintf("%s/%s/.", str, direc[i][0]))? \
                 master()->domain_file(sprintf("%s/%s/.", str, direc[i][0])): \
                 "Root")
@@ -29,7 +31,9 @@ inherit CMD_BASE;
 object tp;
  
 void setup() {
-  position = CREATOR_CMD;
+// position = CRTR_CMD;
+// CRTR_CMD seemed to have no meaning at all.  eert.  -- Hamlet
+  position = 0;
 }
  
 string query_usage() {
@@ -68,7 +72,7 @@ string dir_entry(string path, string name, int mask, object me) {
  
 int ls(string str, int mask, object me) {
   string *direc, *bit, *bing, bong, path;
-  int i, j, k, size;
+  int i, j, size;
  
   seteuid(geteuid(me));
   path = str; 
@@ -160,7 +164,6 @@ int ls(string str, int mask, object me) {
     }
   } else {
     string tmp, tmp2, fname;
-    mixed *stats;
     int *count;
     object loaded;
     /* if path is a directory get contents */
@@ -213,19 +216,15 @@ int ls(string str, int mask, object me) {
           "NOBODY", "get_dir")?'x':'-'),
           sizeof(filter_array((get_dir(me->get_path(
           sprintf("%s%s/*", str, direc[i][0])))?get_dir(
-          me->get_path(sprintf("%s%s/*", str, direc[i][0]))):({ })),
-          "is_dir", this_object(),
-          sprintf("%s%s", str, direc[i][0])))+(direc[i][0..1] == ".." &&
-          str == "/"?2:0),
-/*
-          (FPERM->query_fperms(str+direc[i][0])?
-          FPERM->query_fperms(str+direc[i][0])[0]:CREATOR_D), DOMAIN_D,
-*/
-          CREATOR,DOMAIN,
-          sizeof(get_dir(me->get_path(sprintf("%s%s/*", str, direc[i][0])))),
-          tmp, (mask & MASK_O?"%^GREEN%^":""),
-          (direc[i][0]), (mask & MASK_O?"%^RESET%^":""),
-          (mask & MASK_F?"/":"")));
+            me->get_path(sprintf("%s%s/*", str, direc[i][0])) ):({ })),
+            "is_dir", this_object(),
+            sprintf("%s%s", str, 
+            direc[i][0])))+(direc[i][0..1] == ".." && str == "/"?2:0),
+            CRTR,DOMAIN,
+            sizeof(get_dir(me->get_path(sprintf("%s%s/*", str, direc[i][0])))),
+              tmp, (mask & MASK_O?"%^GREEN%^":""),
+            (direc[i][0]), (mask & MASK_O?"%^RESET%^":""),
+            (mask & MASK_F?"/":"")));
       } else {
         /* file */
         count[i] = 0;
@@ -243,11 +242,7 @@ int ls(string str, int mask, object me) {
           "NOBODY", "get_dir")?'r':'-'),
           (master()->valid_write(sprintf("%s/%s",str,direc[i][0]),
           "NOBODY", "get_dir")?'w':'-'),
-/*
-          (FPERM->query_fperms(str+direc[i][0])?
-          FPERM->query_fperms(str+direc[i][0])[0]:CREATOR),DOMAIN, j, tmp, 
-*/
-          CREATOR,DOMAIN, j, tmp,
+          CRTR,DOMAIN, j, tmp,
           ((mask & MASK_O) && loaded?"%^MAGENTA%^":""),
           fname, ((mask & MASK_O) && 
           loaded?"%^RESET%^":""),
@@ -282,6 +277,7 @@ string flags;
 int mask, i;
 
   tp = me;
+  me->set_trivial_action();
   if (!str) str = "";
   if ( (sscanf(str,"-%s %s",flags,str) == 2) ||
        (sscanf(str,"-%s", flags) == 1) )

@@ -365,7 +365,7 @@ void init_static_arg(mapping args)
   twohanded = args["no limbs"];
 } /* init_static_arg() */
 
-player_wield(int pos) 
+void player_wield(int pos) 
   {
   if (!environment()) return ;
   environment()->set_hold(this_object(), pos);

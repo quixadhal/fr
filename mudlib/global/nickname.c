@@ -7,16 +7,18 @@ mapping map_nicknames;
 string *query_nicknames() { return keys(map_nicknames) + ({ }); }
 
 void nickname_commands() {
-  add_action("delete_nickname", "dn*ickname");
-  add_action("nickname", "ni*ckname");
-add_action("flushnicknames","flushnicknames");
+  add_action("delete_nickname", "dnickname");
+  add_action("nickname", "nickname");
+  add_action("flushnicknames","flushnicknames");
 }
+
 int flushnicknames(string str)
 {
   write("This will remove All your nicknames. Are you sure? (Y/N)\n");
 input_to("flushnicks",0);
 return 1;
 }
+
 int flushnicks(string str)
 {
 if(str=="Y"||str=="y")
@@ -30,7 +32,6 @@ return 1;
  
 int add_nickname(string str) {
   string s1,s2;
-  int i;
  
   if (sscanf(str,"%s %s",s1,s2)!=2) {
     notify_fail("You are a frog\n");
@@ -49,23 +50,22 @@ int add_nickname(string str) {
 }
  
 string expand_nickname(string str) {
-  string *array;
-  int i,j;
+  string *arry;
+  int i;
  
   if (stringp(str))
-    array = explode(lower_case(str)," ");
+    arry = explode(lower_case(str)," ");
   else
     return str;
   if (!map_nicknames)
     map_nicknames = ([ ]);
-  for (i=0;i<sizeof(array);i++)
-    if (map_nicknames[array[i]])
-      array[i] = map_nicknames[array[i]];
-  return implode(array," ");
+  for (i=0;i<sizeof(arry);i++)
+    if (map_nicknames[arry[i]])
+      arry[i] = map_nicknames[arry[i]];
+  return implode(arry," ");
 }
  
 int delete_nickname(string str) {
-  int i;
   if (!map_nicknames)
     map_nicknames = ([ ]);
   if (!map_nicknames[str]) {
@@ -78,7 +78,7 @@ int delete_nickname(string str) {
 }
  
 int print_nicknames() {
-  int pos, i, cols;
+  int i, cols;
   string str, str1, str2, bit, *tmp;
  
   bit = "";
@@ -106,7 +106,6 @@ int print_nicknames() {
  
 int nickname(string str) {
   string s1,s2;
-  int i;
  
   if (!map_nicknames)
     map_nicknames = ([ ]);

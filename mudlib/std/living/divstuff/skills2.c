@@ -7,7 +7,7 @@
  * calc_lvl(string *)          - calculate number of lvls in the path
  * add_skill_lvl(...)          - horror recursive skill adder. arghh
  * teach_skill(objct *,string) - Used to teach skills to other people.
- * skill_commands()            - all the skill add_actioned commands.
+  skill_commands()            - all the skill add_actioned commands.
  */
  
 #include "skills2.h"
@@ -35,7 +35,7 @@ static mapping bonus_cache,
 #include "/std/living/convert_skills.c"
 
 void skill_commands() {
-  add_action("do_learn", "le*arn");
+  add_action("do_learn", "learn");
 } /* skill_command() */
  
 mapping query_skills() { return skills; }

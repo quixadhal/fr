@@ -58,13 +58,13 @@ void create() {
 void init() {
   ::init();
    this_object()->add_property("no_undead",1);
-  add_action("do_advance", "ad*vance");
+  add_action("do_advance", "advance");
   add_action("train","train");
   add_action("do_join", "join");
-  add_action("do_info", "inf*o");
-  add_action("do_cost", "co*st");
-//  add_action("do_specialize", "spe*cialize");
-  add_action("do_join", "spe*cialize");
+  add_action("do_info", "info");
+  add_action("do_cost", "cost");
+//  add_action("do_specialize", "specialize");
+  add_action("do_join", "specialize");
   add_action("do_learn", "learn");
   add_action("do_learn", "pray");
   //add_action("do_leave", "leave");
@@ -92,8 +92,6 @@ string query_guild() { return our_guild; }
 
 int do_advance_level() 
 {
-  string skill;
-  string *bits;
   int cost,i,lvl,total_xp,p_val,max_lvl;
   float xp;
   string guild,my_race;
@@ -741,8 +739,8 @@ void check_spells_commands(string *path, int lvl) {
           break;
 }  /* check_spell_commands() */
 
-query_spells() { return spells + ({ }); }
-query_commands() { return commands + ({ }); }
+mixed query_spells() { return spells + ({ }); }
+mixed query_commands() { return commands + ({ }); }
 
 /* This is not pretty, but I added it in case Dank feel like giving the players
  * some info of how much xp it will cost to advance in skills.

@@ -7,6 +7,7 @@
 
 static int position = 0, dodest = 0, doclone = 0;
 static object command_giver;
+static string fail_msg;
 
 void create()
 {
@@ -26,6 +27,16 @@ void clean_up()
 }
 
 void setup() { return; }
+
+/* Added by Baldrick.
+ * using this_player ain't good.
+ */
+void notify_fail(string fa)
+  {
+  this_player()->set_notified(1);
+  fail_msg = fa;
+  return;
+}
 
 static int cmd(string tail, object thisob, string verb) { return 0; }
 
@@ -77,6 +88,8 @@ int _cmd(string tail, object thisob, string verb)
 
 	seteuid(getuid());
 
+        if (ret == 0)
+          write(fail_msg);
 	return ret;
 }
 

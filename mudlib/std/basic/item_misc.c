@@ -1,3 +1,4 @@
+inherit "/std/object";
 int in_use;
 
 /* handles all the cutsey in-use testing */
@@ -5,11 +6,12 @@ int in_use;
 
 // Move hack so that wearables/holdables will leave the wear/hold
 // arrays of living creatures.
-int move(mixed dest, mixed messout, mixed messin) 
+varargs int move(mixed dest, mixed messout, mixed messin) 
 {
     object ob;
     int i;
     int UNUSED_IT = 0;  /* Hamlet's nastiness */
+  i = 0;
 
     /* Next line is Hamlet's and it's ugly, but needed */
     if(this_object()->query_in_use()) 
@@ -38,7 +40,6 @@ int move(mixed dest, mixed messout, mixed messin)
 void dest_me()
 {
     object ob;
-    int i;
 
     ob = environment(this_object());
 

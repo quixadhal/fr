@@ -1,203 +1,203 @@
-
-/* I was hoping I never had to touch this code..
- * But it seems like i have to.
- * Adding a "loading" property, so that players won't be able to quit before 
- * all equipment are loaded.
- * Baldrick, nov '94
- * Taniwha 1995, 1996 (ad nauseum)
+/*
+ * Wonderflug 1996, first real work in months, time to get this working
+ * well.  (and ohhhhh the bugs)
+ *
  */
-/* First, add a global, shame. */
-static int stuff;
-void auto_clone(mixed arg);
-string *create_auto_load(object *obs) 
+
+/* elements of a strob - saveable (string but not really) version
+ * of an object, which is stored as a mixed array.  These are the indices.
+ */
+#define FILENAME 0
+#define VARMAP   1
+
+void auto_clone(
+  object ob, 
+  mapping attribute_map, 
+  object dest );
+
+/*
+ * Returns a mixed array which can be converted back to objects using
+ * load_auto_load
+ */
+
+mixed* create_auto_load(object *obs)
 {
-    string s, s1, s3;
-    mixed auto_string;
-    string *fname;
-    int j, i;
-    if(!obs) return ({ });
-    auto_string = ({ });
-    /* do this backwards, means it comes out right on logon */
-    for (i = sizeof(obs) -1; i >= 0; i--)
+    mapping attribute_map; 
+    string  obj_filename;
+    string* fname;
+    mixed*  auto_load;
+    int     i;
+
+    if (!obs) 
+	return ({ });
+
+    /* instead of growing the auto_load, we allocate and then subtract
+     * zeros after we're done.
+     */
+    obs -= ({ 0 });
+    auto_load = allocate( sizeof(obs) );
+
+    for ( i = 0; i < sizeof(obs); i++ )
     {
-	s = s3 = 0;
-	if (!catch(s=(string)obs[i]->query_auto_load()) && !s) 
-	{
-	    catch(s = (string)obs[i]->query_static_auto_load());
-	    catch(s3 = (string)obs[i]->query_dynamic_auto_load());
-	    if (!s && !s3)
-		continue;
-	    /*
-	     * Fix by Aragorn. Used to be !s below
-	     * Name of function is a bit mismatching (query_auto_load())
-	     * because if it returns something it won't...
-	     */
-	}
-	else 
-	if (s)
+	/* query_auto_load returns nonzero if the object should not save.
+	 * this is poorly named.
+	 */
+	if ( obs[i]->query_auto_load() )
 	    continue;
-	else
-	    s3 = 0;
-	// Taniwha, there's some evidence that things aren't SAVING maybe something dests in query_auto_load()
-	if(!obs[i]) continue;
-	fname = explode(file_name(obs[i]),"#");
-	s1 = fname[0];
-	auto_string += ({ 1, s1, ({ s, s3 }) });
+
+	attribute_map = obs[i]->query_auto_load_attributes(-1);
+
+	/* Perhaps this is too harsh */
+	if ( !attribute_map )
+	    continue;
+
+	/* obs[i] may've become null, it may not have a filename, or
+	 * it may have a filename "", this protects any of that from adding
+	 * it to the auto load.
+	 */
+	if ( obs[i] 
+	  && ( obj_filename = file_name( obs[i] )        ) 
+	  && ( fname        = explode( obj_filename, "#") ) 
+	  && sizeof( fname ) > 0 )
+	{
+	    obj_filename = fname[0];
+	    auto_load[i] = ({ obj_filename, attribute_map });
+	}
+
+	/* what is the first field used for ? */
     }
-    return auto_string;
+
+    auto_load -= ({ 0 });
+    return auto_load;
 } /* create_auto_load() */
-void birthday_gifts() {
-    int day;
-    string month, s1, s2;
-    if(!sizeof(find_match("birthday card", this_object())))
-	if(this_object()->query_is_birthday_today())
-	    if(!catch(call_other("/obj/b_day/card", "??")) &&
-	      !catch(call_other("/obj/b_day/demon", "??"))) {
-		call_out("card_arrives", 5);
-	    }
-} /* birthday_gifts() */
-int query_special_day(string type) 
-{
-    string s1, s2, month;
-    int day;
-    sscanf(ctime(time()), "%s %s %d %s", s1, month, day, s2);
-    switch (type) {
-    case "cabbage day" :
-	if (month == "Feb" && day == 17)
-	    return 1;
-	return 0;
-    case "test day" :
-	if (month == "Feb" && day == 16)
-	    return 1;
-	return 0;
-    }
-    return 0;
-} /* query_day_special() */
-void card_arrives() 
-{
-    object card;
-    card = (object)"/global/cloner"->clone("/obj/b_day/card");
-    card->move(this_object());
-    tell_room(environment(), "You hear a rumbling in the distance. " +
-      "Then, suddenly, a malformed goblin wizzes past you, " +
-      "frantically pedalling a fire-engine red tricycle!\n");
-    write("You feel something thrust into your hand by a greener, " +
-      "wartier one.\n");
-} /* card_arrives() */
-void make_iou(mixed stuff,object dest)
+
+
+/*
+ * Creates an IOU for objects that fail to load.
+ */
+
+void make_iou(mixed bad_strob, object dest)
 {
     object iou;
-    log_file("loader",(string)dest->query_cap_name()+" had "+(string)stuff[1]+" refuse to load .\n");
-    catch(iou=clone_object("/obj/misc/iou"));
-    if(iou)
+
+    log_file("loader",
+      (string)dest->query_cap_name()+" had "+(string)bad_strob[FILENAME]+
+      " refuse to load .\n");
+
+    catch( iou = clone_object("/obj/misc/iou") );
+
+    if ( iou )
     {
-	iou->add_auto_string(stuff);
+	iou->add_auto_string(bad_strob);
 	catch(iou->move(dest));
     }
 }
-object *load_auto_load(string *auto_string, object dest) 
+
+/*
+ * Loads all the strobs in auto_load into dest.
+ * Returns all those objects that loaded.
+ */
+
+object* load_auto_load(mixed* auto_load, object dest) 
 {
-    object ob, card, *obs;
-    string name, args;
+    object ob, *obs;
     int i;
-    obs = ({ });
-    if (stringp(auto_string))
+
+    if (!auto_load || !sizeof(auto_load))
 	return ({ });
-    if (!auto_string || !sizeof(auto_string))
-	return ({ });
-    /* This for loop gives errors sometimes..
-     * should be made bulletproof..
-     * Baldrick.
-     */
-    for (i=0;i<sizeof(auto_string);i+=3)
+
+    auto_load -= ({ 0 });
+    obs = allocate( sizeof( auto_load ) );
+    for ( i=0; i<sizeof(auto_load); i++)
     {
-	/* Maybe this line makes it bulletproof?
-	 * Baldrick May '95
-	 */
-	// If there's a file name here
-	if (sizeof(auto_string[i+1]))
+	mixed* strob = auto_load[i];
+
+	if ( sizeof( strob ) != 2 )
+	    continue;
+
+	if ( !stringp( strob[FILENAME] ) )
+	    continue;
+
+	// Try to clone one
+	catch( ob=clone_object( strob[FILENAME] ) );
+	if( ob )
 	{
-	    // Try to clone one
-	    catch(ob = clone_object(auto_string[i+1]));
-	    if(ob)
-	    {
-		// This initializes the data in the object,and saved vars
-		auto_clone( ({ ob,auto_string[i+2], dest }));
-		// Useful this, you can tell what didn;t laod for example.
+	    auto_clone( ob, strob[VARMAP], dest );
+	    if ( ob )
 		obs += ({ ob });
-	    }
-	    if(!ob)
-	    {
-		// And if it didn't work , give em an IOU
-		make_iou( ({auto_string[i],auto_string[i+1],auto_string[i+2]}),dest);
-	    }
-	} /* If auto_string */
+	}
+	else
+	{
+	    // And if it didn't work , give em an IOU
+	    make_iou( strob, dest );
+	}
+
     } /* for */
+
+    obs -= ({ 0 });
     return obs;
 } /* load_auto_load() */
-void auto_clone(mixed  arg) 
+
+
+void auto_clone(
+  object ob,  
+  mapping attribute_map, 
+  object dest )
 {
-    if(!arg[0])
+    int move_ret;
+
+    if ( !ob )
     {
 	tell_object(this_object(),"Ooops something broke.\n");
-	stuff --;
 	return;
     }
-    if (sizeof(arg[1]) == 1 || !arg[1][1])
+
+    ob->init_auto_load_attributes(attribute_map);
+
+    // ob might've bit it during init, or dest might not exist
+    if( !ob ||
+      !dest || 
+      (move_ret=ob->move(dest)) )
     {
-	arg[0]->init_arg(arg[1][0]);
+	/* ob or dest don't exist, or couldn't move ob into dest */
+	if ( ob )
+	{
+	    log_file("loader",
+	      (string)this_object()->query_name()+" dropped a "+
+	      (string)ob->query_name()+", move_ret="+move_ret+".\n");
+
+	    /* if we can't move to environment, well, too bad */
+	    ob->move( environment(this_object()) );
+	}
+
+	tell_object(this_object(), "Oops, you dropped something reason was "+ move_ret+" .\n");
     }
-    else
-    {
-	arg[0]->init_static_arg(arg[1][0]);
-	arg[0]->init_dynamic_arg(arg[1][1]);
-    }
-    // Taniwha 1995, if the container hasn't loaded, what shall we do ?
-    if(arg[0] && arg[2] && !(arg[0]->move(arg[2]))); // if they exist AND the move succeeds
-    else
-    {
-	log_file("loader",(string)this_object()->query_name()+" Dropped a "+(string)arg[0]->query_name()+" on login.\n");
-	tell_object(this_object(),"Oops, you dropped something.\n");
-	if(arg[0])
-	    arg[0]->move(environment());
-    }
-    stuff--;
 } /* auto_clone() */
-/* The really stupid thingie.. 
- * Baldrick.
- */
-int query_loading()
-{
-    if (stuff<1)
-	return 0;
-    return 1;
-}
-/* In case of bugs.. */
-void reset_stuff()
-{
-    stuff=0;
-    return;
-}
-:
+
 /* Hamlet added me -- I'm used for the 'update' command. */
-string *create_update_auto_load(object ob)
+/* I changed this to create_object_auto_load, it is after all quite
+ * a generally useful function, so create_update_auto_load was silly
+ * --wf.
+ */
+mixed* create_object_auto_load(object ob)
 {
-    string s, s1, s3;
-    mixed auto_string;
+    mapping attribute_map;
+    mixed* strob;
+    string obj_filename;
     int j;
 
-    if(!ob) return ({ });
-
-    catch(s = (string)ob->query_static_auto_load());
-    catch(s3 = (string)ob->query_dynamic_auto_load());
-
-    if (!s && !s3)
+    if ( !ob ) 
 	return ({ });
 
-    if (sscanf(file_name(ob), "%s#%d", s1, j) == 2)
-	auto_string = ({ 1, s1, ({ s, s3 }) });
-    else
-	auto_string = ({ 0, file_name(ob), ({ s, s3 }) });
+    attribute_map  = ob->query_auto_load_attributes(-1);
 
-    return auto_string;
+    if (!attribute_map )
+	return ({ });
+
+    if ( sscanf(file_name(ob), "%s#%d", obj_filename, j) == 2)
+	strob = ({ obj_filename, attribute_map });
+    else
+	strob = ({ file_name(ob), attribute_map });
+
+    return strob;
 } /* create_update_auto_load() */

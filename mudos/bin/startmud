@@ -8,7 +8,7 @@
 #
 
 # directory for MudOS-related binaries (driver, addr_server, ftpd, etc)
-BINDIR=/where/ever/frmudlib-3.4/mudos/bin
+BINDIR=/where/ever/mudos/bin
 
 # don't change anything below this line unless you know what you are doing.
 

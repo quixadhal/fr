@@ -27,10 +27,13 @@ varargs void say(string str, mixed avoid) {
     event(environment(previous_object()), "say", str, avoid);
 } /* say() */
 
-varargs void tell_room(object ob, string str, mixed avoid) {
-  if (!ob || !objectp(ob))
-    return ;
-  event(ob, "say", str, avoid);
+varargs void tell_room(mixed ob, string str, mixed avoid) {
+    // Added stringp() - Radix:  Dec 7, 1996
+   if(ob && stringp(ob))
+      ob = load_object(ob);
+   if (!ob || !objectp(ob))
+     return ;
+   event(ob, "say", str, avoid);
 } /* tell_room() */
 
 void tell_object(object ob, string str) {
@@ -61,7 +64,6 @@ object find_player(string str) {
 } /* find_player() */
 
 /* Hamlet added me */
-/* Taniwha removed me, recurses to death in line (now 73)
 object clone_object(string file) {
   object ret;
   seteuid(geteuid(previous_object()));
@@ -75,5 +77,3 @@ object clone_object(string file) {
   seteuid(0);
   return ret;
 }
-*/
-

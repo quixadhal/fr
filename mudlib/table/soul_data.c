@@ -899,7 +899,7 @@ soul_data =
       "$mcname$ licks $mposs$ lips and looks at $hcname$ with lust filled eyes" }) }),
   "massage" : ({ ({ 0, "%s", 2, "%s %s", }), ({
       "You give $hcname$ a$ifarg: $arg:good,bad,ugly,long,"+
-      "refreshing,pink,full body,seductive,sensuous,strange,"+
+      "refreshing,pink,full body,seductively,sensuous,strange,"+
       "painful,deep,meaningful,ergonomic,economic,"+
       "painless,memorable,different,unwanted,unwarranted,"+
       "unprovoked,unknown,sneaky,unnoticed,unwieldy,back,"+
@@ -1003,7 +1003,7 @@ soul_data =
       "You swear your eternal love for $hcname$",
       "$mcname$ swears $mposs$ eternal love for you",
       "$mcname$ swears $mposs$ eternal love for $hcname$" }) }),
-  "raise" : ({ 0, ({ "You raise your eyebrows", "$mcname$ raises $mposs$ eyebrows" }) }),
+  "raise" : ({ 0,  ({ "You raise an eyebrow quizzically", "$mcname$ raises an eyebrow quizzically" }) }),
   "razz" : ({ ({ 0, "%s" }), ({
       "You stick your thumb on your nose and razz $hcname$",
       "$mcname$ sticks $mposs$ thumb on $mposs$ nose and razz's you",
@@ -1280,7 +1280,7 @@ soul_data =
       "weakly,humbly,paradoxically,sarcastically,viciously,garishly,"+
       "sweetly,innocently,lovingly,dreamily,radiantly,enthusiastically,"+
       "insolently,quirkily,completely,unconsciously,drunkenly,hopefully,"+
-      "insanely,cutely,maliciously,"+
+       "insanely,cutely.maliciously,shyly,"+
       "absentmindedly,curtly,disturbingly,unbelievably,quietly,"+
       "loudly,differently,winningly,in triumph,seductively,"+
       "tightly,gosh there are lots of arguments,softly,proudly,"+
@@ -1299,7 +1299,7 @@ soul_data =
       "like a train,angrily,paranoicaly,innocently,frogily,slyly,proudly,"+
       "macabrely,ruefully,tentatively,like a dog,hopefully,"+
       "tightly,gosh there are lots of arguments,softly,"+
-      "insanely,cutely,maliciously,"+
+      "insanely,cutely,maliciously,shyly,"+
       "lividly,demonicaly,"+
       "sardonically,warily,lazily,serenely,disappointedly$~$ at $hcname$",
       "$mcname$ smiles$ifarg: $lastarg$~$ at you",
@@ -1621,11 +1621,11 @@ soul_data =
       2, "at %s %s", 2, "%s %s", 3, "%s" }), ({
       "You wink$ifarg: $arg:suggestively,broadly,slowly,loudly,grumpily,"+
       "despairingly,coyly,desperately,insolently,curtly,lovingly,"+
-      "patiently,sadistically,warily,seductive,lazily$~$",
+      "patiently,sadistically,warily,seductively,lazily$~$",
       "$mcname$ winks$ifarg: $lastarg$~$",
       "You wink$ifarg: $arg:suggestively,broadly,slowly,loudly,grumpily,"+
       "despairingly,coyly,desperately,somberly,insolently,curtly,lovingly,"+
-      "patiently,sadistically,warily,seductive,lazily$~$ at $hcname$",
+      "patiently,sadistically,warily,seductively,lazily$~$ at $hcname$",
       "$mcname$ winks$ifarg: $lastarg$~$ at you",
       "$mcname$ winks$ifarg: $lastarg$~$ at $hcname$" }) }),
   "wipe" : ({ ({ 0, "%s", 0, "on %s", 1, "%s on %s" }), ({

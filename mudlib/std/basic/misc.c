@@ -1,53 +1,252 @@
+/*
+ * Rather large conglomeration of move/misc/values
+ * - Allowing negative weights, though we'll regret it.
+ * Wonderflug, 1997.
+ */
+
 #include "move_failures.h"
 #include "money.h"
+
+/* Use a hook to refer to weight all through here, unless modifying. 
+ * There's a fairly good reason for this.
+ */
+#define WEIGHT this_object()->query_weight()
+
 inherit "/std/basic/light";
-inherit "/std/basic/move";
-/* this will also handle value... */
 
-static int weight;
-int value;
-int resale_value; /* Hamlet */
-int stolen_modifier; /* Hamlet */
+static int weight=0;     /* weight of the object */
+static int droppable=1;  /* whether the object may be dropped */
+static int gettable=1;   /* whether the object may be picked up */
 
-create() {
+int value=0;             /* value of the object */
+int resale_value=0;      /* resale value of the object */
+int stolen_modifier=0;   /* devaluation when stolen */
+
+/****** Some misc garbage */
+static object prev;      /* last location visited by the object.. really 
+                          * this isn't necessary in EVERY object, should
+                          * be in player.c or creator.c
+                          */
+object query_prev() { return prev; }  /* this too */
+
+
+/****** Initialization */
+
+void create() 
+{
 }
 
-/* integer exponential function added by dank Feb 23, 93 */
-int exp(int x, int y) {
-  int i, ret;
-  if (y < 0) {
-    notify_fail("exp(x,y) where y<0 is a fraction; no fractions allowed!\n");
-    return 0;
-  }
-  ret = 1;
-  for (i=0; i<y; i++)
-    ret *= x;
-  return ret;
-}
 
-// fixed these so there are no negative weights... Anirudh
-void adjust_weight(int w) {
-  if (weight+w < 0) w = -weight;
-  if (environment())
-    environment()->add_weight(w);
+/****** Modifiers/accessors for droppable/gettable */
+
+void reset_get() { gettable = 0; }       /* can't be gotten */
+void set_get()   { gettable = 1; }       /* can be gotten */
+void reset_drop(){ droppable = 0; }      /* can't be dropped */
+void set_drop()  { droppable = 1; }      /* can be dropped */  
+
+int droppable() {
+     if(TO->query_property("cursed")) return 0;
+        return droppable;
+}
+int gettable()  { return gettable; }
+
+
+/****** Weight stuff */
+
+void adjust_weight(int w) 
+{
   weight += w;
-}
 
-void set_weight(int w) {
-  if (w < 0) w = 0;
   if (environment())
-    environment()->add_weight(w-weight);
-  weight = w;
-}
-int query_weight() {
-  if (weight < 0) weight = 0;
-  return weight;
+  {
+    environment()->adjust_contained_weight( w );
+    environment()->rebalance( ({ this_object() }) );
+  }
 }
 
-varargs int adjust_money(mixed amt, string type) {
+void set_weight(int w) { adjust_weight( w - weight ); }
+int query_weight() { return weight; }
+
+int test_adjust_weight( int w )
+{
+  if ( environment() )
+    return environment()->test_adjust_contained_weight( w );
+  else
+    return 1;
+}
+
+
+/****** Movement stuff */
+
+/* these get re-defined in container.c; the default, however, is that
+ * an object may not add or remove objects to itself.
+ */
+int test_add_object( object ob ) { return MOVE_INVALID_DEST; }
+int test_remove_object( object ob ) { return MOVE_INVALID_DEST; }
+
+/* This is the nice, completely error-checking version of move.
+ * Expected to be used by builders and elsewhere in mudlib.
+ * Return code SHOULD be checked; see move_failures.h
+ */
+varargs int move(mixed dest, mixed messin, mixed messout) 
+{
   int i;
 
-  if (pointerp(amt)) {
+  if (!objectp(dest))
+  {
+    if ( stringp(dest) )
+      catch( dest = load_object(dest) );
+    else
+      return MOVE_BAD_DEST ;
+
+    if ( !objectp(dest) )
+      return MOVE_UNLOADABLE_DEST ;
+  }
+    
+  prev = environment();
+  /* dest is now guaranteed to be an object, the destination;
+   * prev is now the previous environment
+   */
+
+  /* check that no weight constraints will be violated by the move 
+   * Note when moving an object into/out of a container to the environment
+   * of the container, we must be careful..
+   * Also here, gettable/droppable checks are done, hidden in the
+   * test_ calls.
+   */
+  if ( prev )
+  {
+    if ( dest == environment(prev) )
+    {
+      /* moving an object out of a container */
+ 
+      if ( (i = prev->test_expell_object(this_object())) != MOVE_OK )
+        return i;
+    }
+    else if ( prev == environment( dest ) )
+    {
+      /* putting an object from an env into a container in same env  */
+
+      if ( (i = dest->test_swallow_object( this_object() )) != MOVE_OK )
+        return i;
+    }
+    else
+    {
+      /* moving an object from two unrelated containers */
+
+      if ( (i = prev->test_remove_object( this_object() )) != MOVE_OK )
+        return i;
+
+      if ( (i = dest->test_add_object( this_object() )) != MOVE_OK )
+        return i;
+    }
+  }  /* if ( prev ) */
+  else
+  {
+    /* only need check that the destination weight is not exceeded */
+    if ( (i=dest->test_add_object( this_object() )) )
+      return i;
+  }
+
+  /* now perform the actual move */
+
+  if (prev)
+  {
+    event(prev, "exit", messout, dest);
+    prev->adjust_contained_weight(-WEIGHT);
+    /* no need to rebalance; if there were, the tests would have failed */
+    prev->adjust_light(-query_light());
+  }
+
+  move_object(dest);
+
+  event(dest, "enter", messin, prev);
+
+  /* no need for the environment check, really.. */
+  if(environment())
+  {
+    environment()->adjust_contained_weight( WEIGHT );
+    /* no need to rebalance; if there were, the tests would have failed */
+    environment()->adjust_light(query_light());
+  }
+
+  return MOVE_OK;
+}
+
+/* This is a mudlib handle; NOT to be used in ANY domain code.  */
+void mudlib_move(object dest)
+{
+  if ( environment() )
+  {
+    environment()->adjust_contained_weight( -WEIGHT );
+    environment()->adjust_light(-query_light());
+  }
+  move_object(dest);
+  if ( environment() )
+  {
+    environment()->adjust_contained_weight( WEIGHT );
+    environment()->adjust_light(query_light());
+  }
+}
+
+/****** Destruction, cleanup stuff */
+
+void dest_me() 
+{
+  object* obs;
+  object ob;
+  int i;
+
+  // Destruct contents of this object
+  obs = all_inventory(this_object());
+  for(i = 0; i < sizeof(obs); i++)
+    if(obs[i]) 
+      obs[i]->dest_me();
+
+  // Add weight/light to the environment, if it's there
+  if (environment()) 
+  {
+    environment()->adjust_contained_weight(-WEIGHT);
+    environment()->rebalance( ({ }) );
+    set_light(0);
+    event(environment(), "dest_me");
+  }
+
+  // Destruct shadows of this object, Wonderflug 96
+  obs = ({ });
+  ob = shadow(this_object(), 0);
+  while ( ob )
+  {
+    obs += ({ ob });
+    ob = shadow(ob, 0);
+  }
+  for ( i=0; i<sizeof(obs); i++ )
+    if ( obs[i] )
+      destruct(obs[i]);
+
+  efun::destruct(this_object());
+}
+
+/* Do not I repeat do not mask this function.
+ * is used when all else fails to dest the object...
+ * If we find you masking this function... We will cut you up
+ * into little bits... slowly
+ */
+nomask mixed dwep() 
+{
+  efun::destruct(this_object());
+  return "Destruct With Extreme Prejuce";
+}
+
+
+
+/****** Value/money stuff */
+
+varargs int adjust_money(mixed amt, string type) 
+{
+
+  if (pointerp(amt)) 
+  {
     value += (int)MONEY_HAND->query_total_value(amt);
     if (value < 0)
       value = 0;
@@ -62,13 +261,15 @@ varargs int adjust_money(mixed amt, string type) {
 
 int adjust_value(int i) { return (value += i); }
 
-mixed *query_money_array() { 
+mixed* query_money_array() 
+{
   return (mixed *)MONEY_HAND->create_money_array(value);
 }
 
-int query_money(string type) { 
+int query_money(string type) 
+{
   int i;
-  mixed *m_a;
+  mixed* m_a;
 
   m_a = (mixed *)MONEY_HAND->create_money_array(value); 
   if ((i=member_array(type, m_a)) == -1)
@@ -79,61 +280,17 @@ int query_money(string type) {
 void set_value(int i) { value = i; }
 int query_value() { return value; }
 
-move(mixed dest, mixed messout, mixed messin) {
-  int i;
-  object from;
-
-   if(!dest)
-   {
-// Taniwha 1995, maybe log this ?
-      return 0;
-   }
-  from = environment();
-// put parentheses around stuff after !... Anirudh
-  if (!(dest->add_weight(weight)))
-    return MOVE_TOO_HEAVY;
-  i = ::move(dest, messout, messin);
-  if (i == MOVE_OK) {
-    if (from) {
-      from->add_weight(-weight);
-      from->adjust_light(-query_light());
-    }
-      if(environment())
-    environment()->adjust_light(query_light());
-  } else
-    dest->add_weight(-weight);
-  return i;
-}
-
-void dest_me() {
-   object ob;
-   object *olist;
-   int i;
-  if (environment()) {
-    environment()->add_weight(-weight);
-    set_light(0);
-  }
-   olist = all_inventory(this_object());
-   for(i = 0; i < sizeof(olist); i++)
-   {
-      if(olist[i]) olist[i]->dest_me();
-   }
-  ::dest_me();
-}
-
-mixed *query_init_data() {
-   return light::query_init_data() +
-          move::query_init_data() +
-      ({ "weight", weight, "set_weight/p/",
-         "value", value, "set_value/p/" });
-} /* query_init_data() */
 
 /* resale value functions by Hamlet, August 1995 */
 /* These are the price a shop will offer for an object. */
 
 void set_resale_value(int i) { resale_value = i; }
 int adjust_resale_value(int i) { return( resale_value += i); }
-int query_resale_value() { return resale_value; }
+int query_resale_value()
+{
+    if(TO->query_property("cursed")) return -1;
+     return resale_value;
+}
 
 void prevent_resale() {  resale_value = -1;  }
 void allow_resale() {  resale_value = 0;  }
@@ -151,3 +308,5 @@ int set_stolen_modifier(int i) {
 }
 int query_stolen_modifier() { return stolen_modifier; }
 void no_sell_if_stolen() { stolen_modifier = -1; }
+
+

@@ -1,3 +1,6 @@
+#pragma strict_types
+// Apr 17, 1996 Hazard - Added event inform
+
 #include <standard.h>
 #include <cmd.h>
 inherit CMD_BASE;
@@ -28,14 +31,14 @@ static int cmd(string str, object me) {
   dest = fnames[sizeof(fnames) - 1];
   dest = this_player()->get_path(dest);
    if(!dest) {
-    tell_object(this_player(),"No destination\n");
+    write("No destination\n");
     return 1;
   }
   for(loop = 0; loop < sizeof(filenames); loop++) {
     str = filenames[loop];
     text = read_file(str);
     if(!text) {
-      tell_object(this_player(),"No such file : " + str + "\n");
+      write("No such file : " + str + "\n");
       continue;
     }
     fs = file_size(dest);
@@ -45,20 +48,24 @@ static int cmd(string str, object me) {
       names = explode(str, "/");
       fs = file_size(dest + "/" + names[sizeof(names) - 1]);
       if(fs != -1) {
-        tell_object(this_player(),"file exists " + dest + "/" + names[sizeof(names) - 1] + "\n");
+        write("file exists " + dest + "/" + names[sizeof(names) - 1] + "\n");
         continue;
       }
       write_file(dest + "/" + names[sizeof(names) - 1], text);
+  event(users(), "inform", this_player()->query_cap_name()
+                 +" copies "+str+" to "+dest+"", "file");
     }
     else {
       if(fs != -1) {
-        tell_object(this_player(),"File exists : " + dest + "\n");
+        write("File exists : " + dest + "\n");
         continue;
       }
       write_file(dest, text);
+  event(users(), "inform", this_player()->query_cap_name()
+                 +" copies "+str+" to "+dest+"", "file" );
     }
   }
-  tell_object(this_player(),"Ok.\n");
+  write("Ok.\n");
   return 1;
 } /* cp_file() */
 

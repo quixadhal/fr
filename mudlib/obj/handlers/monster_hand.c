@@ -36,8 +36,8 @@ int check_isin(mapping map,object ob)
 
 int do_aggressive_check(object ob, int aggressive,object me,int minplayer,mapping hated,mapping loved)
 {
-    mixed *list;
-    int level;
+   /* mixed *list; */
+   /* int level; */
     if(!ob) return 0;
     if ( ob->query_invis() )  
         return 0;
@@ -88,7 +88,7 @@ int do_aggressive_check(object ob, int aggressive,object me,int minplayer,mappin
 string expand_string(object me,string in_str, object on, object attacker)
 {
     string *str, ret;
-    int q, i, j, add_dollar;
+    int i, j, add_dollar;
     int k,l;
 
 

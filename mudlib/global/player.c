@@ -1,6 +1,5 @@
 /* Player.c once upon a time DW's.
  * messed with by a lot of people.
- *  > Mostly Timion <
  * Oct '95: Baldrick added the external command handler by Chrisy and
  * removed a lot from this file.
  */
@@ -13,6 +12,7 @@
 #include "cmd.h"
 #include "commands.h"
 #include "timestuff.h" // Anirudh
+#include "move_failures.h"
 
 inherit "/global/line_ed";
 inherit "/global/auto_load";
@@ -23,13 +23,14 @@ inherit "/global/help";
 inherit "/global/more_string";
 inherit "/global/finger";
 inherit "/global/pweath";
+inherit "/global/special_loads.c"; // Added by Wonderflug, Sept 96
 inherit "/std/living/living";
 inherit "/std/living/handle";
 inherit "/global/psoul";
+inherit "/global/alias";
+inherit "/global/nickname";
 inherit "/global/guild-race";
 inherit "/global/drunk";
-// Externalized - Radix
-//inherit "/global/last";
 inherit "/global/more_file";
 inherit "/global/path";
 inherit "/global/consent";   // Added by Wonderflug, august 95.
@@ -71,7 +72,7 @@ void start_player();
 void run_away();
 void set_title(string str);
 void public_commands();
-int save_me();
+void save_me();
 int save();
 void set_desc(string str);
 string query_title();
@@ -171,8 +172,6 @@ string * query_player_attackers() { return attackers; }
 string * query_players_attacked() { return attacked; }
 void create() 
 {
-    int *i,j,k;
-
     if (name)
     {
 	event (children("/global/lord"), "inform", this_player()->query_name()+
@@ -183,7 +182,6 @@ void create()
     living::create();
     events::create();
     pweath::create();
-    psoul::create();
     line_ed::create();
     consent::create();   // Added by Wonderflug, august 95
     henchmen::create(); //Raskolnikov
@@ -228,10 +226,8 @@ void set_x_time_on(int i) { time_on = i; }
 
 /* 3rd arg isn't actually used here.  only in creator.c */
 void move_player_to_start(string bong, int newp, int going_invis) {
-    int tmp;
     object money;
     mapping mail_stat;
-    string s;
     if (file_name(previous_object())[0..13] != "/secure/login#") {
 	notify_fail("You dont have the security clearance to do that.\n");
 	return ;
@@ -335,9 +331,9 @@ void move_player_to_start(string bong, int newp, int going_invis) {
 	say(query_cap_name()+" enters the game.\n", 0);
     }
     if (verbose)
-	command("look");
+	queue_action("look");
     else
-	command("glance");
+	queue_action("glance");
     last_pos->enter(this_object());
     if (query_property(PASSED_OUT_PROP))
 	call_out("remove_property", 10+random(30), PASSED_OUT_PROP);
@@ -372,7 +368,6 @@ void move_player_to_start(string bong, int newp, int going_invis) {
 void setup_money();
 
 void start_player() {
-    object money;
     int lockout;
     if (app_creator && my_file_name != "/global/player") {
 	this_player()->all_commands();
@@ -383,10 +378,11 @@ void start_player() {
     reset_get();
     enable_commands();
     public_commands();
-    parser_commands();
     handle_commands();
     force_commands();
     race_guild_commands();
+    alias_commands();
+    nickname_commands();
     soul_commands();
     event_commands();
     finger_commands();
@@ -419,7 +415,7 @@ void start_player() {
     else lockout = LOGINLOCK;
     add_timed_property("noguild",1,lockout);
     add_timed_property("nocast",1,lockout);
-    birthday_gifts(); /* check if birthday today and give gifts */
+    //birthday_gifts(); /* check if birthday today and give gifts */
     set_heart_beat(1);
     if (wimpy > 100)
 	wimpy = 25;
@@ -484,27 +480,11 @@ void public_commands() {
     add_action("save","save");
     add_action("quit","quit");
     add_action("review", "review");
-    add_action("examine","ex*amine");
-    add_action("monitor", "mon*itor");
+    add_action("examine","examine");
+    add_action("monitor", "monitor");
     add_action("do_refresh", "refresh");
     add_action("do_retire", "retire");
-    /* Adding RD & Chrisy's command handler. Baldrick oct '95 */
-    add_action("do_cmd", "*", A_P_CMD);
 } /* public_commands() */
-
-/* The do_cmd is a part of the external command handling system.
- * Made by Chrisy and gotten from RD. oct '95.
- */   
-int do_cmd(string tail)
-{
-    string verb, t;
-
-    sscanf(tail, "%s %s", verb, t);
-    if(!verb)
-	verb = tail;
-
-    return (int)CMD_HANDLER->cmd(verb, t, this_object());
-}/* do_cmd() */
 
 int invent() 
 {
@@ -663,12 +643,12 @@ void henchmen_save()
 
     return;
 }
-int save_me() 
+void save_me() 
 {
     object ob;
     mixed old;
 
-    if (query_loading() || query_property("loading"))
+    if (query_property("loading"))
     {
 	return;
     }
@@ -729,7 +709,7 @@ int save_me()
 int quit()
 {
     int foo;
-    if (query_loading() || query_property("loading"))
+    if (query_property("loading"))
     {
 	notify_fail("Still loading equipment, wait until it's finished.\n");
 	return 0;
@@ -1003,7 +983,8 @@ int query_hb_diff(int oldc)
 }
 
 
-static int hb_num;
+static int hb_num = 1;
+
 
 /*
  * the heart beat. bounce what does this do? we arent going to tell you
@@ -1023,9 +1004,11 @@ void heal_gp(int i, int intox)
 }
 void heart_beat() 
 {
-    int i, intox;
+    int intox;
 
-    flush_queue();
+    //flush_queue();
+    act();
+
     intox = query_volume(D_ALCOHOL);
     hb_counter++;
     // Taniwha 1997, racial effects
@@ -1034,12 +1017,12 @@ void heart_beat()
     if(!(hb_counter & 31)) TO->curses_heart_beat();
 
     /* Added a combat_counter, so the combat aren't that quick. */
-    if (drunk_heart_beat(intox) && time_left > 0 && combat_counter >= 2) 
+    if (drunk_heart_beat(intox) && combat_counter >= 2) 
     {
 	attack();
 	do_spell_effects(attackee);
 	if (sizeof(attacker_list)) 
-	    time_left -= (int)environment()->attack_speed();
+	    adjust_time_left( (int)environment()->attack_speed() );
 	combat_counter = 0;
     } /* If drunk_heart... */
     combat_counter++;
@@ -1168,6 +1151,11 @@ if(hp_counter >= 4 && "/global/omiq.c"->omiq_in_progress())
 		hp = 1;
 	}
     }
+    if(!intp(hb_num)) hb_num=1; // Randor, 2-apr-98
+    // the above can actually replace the assignment where
+    // it is declared; put it here cause hb_num can
+    // be non-int when your heart beat barfs and you
+    // try to restart it
     if (++hb_num%8)  // How about half as fast?
     {
 	social_points++;
@@ -1231,7 +1219,7 @@ void run_away()
     while (!bong && sizeof(direcs)) 
     {
 	i = random(sizeof(direcs)/2)*2;
-	bong = command(direcs[i]);
+	bong = insert_action(direcs[i]);
 	if (!bong)
 	    direcs = delete(direcs, i, 2);
 	else
@@ -1348,8 +1336,6 @@ int query_last_joined_guild() { return guild_joined - time(); }
 
 int check_dark(int light) 
 {
-    int i;
-
     if(this_object()->query_dead())
 	return 0;
     if (race_ob)
@@ -1414,7 +1400,7 @@ int query_prevent_shadow(object ob) {
 }
 
 /* Including new hack for parse_command ;) */
-move(object dest, string msgin, string msgout) {
+varargs int move(object dest, string msgin, string msgout) {
     int i;
     object env;
 
@@ -1423,7 +1409,7 @@ move(object dest, string msgin, string msgout) {
     i = ::move(dest, msgin, msgout);
     if (environment())
 	WEATHER->notify_me(environment());
-    if (!i)
+    if (i == MOVE_OK)
 	me_moveing(env);
     return i;
 }
@@ -1507,8 +1493,8 @@ static int refresh2(string str) {
     "/obj/handlers/god_handler"->remove_sacrifices(this_object());
     this_object()->clear_deity();
     set_thac0(200);
-    move("/room/raceroom");
-    command("look");
+    this_object()->move("/room/raceroom");
+    queue_action("look");
     set_extreme_str(0); // Taniwha, this slipped though, Nov 1995
     write("Done.\n");
     reset_all();
@@ -1693,3 +1679,28 @@ string query_ident() {
 nomask void set_ontime(int i)  {  ontime = i;  }
 nomask int query_ontime() {  return ontime;  }
 int query_prevent_reload_object() { return 1; }
+
+mixed *query_commands() {
+    /* right now, I don't give a * about the security.. :=)
+     * anyway, is the commands such a secret?
+     * Baldrick, dec '97
+    string euid;
+
+    euid = geteuid(previous_object());
+    if (this_object() != previous_object()) {
+        if (MASTER->high_programmer_uid(euid))
+            return commands();
+        if (MASTER->query_lord_uid(euid) &&
+          !MASTER->high_programmer_uid(geteuid(this_object())))
+            return commands();
+        if (previous_object()->query_creator() &&
+          !MASTER->query_lord_uid(geteuid(this_object())))
+            return commands();
+        return ({ });
+    }  
+     */
+    return commands();
+} /* query_commands() */
+
+/* Added by Baldrick. */
+#include "/global/process_input.c"

@@ -24,7 +24,7 @@ add_exit("west",ROOM+"dwarf63","path");
 }
 void init(){
 ::init();
-   add_action("go_e","e*ast");
+   add_action("go_e","east");
    }
 
 go_e()

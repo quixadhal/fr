@@ -65,11 +65,11 @@ void create() {
 } /* create */
 
 void init() {
-  add_action("do_smell", "sme*ll", 1);
-  add_action("do_listen", "liste*n", 1);
-  add_action("do_taste", "tas*te", 1);
-  add_action("do_feel", "fee*l", 1);
-  add_action("do_feel", "tou*ch", 1);
+  add_action("do_smell", "smell", 1);
+  add_action("do_listen", "listen", 1);
+  add_action("do_taste", "taste", 1);
+  add_action("do_feel", "feel", 1);
+  add_action("do_feel", "touch", 1);
 } /* init */
 
 int do_smell(string what) {

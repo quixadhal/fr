@@ -411,7 +411,6 @@ private int call_callback(int fd, int err) {
 #ifdef HISTORICAL_STATS
 private void store_stats(int fd, int err) {
   string caller;
-  int i;
 
   if(fd == 0)
     hist["GLOBALS:"][CREATED]++;  /* This is really ones NOT created */

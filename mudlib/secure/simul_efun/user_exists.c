@@ -9,7 +9,10 @@ int user_exists(string str) {
     int ret;
 
     seteuid((string)master()->get_root_uid());
-    ret = file_exists(DIR_USERS+"/"+str[0..0]+"/"+str+".o");
+    if (file_exists("/players/"+str[0..0]+"/"+str+".o"))
+      ret = 1;
+     else
+      ret = 0;
     seteuid(0);
     return ret;
 }

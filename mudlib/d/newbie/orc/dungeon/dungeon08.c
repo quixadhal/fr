@@ -18,7 +18,7 @@ add_exit("west",DUNGEON+"dungeon07","door");
 void init()
 {
    ::init();
-   add_action("go_west","w*est");
+   add_action("go_west","west");
 }
 int go_west(string str)
 {

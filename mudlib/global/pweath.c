@@ -51,7 +51,6 @@ string weather_extra_look() {
 string weather_long(string str) {
     mixed *co_ords;
     object env;
-    string i;
 
     env = environment();
     if ((string)environment()->query_property("location") == "inside")
@@ -217,8 +216,8 @@ int make(string str) {
 }
 
 int splash(string str) {
-    object *obs, weath,env;
-    int *co_ords, i;
+    object *obs, env;
+    int i;
 
     if ((string)environment()->query_property("location") == "inside") {
 	notify_fail("You must be outside to do that.\n");

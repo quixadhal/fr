@@ -35,7 +35,7 @@ int valid_read(string path, mixed euid, string func)
       return (euid == "secure") || check_permission(euid, bing, READ_MASK);
     case "d" :
     // /d open read for Thanes...
-       if("/secure/thanes"->query_of(euid)) return 1;
+       if("/secure/thanes"->query_thane(euid)) return 1;
     case "w" :
       if (sizeof(bing) >= 2) {
         if ((bing[0]=="w"?bing[1]:capitalize(bing[1])) == euid) return 1;

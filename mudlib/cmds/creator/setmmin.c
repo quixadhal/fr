@@ -38,6 +38,7 @@ static int cmd (string str, object me)
 	}
 	me->setmmin("@"+str);
 	write("Ok.\n");
+  me->set_trivial_action();
 	return 1;
 }
 

@@ -6,7 +6,7 @@
  *    modified by Dyraen@Rod for Rod.
  */
 
-#define PORT_RCP 3002
+#define PORT_RCP 4020
 #include "remote.h"
 
 inherit "/secure/crerem/server";

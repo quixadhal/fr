@@ -10,10 +10,13 @@ position = 1;
 
 
 static int cmd(string str, object me) {
-    int fsize, pos, loop;
+    int fsize,  loop;
     string *filenames;
 
-  if (this_player(1) != this_player()) return 0;
+    if (this_player(1) != this_player())
+    {
+        return 0;
+    }
 
     if (!str) {
        notify_fail("Usage: rm file [file ...]\n");
@@ -46,6 +49,7 @@ static int cmd(string str, object me) {
        }
     }
     write("Ok.\n");
+    this_player()->set_trivial_action();
     return 1;
 } /* rm_files() */
  

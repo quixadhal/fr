@@ -26,7 +26,7 @@ void init() {
     add_action("locate_iou", "find");
 }
 
-void locate_iou(string str) {
+int locate_iou(string str) {
     int i, j;
     string iou_path, switched_dirs, *oldnew_paths, *temp_exp;
     object *ious, *pinv, found_ob;

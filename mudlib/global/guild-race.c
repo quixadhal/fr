@@ -17,14 +17,12 @@ static mapping gr_commands;
 void race_guild_commands() 
 {
     int i;
-    string *bing;
-    mapping tmp;
 
     if (!known_commands)
 	known_commands = ({ "consider", "bury", "rearrange", });
     if (!mappingp(gr_commands))
 	gr_commands = (mapping)"/std/commands"->query_commands();
-    add_action("list_commands", "co*mmands");
+    add_action("list_commands", "commands");
 
     if(guild_ob)
 	catch(guild_ob->start_player(this_object()));
@@ -42,15 +40,19 @@ void race_guild_commands()
 	(string *)COMMAND_SERVER->query_command(known_commands[i]);
 	if (!pointerp(gr_commands[known_commands[i]]))
 	    continue;
-	add_action("do_command", known_commands[i]);
     }
-    add_action("add_new_command", "Add_New_Command");
 
 } /* race_guild_commands() */
 
-int do_command(string str)   
+int do_gr_command(string verb, string args)   
 {
-    int i;
+    if (!pointerp(gr_commands[verb]))
+      return 0;
+    if (!stringp(verb))
+      return 0;
+
+    if (!gr_commands[verb][1])
+      return 0;
 
     if(this_player()->query_dead() || this_player()->query_property("noguild") 
       || environment(this_player())->query_property("noguild") )
@@ -67,7 +69,7 @@ int do_command(string str)
 	return 0;
 
     return (int)call_other(gr_commands[query_verb()][0],
-      gr_commands[query_verb()][1], str);
+      gr_commands[verb][1], args, this_object());
 } 
 
 string query_gtitle()

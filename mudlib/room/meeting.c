@@ -2,7 +2,7 @@ inherit "std/room";
 
 object board;
 
-setup() 
+void setup() 
 {
   add_property("no_undead",1);
   set_light(75);

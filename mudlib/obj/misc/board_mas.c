@@ -68,7 +68,7 @@ void init() {
   add_action("next", "next", action_pri);
   add_action("prev", "prev", action_pri);
   add_action("newm", "new", action_pri);
-  add_action("board", "b*oard", action_pri);
+  add_action("board", "board", action_pri);
   add_action("list_boards", "boards", action_pri);
   add_action("kfile", "killfile", action_pri);
   add_action("do_security", "security", action_pri);

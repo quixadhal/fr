@@ -2,7 +2,7 @@ inherit "obj/roomgen/support";
 
 string *room_monsters;
  
-init_monster_data() {
+void init_monster_data() {
   room_monsters = ({ });
 }
  

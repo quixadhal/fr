@@ -57,10 +57,8 @@ static void Setup() {
 }
 
 static void eventRead(mixed *packet) {
-    string *cles;
     mixed val;
-    string ns, cle;
-    int i, maxi;
+    string cle;
 
     if( !packet || sizeof(packet) < 6 ) return; /* should send error */
     if( Banned[packet[1]] ) {

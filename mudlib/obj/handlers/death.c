@@ -66,7 +66,7 @@ create()
    load_this_ob();
 }
 
-dest_me()
+void dest_me()
 {
    save_this_ob();
    destruct(this_object());

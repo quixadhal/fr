@@ -1,6 +1,6 @@
 /*
  * add_command:
- *   This handles all the cute multiple object parseing stuff.  It is the
+ * This handles all the cute multiple object parseing stuff.  It is the
  * bit which handles the add_action like things done from all the objects
  * for things such as read and so on.
  */
@@ -10,10 +10,6 @@ static mixed   *suc_indir;
 
 string create_string(string pattern, mixed *args, int d,
                      int e, string s1, string s2);
-
-void parser_commands() {
-  add_action("parse_comm", "*", -1);
-}
 
 void create() {
   commands = ([ ]);
@@ -30,7 +26,7 @@ mapping query_p_objects() { return cur_objects; }
  * Share and enjoy.
  */
 int add_succeeded(mixed ob) {
-  int i,j;
+  int i;
 
   if (objectp(ob))
     if (member_array(ob, suc_indir) == -1)
@@ -52,7 +48,7 @@ int add_succeeded(mixed ob) {
  * For an example look at /std/liquid
  */
 int add_command(string command, object ob, mixed format) {
-  int i, j, k;
+  int j;
 
 /*
  * Set up the format how we want it handled.  You can put an array of
@@ -176,7 +172,7 @@ int parse_comm(string str) {
   string pattern;
   string verb, noti;
   string s1, s2, *bing;
-  int j, q, i;
+  int j, q;
   int iI, iD;
   mixed *bity;
 

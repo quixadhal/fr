@@ -90,8 +90,7 @@ string who_string(int width, int cre, string str, object me)
     c = p = 0;
     imm = play = "";
     prt = "\n";
-    //prt += sprintf("%|*'-'s\n", width+18, ttl);
-    prt += sprintf("%|*'-'s\n", width+4, ttl);
+    prt += sprintf("%|*'-'s\n", width+18, ttl);
     prt +=  sprintf("%|*s\n", width, ctime(time()), width);
     for(i=0;i<sizeof(arr);i++)
     {
@@ -191,8 +190,7 @@ string who_string(int width, int cre, string str, object me)
 	if(c)
 	{
 	    ttl = "] %^BOLD%^WHITE%^Immortals%^RESET%^ [";
-	    //prt += sprintf("%*'-'|s\n",width+24, ttl);
-	    prt += sprintf("%*'-'|s\n",width+2, ttl);
+	    prt += sprintf("%*'-'|s\n",width+24, ttl);
 	    if(f == 1)
 		prt += format_page(explode(imm, ","), 4);
 	    else
@@ -209,8 +207,7 @@ string who_string(int width, int cre, string str, object me)
 	if(p)
 	{
 	    ttl = "]%^BOLD%^WHITE%^ Players%^RESET%^ [";
-	    //prt += sprintf("%*'-'|s\n", width+24, ttl);
-	    prt += sprintf("%*'-'|s\n", width+3, ttl);
+	    prt += sprintf("%*'-'|s\n", width+24, ttl);
 	    if(f == 1)
 		prt += format_page(explode(play, ","), 4);
 	    else
@@ -224,7 +221,7 @@ string who_string(int width, int cre, string str, object me)
 
     else 
 	tmp = "> There are "+query_num(number, 100)+" player"+(number<2?"":"s")+
-	" on " + mud_long_name() + " right now. <";
+	" on " + mud_name() + " right now. <";
 
 #else
 
@@ -233,15 +230,15 @@ string who_string(int width, int cre, string str, object me)
     else 
     if(!creators)
 	tmp = "> There are "+query_num(number,100)+" player"+
-	(number<2?"":"s")+" on " + mud_name() + " MUD right now. <";
+        (number<2?"":"s")+" on " + mud_name() + " right now. <";
     else 
     if(!number)
 	tmp = "> There are "+query_num(creators, 100)+" immortal"+
-	(creators<2?"":"s")+" on " + mud_name() + " MUD. <";
+        (creators<2?"":"s")+" on " + mud_name() + ". <";
     else
 	tmp = "> There are "+query_num(creators, 100)+" immortal"+
 	(creators<2?"":"s")+" and "+query_num(number, 100)+ " player"+
-	(number<2?"":"s")+" on " + mud_name() + " MUD. <";
+        (number<2?"":"s")+" on " + mud_name() + ". <";
 #endif
     prt += sprintf("%*'-'|s\n", width+0, tmp);
     return prt;

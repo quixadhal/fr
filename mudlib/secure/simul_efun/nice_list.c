@@ -12,4 +12,3 @@ string nice_list(string *list) {
   if(sizeof(list) < 1) return "";
   return list[0];
 }
-

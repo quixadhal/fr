@@ -18,7 +18,7 @@ void create()
   cur_size = 0;
 }
 
-void add_read_mess(string str, string type, string lang, int size);
+mixed add_read_mess(string str, string type, string lang, int size);
 
 void set_max_size(int siz) { max_size = siz; }
 int query_max_size() { return max_size; }
@@ -185,12 +185,7 @@ mixed do_read() {
 /* Modify the long if we have something written on us */
 string long(string str, int dark) {
   if (read_mess)
-    return ::long(str)+"It appears to have something written on it.\n";
+    return ::long(str+"It appears to have something written on it.\n", dark);
   return ::long(str, dark);
 } /* long() */
 
-/* std/basic/read_desc: */
-mixed *query_init_data() {
-   return ::query_init_data() +
-      ({ "read_mess", read_mess, "set_read_mess/P0/P2/" });
-} /* query_init_data() */

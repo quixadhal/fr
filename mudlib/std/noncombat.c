@@ -16,10 +16,10 @@ void create() {
 
 void init() {
   ::init();
-  add_action("dweeb","ki*ll");
+  add_action("dweeb","kill");
   add_action("dweeb","skull");
-  add_action("dweeb","at*tack");
-  add_action("dweeb","ber*serk");
+  add_action("dweeb","attack");
+  add_action("dweeb","berserk");
   add_action("person_quits","quit");
 }
 

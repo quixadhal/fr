@@ -1,16 +1,16 @@
 
 static string dir_path;
-static string function;
+static string func;
  
  
 void get_key(string str) {
   write("Press return to continue");
-  function = str;
+  func = str;
   input_to("get_key2");
 }
  
 void get_key2(string str) {
-  call_other(this_object(), function);
+  call_other(this_object(), func);
 }
  
 void output(string str) {

@@ -25,7 +25,7 @@ string  lastarg, calc_long, global_adj;
 
 mapping query_soul_data() { return soul_data + ([ ]); }
 
-create() 
+void create() 
 {
     ::create();
     set_name("soul");
@@ -37,7 +37,7 @@ create()
     catch(load_object(HOME));
     call_out("move",2,HOME);
 
-#include "/table/soul_data.c"
+#include "/obj/handlers/soul_data.c"
 }
 
 string query_long() 
@@ -103,7 +103,7 @@ string long(string str, int dark)
 //string parse_string(string s, object me, object ob, string arg, int uhn)
 string parse_string(string s, object me, mixed ob, string arg, int uhn)
 {
-    string s1, s2, s3, s4, str, s5, arr;
+    string s1, s2, s3, s4, str, s5;
     int i;
 
     str=s;
@@ -243,19 +243,17 @@ object* find_all_liv(string str, object me)
         return 0;
     } 
 
-    /* Used for spamming anyway - why do you always undo what I do Wonderflug?
-        if (str == "someone") 
-        {
-            // Radix was, was a random() return of users() array
-            // Wonderflug, it is again.  But we filter invisibles
-            ret = users();
-            for (i=0;i<sizeof(ret);i++)
-                if ( ret[i]->query_invis() )
-                    ret = delete(ret, i--, 1);
+    if (str == "someone") 
+    {
+        // Radix was, was a random() return of users() array
+        // Wonderflug, it is again.  But we filter invisibles
+        ret = users();
+        for (i=0;i<sizeof(ret);i++)
+            if ( ret[i]->query_invis() )
+                ret = delete(ret, i--, 1);
 
-            return ({ ret[random(sizeof(ret))] });
-        }
-    */
+        return ({ ret[random(sizeof(ret))] });
+    }
 
     ob = find_match(str, environment(me), 1);
     for (i=0;i<sizeof(ob);i++)
@@ -289,7 +287,7 @@ int soul_command(string verb, string str, object m)
     //object *ob, *tmp_ob;
     mixed ob, tmp_ob;
     object me;
-    string tmp, nick, last, liv, other, s1, s2, livfail;
+    string tmp, last, liv, other, s1, s2, livfail;
     mixed  *data;
 
     /* set up whoever is doing this soul */
@@ -429,16 +427,10 @@ int soul_command(string verb, string str, object m)
             me->event_soul(me, tmp+".\n");
 
             /* To him */
-            if(ob[0]->query_blocking() == me->query_name())
-            {
-                tell_object(ob[0],me->query_cap_name()+" is "
-                  "blocking your souls.\n");
-                return 1;
-            }
             ob[0]->event_soul(me, 
               parse_string(his, me, ob[0], str, 1)+".\n");
             if(ob[0]->query_npc())
-                ob[0]->soul_act(me, verb);
+                ob[0]->soul_act(me, query_verb());
 
             /* This is undefined by almost everything.  I fail to see any use. 
              * So it goes.  Wonderflug
@@ -541,6 +533,19 @@ void add_soul_command(string name, mixed format, mixed thingo)
     soul_data[name] = ({ format, thingo });
 }
 
+string query_soul_command(string name)
+  {
+  return (soul_data[name]);
+}
+
+int query_soul_command_exist(string name)
+  {
+  if (soul_data[name])
+    return 1;
+   else
+    return 0;
+}
+
 void delete_soul_command(string name) 
 {
     soul_data = m_delete(soul_data, name);
@@ -548,10 +553,8 @@ void delete_soul_command(string name)
 
 string help_soul(string str) 
 {
-    int j;
-    int i, off;
-    string s1, s2, s3, s4, ret, *bit;
-    object ob;
+    int j, off;
+    string s1, s2, s3, ret, *bit;
     mixed *data;
 
     data = soul_data[str];

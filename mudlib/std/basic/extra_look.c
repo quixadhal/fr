@@ -37,11 +37,7 @@ void remove_extra_look(object ob) {
   extra_looks = delete(extra_looks, i, 1);
 }
 
-query_extra_look_list() {
-  return extra_looks;
+object* query_extra_look_list() {
+  return extra_looks + ({ });
 }
 
-/* std/basic/extra_look: */
-mixed *query_init_data() {
-   return ({ "extra_look", extra_looks, "add_extra_look/P*/" });
-} /* query_init_data() */

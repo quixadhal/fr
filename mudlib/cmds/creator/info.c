@@ -1,12 +1,7 @@
 // Radix, info command - July 1996
-// Version 0.9
-
 #include <standard.h>
 #include <cmd.h>
 #define OBTRACK "/obj/handlers/item_info"
-#define PKTRACK "/obj/handlers/pk"
-#define DEATHTRACK "/obj/handlers/death"
-#define MONEY_HANDLER "/obj/handlers/money"
 
 inherit CMD_BASE;
 
@@ -35,38 +30,25 @@ string query_short_help()
       "See also:\n"
       "  stat, qc\n\n";
 }
-
 static int cmd(string str, object ob)
 {
    object itm, *obs;
    string *tmp;
-   switch(this_player(1)->query_object_type())
-   {
-      case "B" :
-          notify_fail("You don't have permissions to use this "
-             "command.\n");
-          return 0;
-          break;
-   }
-   if(!ob) return;
+   if(!ob) return 0;
    if(!str)
    {
       notify_fail("Syntax: info <object>\n");
       return 0;
    }
-   if(str[0..1] == "-m")
-   {
-      MONEY_HANDLER->info_money(str[3..10]);
-      return 1;
-   }
+  ob->set_trivial_action();
    if(str[0..1] == "-d")
    {
       str = str[3..10000];
       tmp = explode(str," ");
       if(sizeof(tmp) != 2)
       {
-         notify_fail("Syntax: info -d domain <weapons | "
-            "armours | containers>\n");
+         notify_fail("Syntax: info -d domain/sub-dir <weapons | "
+            "armours | items | containers>\n");
          return 0;
       }
       switch(tmp[1])
@@ -91,32 +73,18 @@ static int cmd(string str, object ob)
             OBTRACK->domain_item_containers(tmp[0]);
             return 1;
             break;
+         case "items" :
+         case "item" :
+         case "i" :
+            OBTRACK->domain_items(tmp[0]);
+            return 1;
+            break;
          default :
             notify_fail("Syntax: info -d domain/sub-dir <weapons | "
-               "armours | containers>\n");
+               "armours | items | containers>\n");
             return 0;
             break;
       }
-   }
-   if(str[0..1] == "-p")
-   {
-      PKTRACK->info_player(str[3..15]);
-      return 1;
-   }
-   if(str[0..1] == "-k")
-   {
-      if(member_array(str[3..20], get_dir("/d/")) < 0)
-      {
-         notify_fail("Not a valid domain.\n");
-         return 0;
-      }
-      DEATHTRACK->full_domain_kar(str[3..20]);
-      return 1;
-   }
-   if(str[0..6] == "-update")
-   {
-      OBTRACK->mapping_update();
-      return 1;
    }
    obs = this_player()->wiz_present(str,this_player());
    if(!sizeof(obs))
@@ -127,11 +95,6 @@ static int cmd(string str, object ob)
    if(sizeof(obs) > 1)
       tell_object(ob,"Only doing the first object...\n");
    itm = obs[0];
-   if(itm->query_npc())
-   {
-      DEATHTRACK->info_npc(itm);
-      return 1;
-   }
    if(!OBTRACK->query_info_perms(geteuid(ob),itm)) 
    {
       notify_fail("You do not have permission to info this item.\n");

@@ -96,9 +96,9 @@ int do_cost(string str)
 void init() {
   ::init();
    this_object()->add_property("no_undead",1);
-  add_action("do_advance", "ad*vance");
-  add_action("do_info", "inf*o");
-  add_action("do_cost", "co*st");
+  add_action("do_advance", "advance");
+  add_action("do_info", "info");
+  add_action("do_cost", "cost");
 } /* init() */
 
 // Oh joy, Oh bliss, try to work out what sort of rolls they should get

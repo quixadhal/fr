@@ -1,43 +1,3 @@
-int add_lord(string str) {
-  if ("/secure/login"->test_user(str) &&
-    high_programmer(geteuid(previous_object()))) {
-    positions[str] = LORD;
-save_object("/secure/master",1);
-    return 1;
-  }
-  return 0;
-} /* add_lord() */
-
-int remove_lord(string str) {
-  if (high_programmer(geteuid(previous_object())) &&
-    positions[str] == LORD) {
-    map_delete(positions, str);
-save_object("/secure/master",1);
-    return 1;
-  }
-  return 0;
-} /* remove_lord() */
-
-int add_high_lord(string str) {
-  if ("/secure/login"->test_user(str) &&
-    high_programmer(geteuid(previous_object()))) {
-    positions[str] = HIGH_LORD;
-save_object("/secure/master",1);
-    return 1;
-  }
-  return 0;
-} /* add_high_lord() */
-
-int remove_high_lord(string str) {
-  if (high_programmer(geteuid(previous_object())) &&
-    positions[str] == HIGH_LORD) {
-    map_delete(positions, str);
-save_object("/secure/master",1);
-    return 1;
-  }
-  return 0;
-} /* remove_high_lord() */
-
 
 /* Permision handling stuff */
 
@@ -67,7 +27,7 @@ int add_permission(string euid, string path, int mask) {
     } else {
       permissions[path][euid] |= mask;
     }
-save_object("/secure/master",1);
+    save_object("/secure/master." + mud_name(),1);
     return 1;
   }
   return 0;
@@ -108,7 +68,7 @@ int remove_permission(string euid, string path, int mask) {
         map_delete(permissions[path], euid);
       }
     }
-save_object("/secure/master",1);
+    save_object("/secure/master." + mud_name(),1);
     return 1;
   }
   return 0;

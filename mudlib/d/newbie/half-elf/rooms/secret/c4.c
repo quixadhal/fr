@@ -24,7 +24,7 @@ void init()
 {
    ::init();
    add_action("do_move","move");
-   add_action("do_look", "l*ook");
+   add_action("do_look", "look");
 }
 
 int do_move(string str)

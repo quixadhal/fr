@@ -19,8 +19,10 @@ void setup()
 
 void init()
   {
-   this_object()->add_property("no_undead",1);
+   //this_object()->add_property("no_undead",1);
+   // it's kinda enough to do it in the setup :)
   add_action ("do_raise", "raise");
+  add_action ("do_raise", "restore");
   ::init();
 } /* void init */
 
@@ -60,11 +62,12 @@ int do_raise(string str)
     return 0;
    }
 
-  if (!find_match(nurs, environment(this_player())))
+  //if (!find_match(nurs, environment(this_player())))
+  if(!sizeof(find_match(nurs, this_object())))
     {
     notify_fail("The priestess is not here to help you with the " 
                 "raising. You have to wait for her.\n");
-    return 1;
+    return 0;
     }
  
   if ((int)poor_guy->query_level() > 10) 
@@ -89,6 +92,8 @@ int do_raise(string str)
              "Be more careful this time.\n");
   tell_room(this_object(), "The priest walks out of the room.\n");
   }
+  else tell_room(this_object(),"The priest won't do the healing "
+       "for some reason.\n");
   priest->dest_me();
   return 1;
 } /* do  raise */

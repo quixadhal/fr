@@ -20,7 +20,7 @@ reset_drop();
 }
 void init()
 {
-   add_action("do_look","l*ook");
+   add_action("do_look","look");
    ::init();
 }
 int do_look(string str)

@@ -60,8 +60,8 @@ void create()
   load_it();
 }
 // This is pissing me off - Radix
-int clean_up(int i) { return; }
-int clean_up_room(int i) { return; }
+int clean_up(int i) { return 0; }
+int clean_up_room(int i) { return 0; }
  
 void init()
 {
@@ -75,7 +75,7 @@ void init()
   add_action("do_appoint","appoint");
 }
  
-set_admins(string *names) { admins = names; }
+void set_admins(string *names) { admins = names; }
  
 //Anirudh
 int query_treasury() { return 1; }

@@ -28,7 +28,7 @@ void init()
 {
    ::init();
    add_action("unlock_me","unlock");
-   add_action("go_up","u*p");
+   add_action("go_up","up");
 }
 int unlock_me(string str)
 {

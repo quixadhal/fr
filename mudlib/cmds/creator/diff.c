@@ -75,7 +75,7 @@ int cmd(  string str, object me )
 int *find_next_match( string file1, string file2, int x, int y )
 {
     string *linesx, *linesy;
-    int i, j, off, xend, yend;
+    int i, j, off;
     int xsize, ysize;
     mixed flag;
 
@@ -220,5 +220,4 @@ string *my_explode( string mess )
     }
     return ret;
 }
-
 

@@ -30,10 +30,12 @@ string query_dark_long() { return dark_long; }
 
 void set_night_long(string s) { night_long = s; }
 string query_night_long() { return night_long; }
+#ifdef 0
 mixed *query_init_data()
 {
    return extra_look::query_init_data()+room::query_init_data();
 }
+#endif
 
 void create() {
    dark_long = "It is dark.\n";

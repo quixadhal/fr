@@ -177,7 +177,7 @@ void do_groups(string str) {
 
 void add_group(string str) {
     string *members;
-    string grp, a, b;
+    string grp;
     int i;
 
     if(!str || str == "") {
@@ -514,8 +514,6 @@ void get_to(string str) {
 }
 
 void get_subject(string str) {
-    string tmp_str;
-    int i, max;
 
     if(!str || str == "") str = "[No subject]";
 
@@ -590,9 +588,8 @@ void get_cc(string str) {
 }
 
 void do_reply(string cmd, string arg) {
-    string *tmp;
     string recep;
-    int x, i;
+    int x;
 
     if(arg && arg != "") {
         if(sscanf(arg, "%d %s", x, recep) != 2) {
@@ -643,7 +640,7 @@ void do_reply(string cmd, string arg) {
 
 void do_forward(string cmd, string arg) {
     string recep;
-    int x, i;
+    int x;
 
     if(!arg || arg == "") {
         write("Recepient for forward missing (\"?\" for help).\n");

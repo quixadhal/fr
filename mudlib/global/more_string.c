@@ -67,7 +67,7 @@ int string_display_file() {
 void more_string_status_line() {
   string *frog;
   string s;
-  int i, j,percentage;
+  int i, percentage;
 
   if (!stat_line)
     stat_line = "$N From $T to $B of $S ($%%) - h for help. ";

@@ -11,7 +11,7 @@ object helper;
 
 void setup()
   {
-   set_helper_name("shaman");
+   set_helper_name("james");
 set_short("Realm of the Orc:  Temple of the Dead");
 set_save_file("collect");
    set_long("\n   Realm of the Orc:  Temple of the Dead.\n\n"
@@ -38,10 +38,12 @@ add_item("shrine", "A small altar to Tymora sits in the corner.  There"
 	" enter the room. \n");
 add_item(({"cot", "cots"}), "Uncomfortable looking wooden tables where the"
 	" bodies are placed for examination and treatment. \n");
+/*
 add_item(({"healer", "healers"}), "Stern looking individuals who spend their"
 	" days raising people from the dead.  They move about the"
 	" room, their movements fluid and purposeful.  They are busy"
 	" people, and don't look like they smile often. \n");
+*/
   add_sign("/---------------------------------------------\\\n" 
            "|                                             |\n" 
            "|        Orc Temple: Raiseroom                |\n"
@@ -56,13 +58,16 @@ add_item(({"healer", "healers"}), "Stern looking individuals who spend their"
 
 void reset()
   {
+int mv;
   if (!helper)
     {
-   helper = clone_object("/baseobs/monsters/healer");
-    helper->move(this_object());
+write("bing\n");
+   helper = new("/baseobs/monsters/healer");
+    mv=helper->move(this_object());
+write("move: "+mv+"\n");
     }
 
-  helper->set_name("Orc Shaman");
+  //helper->set_name("Orc Shaman");
   helper->set_short("Orc Shaman");
 helper->add_alias("shaman");
 helper->set_long("The orc male that stands before is a shaman to the "

@@ -7,7 +7,7 @@
 #
 # This will be the name of your mud.
 #
-name : FR:release
+name : FR-release
 
 #
 # [ optional ]
@@ -41,7 +41,7 @@ address server port : 6364
 # This should be the absolute pathname to where you placed your copy of
 # the Mudlib.
 #
-mudlib directory : /where/ever/frmudlib-3.4/mudlib
+mudlib directory : /local/mud/mudlib
 
 #
 # [ REQUIRED ]
@@ -49,7 +49,7 @@ mudlib directory : /where/ever/frmudlib-3.4/mudlib
 # This should be the absolute pathname to where you placed your copy of
 # the driver that you built.
 #
-binary directory : /where/ever/frmudlib-3.4/mudos/bin
+binary directory : /local/mud/mudos/bin
 
 
 # ------------------------------------------------------------------------

@@ -134,7 +134,7 @@ int set_mark(string s) {
 void status_line() {
   string *frog;
   string s;
-  int i, j,percentage;
+  int i, percentage;
 
   if (!stat_line)
     stat_line = "$N From $T to $B of $S ($%%) - h for help. ";
@@ -179,7 +179,7 @@ void next_page(string str) {
       noargs,
       i,j,k,
       redraw;
-  string s1, s2, *s3, s4, s5;
+  string s1, *s3, s4, s5;
 
   if (!str)
     str = "";

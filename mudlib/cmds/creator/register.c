@@ -8,7 +8,8 @@ position = 1;
 static int cmd(string str, object me) {
    object player;
 
-  if (this_player(1) != this_player()) return 0;
+  if ( this_player()->query_current_action_forced() )
+    return 0;
     if (!str) {
        notify_fail("Usage: register player\n");
        return 0;
@@ -33,9 +34,9 @@ static int cmd(string str, object me) {
         return 0;
     }
     player->set_registrated(1);
-    player->add_property("reg_by",this_player()->query_cap_name());
     write((string)player->query_cap_name()+" is registered.\n");
     tell_object(player,"You are now registered. Enjoy your time here.\n");
+    this_player()->set_trivial_action();
     return 1;
 } /* register player */
  

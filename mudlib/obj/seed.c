@@ -3,17 +3,17 @@ inherit "/std/object";
 
 string plant;
 
-set_plant(string s)
+void set_plant(string s)
 {
    plant = s;
 }
 
-set_germ(n)
+void set_germ(int n)
 {
    call_out("germinate", n, n);
 }
 
-germinate(n)
+void germinate(int n)
 {
    object newplant;
 

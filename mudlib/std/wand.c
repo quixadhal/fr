@@ -81,12 +81,12 @@ int set_enchant(int i)
     return i;
 }
 
-set_guilds(mapping map)
+void set_guilds(mapping map)
 {
     if( !guilds) guilds = map;
     else guilds += map;
 }
-set_spell(string fil,string fun,int lock,int gpuse,int dds)
+void set_spell(string fil,string fun,int lock,int gpuse,int dds)
 {
     file = fil;
     func = fun;

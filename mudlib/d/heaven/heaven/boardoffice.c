@@ -25,7 +25,7 @@ void reset()
   {
   if (!board)
     {
-    board = new("/obj/misc/board_mas2");
+    board = new("/obj/misc/board_mas3");
     board->move(this_object());
     }
 } /* reset */
@@ -33,7 +33,6 @@ void reset()
 void init()
 {
    ::init();
-   add_action("mail", "read");
    add_action("mail", "mail");
 }
 

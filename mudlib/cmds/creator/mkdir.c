@@ -29,6 +29,7 @@ static int cmd(string str, object me) {
       return 0;
    }
    write("Ok.\n");
+    me->set_trivial_action();
    return 1;
 } /* makedir() */
  

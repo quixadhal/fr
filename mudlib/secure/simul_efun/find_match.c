@@ -17,12 +17,13 @@ string *parse_blocks = ({
   "things",
 });
 
-static int not_hidden(object ob) { return ob && !ob->query_hide_shadow(); }
+static int not_hidden(object ob) { return !ob->query_hide_shadow(); }
 
-varargs mixed find_match(string str, mixed ob, int no_hidden) {
-    mixed *array, test, *ret;
+varargs mixed find_match(string str, mixed ob, int no_hidden) 
+    {
+    mixed *arry, test, *ret;
     int i, num, top, bot, bing, j;
-    string nick, type, *bits;
+    string nick, *bits;
     mapping rabbit;
 
     if (!ob || intp(ob))
@@ -38,14 +39,27 @@ varargs mixed find_match(string str, mixed ob, int no_hidden) {
 	if (!ob)
 	    return ({ });
     } else {
-	array = ({ });
+	arry = ({ });
 	for (i=0;i<sizeof(ob);i++)
 	    if ((test = (object *)ob[i]->find_inv_match(str)))
-		array += test;
-	ob = array;
+		arry += test;
+	ob = arry;
     }
+    if(!ob || !sizeof(ob))
+      return ({ });
     if(no_hidden)
-      ob = filter(ob, "not_hidden", this_object());
+      // Filter out hiddens, but leave this_player()
+      // Don't want people to check if they're hidden etc
+      // Flode - 110398
+      if(!this_player())
+        ob = filter(ob, "not_hidden", this_object());
+      else
+      {
+        int prrt = member_array(this_player(), ob);
+        ob = filter(ob, "not_hidden", this_object());
+        if(prrt >= 0 && this_player()->query_hide_shadow())
+          ob += ({ this_player() });
+      }
     bits = explode(implode(explode(str, " and "), ","), ",");
     ret = ({ });
     for (j=0;j<sizeof(bits);j++) {
@@ -58,36 +72,37 @@ varargs mixed find_match(string str, mixed ob, int no_hidden) {
 	if (str == "it" || str == "them" || str == "him" || str == "her") {
 	    rest = all_inventory(this_player()) +
 	    all_inventory(environment(this_player()));
-	    array = (object *)this_player()->query_it_them();
-	    while (i<sizeof(array))
-		if (member_array(array[i], rest) == -1)
-		    array = delete(array, i, 1);
+	    arry = (object *)this_player()->query_it_them();
+	    while (i<sizeof(arry))
+		if (member_array(arry[i], rest) == -1)
+		    arry = delete(arry, i, 1);
 		else
 		    i++;
-	    if (!sizeof(array))
+	    if (!sizeof(arry))
 		continue;
 	    if (str == "it") {
-		ret += array[0..0];
+		ret += arry[0..0];
 		continue;
 	    }
 	    if (str == "her")
-		if (living(array[0]) && (int)array[0]->query_gender() == 2) {
-		    ret += array[0..0];
+		if (living(arry[0]) && (int)arry[0]->query_gender() == 2) {
+		    ret += arry[0..0];
 		    continue;
 		} else
 		    continue;
 	    if (str == "him")
-		if (living(array[0]) && (int)array[0]->query_gender() == 1) {
-		    ret += array[0..0];
+		if (living(arry[0]) && (int)arry[0]->query_gender() == 1) {
+		    ret += arry[0..0];
 		    continue;
 		} else
 		    continue;
-	    ret += array;
+	    ret += arry;
 	    continue;
 	}
 	test = explode(str, " ");
 	// Flode added the next line, 120997
 	if(!sizeof(test)) test = ({ "" });
+        bing = 0;  // Need to reset this - Flode
 	sscanf(test[sizeof(test)-1], "%d", bing);
 	test = ({ });
 	rest = ({ });
@@ -107,15 +122,15 @@ varargs mixed find_match(string str, mixed ob, int no_hidden) {
 		rabbit = ([ ]);
 		for (i=1;i<sizeof(test);i++)
 		    rabbit[test[i]] = 1;
-		array = query_strange_inventory(keys(rabbit));
+		arry = query_strange_inventory(keys(rabbit));
 		test = ({ });
-		for (i=0;i<sizeof(array);i+=2)
-		    test += map_array(array[i+1], 
+		for (i=0;i<sizeof(arry);i+=2)
+		    test += map_array(arry[i+1], 
 		      "query_frac_simul_efun_id",
-		      this_object(), ({ num, str, 0, sizeof(array[i+1]),
+		      this_object(), ({ num, str, 0, sizeof(arry[i+1]),
 			top, bot }) );
-		array = test + rest;
-		ret += array;
+		arry = test + rest;
+		ret += arry;
 		continue;
 	    }
 	    if (test[0] == 1 && bing)
@@ -123,10 +138,10 @@ varargs mixed find_match(string str, mixed ob, int no_hidden) {
 	    rabbit = ([ ]);
 	    for (i=1;i<sizeof(test);i++)
 		rabbit[test[i]] = 1;
-	    array = map_array(keys(rabbit), "query_simul_efun_id",
+	    arry = map_array(keys(rabbit), "query_simul_efun_id",
 	      this_object(), ({ test[0], str }));
-	    array += rest;
-	    ret += array;
+	    arry += rest;
+	    ret += arry;
 	}
     }
     if (this_player() && sizeof(ret))

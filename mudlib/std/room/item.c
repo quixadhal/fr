@@ -1,281 +1,353 @@
+// Reworked the whole thing. Instead of storing a bunch of almost
+// identical arrays and mappings, I let the queries take care of it all.
+// Flode - March 1997
+
 #include "parse_command.h"
-string *lng,
-       *shrt,
-       *adjs,
-       *plu,
-       *name;
-mapping verb,
-        plural,
-        other_things;
+mixed *items;
 int *cur_desc;
 
-
-void create() {
-  adjs = ({ });
-  lng = ({ "" });
-  shrt = ({ "" });
-  plu = ({ });
-  name = ({ });
-  verb = ([ ]);
-  plural = ([ ]);
+void create()
+{
+  items = ({ });
   cur_desc = ({ });
-  other_things = ([ "smell" : 0, "taste" : 0, "read" : 0 ]);
-} /* create() */
+}
 
-string short() {
-  string *ret;
+string short()
+{
   int i;
+  string *ret = ({ });
 
-  ret = ({ });
-  for (i=0;i<sizeof(cur_desc);i++)
-    ret += ({ shrt[cur_desc[i]] });
+  for(i=0;i<sizeof(cur_desc);i++)
+    ret += ( pointerp(items[i*3]) ? ({ items[cur_desc[i]*3][0] }) :
+                                    ({ items[cur_desc[i]*3] }) );
   return query_multiple_short(ret);
-} /* short() */
+}
 
-string *pretty_short() {
-  string *ret;
+string *pretty_short()
+{
   int i;
-
-  ret = ({ });
-  for (i=0;i<sizeof(cur_desc);i++)
-    ret += ({ shrt[cur_desc[i]] });
+  string *ret = ({ });
+     
+  for(i=0;i<sizeof(cur_desc);i++)
+    ret += ( pointerp(items[i*3]) ? ({items[cur_desc[i]*3][0] }) :
+                                    ({ items[cur_desc[i]*3] }) );
   return ret;
-} /* pretty_short() */
+}
 
-string query_plural() {
-  string *ret;
+string query_plural()
+{
   int i;
-
-  ret = ({ });
-  for (i=0;i<sizeof(cur_desc);i++)
-    ret += ({ pluralize(shrt[cur_desc[i]]) });
+  string *ret = ({ });
+	 
+  for(i=0;i<sizeof(cur_desc);i++)
+    ret += ( pointerp(items[i*3]) ? ({ pluralize(items[cur_desc[i]*3][0]) }) :
+                                    ({ pluralize(items[cur_desc[i]*3]) }) );
   return query_multiple_short(ret);
-} /* query_plural() */
+}
 
-string *pretty_plural() {
-  string *ret;
+string *pretty_plural()
+{
   int i;
-
-  ret = ({ });
-  for (i=0;i<sizeof(cur_desc);i++)
-    ret += ({ pluralize(shrt[cur_desc[i]]) });
+  string *ret = ({ });
+	     
+  for(i=0;i<sizeof(cur_desc);i++)
+    ret += ( pointerp(items[i*3]) ? ({ pluralize(items[cur_desc[i]*3][0]) }) :
+                                    ({ pluralize(items[cur_desc[i]*3]) }) );
   return ret;
-} /* query_plural() */
+}
 
-string long() {
+string long()
+{
   int i;
-  string ret;
+  string ret = "";
 
-  ret = "";
-  for (i=0;i<sizeof(cur_desc);i++) {
-    if (!lng[cur_desc[i]])
-      continue;
-    ret += lng[cur_desc[i]];
-  }
-  if (ret == "")
-    return "Error in items.\n";
+  for(i=0;i<sizeof(cur_desc);i++)
+    ret += items[cur_desc[i]*3+1];
   return ret;
-} /* long() */
+}
 
-/*
-void set_long(string s) { lng[cur_desc] = s; }
-string query_long() { return lng[cur_desc]; }
- */
 int *query_cur_desc() { return cur_desc; }
-mapping query_verbs() { return verb; }
-mapping query_plurals() { return plural; }
 
-string *query_lng() { return lng; }
-string *query_shrt() { return shrt; }
+mapping query_verbs()
+{
+  mapping verb = ([ ]);
+  int i,j;
+  string s,*bits;
+
+  for(i=0;i<sizeof(items);i+=3)
+    if(!pointerp(items[i]))
+    {
+      bits = explode(items[i]," ");
+      s = bits[sizeof(bits)-1];
+      if(!verb[s])
+	verb[s] =  ({ bits[0..sizeof(bits)-2], i/3 });
+      else
+	verb[s] += ({ bits[0..sizeof(bits)-2], i/3 });
+    }
+    else for(j=0;j<sizeof(items[i]);j++)
+    {
+      bits = explode(items[i][j]," ");
+      s = bits[sizeof(bits)-1];
+      if(!verb[s])
+	verb[s] =  ({ bits[0..sizeof(bits)-2], i/3 });
+      else
+        verb[s] += ({ bits[0..sizeof(bits)-2], i/3 });
+    }
+  return verb;
+}
+
+mapping query_plurals()
+{
+  mapping plural = ([ ]);
+  int i,j;
+  string s,*bits;
+      
+  for(i=0;i<sizeof(items);i+=3)
+    if(!items[i+2])
+      if(!pointerp(items[i]))
+      {
+        bits = explode(items[i]," ");
+        s = pluralize(bits[sizeof(bits)-1]);
+        if(!plural[s])
+          plural[s] =  ({ bits[0..sizeof(bits)-2], i/3 });
+        else
+          plural[s] += ({ bits[0..sizeof(bits)-2], i/3 });
+      }
+      else for(j=0;j<sizeof(items[i]);j++)
+      {
+        bits = explode(items[i][j]," ");
+        s = bits[sizeof(bits)-1];
+        if(!plural[s])
+          plural[s] =  ({ bits[0..sizeof(bits)-2], i/3 });
+        else
+          plural[s] += ({ bits[0..sizeof(bits)-2], i/3 });
+      }
+  return plural;
+}
+
+string *query_lng()
+{
+  int i;
+  string *ret = ({ });
+
+  for(i=0;i<sizeof(items);i+=3)
+    ret += ({ items[i+1] });
+  return ret;
+}
+
+string *query_shrt()
+{
+  int i;
+  string *ret = ({ });
+
+  for(i=0;i<sizeof(items);i+=3)
+    ret += (pointerp(items[i]) ? ({ items[i][0] }) : ({ items[i] }) );
+  return ret;
+}
 
 int drop() { return 1; }
-int get() { return 1; }
+int get()  { return 1; }
 
-varargs void setup_item(mixed nam, mixed long, int no_plural) {
-  string *bits, s, real_long;
-  int i;
+varargs void setup_item(mixed nam,mixed long,int no_plural)
+{
+  int i,j;
+  string str;
 
-  if (pointerp(long)) {
-    real_long = "You see nothing special.\n";
-    for (i=0;i<sizeof(long);i+=2)
-      if (long[i] != "long") {
-        if (!other_things[long[i]])
-          other_things[long[i]] = ([ sizeof(lng) : long[i+1] ]);
-        else
-          other_things[long[i]][sizeof(lng)]  = long[i+1];
-      } else {
-        real_long = long[i+1];
-      }
-    long = real_long;
+  if(pointerp(long))
+  {
+    if(j=member_array("long",long))
+      str = long[i+1];
   }
-
-  if (pointerp(nam)) {
-    if (sizeof(nam) > 0)
-      shrt += ({ nam[0] });
-    for (i=0;i<sizeof(nam);i++) {
-      bits = explode(nam[i], " ");
-      name += ({ (s=bits[sizeof(bits)-1]) });
-      if (!verb[s]) {
-        verb[s] = ({ bits[0..sizeof(bits)-2], sizeof(lng) });
-        if (!no_plural)
-          plural[(s=pluralize(s))] = ({ bits[0..sizeof(bits)-2], sizeof(lng) });
-      } else {
-        verb[s] += ({ bits[0..sizeof(bits)-2], sizeof(lng) });
-        if (!no_plural)
-          plural[(s=pluralize(s))] += 
-                   ({ bits[0..sizeof(bits)-2], sizeof(lng) });
-      }
-      if (no_plural)
-        plu += ({ "no plural" });
-      else
-        plu += ({ s });
-      adjs += bits[0..sizeof(bits)-2];
-    }
-    lng += ({ long });
-    return ;
-  }
-  shrt += ({ nam });
-  bits = explode(nam, " ");
-  name += ({ (s=bits[sizeof(bits)-1]) });
-  if (!verb[s]) {
-    verb[s] = ({ bits[0..sizeof(bits)-2], sizeof(lng) });
-    if (!no_plural)
-      plural[(s=pluralize(s))] = ({ bits[0..sizeof(bits)-2], sizeof(lng) });
-  } else {
-/* Dey are both existant... */
-    verb[s] += ({ bits[0..sizeof(bits)-2], sizeof(lng) });
-    if (!no_plural)
-      plural[(s=pluralize(s))] += ({ bits[0..sizeof(bits)-2], sizeof(lng) });
-  }
-  if (no_plural)
-    plu += ({ "no plural" });
   else
-    plu += ({ s });
-  adjs += bits[0..sizeof(bits)-2];
-  lng += ({ long });
-} /* setup_item() */
+    str = long;
+  if(!str) str = "You see nothing special.\n";
 
-int modify_item(string str, mixed long) {
-  int i, j;
+  items += ({ nam, str, no_plural });
+}
 
-  if ((j = member_array(str, shrt)) == -1)
-    return 0;
-/* Got a match... */
-  if (pointerp(long)) {
-    for (i=0;i<sizeof(long);i+=2)
-      if (long[i] != "long") {
-        if (!other_things[long[i]])
-          other_things[long[i]] = ([ sizeof(lng) : long[i+1] ]);
-        else
-          other_things[long[i]][sizeof(lng)]  = long[i+1];
-      } else {
-        lng[j] = long[i+1];
-      }
-    return 1;
-  }
-  lng[j] = long;
-  return 1;
-} /* modify_exit() */
+/* If addition then keeps existing desc and adds desc,
+   otherwise it completely rewrites description */
 
-int remove_item(string str, string new_long) {
+varargs int modify_item(string str, string desc, int addition)
+{
+  string new1;
   int i;
-  string *inds;
-
-  if ((i = member_array(str, shrt)) == -1)
+  if ((i=member_array(str, query_shrt())) == -1)
     return 0;
-/* Ok, got him.  Now we need to track down all the bits.  Sigh. */
-/* this is a mess.  I am not sure I want to do it.  So I won't for now. */
-} /* remove_item() */
+  if (!desc)
+    return 0;
+  if (addition)
+    {  new1 = items[i*3+1];
+       new1 += desc;
+       items[i*3+1]=new1;
+    }
+  else
+    items[i*3+1] = desc;
+  return 1;
+}
 
-string *parse_command_id_list() { return name; }
-string *parse_command_plural_id_list() { return plu; }
-string *parse_command_adjectiv_id_list() { return adjs; }
+/* Old doesn't work.
+int modify_item(string str, mixed long)
+{
+  int i,j;
 
-object query_parse_id(mixed *arr) {
+  if((i=member_array(str, query_shrt())) == -1)
+    return 0;
+  if(pointerp(long))
+  {
+    if(j=member_array("long"),long)
+      items[j*3+1] = long[i+1];
+  }
+  else items[j*3+1] = long[i+1];
+  return 1;
+}
+*/
+int remove_item(string str)
+{
+  int i;
+
+  if((i=member_array(str, query_shrt())) == -1)
+    return 0;
+  items = delete(items, i*3, 3);
+  return 1;
+}
+
+string *parse_command_id_list()
+{
+  int i, j;
+  string *ret = ({ });
+  string *bits;
+
+  for(i=0;i<sizeof(items);i+=3)
+    if(!pointerp(items[i]))
+    {
+      bits = explode(items[i]," ");
+      ret += ({ bits[sizeof(bits)-1] });
+    }
+    else for(j=0;j<sizeof(items[i]);j++)
+    {
+      bits = explode(items[i][j]," ");
+      ret += ({ bits[sizeof(bits)-1] });
+    }
+  return ret;
+}
+
+string *parse_command_plural_id_list()
+{
+  int i, j;
+  string *ret = ({ });
+  string *bits;
+
+  for(i=0;i<sizeof(items);i+=3)
+    if(items[i+2])
+      ret += ({ "no plural" });
+    else
+      if(!pointerp(items[i]))
+      {
+        bits = explode(items[i]," ");
+        ret += ({ pluralize(bits[sizeof(bits)-1]) });
+      }
+      else for(j=0;j<sizeof(items[i]);j++)
+      {
+        bits = explode(items[i][j]," ");
+        ret += ({ bits[sizeof(bits)-1] });
+      }
+  return ret;
+}
+
+string *parse_command_adjectiv_id_list()
+{
+  int i, j;
+  string *ret = ({ });
+  string *bits;
+
+  for(i=0;i<sizeof(items);i+=3)
+    if(!pointerp(items[i]))
+    {
+      bits = explode(items[i]," ");
+      ret += bits[0..sizeof(bits)-2];
+    }
+    else for(j=0;j<sizeof(items[i]);j++)
+    {
+      bits = explode(items[i][j]," ");
+      ret += bits[0..sizeof(bits)-2];
+    }
+  return ret;
+}
+
+object query_parse_id(mixed *arr)
+{
   string *bits;
   mixed stuff;
   int i, j;
 
-/* all case */
-  if (arr[P_THING] == 0) {
+  if(arr[P_THING] == 0)
+  {
     bits = explode(arr[P_STR], " ");
-    if (!(stuff = plural[bits[sizeof(bits)-1]]))
-      if (!(stuff = verb[bits[sizeof(bits)-1]]))
-        return 0;
+    if(!(stuff = query_plurals()[bits[sizeof(bits)-1]]))
+      if(!(stuff = query_verbs()[bits[sizeof(bits)-1]]))
+	return 0;
     cur_desc = ({ });
-    for (j=0;j<sizeof(stuff);j+=2) {
-      for (i=0;i<sizeof(bits)-2;i++)
-        if (member_array(bits[i], stuff[j]) == -1)
-          break;
-      if (i < sizeof(bits)-2)
-        continue;
-      cur_desc += ({ stuff[j+1] });
+    for(j=0;j<sizeof(stuff);j+=2)
+    {
+      for(i=0;i<sizeof(bits)-2;i++)
+	if(member_array(bits[i], stuff[j]) == -1)
+	  break;
+     if(i<sizeof(bits)-2)
+       continue;
+     cur_desc += ({ stuff[j+1] });
     }
     return this_object();
   }
-  if (arr[P_THING] < 0) { /* specific object case */
+  if(arr[P_THING] < 0)
+  {
     bits = explode(arr[P_STR], " ");
-    if (!(stuff = verb[bits[sizeof(bits)-1]]))
+    if(!(stuff = query_verbs()[bits[sizeof(bits)-1]]))
       return 0;
-    for (j=0;j<sizeof(stuff);j+=2) {
-      for (i=0;i<sizeof(bits)-2;i++)
-        if (member_array(bits[i], stuff[j]) == -1)
-          break;
-      if (i < (sizeof(bits) - 2) || ++arr[P_THING] != 0)
-        continue;
-/* Get the current thingy out of the list */
+    for(j=0;j<sizeof(stuff);j+=2)
+    {
+      for(i=0;i<sizeof(bits)-2;i++)
+	if(member_array(bits[i], stuff[j]) == -1)
+	  break;
+      if(i<sizeof(bits)-2 || ++arr[P_THING] != 0)
+	continue;
       cur_desc = ({ stuff[j+1] });
       arr[P_THING] = -10321;
       return this_object();
     }
     return 0;
   }
-/* Lots of objects case.  The objects are specified though. */
   bits = explode(arr[P_STR], " ");
-  if (!(stuff = plural[bits[sizeof(bits)-1]]))
-    if (!(stuff = verb[bits[sizeof(bits)-1]]))
+  if(!(stuff = query_plurals()[bits[sizeof(bits)-1]]))
+    if(!(stuff = query_verbs()[bits[sizeof(bits)-1]]))
       return 0;
   cur_desc = ({ });
-  for (j=0;j<sizeof(stuff);j+=2) {
-    for (i=0;i<sizeof(bits)-2;i++)
-      if (member_array(bits[i], stuff[j]) == -1)
-        continue;
-    if (i < sizeof(bits)-2)
+  for(j=0;j<sizeof(stuff);j+=2)
+  {
+    for(i=0;i<sizeof(bits)-2;i++)
+      if(member_array(bits[i], stuff[j]) == -1)
+        break;
+    if(i<sizeof(bits)-2)          
       continue;
     cur_desc += ({ stuff[j+1] });
     arr[P_THING]--;
-    if (arr[P_THING] <= 0) {
+    if(arr[P_THING] <= 0)
+    {
       arr[P_THING] = -10786;
       return this_object();
     }
   }
   return this_object();
-} /* query_parse_id() */
-
-void dest_me() {
+}
+  
+void dest_me()
+{
   destruct(this_object());
-  return ;
-} /* dest_me() */
+}
 
-void dwep() {
+void dwep()
+{
   destruct(this_object());
-  return ;
-} /* dwep() */
+}
 
 int move() { return 1; }
-
-int command_control(string command) {
-  int i;
-  string ret;
-
-  if (!other_things[command])
-    return 0;
-  for (i=0;i<sizeof(cur_desc);i++)
-    if (other_things[command][cur_desc[i]])
-      write(process_string(other_things[command][cur_desc[i]]));
-    else
-      cur_desc = delete(cur_desc, i--, 1);
-  return sizeof(cur_desc);
-} /* command_control() */
-
-mapping query_other_things() { return other_things; }

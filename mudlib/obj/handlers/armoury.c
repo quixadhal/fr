@@ -170,7 +170,7 @@ int remove_armoury(string name) {
 mixed query_armourys() { return armourys + ({ }); }
 mixed query_weapons() { return weaps + ({ }); }
 
-dest_me() {
+void dest_me() {
   save_object(FILE_NAME,1);
   ::dest_me();
 }

@@ -6,15 +6,15 @@
 /* added for easy configuring.. no problem to put this in /include */
 /* Baldrick, jan '94 */
 
-#define HISTORY_LENGHT 30
+#define HISTORY_LENGHT 15
 
-string *history;
+static string *history;
 static int hoffset, numoff;
 static int in_alias_command;
 static string ignore_history;
 
 void history_commands() {
-  add_action("print_history", "hi*story");
+  //add_action("print_history", "history");
   add_action("clear_history", "clear_his");
 }
 
@@ -52,11 +52,10 @@ string substitute_history(string arg) {
   else
     return replace(history[sizeof(history)-1], s1, s2);
 }
-
  
 string expand_history(string arg) {
-int num, i;
-string s1,s2;
+  int num, i;
+  string s1;
 
   if(this_player()){
     if(this_player() != this_object() &&
@@ -97,7 +96,6 @@ void ignore_from_history(string str) {
 }
  
 void add_history(string arg) {
-int i;
 
   if (ignore_history) {
     if (ignore_history == arg) {
@@ -125,10 +123,18 @@ int print_history(string arg)
   {
   int i, from, to, num;
  
-  if(this_player()!=this_object()) { /* a call */
+  if(this_player()!=this_object()) 
+    { /* a call */
     if(!interactive(this_player())) return 0;
     if(!("secure/master"->query_lord(geteuid(this_player())))) return 0;
   }
+  /* This if may not be enough. and "Modulus by zero." error may be a symptom
+   * of something else. espesially since the history shouldn't be empty.
+   * Baldrick, dec '97
+   */
+  if (!sizeof(history))
+    return 0;
+
   from = hoffset;
   num = sizeof(history);
   if (!arg)
@@ -149,6 +155,7 @@ int print_history(string arg)
       num += sizeof(history);
   } else if (sscanf(arg,"%d",num)!=1)
     num = sizeof(history);
+
   from = from % sizeof(history);
   if (num>sizeof(history))
     num = sizeof(history);

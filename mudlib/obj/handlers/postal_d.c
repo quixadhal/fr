@@ -48,7 +48,9 @@ void create() {
        "asmodean",
       }),
    ]);
-    catch(mud_groups["patrons"] = "/d/aprior/master"->query_patrons());
+//  catch(mud_groups["patrons"] = "/d/aprior/master"->query_patrons());
+// the above commented out by Randor cause there's no /d/aprior here
+// so far - 19-mar-98
 
 }
 

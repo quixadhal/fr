@@ -114,7 +114,7 @@ static void eventServerWriteCallback(int fd) {
 
 varargs void eventWrite(int fd, string str, int close) {
     mapping sock;
-    int x;
+
     if( Listen && Listen["Descriptor"] == fd ) sock = Listen;
     else if( Sockets[fd] ) sock = Sockets[fd];
     else return;

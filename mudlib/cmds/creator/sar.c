@@ -21,8 +21,8 @@ position = 1;
 
 static int cmd(string str, object me)
 {
-  int i, j, num;
-  string *files, *bit;
+  int i;
+  string *files ;
    string s1, s2, s3, s4;
   if(!str)
   {
@@ -36,7 +36,6 @@ static int cmd(string str, object me)
        notify_fail("Usage: sar search_string replace_string <files>\n");
       return 0;
     }
-   log_file("SAR",me->query_name()+" : "+str+"\n");
   files = (string *)this_player()->get_files(s3);
   if(!sizeof(files))
   {
@@ -57,6 +56,7 @@ static int cmd(string str, object me)
      else
       write("...failed...no file\n");
   }
+  this_player()->set_trivial_action();
   return 1;
 }
 
